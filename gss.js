@@ -2177,7 +2177,7 @@ m.reply(`Open Time ${q} Starting from now`)
 setTimeout(() => {
 var nomor = m.participant
 const open = `*Oɴ ᴛɪᴍᴇ* Gʀᴏᴜᴘ ᴏᴘᴇɴ Bʏ Aᴅᴍɪɴ\ɴNᴏᴡ ᴀʟʟ ᴍᴇᴍʙᴇʀ Cᴀɴ Sᴇɴᴅ Mᴇssᴀɢᴇs`
-gss.groupSettingUpdate(m.from, 'announcement')
+await gss.groupSettingUpdate(m.chat, 'announcement')
 m.reply(open)
 }, timer)
 }
@@ -2201,7 +2201,7 @@ m.reply(`Close Time ${q} Starting from now`)
 setTimeout(() => {
 var nomor = m.participant
 const close = `*Off ᴛɪᴍᴇ* Gʀᴏᴜᴘ Cʟᴏsᴇᴅ Bʏ Aᴅᴍɪɴ\ɴNᴏᴡ Oɴʟʏ Aᴅᴍɪɴs Cᴀɴ Sᴇɴᴅ Mᴇssᴀɢᴇs`
-gss.groupSettingUpdate(m.from, 'not_announcement')
+await gss.groupSettingUpdate(m.chat, 'not_announcement')
 m.reply(close)
 }, timer)
 }
