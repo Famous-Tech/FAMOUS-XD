@@ -2321,39 +2321,43 @@ case "sc":
 
 
 case 'tempmail': {
-  const baseUrl = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox';
-  const timeout = 10000; // 10 seconds timeout for Axios requests
+  if (!m.isGroup) throw mess.group;
+  if (!isBotAdmins) throw mess.botAdmin;
+  if (!isAdmins) throw mess.admin;
 
-  // Send a poll for the user to choose the number of temporary email addresses
-  const tempMailCountOptions = ['1 Mail', '3 Mails', '5 Mails'];
-  const tempMailCountVote = await sendPollAndWait(m.chat, 'Select the number of temporary email addresses:', tempMailCountOptions);
-
-  const count = parseInt(tempMailCountVote); // Convert the vote to a number
+  const count = parseInt(args[0]);
 
   if (isNaN(count) || count <= 0) {
-    m.reply('Invalid selection. Please choose a valid number.');
+    m.reply('Invalid selection. Please choose a valid number (e.g., tempmail 1).');
     break;
   }
 
-  const fullUrl = `${baseUrl}&count=${count}`;
+  const tempMailOptions = Array.from({ length: count }, (_, index) => `${index + 1} Mail`);
+
+  const tempMailVote = await sendPollAndWait(m.chat, 'Select the temporary email address:', tempMailOptions);
+
+  const selectedIndex = parseInt(tempMailVote.split(' ')[0]); // Extract the selected index from the vote
 
   try {
-    const response = await axios.get(fullUrl);
+    const baseUrl = `https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=${count}`;
+    const response = await axios.get(baseUrl);
     const data = response.data;
 
-    if (data && data.length > 0) {
-      const tempMails = data.join('\n');
-      const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
+    if (data && data.length >= selectedIndex) {
+      const selectedMail = data[selectedIndex - 1];
+      const replyMessage = `*Temporary Email Address:*\n\n${selectedMail}`;
       m.reply(replyMessage);
     } else {
-      m.reply('Failed to generate temporary email addresses.');
+      m.reply('Failed to fetch the selected temporary email address.');
     }
   } catch (error) {
     console.error('Error:', error);
     m.reply('Failed to fetch temporary email addresses.');
   }
+
   break;
 }
+
 
 case '1mail': {
 
