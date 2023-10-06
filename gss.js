@@ -1467,19 +1467,20 @@ break;
                 gss.sendContact(m.chat, global.owner, m)
             }
             break
-            case 'playstore': {
-            if (!text) throw `Example : ${prefix + command} clash of clans`
-            let res = await fetchJson(api('zenz', '/webzone/playstore', { query: text }, 'apikey'))
-            let teks = `⭔ Playstore Search From : ${text}\n\n`
-            for (let i of res.result) {
-            teks += `⭔ Name : ${i.name}\n`
-            teks += `⭔ Link : ${i.link}\n`
-            teks += `⭔ Developer : ${i.developer}\n`
-            teks += `⭔ Link Developer : ${i.link_dev}\n\n──────────────────────\n`
-            }
-            m.reply(teks)
-            }
-            break
+
+case 'playstore': {
+  if (!text) throw `Example : ${prefix + command} clash of clans`;
+  let res = await fetchJson(api('zenz', '/webzone/playstore', { query: text }, 'apikey'));
+  let teks = `⭔ Playstore Search From : ${text}\n\n`;
+  for (let i of res.result) {
+    teks += `⭔ Name : ${i.name}\n`;
+    teks += `⭔ Link : ${i.link}\n`;
+    teks += `⭔ Developer : ${i.developer}\n`;
+    teks += `⭔ Link Developer : ${i.link_dev}\n\n──────────────────────\n`;
+  }
+  m.reply(teks);
+}
+break;
             case 'gsmarena': {
             if (!text) throw `Example : ${prefix + command} samsung`
             let res = await fetchJson(api('zenz', '/webzone/gsmarena', { query: text }, 'apikey'))
