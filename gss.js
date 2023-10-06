@@ -12,7 +12,6 @@ const chalk = require('chalk')
 const { exec, spawn, execSync } = require("child_process")
 const axios = require('axios')
 const path = require('path')
-const { Configuration, OpenAIApi } = require("openai");  
 const os = require('os')
 const googleTTS = require("google-tts-api");
 const moment = require('moment-timezone')
@@ -30,16 +29,6 @@ const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, 
 
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
-let tebaklagu = db.data.game.tebaklagu = []
-let _family100 = db.data.game.family100 = []
-let kuismath = db.data.game.math = []
-let tebakgambar = db.data.game.tebakgambar = []
-let tebakkata = db.data.game.tebakkata = []
-let caklontong = db.data.game.lontong = []
-let caklontong_desk = db.data.game.lontong_desk = []
-let tebakkalimat = db.data.game.kalimat = []
-let tebaklirik = db.data.game.lirik = []
-let tebaktebakan = db.data.game.tebakan = []
 
 
 const reportedMessages = {};
@@ -337,11 +326,6 @@ if (ALWAYS_ONLINE) {
         }
 
         
-        /*if (m.message) {
-            gss.readMessages([m.key])
-            console.log(chalk.black(chalk.bgWhite('[ PESAN ]')), chalk.black(chalk.bgGreen(new Date)), chalk.black(chalk.bgBlue(budy || m.mtype)) + '\n' + chalk.magenta('=> Dari'), chalk.green(pushname), chalk.yellow(m.sender) + '\n' + chalk.blueBright('=> Di'), chalk.green(m.isGroup ? pushname : 'Private Chat', m.chat))
-        }*/
-	
 	// reset limit every 12 hours
         let cron = require('node-cron')
         cron.schedule('00 12 * * *', () => {
@@ -403,8 +387,8 @@ if (ALWAYS_ONLINE) {
         }
         gss.ev.emit('messages.upsert', msg)
         }
-	    
-	if (('family100'+m.chat in _family100) && isCmd) {
+  	    
+/*	if (('family100'+m.chat in _family100) && isCmd) {
             kuis = true
             let room = _family100['family100'+m.chat]
             let teks = budy.toLowerCase().replace(/[^\w\s\-]+/, '')
@@ -498,7 +482,7 @@ ${Array.from(room.answer, (answer, index) => {
                 await m.reply(`🎮 Guess Guess 🎮\n\nCorrect Answer 🎉\n\nWant to play again? send ${prefix}guess`)
                 delete tebaktebakan[m.sender.split('@')[0]]
             } else m.reply('*wrong answer!*')
-        }
+        } */
         
         //TicTacToe
 	    this.game = this.game ? this.game : {}
@@ -565,7 +549,7 @@ Type *surrender* to give up and admit to Lostan`
 	    }
 	    }
 
-        //Suit PvP
+    /*    //Suit PvP
 	    this.suit = this.suit ? this.suit : {}
 	    let roof = Object.values(this.suit).find(roof => roof.id && roof.status && [roof.p, roof.p2].includes(m.sender))
 	    if (roof) {
@@ -650,7 +634,7 @@ Don't tag him! He is AFK ${reason ? 'with reason ' + reason : 'no reason'}
 during ${clockString(new Date - afkTime)}
 `.trim())
         }
-
+*/
         if (db.data.users[m.sender].afkTime > -1) {
             let user = global.db.data.users[m.sender]
             gss.sendTextWithMentions(m.chat, `@${m.sender.split('@')[0]} stop AFK${user.afkReason ? ' setelah ' + user.afkReason : ''}
@@ -1930,7 +1914,7 @@ case 'nowa':
     for (let i = 0; i < total; i++) {
         let list = [...i.toString().padStart(random, '0')];
         let result = text.replace(regex, () => list.shift()) + '@s.whatsapp.net';
-        if (await client.onWhatsApp(result).then(v => (v[0] || {}).exists)) {
+        if (await gss.onWhatsApp(result).then(v => (v[0] || {}).exists)) {
             let info = await gss.fetchStatus(result).catch(_ => {});
             array.push({ exists: true, jid: result, ...info });
         } else {
@@ -2016,76 +2000,6 @@ case 'githubstalk': {
 }
 
     break;
-case "ai":
-case "gpt":
-  const think = await gss.sendMessage(m.chat, { text: 'Thinking...' });
-
-  try {
-    if (!process.env.OPENAI_API_KEY) return m.reply("unable to tetch your apì key");
-    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
-
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
-
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: text }],
-    });
-
-    const responseText = response.data.choices[0].message.content;
-    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per character)
-
-    let i = 0;
-    const typewriterInterval = setInterval(() => {
-      if (i < responseText.length) {
-        const typedText = responseText.slice(0, i + 1);
-        gss.relayMessage(m.chat, {
-          protocolMessage: {
-            key: think.key,
-            type: 14,
-            editedMessage: {
-              conversation: typedText,
-            },
-          },
-        }, {});
-        i++;
-      } else {
-        clearInterval(typewriterInterval); // Stop the typewriter effect
-      }
-    }, typingSpeed);
-  } catch (error) {
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-      console.log(`${error.response.status}\n\n${error.response.data}`);
-    } else {
-      console.log(error);
-      m.reply("Erroring: " + error.message);
-    }
-  }
-  break;
-
-// Inside your command handler
-case 'addapikey':
-    if (args.length !== 1) {
-        m.reply("Invalid command usage. Please provide the API key.");
-    } else {
-        process.env.OPENAI_API_KEY = args[0];
-        m.reply("API key has been set successfully.");
-    }
-    break;
-
-
-case 'leavegc': {
-  if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-   if (!isAdmins ) return m.reply('Tʜɪs ғᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ғᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴ, ᴏᴡɴᴇʀ ᴀɴᴅ ʙᴏᴛᴀᴅᴍɪɴ, ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴜsᴇ ɪᴛ.')
-await gss.groupLeave(m.chat)
-await m.reply(`Done`)
-}
-break
-
 
             
             case 'menu': case 'help': case 'list': case 'listmenu': {
