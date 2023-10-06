@@ -1359,7 +1359,23 @@ break;
 }
 break;
 
-
+case 'sticker': case 's': case 'stickergif': case 'sgif': {
+  if (/image/.test(mime)) {
+    m.reply(mess.wait);
+    let media = await gss.downloadMediaMessage(qmsg);
+    let encmedia = await gss.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author });
+    await fs.unlinkSync(encmedia);
+  } else if (/video/.test(mime)) {
+    m.reply(mess.wait);
+    if (qmsg.seconds > 11) return m.reply('Maximum duration is 10 seconds!');
+    let media = await gss.downloadMediaMessage(qmsg);
+    let encmedia = await gss.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author });
+    await fs.unlinkSync(encmedia);
+  } else {
+    m.reply(`Send/reply with an image/video/gif with caption ${prefix + command}\nVideo/Gif duration 1-9 seconds`);
+  }
+}
+break;
 
 case 'pinterest': {
   m.reply(mess.wait);
