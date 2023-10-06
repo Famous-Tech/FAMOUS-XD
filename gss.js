@@ -800,23 +800,6 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
                 }
             }
             break
-            
-            case 'kuismath': case 'math': {
-                if (kuismath.hasOwnProperty(m.sender.split('@')[0])) throw "There Are Still Unfinished Sessions!"
-                let { genMath, modes } = require('./src/math')
-                if (!text) throw `Mode: ${Object.keys(modes).join(' | ')}\nExamples of use: ${prefix}math medium`
-                let result = await genMath(text.toLowerCase())
-                gss.sendText(m.chat, `*How much is the result of: ${result.soal.toLowerCase()}*?\n\nTime: ${(result.Time / 1000).toFixed(2)} detik`, m).then(() => {
-                    kuismath[m.sender.split('@')[0]] = result.answer
-                })
-                await sleep(result.Time)
-                if (kuismath.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("answer: " + result.answer)
-                    m.reply("Time's Up\nanswer: " + kuismath[m.sender.split('@')[0]])
-                    delete kuismath[m.sender.split('@')[0]]
-                }
-            }
-            break
             case 'react': {
                 if (!isCreator) throw mess.owner
                 reactionMessage = {
