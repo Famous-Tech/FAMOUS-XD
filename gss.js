@@ -7,6 +7,7 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require('fs')
 let yts = require("yt-search");
 const util = require('util')
+const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk')
 const { exec, spawn, execSync } = require("child_process")
 const axios = require('axios')
