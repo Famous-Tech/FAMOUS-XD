@@ -1235,45 +1235,36 @@ case 'emojimix': {
   let [emoji1, emoji2] = text.split`+`;
   if (!emoji1) throw `Example: ${prefix + command} 😅+🤔`;
   if (!emoji2) throw `Example: ${prefix + command} 😅+🤔`;
-  let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
-  for (let res of anu.results) {
-    let encmedia = await gss.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags });
-    await fs.unlinkSync(encmedia);
+  let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
+  
+  if (anu.results && Array.isArray(anu.results) && anu.results.length > 0) {
+    for (let res of anu.results) {
+      let encmedia = await gss.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags });
+      await fs.unlinkSync(encmedia);
+    }
+  } else {
+    throw "No results found for the specified emojis.";
   }
 }
 break;
 
 case 'emojimix2': {
   if (!text) throw `Example: ${prefix + command} 😅`;
-  let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(text)}`);
-  for (let res of anu.results) {
-    let encmedia = await gss.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags });
-    await fs.unlinkSync(encmedia);
+  let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(text)}`);
+  
+  if (anu.results && Array.isArray(anu.results) && anu.results.length > 0) {
+    for (let res of anu.results) {
+      let encmedia = await gss.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags });
+      await fs.unlinkSync(encmedia);
+    }
+  } else {
+    throw "No results found for the specified emoji.";
   }
 }
 break;
 
-	       case 'attp': case 'ttp': {
-  if (!text) throw `Example: ${prefix + command} text`;
-  await gss.sendMedia(m.chat, `https://xteam.xyz/${command}?file&text=${text}`, 'gss', 'morou', m, { asSticker: true });
-}
-break;
 
-case 'smeme': case 'stickmeme': case 'stikmeme': case 'stickermeme': case 'stikermeme': {
-  let respond = `Send/reply with image/sticker with caption ${prefix + command} text1|text2`;
-  if (!/image/.test(mime)) throw respond;
-  if (!text) throw respond;
-  m.reply(mess.wait);
-  atas = text.split('|')[0] ? text.split('|')[0] : '-';
-  bawah = text.split('|')[1] ? text.split('|')[1] : '-';
-  let dwnld = await gss.downloadMediaMessage(qmsg);
-  let { floNime } = require('./lib/uploader');
-  let fatGans = await floNime(dwnld);
-  let smeme = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${fatGans.result.url}`;
-  let FaTiH = await gss.sendImageAsSticker(m.chat, smeme, m, { packname: global.packname, author: global.author });
-  await fs.unlinkSync(FaTiH);
-}
-break;
+
 
 case 'toimage': case 'toimg': {
   if (!/webp/.test(mime)) throw `Reply sticker with caption *${prefix + command}*`;
@@ -1467,55 +1458,7 @@ break;
 }
 break;
 
-case 'ytmp3': case 'ytaudio': {
-  let { yta } = require('./lib/y2mate');
-  if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`;
-  let quality = args[1] ? args[1] : '128kbps';
-  let media = await yta(text, quality);
-  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
-  gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
-  gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
-}
-break;
 
-case 'ytmp4': case 'ytvideo': {
-  let { ytv } = require('./lib/y2mate');
-  if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`;
-  let quality = args[1] ? args[1] : '360p';
-  let media = await ytv(text, quality);
-  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
-  gss.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '360p'}` }, { quoted: m });
-}
-break;
-
-case 'getmusic': {
-  let { yta } = require('./lib/y2mate');
-  if (!text) throw `Example : ${prefix + command} 1`;
-  if (!m.quoted) return m.reply('Reply to a message');
-  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
-  let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
-  if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
-  let quality = args[1] ? args[1] : '128kbps';
-  let media = await yta(urls[text - 1], quality);
-  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
-  gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
-  gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
-}
-break;
-
-case 'getvideo': {
-  let { ytv } = require('./lib/y2mate');
-  if (!text) throw `Example : ${prefix + command} 1`;
-  if (!m.quoted) return m.reply('Reply to a message');
-  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
-  let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
-  if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
-  let quality = args[1] ? args[1] : '360p';
-  let media = await ytv(urls[text - 1], quality);
-  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
-  gss.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '360p'}` }, { quoted: m });
-}
-break;
 
 case 'pinterest': {
   m.reply(mess.wait);
