@@ -2321,11 +2321,24 @@ case "sc":
 
 
 case 'tempmail': {
-  const baseUrl = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1';
+  const baseUrl = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox';
   const timeout = 10000; // 10 seconds timeout for Axios requests
 
+  // Send a poll for the user to choose the number of temporary email addresses
+  const tempMailCountOptions = ['1 Mail', '3 Mails', '5 Mails'];
+  const tempMailCountVote = await sendPollAndWait(m.chat, 'Select the number of temporary email addresses:', tempMailCountOptions);
+
+  const count = parseInt(tempMailCountVote); // Convert the vote to a number
+
+  if (isNaN(count) || count <= 0) {
+    m.reply('Invalid selection. Please choose a valid number.');
+    break;
+  }
+
+  const fullUrl = `${baseUrl}&count=${count}`;
+
   try {
-    const response = await axios.get(baseUrl);
+    const response = await axios.get(fullUrl);
     const data = response.data;
 
     if (data && data.length > 0) {
@@ -2341,6 +2354,7 @@ case 'tempmail': {
   }
   break;
 }
+
 
 case 'checkmail': {
   if (!text) {
