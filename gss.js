@@ -540,32 +540,7 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
             m.reply(`Successfully deleted session room tictactoe!`)
             }
             break
-            case 'suitpvp': case 'suit': {
-            this.suit = this.suit ? this.suit : {}
-            let poin = 10
-            let poin_lose = 10
-            let timeout = 60000
-            if (Object.values(this.suit).find(roof => roof.id.startsWith('suit') && [roof.p, roof.p2].includes(m.sender))) m.reply(`Finish your previous suit`)
-	    if (m.mentionedJid[0] === m.sender) return m.reply(`Can't play with myself !`)
-            if (!m.mentionedJid[0]) return m.reply(`_Who do you want to challenge?_\nTag the person..\n\nexample : ${prefix}suit @${owner[1]}`, m.chat, { mentions: [owner[1] + '@s.whatsapp.net'] })
-            if (Object.values(this.suit).find(roof => roof.id.startsWith('suit') && [roof.p, roof.p2].includes(m.mentionedJid[0]))) throw `The person you are challenging is playing suit with someone else`
-            let id = 'suit_' + new Date() * 1
-            let caption = `_*SUIT PvP*_
-
-@${m.sender.split`@`[0]} challenge @${m.mentionedJid[0].split`@`[0]} to play suits Please @${m.mentionedJid[0].split`@`[0]} to type accept/reject`
-            this.suit[id] = {
-            chat: await gss.sendText(m.chat, caption, m, { mentions: parseMention(caption) }),
-            id: id,
-            p: m.sender,
-            p2: m.mentionedJid[0],
-            status: 'wait',
-            Time: setTimeout(() => {
-            if (this.suit[id]) gss.sendText(m.chat, `_Suit time is up_`, m)
-            delete this.suit[id]
-            }, 60000), poin, poin_lose, timeout
-            }
-            }
-            break
+            
 	    
             case 'chat': {
                 if (!isCreator) throw mess.owner
@@ -587,23 +562,7 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
                 }
             }
             break
-	    case 'family100': {
-                if ('family100'+m.chat in _family100) {
-                    m.reply('There Are Still Unfinished Sessions!')
-                    throw false
-                }
-                let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/family100.json')
-                let random = anu[Math.floor(Math.random() * anu.length)]
-                let hasil = `*Answer the following questions :*\n${random.soal}\n\nbe found *${random.answer.length}* Answer  ${random.answer.find(v => v.includes(' ')) ? `(some answers contain spaces)` : ''}`.trim()
-                _family100['family100'+m.chat] = {
-                    id: 'family100'+m.chat,
-                    pesan: await gss.sendText(m.chat, hasil, m),
-                    ...random,
-                    terjawab: Array.from(random.answer, () => false),
-                    hadiah: 6,
-                }
-            }
-            break
+	    
             case 'react': {
                 if (!isCreator) throw mess.owner
                 reactionMessage = {
