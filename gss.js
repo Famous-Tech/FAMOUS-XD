@@ -1815,6 +1815,13 @@ break;
 		gss.sendMessage(m.chat, { audio: { url: result.audio }, fileName: result.title+'.mp3', mimetype: 'audio/mpeg' }, { quoted: m })
 	    }
 	    break
+	    
+case "rvo": {
+                if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
+                quoted.msg.viewOnce = false
+                await gss.sendMessage(m.from, { forward: quoted }, { quoted: m })
+            }
+            break
 		
 		     case 'public': {
                 if (!isCreator) throw mess.owner
