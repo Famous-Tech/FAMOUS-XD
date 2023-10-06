@@ -2319,11 +2319,6 @@ case "sc":
           });
           break;
 
-
-}
-
-
-
 case 'checkmail': {
   if (!text) {
     m.reply('Please provide an email address to read the most recent message.');
