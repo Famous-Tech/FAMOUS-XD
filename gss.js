@@ -1335,7 +1335,14 @@ case 'gimage': {
   });
 }
 break;
-
+case "facebook": case "fb": case "fbdl": {
+                if (!/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) return m.reply(`Example : ${prefix + command} https://www.facebook.com/watch/?v=2018727118289093`)
+                await m.reply("wait")
+                let req = await (await api("xfarr")).get("/api/download/facebook", { url: Func.isUrl(m.text)[0] }, "apikey")
+                if (req.status !== 200) return m.reply(req?.message || "error")
+                await m.reply(req?.result?.url?.hd || req?.result?.url?.sd, { caption: req?.result?.title })
+            }
+            break
 	    case 'play': case 'ytplay': {
   if (!text) throw `Example : ${prefix + command} whatsapp status anime`;
   let yts = require("yt-search");
