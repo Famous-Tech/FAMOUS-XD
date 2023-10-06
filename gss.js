@@ -269,7 +269,7 @@ if (m.text) {
 bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using bad word but you are an admin/owner that's why i won't kick you😇`
 if (isAdmins) return m.reply(bvl)
 if (m.key.fromMe) return m.reply(bvl)
-if (GssCreator) return m.reply(bvl)
+if (isCreator return m.reply(bvl)
         await gss.sendMessage(m.chat,
 			    {
 			        delete: {
@@ -2561,13 +2561,13 @@ case 'githubstalk': {
 
 case 'antitoxic': case 'antibadword': {
 if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-  if (!isAdmins ) return m.reply('Tʜɪs ғᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ғᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴ, ᴏᴡɴᴇʀ ᴀɴᴅ ʙᴏᴛᴀᴅᴍɪɴ, ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴜsᴇ ɪᴛ.')
+if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
 if (args[0] === "on") {
 if (antiToxic) return m.reply('Already activated')
-nttoxic.push(m.sender)
+nttoxic.push(m.from)
 fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
 m.reply('Success in turning on antitoxic in this group')
-var groupe = await gss.groupMetadata(m.sender)
+var groupe = await gss.groupMetadata(from)
 var members = groupe['participants']
 var mems = []
 members.map(async adm => {
@@ -2575,8 +2575,8 @@ mems.push(adm.id.replace('c.us', 's.whatsapp.net'))
 })
 gss.sendMessage(from, {text: `\`\`\`「 ⚠️Warning⚠️ 」\`\`\`\n\nNobody is allowed to use bad words in this group, one who uses will be kicked immediately!`, contextInfo: { mentionedJid : mems }}, {quoted:m})
 } else if (args[0] === "off") {
-if (!antiToxic) return m.reply('Already deactivated')
-let off = nttoxic.indexOf(m.sender)
+if (!antiToxic) return reply('Already deactivated')
+let off = nttoxic.indexOf(m.from)
 nttoxic.splice(off, 1)
 fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
 m.reply('Success in turning off antitoxic in this group')
