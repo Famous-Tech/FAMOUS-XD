@@ -944,23 +944,6 @@ case 'dbinary': {
 }
 break;
 
-
-
-case 'toimage': case 'toimg': {
-  if (!/webp/.test(mime)) throw `Reply sticker with caption *${prefix + command}*`;
-  m.reply(mess.wait);
-  let media = await gss.downloadAndSaveMediaMessage(qmsg);
-  let ran = await getRandom('.png');
-  exec(`ffmpeg -i ${media} ${ran}`, (err) => {
-    fs.unlinkSync(media);
-    if (err) throw err;
-    let buffer = fs.readFileSync(ran);
-    gss.sendMessage(m.chat, { image: buffer }, { quoted: m });
-    fs.unlinkSync(ran);
-  });
-}
-break;
-
 case 'tomp4': case 'tovideo': {
   if (!/webp/.test(mime)) throw `Reply sticker with caption *${prefix + command}*`;
   m.reply(mess.wait);
