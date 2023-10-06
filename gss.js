@@ -2159,53 +2159,6 @@ case 'gdrive':
   }
   break;
 
-  case 'opentime': {
-                   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-if (args[1] == 'second') {
-var timer = args[0] * `1000`
-} else if (args[1] == 'minute') {
-var timer = args[0] * `60000`
-} else if (args[1] == 'hour') {
-var timer = args[0] * `3600000`
-} else if (args[1] == 'day') {
-var timer = args[0] * `86400000`
-} else {
-return m.reply('*Choose:*\nsecond\nminute\nhour\n\n*Example*\n10 second')
-}
-m.reply(`Open Time ${q} Starting from now`)
-setTimeout(() => {
-var nomor = m.participant
-const open = `*Oɴ ᴛɪᴍᴇ* Gʀᴏᴜᴘ ᴏᴘᴇɴ Bʏ Aᴅᴍɪɴ\ɴNᴏᴡ ᴀʟʟ ᴍᴇᴍʙᴇʀ Cᴀɴ Sᴇɴᴅ Mᴇssᴀɢᴇs`
-gss.groupSettingUpdate(m.chat, 'announcement')
-m.reply(open)
-}, timer)
-}
-break
-
-case 'closetime': {
-   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-if (args[1] == 'second') {
-var timer = args[0] * `1000`
-} else if (args[1] == 'minute') {
-var timer = args[0] * `60000`
-} else if (args[1] == 'hour') {
-var timer = args[0] * `3600000`
-} else if (args[1] == 'day') {
-var timer = args[0] * `86400000`
-} else {
-return m.reply('*Choose:*\nsecond\nminute\nhour\n\n*Example*\n10 second')
-}
-m.reply(`Close Time ${q} Starting from now`)
-setTimeout(() => {
-var nomor = m.participant
-const close = `*Off ᴛɪᴍᴇ* Gʀᴏᴜᴘ Cʟᴏsᴇᴅ Bʏ Aᴅᴍɪɴ\ɴNᴏᴡ Oɴʟʏ Aᴅᴍɪɴs Cᴀɴ Sᴇɴᴅ Mᴇssᴀɢᴇs`
-gss.groupSettingUpdate(m.chat, 'not_announcement')
-m.reply(close)
-}, timer)
-}
-break
 
 function convertToFontStyle(text, style) {
     let styledText = '';
