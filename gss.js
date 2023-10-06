@@ -265,8 +265,7 @@ const reactionMessage = {
 
 if (antiToxic)
 if (Badgss.includes(messagesD)) {
-if (m.text) {
-bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using bad word but you are an admin/owner that's why i won't kick you😇`
+if (m.text) {bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using bad word but you are an admin/owner that's why i won't kick you😇`
 if (isAdmins) return m.reply(bvl)
 if (m.key.fromMe) return m.reply(bvl)
 if (isCreator return m.reply(bvl)
