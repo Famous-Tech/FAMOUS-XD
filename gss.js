@@ -1468,40 +1468,7 @@ break;
             }
             break
 
-case 'playstore': {
-  if (!text) throw `Example : ${prefix + command} clash of clans`;
-  let res = await fetchJson(api('zenz', '/webzone/playstore', { query: text }, 'apikey'));
-  let teks = `⭔ Playstore Search From : ${text}\n\n`;
-  for (let i of res.result) {
-    teks += `⭔ Name : ${i.name}\n`;
-    teks += `⭔ Link : ${i.link}\n`;
-    teks += `⭔ Developer : ${i.developer}\n`;
-    teks += `⭔ Link Developer : ${i.link_dev}\n\n──────────────────────\n`;
-  }
-  m.reply(teks);
-}
-break;
-            case 'gsmarena': {
-            if (!text) throw `Example : ${prefix + command} samsung`
-            let res = await fetchJson(api('zenz', '/webzone/gsmarena', { query: text }, 'apikey'))
-            let { judul, rilis, thumb, ukuran, type, storage, display, inchi, pixel, videoPixel, ram, chipset, batrai, merek_batre, detail } = res.result
-let capt = `⭔ Title: ${judul}
-⭔ Realease: ${rilis}
-⭔ Size: ${ukuran}
-⭔ Type: ${type}
-⭔ Storage: ${storage}
-⭔ Display: ${display}
-⭔ Inchi: ${inchi}
-⭔ Pixel: ${pixel}
-⭔ Video Pixel: ${videoPixel}
-⭔ Ram: ${ram}
-⭔ Chipset: ${chipset}
-⭔ Battery: ${batrai}
-⭔ Battery Brand: ${merek_batre}
-⭔ Detail: ${detail}`
-            gss.sendImage(m.chat, thumb, capt, m)
-            }
-            break
+
             
 case 'getbio':  
    if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
