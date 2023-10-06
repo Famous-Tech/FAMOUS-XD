@@ -1161,43 +1161,9 @@ case 'listonline': case 'liston': {
 }
 break;
 
-case 'sticker': case 's': case 'stickergif': case 'sgif': {
-  if (/image/.test(mime)) {
-    m.reply(mess.wait);
-    let media = await gss.downloadMediaMessage(qmsg);
-    let encmedia = await gss.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author });
-    await fs.unlinkSync(encmedia);
-  } else if (/video/.test(mime)) {
-    m.reply(mess.wait);
-    if (qmsg.seconds > 11) return m.reply('Maximum duration is 10 seconds!');
-    let media = await gss.downloadMediaMessage(qmsg);
-    let encmedia = await gss.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author });
-    await fs.unlinkSync(encmedia);
-  } else {
-    m.reply(`Send/reply with an image/video/gif with caption ${prefix + command}\nVideo/Gif duration 1-9 seconds`);
-  }
-}
-break;
 
-         case 'stickerwm': case 'swm': case 'stickergifwm': case 'sgifwm': {
-  let [teks1, teks2] = text.split`|`;
-  if (!teks1) throw `Send/reply with an image/video with caption ${prefix + command} teks1|teks2`;
-  if (!teks2) throw `Send/reply with an image/video with caption ${prefix + command} teks1|teks2`;
-  m.reply(mess.wait);
-  if (/image/.test(mime)) {
-    let media = await gss.downloadMediaMessage(qmsg);
-    let encmedia = await gss.sendImageAsSticker(m.chat, media, m, { packname: teks1, author: teks2 });
-    await fs.unlinkSync(encmedia);
-  } else if (/video/.test(mime)) {
-    if ((quoted.msg || quoted).seconds > 11) return m.reply('Maximum duration is 10 seconds!');
-    let media = await gss.downloadMediaMessage(qmsg);
-    let encmedia = await gss.sendVideoAsSticker(m.chat, media, m, { packname: teks1, author: teks2 });
-    await fs.unlinkSync(encmedia);
-  } else {
-    throw `Send an image/video with caption ${prefix + command}\nVideo duration 1-9 seconds`;
-  }
-}
-break;
+
+         
 
 case 'ebinary': {
   if (!text) throw `Example: ${prefix + command} text`;
@@ -1214,39 +1180,6 @@ case 'dbinary': {
   m.reply(db);
 }
 break;
-
-case 'emojimix': {
-  let [emoji1, emoji2] = text.split`+`;
-  if (!emoji1) throw `Example: ${prefix + command} 😅+🤔`;
-  if (!emoji2) throw `Example: ${prefix + command} 😅+🤔`;
-  let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
-  
-  if (anu.results && Array.isArray(anu.results) && anu.results.length > 0) {
-    for (let res of anu.results) {
-      let encmedia = await gss.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags });
-      await fs.unlinkSync(encmedia);
-    }
-  } else {
-    throw "No results found for the specified emojis.";
-  }
-}
-break;
-
-case 'emojimix2': {
-  if (!text) throw `Example: ${prefix + command} 😅`;
-  let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(text)}`);
-  
-  if (anu.results && Array.isArray(anu.results) && anu.results.length > 0) {
-    for (let res of anu.results) {
-      let encmedia = await gss.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags });
-      await fs.unlinkSync(encmedia);
-    }
-  } else {
-    throw "No results found for the specified emoji.";
-  }
-}
-break;
-
 
 
 
