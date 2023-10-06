@@ -2325,38 +2325,39 @@ case 'tempmail': {
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
 
-  const count = parseInt(args[0]);
+  const tempMailEnableOptions = ['Tempmail On', 'Tempmail Off'];
+  const tempMailEnableVote = await sendPollAndWait(m.chat, 'Enable or Disable Tempmail:', tempMailEnableOptions);
 
-  if (isNaN(count) || count <= 0) {
-    m.reply('Invalid selection. Please choose a valid number (e.g., tempmail 1).');
-    break;
-  }
+  if (tempMailEnableVote === '1') {
+    const countOptions = ['1 Mail', '3 Mails', '5 Mails'];
+    const countVote = await sendPollAndWait(m.chat, 'Select the number of temporary email addresses:', countOptions);
 
-  const tempMailOptions = Array.from({ length: count }, (_, index) => `${index + 1} Mail`);
+    const count = parseInt(countVote.split(' ')[0]);
 
-  const tempMailVote = await sendPollAndWait(m.chat, 'Select the temporary email address:', tempMailOptions);
+    try {
+      const baseUrl = `https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=${count}`;
+      const response = await axios.get(baseUrl);
+      const data = response.data;
 
-  const selectedIndex = parseInt(tempMailVote.split(' ')[0]); // Extract the selected index from the vote
-
-  try {
-    const baseUrl = `https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=${count}`;
-    const response = await axios.get(baseUrl);
-    const data = response.data;
-
-    if (data && data.length >= selectedIndex) {
-      const selectedMail = data[selectedIndex - 1];
-      const replyMessage = `*Temporary Email Address:*\n\n${selectedMail}`;
-      m.reply(replyMessage);
-    } else {
-      m.reply('Failed to fetch the selected temporary email address.');
+      if (data && data.length > 0) {
+        const tempMails = data.join('\n');
+        const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
+        m.reply(replyMessage);
+      } else {
+        m.reply('Failed to generate temporary email addresses.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      m.reply('Failed to fetch temporary email addresses.');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    m.reply('Failed to fetch temporary email addresses.');
+  } else if (tempMailEnableVote === '2') {
+    m.reply('Tempmail Deactivated!');
+    // Optionally, you can add logic to deactivate tempmail here if needed
   }
 
   break;
 }
+
 
 
 case '1mail': {
