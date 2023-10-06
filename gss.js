@@ -2201,7 +2201,7 @@ m.reply(`Close Time ${q} Starting from now`)
 setTimeout(() => {
 var nomor = m.participant
 const close = `*Off ᴛɪᴍᴇ* Gʀᴏᴜᴘ Cʟᴏsᴇᴅ Bʏ Aᴅᴍɪɴ\ɴNᴏᴡ Oɴʟʏ Aᴅᴍɪɴs Cᴀɴ Sᴇɴᴅ Mᴇssᴀɢᴇs`
-gss.groupSettingUpdate(m.key.fromMe, 'not_announcement')
+gss.groupSettingUpdate(m.from, 'not_announcement')
 m.reply(close)
 }, timer)
 }
