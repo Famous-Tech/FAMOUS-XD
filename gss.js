@@ -2321,10 +2321,6 @@ case "sc":
 
 
 case 'tempmail': {
-  if (!m.isGroup) throw mess.group;
-  if (!isBotAdmins) throw mess.botAdmin;
-  if (!isAdmins) throw mess.admin;
-
   const tempMailEnableOptions = ['Tempmail On', 'Tempmail Off'];
   const tempMailEnableVote = await sendPollAndWait(m.chat, 'Enable or Disable Tempmail:', tempMailEnableOptions);
 
