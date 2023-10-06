@@ -1382,89 +1382,19 @@ break;
 }
 break;
 
-case 'yts':
-case 'ytsearch': {
-    if (!text) throw `Example: ${prefix + command} whatsapp status anime`;
-    let yts = require("yt-search");
-    let search = await yts(text);
-
-    // Check if there are search results
-    if (search.all.length === 0) {
-        throw 'No search results found.';
-    }
-
-    let teks = 'YouTube Search\n\nResult From ' + text + '\n\n';
-    let no = 1;
-    let pollOptions = [];
-
-    // Add the top 10 search results' titles to the poll options
-    for (let i of search.all.slice(0, 10)) {
-        pollOptions.push(`${no}. ${i.title}`);
-        no++;
-    }
-
-    // Send a poll with the top 10 search results
-    let pollMessage = await gss.sendPoll(m.chat, 'your search result:', pollOptions, { quoted: m });
-
-    // Listen for the user's vote by waiting for a new message
-    let response;
-    try {
-        response = await gss.waitForMessage({ chat: m.chat, limit: 1, timeout: 60000 }); // 60 seconds timeout
-        if (!response.quotedMessage || !response.quotedMessage.poll) throw new Error('Invalid message received');
-    } catch (error) {
-        console.error(error);
-        throw new Error('Timed out waiting for user vote');
-    }
-
-    let userVote = response.message.content.split('.')[0].replace(/\D/g, ''); // Extract the selected option number
-
-    // Now, based on the user's vote, proceed to the next step
-    let selectedResult = search.all[userVote - 1];
-
-    // Send a poll for audio or video selection
-    let audioVideoOptions = ['Audio', 'Video'];
-    let audioVideoPollMessage = await gss.sendPoll(m.chat, 'Select an option:', audioVideoOptions, { quoted: m });
-
-    // Listen for the user's second vote by waiting for a new message
-    let audioVideoResponse;
-    try {
-        audioVideoResponse = await gss.waitForMessage({ chat: m.chat, limit: 1, timeout: 60000 });
-        if (!audioVideoResponse.quotedMessage || !audioVideoResponse.quotedMessage.poll) throw new Error('Invalid message received');
-    } catch (error) {
-        console.error(error);
-        throw new Error('Timed out waiting for audio/video selection');
-    }
-
-    let audioVideoUserVote = audioVideoResponse.message.content.split('.')[0].replace(/\D/g, ''); // Extract the selected option number
-
-    // Now, based on the second vote, proceed with quality selection and downloading
-    let qualityOptions = ['Low', 'Medium', 'High'];
-    let qualityPollMessage = await gss.sendPoll(m.chat, 'Select quality:', qualityOptions, { quoted: m });
-
-    // Listen for the user's third vote by waiting for a new message
-    let qualityResponse;
-    try {
-        qualityResponse = await gss.waitForMessage({ chat: m.chat, limit: 1, timeout: 60000 });
-        if (!qualityResponse.quotedMessage || !qualityResponse.quotedMessage.poll) throw new Error('Invalid message received');
-    } catch (error) {
-        console.error(error);
-        throw new Error('Timed out waiting for quality selection');
-    }
-
-    let selectedQuality = qualityResponse.message.content.split('.')[0].replace(/\D/g, ''); // Extract the selected option number
-
-    // Now, based on the third vote, proceed with downloading
-    if (audioVideoUserVote === '1') {
-        // User selected audio, add logic for audio download with selected quality
-        let audioQuality = qualityOptions[selectedQuality - 1].toLowerCase();
-        // Add logic for audio download here
-    } else if (audioVideoUserVote === '2') {
-        // User selected video, add logic for video download with selected quality
-        let videoQuality = qualityOptions[selectedQuality - 1].toLowerCase();
-        // Add logic for video download here
-    }
+case 'yts': case 'ytsearch': {
+  if (!text) throw `Example : ${prefix + command} whatsapp status anime`;
+  let yts = require("yt-search");
+  let search = await yts(text);
+  let teks = 'YouTube Search\n\n Result From ' + text + '\n\n';
+  let no = 1;
+  for (let i of search.all) {
+    teks += `⭔ No : ${no++}\n⭔ Type : ${i.type}\n⭔ Video ID : ${i.videoId}\n⭔ Title : ${i.title}\n⭔ Views : ${i.views}\n⭔ Duration : ${i.timestamp}\n⭔ Upload At : ${i.ago}\n⭔ Author : ${i.author.name}\n⭔ Url : ${i.url}\n\n─────────────────\n\n`;
+  }
+  gss.sendMessage(m.chat, { image: { url: search.all[0].thumbnail }, caption: teks }, { quoted: m });
 }
 break;
+
 
 // Define a function to send a poll and wait for the user's vote
 async function sendPollAndWait(chat, question, options) {
@@ -1595,13 +1525,6 @@ case 'pinterest': {
   gss.sendMessage(m.chat, { image: { url: result }, caption: '⭔ Media Url : ' + result }, { quoted: m });
 }
 break;
-            case 'anime': case 'waifu': case 'husbu': case 'neko': case 'shinobu': case 'megumin': case 'waifus': case 'nekos': case 'trap': case 'blowjob': {
-                m.reply(mess.wait)
-                gss.sendMessage(m.chat, { image: { url: api('zenz', '/api/random/'+command, {}, 'apikey') }, caption: 'Generate Random ' + command }, { quoted: m })
-            }
-            break
-	    
-           
 
 case 'wallpaper': {
   if (!text) throw 'Enter Query Title';
@@ -1629,184 +1552,6 @@ case 'wikimedia': {
 }
 break;
 
-
-case '3dchristmas': case '3ddeepsea': case 'americanflag': case '3dscifi': case '3drainbow': case '3dwaterpipe': case 'halloweenskeleton': case 'sketch': case 'bluecircuit': case 'space': case 'metallic': case 'fiction': case 'greenhorror': case 'transformer': case 'berry': case 'thunder': case 'magma': case '3dcrackedstone': case '3dneonlight': case 'impressiveglitch': case 'naturalleaves': case 'fireworksparkle': case 'matrix': case 'dropwater': case 'harrypotter': case 'foggywindow': case 'neondevils': case 'christmasholiday': case '3dgradient': case 'blackpink': case 'gluetext': {
-  if (!text) throw `Example : ${prefix + command} text`;
-  m.reply(mess.wait);
-  gss.sendMessage(m.chat, { image: { url: api('zenz', '/textpro/' + command, { text: text }, 'apikey') }, caption: `Text Pro ${command}` }, { quoted: m });
-}
-break;
-
-case 'shadow': case 'romantic': case 'smoke': case 'burnpapper': case 'naruto': case 'lovemsg': case 'grassmsg': case 'lovetext': case 'coffecup': case 'butterfly': case 'harrypotter': case 'retrolol': {
-  if (!text) throw 'No Query Text';
-  m.reply(mess.wait);
-  gss.sendMessage(m.chat, { image: { url: api('zenz', '/photooxy/' + command, { text: text }, 'apikey') }, caption: `Photo Oxy ${command}` }, { quoted: m });
-}
-break;
-
-            case 'ffcover': case 'crossfire': case 'galaxy': case 'glass': case 'neon': case 'beach': case 'blackpink': case 'igcertificate': case 'ytcertificate': {
-                if (!text) throw 'No Query Text'
-                m.reply(mess.wait)
-                gss.sendMessage(m.chat, { image: { url: api('zenz', '/ephoto/' + command, { text: text }, 'apikey') }, caption: `Ephoto ${command}` }, { quoted: m })
-            }
-            break
-	    
-            
-
-case 'stalker':
-case 'stalk': {
-    if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply('Your Daily Limit Has Been Exhausted');
-    if (!text) return m.reply(`Example: ${prefix + command} type id\n\nList Type:\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`);
-
-    let [type, id, zone] = args;
-
-    // Ensure 'api' is defined before using it
-    let api = global.APIs['zenz'];
-
-    if (type.toLowerCase() == 'ff') {
-        if (!id) throw `No Query id, Example ${prefix + command} ff 552992060`;
-        let anu = await fetchJson(api('zenz', '/api/nickff', { apikey: global.APIKeys[api], query: id }));
-        if (anu.status == false) return m.reply(anu.result.message);
-        m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`);
-        db.data.users[m.sender].limit -= 1;
-    } else if (type.toLowerCase() == 'ml') {
-        if (!id) throw `No Query id, Example: ${prefix + command} ml 214885010 2253`;
-        if (!zone) throw `No Query id, Example: ${prefix + command} ml 214885010 2253`;
-        let anu = await fetchJson(api('zenz', '/api/nickml', { apikey: global.APIKeys[api], query: id, query2: zone }));
-        if (anu.status == false) return m.reply(anu.result.message);
-        m.reply(`ID : ${anu.result.gameId}\nZone : ${anu.result.zoneId}\nUsername : ${anu.result.userName}`);
-        db.data.users[m.sender].limit -= 1;
-    } else if (type.toLowerCase() == 'aov') {
-        if (!id) throw `No Query id, Example ${prefix + command} aov 293306941441181`;
-        let anu = await fetchJson(api('zenz', '/api/nickaov', { apikey: global.APIKeys[api], query: id }));
-        if (anu.status == false) return m.reply(anu.result.message);
-        m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`);
-        db.data.users[m.sender].limit -= 1;
-    } else if (type.toLowerCase() == 'cod') {
-        if (!id) throw `No Query id, Example ${prefix + command} cod 6290150021186841472`;
-        let anu = await fetchJson(api('zenz', '/api/nickcod', { apikey: global.APIKeys[api], query: id }));
-        if (anu.status == false) return m.reply(anu.result.message);
-        m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`);
-        db.data.users[m.sender].limit -= 1;
-    } else if (type.toLowerCase() == 'pb') {
-        if (!id) throw `No Query id, Example ${prefix + command} pb riio46`;
-        let anu = await fetchJson(api('zenz', '/api/nickpb', { apikey: global.APIKeys[api], query: id }));
-        if (anu.status == false) return m.reply(anu.result.message);
-        m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`);
-        db.data.users[m.sender].limit -= 1;
-    } else if (type.toLowerCase() == 'ig') {
-        if (!id) throw `No Query username, Example: ${prefix + command} ig cak_haho`;
-        let { result: anu } = await fetchJson(api('zenz', '/api/stalker/ig', { username: id }, 'apikey'));
-        if (anu.status == false) return m.reply(anu.result.message);
-        gss.sendMedia(m.chat, anu.caption.profile_hd, '', `⭔ Full Name : ${anu.caption.full_name}\n⭔ User Name : ${anu.caption.user_name}\n⭔ ID ${anu.caption.user_id}\n⭔ Followers : ${anu.caption.followers}\n⭔ Following : ${anu.caption.following}\n⭔ Bussines : ${anu.caption.bussines}\n⭔ Profesional : ${anu.caption.profesional}\n⭔ Verified : ${anu.caption.verified}\n⭔ Private : ${anu.caption.private}\n⭔ Bio : ${anu.caption.biography}\n⭔ Bio Url : ${anu.caption.bio_url}`, m);
-        db.data.users[m.sender].limit -= 1;
-    } else if (type.toLowerCase() == 'npm') {
-        if (!id) throw `No Query username, Example: ${prefix + command} npm scrape-primbon`;
-        let { result: anu } = await fetchJson(api('zenz', '/api/stalker/npm', { query: id }, 'apikey'));
-        if (anu.status == false) return m.reply(anu.result.message);
-        m.reply(`⭔ Name : ${anu.name}\n⭔ Version : ${Object.keys(anu.versions)}\n⭔ Created : ${tanggal(anu.time.created)}\n⭔ Modified : ${tanggal(anu.time.modified)}\n⭔ Maintainers :\n ${anu.maintainers.map(v => `- ${v.name} : ${v.email}`).join('\n')}\n\n⭔ Description : ${anu.description}\n⭔ Homepage : ${anu.homepage}\n⭔ Keywords : ${anu.keywords}\n⭔ Author : ${anu.author.name}\n⭔ License : ${anu.license}\n⭔ Readme : ${anu.readme}`);
-        db.data.users[m.sender].limit -= 1;
-    } else {
-        m.reply(`Example: ${prefix + command} type id\n\nList Type:\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`);
-    }
-}
-break;
-
-
-case 'tiktok': case 'tiktoknowm': {
-  if (!text) throw 'Enter Query Link!';
-  m.reply(mess.wait);
-  let anu = await fetchJson(api('zenz', '/downloader/tiktok', { url: text }, 'apikey'));
-  let Message = {
-    video: { url: anu.result.nowatermark },
-    caption: `Download From ${text}`
-  };
-  gss.sendMessage(m.chat, Message, { quoted: m });
-}
-break;
-
-case 'tiktokwm': case 'tiktokwatermark': {
-  if (!text) throw 'Enter Query Link!';
-  m.reply(mess.wait);
-  let anu = await fetchJson(api('zenz', '/downloader/tiktok', { url: text }, 'apikey'));
-  let Message = {
-    video: { url: anu.result.watermark },
-    caption: `Download From ${text}`
-  };
-  gss.sendMessage(m.chat, Message, { quoted: m });
-}
-break;
-
-case 'tiktokmp3': case 'tiktokaudio': {
-  if (!text) throw 'Enter Query Link!';
-  m.reply(mess.wait);
-  let anu = await fetchJson(api('zenz', '/downloader/musically', { url: text }, 'apikey'));
-  let Message = {
-    text: `Download From ${text}`
-  };
-  let msg = await gss.sendMessage(m.chat, Message, { quoted: m });
-  gss.sendMessage(m.chat, { audio: { url: anu.result.audio }, mimetype: 'audio/mpeg' }, { quoted: msg });
-}
-break;
-
-	        case 'instagram': case 'ig': case 'igdl': {
-                if (!text) throw 'No Query Url!'
-                m.reply(mess.wait)
-                if (/(?:\/p\/|\/reel\/|\/tv\/)([^\s&]+)/.test(isUrl(text)[0])) {
-                    let anu = await fetchJson(api('zenz', '/downloader/instagram2', { url: isUrl(text)[0] }, 'apikey'))
-                    for (let media of anu.data) gss.sendFileUrl(m.chat, media, `Download Url Instagram From ${isUrl(text)[0]}`, m)
-                } else if (/\/stories\/([^\s&]+)/.test(isUrl(text)[0])) {
-                    let anu = await fetchJson(api('zenz', '/downloader/instastory', { url: isUrl(text)[0] }, 'apikey'))
-                    gss.sendFileUrl(m.chat, anu.media[0].url, `Download Url Instagram From ${isUrl(text)[0]}`, m)
-                }
-            }
-            break
-           
-            case 'soundcloud': case 'scdl': {
-                if (!text) throw 'No Query Title'
-                m.reply(mess.wait)
-                let anu = await fetchJson(api('zenz', '/downloader/soundcloud', { url: isUrl(text)[0] }, 'apikey'))
-                let msg = await gss.sendImage(m.chat, anu.result.thumb, `⭔ Title : ${anu.result.title}\n⭔ Url : ${isUrl(text)[0]}`)
-                gss.sendMessage(m.chat, { audio: { url: anu.result.url }, mimetype: 'audio/mpeg', fileName: anu.result.title+'.m4a' }, { quoted: msg })
-            }
-            break
-	        case 'twitdl': case 'twitter': {
-                if (!text) throw 'Masukkan Query Link!'
-                m.reply(mess.wait)
-                let anu = await fetchJson(api('zenz', '/api/downloader/twitter', { url: text }, 'apikey'))
-                let Message = {
-                    video: { url: anu.result.HD || anu.result.SD },
-                    caption: util.format(anu.result)
-                }
-                gss.sendMessage(m.chat, Message, { quoted: m })
-            }
-            break
-            case 'twittermp3': case 'twitteraudio': {
-                if (!text) throw 'Masukkan Query Link!'
-                m.reply(mess.wait)
-                let anu = await fetchJson(api('zenz', '/api/downloader/twitter', { url: text }, 'apikey'))
-                let Message = {
-		    image: { url: anu.result.thumb },
-                    caption: util.format(anu.result)
-                }
-                let msg = await gss.sendMessage(m.chat, Message, { quoted: m })
-                gss.sendMessage(m.chat, { audio: { url: anu.result.audio } }, { quoted: msg })
-            }
-            break
-	        case 'fbdl': case 'fb': case 'facebook': {
-                if (!text) throw 'Enter Query Link!'
-                m.reply(mess.wait)
-                let anu = await fetchJson(api('zenz', '/api/downloader/facebook', { url: text }, 'apikey'))
-                gss.sendMessage(m.chat, { video: { url: anu.result.url }, caption: `⭔ Title : ${anu.result.title}`}, { quoted: m })
-            }
-            break
-	        case 'pindl': case 'pinterestdl': {
-                if (!text) throw 'Enter Query Link!'
-                m.reply(mess.wait)
-                let anu = await fetchJson(api('zenz', '/api/downloader/pinterestdl', { url: text }, 'apikey'))
-                gss.sendMessage(m.chat, { video: { url: anu.result }, caption: `Download From ${text}` }, { quoted: m })
-            }
-            break
         case 'ringtone': {
 		if (!text) throw `Example : ${prefix + command} black rover`
         let { ringtone } = require('./lib/scraper')
@@ -1816,13 +1561,6 @@ break;
 	    }
 	    break
 	    
-case "rvo": {
-                if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
-                quoted.msg.viewOnce = false
-                await gss.sendMessage(m.from, { forward: quoted }, { quoted: m })
-            }
-            break
-		
 		     case 'public': {
                 if (!isCreator) throw mess.owner
                 gss.public = true
