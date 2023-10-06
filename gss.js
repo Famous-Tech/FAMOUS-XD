@@ -1304,22 +1304,6 @@ case 'yts': case 'ytsearch': {
 break;
 
 
-// Define a function to send a poll and wait for the user's vote
-async function sendPollAndWait(chat, question, options) {
-    const pollMessage = await gss.sendPoll(chat, question, options);
-    const response = await gss.waitForMessage({ chat: chat, limit: 1, timeout: 60000 });
-
-    if (!response.quotedMessage || !response.quotedMessage.poll) {
-        throw new Error('Invalid message received or timeout waiting for vote');
-    }
-
-    return response.message.content.split('.')[0].replace(/\D/g, '');
-}
-
-
-
-
-
 case 'google': {
   if (!text) throw `Example : ${prefix + command} fatih arridho`;
   let google = require('google-it');
