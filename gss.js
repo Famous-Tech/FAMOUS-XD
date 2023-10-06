@@ -2355,6 +2355,66 @@ case 'tempmail': {
   break;
 }
 
+case '1mail': {
+
+  try {
+    const baseUrl = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1';
+    const response = await axios.get(baseUrl);
+    const data = response.data;
+
+    if (data && data.length > 0) {
+      const tempMails = data.join('\n');
+      const replyMessage = `*Temporary Email Address:*\n\n${tempMails}`;
+      m.reply(replyMessage);
+    } else {
+      m.reply('Failed to generate temporary email address.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    m.reply('Failed to fetch temporary email address.');
+  }
+  break;
+}
+
+case '3mail': {
+  try {
+    const baseUrl = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=3';
+    const response = await axios.get(baseUrl);
+    const data = response.data;
+
+    if (data && data.length > 0) {
+      const tempMails = data.join('\n');
+      const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
+      m.reply(replyMessage);
+    } else {
+      m.reply('Failed to generate temporary email addresses.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    m.reply('Failed to fetch temporary email addresses.');
+  }
+  break;
+}
+
+case '5mail': {
+  try {
+    const baseUrl = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=5';
+    const response = await axios.get(baseUrl);
+    const data = response.data;
+
+    if (data && data.length > 0) {
+      const tempMails = data.join('\n');
+      const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
+      m.reply(replyMessage);
+    } else {
+      m.reply('Failed to generate temporary email addresses.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    m.reply('Failed to fetch temporary email addresses.');
+  }
+  break;
+}
 
 case 'checkmail': {
   if (!text) {
