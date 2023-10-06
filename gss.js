@@ -1336,9 +1336,6 @@ case 'gimage': {
 }
 break;
 
-
-
-
 	    case 'play': case 'ytplay': {
   if (!text) throw `Example : ${prefix + command} whatsapp status anime`;
   let yts = require("yt-search");
