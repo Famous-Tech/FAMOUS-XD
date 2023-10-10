@@ -1201,7 +1201,7 @@ case 'vid':
   let { title: titleVideo, thumbnail: thumbnailVideo, timestamp: timestampVideo, views: viewsVideo, ago: agoVideo, url: urlVideo } = vidVideo;
   let wmVideo = 'video downloaded by Gss_botwa';
 
-  gss.sendMessage(m.chat, { image: { url: thumbnailVideo }, caption: captvidVideo }, { quoted: m });
+  gss.sendMessage(m.chat, { image: { url: thumbnailVideo } }, { quoted: m });
 
   const videoStream = ytdl(urlVideo, {
     filter: 'videoandaudio',
@@ -1375,10 +1375,6 @@ case "facebook": case "fb": case "fbdl": {
     }
 }
 break;
-
-const fs = require('fs');
-const path = require('path');
-
 // ... Your existing code ...
 
 case "instagram": case "insta": case "igstory": {
