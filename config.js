@@ -3,15 +3,24 @@ const chalk = require('chalk')
 
 // Website Api
 global.APIs = {
-	zenz: 'https://api.zahwazein.xyz',
+	xfarr: 'https://api.xfarr.com',
 }
 
 // Apikey Website Api
 global.APIKeys = {
-	'https://api.zahwazein.xyz': 'Your Key',
+	'https://api.xfarr.com': 'Uc3LRsLE2d',
 }
 
+// Set your URL and API key here
+   APIs: {
+      xfarr: {
+         baseURL: 'https://api.xfarr.com'
+         Key: "Uc3LRsLE2d"
+      }
+   }
+
 // Other
+apikey: "bf2d2cf29b3edc604b447983",
 global.ownername = 'sid bhai'
 global.owner = ['919142294671']
 global.premium = ['919142294671']
@@ -23,7 +32,7 @@ global.sp = '✪'
 global.mess = {
     success: '✓ Success',
     admin: 'Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs',
-    botAdmin: 'i am not an admin!',
+    botAdmin: 'ɪ ᴀᴍ ɴᴏᴛ ᴀɴ ᴀᴅᴍɪɴ!',
     owner: 'Yᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ᴏᴡɴᴇʀ',
     group: 'ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌',
     private: 'ғᴇᴀᴛᴜʀᴇ ɪs ᴜsᴇᴅ ᴏɴʟʏ ғᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀᴛs!',
