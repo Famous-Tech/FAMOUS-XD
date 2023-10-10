@@ -1201,8 +1201,6 @@ case 'vid':
   let { title: titleVideo, thumbnail: thumbnailVideo, timestamp: timestampVideo, views: viewsVideo, ago: agoVideo, url: urlVideo } = vidVideo;
   let wmVideo = 'video downloaded by Gss_botwa';
 
-  gss.sendMessage(m.chat, { image: { url: thumbnailVideo } }, { quoted: m });
-
   const videoStream = ytdl(urlVideo, {
     filter: 'videoandaudio',
     quality: 'highest',
