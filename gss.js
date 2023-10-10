@@ -1,11 +1,13 @@
 
 require("dotenv").config();  
 require('./config')
+const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
 const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 let yts = require("yt-search");
+const ytdl = require("@distube/ytdl-core");
 const util = require('util')
 const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk')
@@ -16,6 +18,9 @@ const os = require('os')
 const googleTTS = require("google-tts-api");
 const moment = require('moment-timezone')
 const { JSDOM } = require('jsdom')
+const { pipeline } = require('stream');
+const { promisify } = require('util');
+const streamPipeline = promisify(pipeline);
 const speed = require('performance-now')
 const { performance } = require('perf_hooks')
 const { Primbon } = require('scrape-primbon')
@@ -29,6 +34,12 @@ const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, 
 
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
+// Initialize default values
+let AUTO_READ = false;
+let ALWAYS_ONLINE = false;
+let TYPING_ENABLED = false;
+let PUBLIC_MODE = false; // added
+let ANTICALL_MODE = false; // added
 
 
 const reportedMessages = {};
@@ -56,6 +67,7 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
 	
 	const botname = "𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫";
 	const devlopernumber = "919142294671";
+	
         // Group
         const groupMetadata = m.isGroup ? await gss.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
@@ -254,6 +266,16 @@ const reactionMessage = {
 }
 
 
+if (m.isAntiBotz && isBotGroupAdmins) {
+if (m.isBaileys && !m.key.fromMe) {
+if (!m.isCreator && !isGroupAdmins) {
+m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
+setTimeout(() => {
+gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
+}, 2000)
+}}}
+
+
 
 let TYPING_ENABLED = process.env.AUTO_TYPING === 'true';
 let AUTO_READ_ENABLED = process.env.AUTO_READ === 'true';
@@ -307,13 +329,14 @@ if (ALWAYS_ONLINE) {
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
-    	    if (!('anticall' in setting)) setting.anticall = true
-    		if (!isNumber(setting.status)) setting.status = 0
-    		if (!('autobio' in setting)) setting.autobio = false
+	    if (!('anticall' in setting)) setting.anticall = true
+		if (!isNumber(setting.status)) setting.status = 0
+if (!('autobio' in setting)) setting.autobio = false
 	    } else global.db.data.settings[botNumber] = {
-    	    anticall: true,
-    		status: 0,
-    		autobio: false
+	    anticall: true,
+		status: 0,
+		antibot: true, 
+		autobio: true
 	    }
 	    
         } catch (err) {
@@ -466,16 +489,16 @@ during ${clockString(new Date - user.afkTime)}`)
         const cmdBug = ["bug","report"]
         const cmdAi = ["ai","gpt","dalle","bard"]
         const cmdTool = ["tempmail","checkmail","info","trt","tts"]
-        const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","closetime","opentime","revoke","poll"]
- const cmdDown = ["tiktoknowm","tiktokwm","tiktokmp3","instagram","twitter","twittermp3","facebook","pinterestdl","ytmp3","ytmp4","getmusic","getvideo","soundcloud","gitclone"]
- const cmdSearch = ["play","yts","google","gimage","pinterest","wallpaper","wikimedia","ytsearch","ringtone","stalk","playstore","weather","lyrics"]
- const cmdRand = ["quotesanime","puisi","couple","anime","waifu","husbu","neko","shinobu","waifus","nekos","trap","blowjob"]
- const cmdMaker = ["3dchristmas","3ddeepsea","americanflag","3dscifi","3drainbow","3dwaterpipe","halloweenskeleton","sketch","bluecircuit","space","metallic","fiction","greenhorror","transformer","berry","thunder","magma","3dcrackedstone","3dneonlight","impressiveglitch","naturalleaves","fireworksparkle","matrix","dropwater","harrypotter","foggywindow","neondevils","christmasholiday","3dgradient","blackpink","gluetext","shadow","romantic","smoke","burnpapper","naruto","lovemsg","grassmsg","lovetext","coffecup","butterfly","harrypotter","retrolol","ffcover","crossfire","galaxy","glass","neon","beach","blackpink","igcertificate","ytcertificate"]
-        const cmdFun = ["delttt","tictactoe","family100","math","suitpvp"]
-   const cmdConv = ["attp","ttp","toimage","removebg","sticker","stickerwm","emojimix","emojimix2","tovideo","togif","tourl","tovn","tomp3","toaudio","ebinary","dbinary","styletext","smeme","bass","blown","deep","earrape","fast","fat","nightcore","reverse","robot","slow",]
+        const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke","poll"]
+ const cmdDown = ["facebook","pinterestdl","ytmp3","ytmp4","gitclone"]
+ const cmdSearch = ["play","yts","google","gimage","pinterest","wallpaper","wikimedia","ytsearch","ringtone","weather","lyrics"]
+// const cmdRand = ["quotesanime","puisi","couple","anime","waifu","husbu","neko","shinobu","waifus","nekos","trap","blowjob"]
+// const cmdMaker = ["3dchristmas","3ddeepsea","americanflag","3dscifi","3drainbow","3dwaterpipe","halloweenskeleton","sketch","bluecircuit","space","metallic","fiction","greenhorror","transformer","berry","thunder","magma","3dcrackedstone","3dneonlight","impressiveglitch","naturalleaves","fireworksparkle","matrix","dropwater","harrypotter","foggywindow","neondevils","christmasholiday","3dgradient","blackpink","gluetext","shadow","romantic","smoke","burnpapper","naruto","lovemsg","grassmsg","lovetext","coffecup","butterfly","harrypotter","retrolol","ffcover","crossfire","galaxy","glass","neon","beach","blackpink","igcertificate","ytcertificate"]
+        const cmdFun = ["delttt","tictactoe"]
+   const cmdConv = ["removebg","sticker","emojimix","tovideo","togif","tourl","tovn","tomp3","toaudio","ebinary","dbinary","styletext"]
         const cmdMain = ["ping","owner","menu","delete","infochat","quoted","listpc","listgc","listonline"]
-        const cmdOwner = ["react","chat","join","leave","block","unblock","bcgroup","bcall","setppbot","setexif","anticall","setstatus","setnamebot","addbadword","delbadword","listbadword","sleep","autotyping","alwaysonline","autoread"]
-        const allCmd = [...cmdGrup,...cmdDown,...cmdAi,...cmdTool,...cmdBug,...cmdSearch,...cmdRand,...cmdMaker, ...cmdFun, ...cmdConv,...cmdMain,...cmdOwner]
+        const cmdOwner = ["react","chat","join","leave","block","unblock","bcgroup","bcall","setppbot","setexif","anticall","setstatus","setnamebot","sleep","autotyping","alwaysonline","autoread"]
+        const allCmd = [...cmdGrup,...cmdDown,...cmdAi,...cmdTool,...cmdBug,...cmdSearch,...cmdFun, ...cmdConv,...cmdMain,...cmdOwner]
 	    
         switch(command) {
 	    case 'afk': {
@@ -540,40 +563,7 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
             m.reply(`Successfully deleted session room tictactoe!`)
             }
             break
-            
-	    
-            case 'chat': {
-                if (!isCreator) throw mess.owner
-                if (!q) throw 'Option : 1. mute\n2. unmute\n3. archive\n4. unarchive\n5. read\n6. unread\n7. delete'
-                if (args[0].toLowerCase() === 'mute') {
-                    gss.chatModify({ mute: 'Infinity' }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-                } else if (args[0].toLowerCase() === 'unmute') {
-                    gss.chatModify({ mute: null }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-                } else if (args[0].toLowerCase() === 'archive') {
-                    gss.chatModify({  archive: true }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-                } else if (args[0].toLowerCase() === 'unarchive') {
-                    gss.chatModify({ archive: false }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-                } else if (args[0].toLowerCase() === 'read') {
-                    gss.chatModify({ markRead: true }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-                } else if (args[0].toLowerCase() === 'unread') {
-                    gss.chatModify({ markRead: false }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-                } else if (args[0].toLowerCase() === 'delete') {
-                    gss.chatModify({ clear: { message: { id: m.quoted.id, fromMe: true }} }, m.chat, []).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-                }
-            }
-            break
-	    
-            case 'react': {
-                if (!isCreator) throw mess.owner
-                reactionMessage = {
-                    react: {
-                        text: args[0],
-                        key: { remoteJid: m.chat, fromMe: true, id: quoted.id }
-                    }
-                }
-                gss.sendMessage(m.chat, reactionMessage)
-            }
-            break  
+      
             case 'join': {
   if (!isCreator) throw mess.owner;
   if (!text) throw 'Enter the Group Link!';
@@ -607,6 +597,7 @@ case 'promote': {
   await gss.groupParticipantsUpdate(m.chat, users, 'promote').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
 }
 break;
+
 
 case 'add': {
   if (!m.isGroup) throw mess.group;
@@ -925,8 +916,8 @@ case 'listonline': case 'liston': {
 break;
 
 
-
-         
+  
+  
 
 case 'ebinary': {
   if (!text) throw `Example: ${prefix + command} text`;
@@ -1036,19 +1027,292 @@ break;
 }
 break;
 
-case 'yts': case 'ytsearch': {
-  if (!text) throw `Example : ${prefix + command} whatsapp status anime`;
-  let yts = require("yt-search");
-  let search = await yts(text);
-  let teks = 'YouTube Search\n\n Result From ' + text + '\n\n';
-  let no = 1;
-  for (let i of search.all) {
-    teks += `⭔ No : ${no++}\n⭔ Type : ${i.type}\n⭔ Video ID : ${i.videoId}\n⭔ Title : ${i.title}\n⭔ Views : ${i.views}\n⭔ Duration : ${i.timestamp}\n⭔ Upload At : ${i.ago}\n⭔ Author : ${i.author.name}\n⭔ Url : ${i.url}\n\n─────────────────\n\n`;
-  }
-  gss.sendMessage(m.chat, { image: { url: search.all[0].thumbnail }, caption: teks }, { quoted: m });
+
+case 'yts':
+case 'ytsearch': {
+    if (!text) throw `Example: ${prefix + command} whatsapp status anime`;
+   m.reply(mess.wait);
+    let yts = require("yt-search");
+    let isURL = /^(https?:\/\/)?(www\.)?(youtube\.com\/(.*\?(.*&)?v=|embed\/|v\/|.+\?.*(\&|\?)v=)|youtu\.be\/)([^"&?\/\s]{11})/.test(text);
+
+    let search;
+    let pollOptions = [];
+
+    if (isURL) {
+        try {
+            let videoId = text.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i)[1];
+            
+            search = await yts({ videoId: videoId });
+
+            if (search.video) {
+                // Create a new poll with options for video and audio
+                pollOptions.push(`Video: ${search.video.title || 'Title not available'}`);
+                pollOptions.push(`Audio: ${search.video.description || 'Description not available'}`);
+                let newPollMessage = await gss.sendPoll(m.chat, 'Select an option:', pollOptions, { quoted: m });
+
+                // Extract selected option from the poll response
+                let selectedOption = await gss.getMessage(newPollMessage.chat, newPollMessage.id);
+                
+                // Extract details and create a new poll with a dynamic command
+                if (selectedOption && selectedOption.message && selectedOption.message.text) {
+                    let selectedDetails = selectedOption.message.text.split(":")[1].trim();
+                    
+                    // Create a new command using the selected option
+                    let newCommand = selectedDetails.toLowerCase().replace(/\s/g, ''); // Convert to lowercase and remove spaces
+                    let newCommandText = `${prefix}${newCommand}`;
+
+                    // Register the new command
+                    global[newCommandText] = async () => {
+                        // Handle the new command logic here
+                        await m.reply(`You selected: ${selectedDetails}`);
+                    };
+
+                    // Send a new poll with the dynamic command
+                    let newPollOptions = [`Details: ${selectedDetails}`, newCommandText];
+                    await gss.sendPoll(m.chat, 'Select an option:', newPollOptions, { quoted: m });
+                } else {
+                    throw 'Error extracting selected option details.';
+                }
+            } else {
+                throw 'Video details not found.';
+            }
+        } catch (error) {
+            console.error(error);
+            throw 'Error fetching video details. Please make sure the provided URL is valid.';
+        }
+    } else {
+        // If it's a search query, fetch the top 10 results
+        search = await yts(text);
+
+        // Add "yts" to each search result title
+        pollOptions = search.all.slice(0, 10).map(i => `play ${i.title}`);
+
+        // Send the initial poll
+        let pollMessage = await gss.sendPoll(m.chat, 'Select a video:', pollOptions, { quoted: m });
+    }
 }
 break;
 
+
+case 'play':
+case 'ytplay': {
+  try {
+    if (!text) throw `Example : ${prefix + command} whatsapp status anime`;
+   m.reply(mess.wait);
+    let yts = require("yt-search");
+    let search = await yts(text);
+    let anu = search.videos[Math.floor(Math.random() * search.videos.length)];
+
+    // Limiting description to two lines
+    let limitedDescription = anu.description.split('\n').slice(0, 2).join('\n');
+
+    let caption = `
+here is your search result`;
+
+    gss.sendPoll(m.chat, caption, [`*audio* ${anu.title}`, `*video* ${anu.title}`]);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+break;
+
+
+case 'song':
+case 'ytmp3':
+case 'music':
+case 'audio':
+case '*audio*':
+  if (!text) throw `Use example ${prefix + command} man meri jan`;
+   m.reply(mess.wait);
+  let searchAudio = await yts(text);
+  if (!searchAudio.videos || searchAudio.videos.length === 0) {
+    throw 'No videos found for the given search query';
+  }
+
+  let vidAudio = searchAudio.videos[Math.floor(Math.random() * searchAudio.videos.length)];
+  if (!vidAudio) throw 'Video Not Found, Try Another Title';
+  let { title: titleAudio, thumbnail: thumbnailAudio, timestamp: timestampAudio, views: viewsAudio, ago: agoAudio, url: urlAudio } = vidAudio;
+  let wmAudio = 'Audio downloaded by Gss_botwa';
+
+
+
+  const audioStream = ytdl(urlAudio, {
+    filter: 'audioonly',
+    quality: 'highestaudio',
+  });
+
+  const tmpDirAudio = os.tmpdir();
+  const writableStreamAudio = fs.createWriteStream(`${tmpDirAudio}/${titleAudio}.mp3`);
+
+  await streamPipeline(audioStream, writableStreamAudio);
+
+  let thumbnailDataAudio;
+  try {
+    const thumbnailResponseAudio = await gss.getFile(thumbnailAudio);
+    thumbnailDataAudio = thumbnailResponseAudio.data;
+  } catch (error) {
+    console.error('Error fetching thumbnail:', error);
+    thumbnailDataAudio = '';
+  }
+
+  const docAudio = {
+    audio: {
+      url: `${tmpDirAudio}/${titleAudio}.mp3`,
+    },
+    mimetype: 'audio/mp4',
+    fileName: `${titleAudio}`,
+    contextInfo: {
+      externalAdReply: {
+        showAdAttribution: true,
+        mediaType: 2,
+        mediaUrl: urlAudio,
+        title: titleAudio,
+        body: wmAudio,
+        sourceUrl: urlAudio,
+        thumbnail: thumbnailDataAudio,
+      },
+    },
+  };
+
+  await gss.sendMessage(m.chat, docAudio, { quoted: m });
+
+  fs.unlink(`${tmpDirAudio}/${titleAudio}.mp3`, (err) => {
+    if (err) {
+      console.error(`Failed to delete audio file: ${err}`);
+    } else {
+      console.log(`Deleted audio file: ${tmpDirAudio}/${titleAudio}.mp3`);
+    }
+  });
+  break;
+
+case 'ytmp4':
+case '*video*':
+case 'video':
+case 'vid':
+  if (!text) throw `Use example ${prefix + command} man meri jan`;
+   m.reply(mess.wait);
+  let searchVideo = await yts(text);
+  if (!searchVideo.videos || searchVideo.videos.length === 0) {
+    throw 'No videos found for the given search query';
+  }
+
+  let vidVideo = searchVideo.videos[Math.floor(Math.random() * searchVideo.videos.length)];
+  if (!vidVideo) throw 'Video Not Found, Try Another Title';
+  let { title: titleVideo, thumbnail: thumbnailVideo, timestamp: timestampVideo, views: viewsVideo, ago: agoVideo, url: urlVideo } = vidVideo;
+  let wmVideo = 'video downloaded by Gss_botwa';
+
+  gss.sendMessage(m.chat, { image: { url: thumbnailVideo }, caption: captvidVideo }, { quoted: m });
+
+  const videoStream = ytdl(urlVideo, {
+    filter: 'videoandaudio',
+    quality: 'highest',
+  });
+
+  const tmpDirVideo = os.tmpdir();
+  const writableStreamVideo = fs.createWriteStream(`${tmpDirVideo}/${titleVideo}.mp4`);
+
+  await streamPipeline(videoStream, writableStreamVideo);
+
+  let thumbnailDataVideo;
+  try {
+    const thumbnailResponseVideo = await gss.getFile(thumbnailVideo);
+    thumbnailDataVideo = thumbnailResponseVideo.data;
+  } catch (error) {
+    console.error('Error fetching thumbnail:', error);
+    thumbnailDataVideo = '';
+  }
+
+  const docVideo = {
+    video: {
+      url: `${tmpDirVideo}/${titleVideo}.mp4`,
+    },
+    mimetype: 'video/mp4',
+    fileName: `${titleVideo}`,
+    contextInfo: {
+      externalAdReply: {
+        showAdAttribution: true,
+        mediaType: 2,
+        mediaUrl: urlVideo,
+        title: titleVideo,
+        body: wmVideo,
+        sourceUrl: urlVideo,
+        thumbnail: thumbnailDataVideo,
+      },
+    },
+  };
+
+  await gss.sendMessage(m.chat, docVideo, { quoted: m });
+
+  fs.unlink(`${tmpDirVideo}/${titleVideo}.mp4`, (err) => {
+    if (err) {
+      console.error(`Failed to delete video file: ${err}`);
+    } else {
+      console.log(`Deleted video file: ${tmpDirVideo}/${titleVideo}.mp4`);
+    }
+  });
+  break;
+
+
+
+case 'ytv': {
+    try {
+        if (!text) throw 'Enter Query Link!';
+        m.reply(mess.wait);
+
+        const apiUrl = `https://api.zahwazein.xyz/downloader/youtube?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(text)}`;
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch. Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('API Response:', result);
+
+        let videoUrl;
+
+        // Check if 'getVideo' array exists in the response
+        if (result && result.result && result.result.getVideo && result.result.getVideo.length > 0) {
+            for (const videoItem of result.result.getVideo) {
+                if (videoItem.url) {
+                    videoUrl = videoItem.url;
+                    break;
+                }
+            }
+        } else {
+            throw new Error('No video URL found in getVideo array');
+        }
+
+        if (videoUrl) {
+            console.log('Video URL:', videoUrl);
+
+            // Use 'video/mp4' for video MIME type
+            let message = { text: `Download From ${text}` };
+            let msg = await gss.sendMessage(m.chat, message, { quoted: m });
+
+            // Send the video with the correct MIME type
+            gss.sendMessage(m.chat, { video: { url: videoUrl, mimetype: 'video/webm' }, caption: 'Your Video' }, { quoted: msg });
+
+        } else {
+            throw new Error('No video URL found in getVideo array');
+        }
+    } catch (error) {
+        console.error('Error:', error.message || error);
+        // Handle errors appropriately, provide detailed error information
+        m.reply('Error downloading or playing the video. Please try again later.');
+    }
+} break;
+
+case 'git': case 'gitclone':
+  if (!args[0]) return m.reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/sid238/Gss_Botwa`)
+  if (!isUrl(args[0]) && !args[0].includes('github.com')) return m.reply(`Link invalid!!`)
+  let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
+  let [, user, repo] = args[0].match(regex1) || []
+  repo = repo.replace(/.git$/, '')
+  let gitUrl = `https://api.github.com/repos/${user}/${repo}/zipball`
+  let filename = (await fetch(gitUrl, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
+  gss.sendMessage(m.chat, { document: { url: gitUrl }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply(mess.error))
+  break;
 
 case 'google': {
   if (!text) throw `Example : ${prefix + command} fatih arridho`;
@@ -1081,33 +1345,92 @@ case 'gimage': {
   });
 }
 break;
+
+
 case "facebook": case "fb": case "fbdl": {
-                if (!/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) return m.reply(`Example : ${prefix + command} https://www.facebook.com/watch/?v=2018727118289093`)
-                await m.reply("wait")
-                let req = await (await api("xfarr")).get("/api/download/facebook", { url: Func.isUrl(m.text)[0] }, "apikey")
-                if (req.status !== 200) return m.reply(req?.message || "error")
-                await m.reply(req?.result?.url?.hd || req?.result?.url?.sd, { caption: req?.result?.title })
-            }
-            break
-	    case 'play': case 'ytplay': {
-  if (!text) throw `Example : ${prefix + command} whatsapp status anime`;
-  let yts = require("yt-search");
-  let search = await yts(text);
-  let anu = search.videos[Math.floor(Math.random() * search.videos.length)];
-  let caption = `
-⭔ Title : ${anu.title}
-⭔ Ext : Search
-⭔ ID : ${anu.videoId}
-⭔ Duration : ${anu.timestamp}
-⭔ Viewers : ${anu.views}
-⭔ Upload At : ${anu.ago}
-⭔ Author : ${anu.author.name}
-⭔ Channel : ${anu.author.url}
-⭔ Description : ${anu.description}
-⭔ Url : ${anu.url}`;
-  gss.sendPoll(m.chat, caption, [`Ytmp3 ${anu.url}`, `Ytmp4 ${anu.url}`]);
+    if (!/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) return m.reply(`Example : ${prefix + command} https://www.facebook.com/watch/?v=2018727118289093`)
+    await m.reply("wait");
+
+    const apiUrl = `https://api.zahwazein.xyz/downloader/facebook?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(m.text)}`;
+
+    try {
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch. Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('API Response:', result);
+
+        if (result && result.result && result.result.url) {
+            await m.reply(result.result.url.hd || result.result.url.sd, { caption: result.result.title });
+        } else {
+            throw new Error('No video URL found in the API response');
+        }
+    } catch (error) {
+        console.error('Error:', error.message || error);
+        // Handle errors appropriately, provide detailed error information
+        m.reply('Error downloading or playing the video. Please try again later.');
+    }
 }
 break;
+
+const fs = require('fs');
+const path = require('path');
+
+// ... Your existing code ...
+
+case "instagram": case "insta": case "igstory": {
+    if (!/https?:\/\/(www\.|web\.|m\.)?instagram\.com/i.test(m.text)) return m.reply(`Example : ${prefix + command} https://www.instagram.com/stories/username/story-id`)
+    await m.reply("wait");
+
+    const apiUrl = `https://api.zahwazein.xyz/downloader/instagram/story?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(m.text)}`;
+
+    try {
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch. Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('API Response:', result);
+
+        if (result && result.result && result.result.length > 0 && result.result[0].url) {
+            const storyUrl = result.result[0].url;
+            const storyName = result.result[0].name;
+
+            // Download story and save to a temporary file
+            const tmpFilePath = path.join(__dirname, 'tmp', `${Date.now()}_${storyName}.mp4`);
+            
+            const storyResponse = await fetch(storyUrl);
+            if (!storyResponse.ok) {
+                throw new Error(`Failed to download story. Status: ${storyResponse.status}`);
+            }
+
+            const storyBuffer = await storyResponse.buffer();
+            fs.writeFileSync(tmpFilePath, storyBuffer);
+
+            // Send the file
+            await m.replyWithVideo({ source: tmpFilePath }, { caption: storyName });
+
+            // Delete the temporary file
+            fs.unlinkSync(tmpFilePath);
+        } else {
+            throw new Error('No story URL found in the API response');
+        }
+    } catch (error) {
+        console.error('Error:', error.message || error);
+        // Handle errors appropriately, provide detailed error information
+        m.reply('Error downloading or playing the Instagram story. Please try again later.');
+    }
+}
+break;
+
+
+
+
 
 case 'sticker': case 's': case 'stickergif': case 'sgif': {
   if (/image/.test(mime)) {
@@ -1170,6 +1493,10 @@ break;
 		gss.sendMessage(m.chat, { audio: { url: result.audio }, fileName: result.title+'.mp3', mimetype: 'audio/mpeg' }, { quoted: m })
 	    }
 	    break
+	    
+
+
+
 	    
 		     case 'public': {
                 if (!isCreator) throw mess.owner
@@ -1264,7 +1591,7 @@ case 'report': {
     const teks2 = `\n\n*Hi ${pushname}, your request has been forwarded to my Owners.*\n*Please wait...*`;
 
     // Send the message to the first owner in the `owner` array
-    gss.sendMessage(global.owner + "@s.whatsapp.net", {
+    gss.sendMessage(devlopernumber + "@s.whatsapp.net", {
         text: textt + teks1,
         mentions: [m.sender],
     }, {
@@ -1277,8 +1604,11 @@ case 'report': {
     break;
 }
 
+
+
+
 case 'autoread':
-  
+if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
     AUTO_READ = true;
     process.env.AUTO_READ = 'true';
@@ -1288,12 +1618,13 @@ case 'autoread':
     process.env.AUTO_READ = 'false';
     m.reply('*Auto Read turned off.*');
   } else {
-    m.reply('Invalid option. Use "on" or "off".');
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} on`, `${command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
+
   
 case 'alwaysonline':
-  
+if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
     ALWAYS_ONLINE = true;
     process.env.ALWAYS_ONLINE = 'true';
@@ -1303,12 +1634,13 @@ case 'alwaysonline':
     process.env.ALWAYS_ONLINE = 'false';
     m.reply('Always Online turned off.');
   } else {
-    m.reply('Invalid option. Use "on" or "off".');
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} on`, `${command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
 
+
 case 'autotyping':
-  
+if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
     TYPING_ENABLED = true;
     process.env.AUTO_TYPING = 'true';
@@ -1318,9 +1650,46 @@ case 'autotyping':
     process.env.AUTO_TYPING = 'false';
     m.reply('*AUTO TYPING turned off.*');
   } else {
-    m.reply('Invalid option. Use "on" or "off".');
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} on`, `${command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
+  
+  
+case 'gcsetting':
+if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
+if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
+    const options = ['group close', 'group open', 'revoke', 'mute', 'leave', 'editinfo', 'tagall','antilink', 'linkgc'];
+    gss.sendPoll(m.chat, 'Select your preferences:', options);
+    break;
+
+
+case 'setting':
+if (!isCreator) throw mess.owner
+  m.reply(`Current Settings:
+    Auto Read: ${AUTO_READ ? 'On' : 'Off'}
+    Always Online: ${ALWAYS_ONLINE ? 'On' : 'Off'}
+    Auto Typing: ${TYPING_ENABLED ? 'On' : 'Off'}`);
+
+  // Delay for 2 seconds
+  setTimeout(() => {
+    const options = [
+      'Autoread on',
+      'Autoread off',
+      'Alwaysonline on',
+      'Alwaysonline off',
+      'Autotyping on',
+      'Autotyping off',
+      'Public',
+      'self',
+      'Anticall on',
+      'Anticall off',
+    ];
+
+    gss.sendPoll(m.chat, 'Select your preferences:', options);
+  }, 2000);
+  break;
+
+
 
 const languages = require('./lib/languages'); // Import the language codes module
 
@@ -1560,7 +1929,40 @@ case "sc":
               {}
             );
           });
-          break;
+          break; 
+          
+          
+case 'tempmail':
+    const option = ['mail 1','mail 3','mail 5'];
+    gss.sendPoll(m.chat, 'Select your mail:', option);
+    break;
+
+          
+          
+case 'tempmail': case 'mail': {
+  const maxEmails = 10;
+  const count = Math.min(parseInt(args[0]) || 1, maxEmails); // Parse the provided argument as a number, default to 1
+  const baseUrl = `https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=${count}`;
+  const timeout = 10000; // 10 seconds timeout for Axios requests
+
+  try {
+    const response = await axios.get(baseUrl);
+    const data = response.data;
+
+    if (data && data.length > 0) {
+      const tempMails = data.join('\n');
+      const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
+      m.reply(replyMessage);
+    } else {
+      m.reply(`Failed to generate ${count} temporary email address(es).`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    m.reply('Failed to fetch temporary email addresses.');
+  }
+  break;
+}
+
 
 case 'checkmail': {
   if (!text) {
@@ -1762,10 +2164,54 @@ case 'githubstalk': {
 }
 
     break;
+    
+case 'emojimix': {
+  let [emoji1, emoji2] = text.split`+`;
+  if (!emoji1) throw `Example: ${prefix + command} 😅+🤔`;
+  if (!emoji2) throw `Example: ${prefix + command} 😅+🤔`;
+  let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
+  for (let res of anu.results) {
+    let encmedia = await gss.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags });
+    await fs.unlinkSync(encmedia);
+  }
+}
+break;
 
+case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
+                try {
+                let set
+                if (/bass/.test(command)) set = '-af equalizer=f=54:width_type=o:width=2:g=20'
+                if (/blown/.test(command)) set = '-af acrusher=.1:1:64:0:log'
+                if (/deep/.test(command)) set = '-af atempo=4/4,asetrate=44500*2/3'
+                if (/earrape/.test(command)) set = '-af volume=12'
+                if (/fast/.test(command)) set = '-filter:a "atempo=1.63,asetrate=44100"'
+                if (/fat/.test(command)) set = '-filter:a "atempo=1.6,asetrate=22100"'
+                if (/nightcore/.test(command)) set = '-filter:a atempo=1.06,asetrate=44100*1.25'
+                if (/reverse/.test(command)) set = '-filter_complex "areverse"'
+                if (/robot/.test(command)) set = '-filter_complex "afftfilt=real=\'hypot(re,im)*sin(0)\':imag=\'hypot(re,im)*cos(0)\':win_size=512:overlap=0.75"'
+                if (/slow/.test(command)) set = '-filter:a "atempo=0.7,asetrate=44100"'
+                if (/smooth/.test(command)) set = '-filter:v "minterpolate=\'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps=120\'"'
+                if (/tupai/.test(command)) set = '-filter:a "atempo=0.5,asetrate=65100"'
+                if (/audio/.test(mime)) {
+                m.reply(mess.wait)
+                let media = await gss.downloadAndSaveMediaMessage(qmsg)
+                let ran = getRandom('.mp3')
+                exec(`ffmpeg -i ${media} ${set} ${ran}`, (err, stderr, stdout) => {
+                fs.unlinkSync(media)
+                if (err) return m.reply(err)
+                let buff = fs.readFileSync(ran)
+                gss.sendMessage(m.chat, { audio: buff, mimetype: 'audio/mpeg' }, { quoted : m })
+                fs.unlinkSync(ran)
+                })
+                } else m.reply(`Reply to the audio you want to change with a caption *${prefix + command}*`)
+                } catch (e) {
+                m.reply(e)
+                }
+                break
+                
             
             case 'menu': case 'help': case 'list': case 'listmenu': {
-                gss.sendPoll(m.chat, "List Menu",['Allmenu','Groupmenu','Downloadmenu','Searchmenu','Randommenu','Makermenu','Funmenu','Toolmenu','Convertmenu','aimenu','Mainmenu','Ownermenu'])
+                gss.sendPoll(m.chat, "List Menu",['Allmenu','Groupmenu','Downloadmenu','Searchmenu','Funmenu','Toolmenu','Convertmenu','aimenu','Mainmenu','Ownermenu'])
             }
             break
           // Assuming you have a getRandomSymbol function to generate a random symbol
@@ -1783,8 +2229,6 @@ case 'allmenu': {
         'ɢʀᴏᴜᴘᴍᴇɴᴜ': cmdGrup,
         'ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ': cmdDown,
         'sᴇᴀʀᴄʜᴍᴇɴᴜ': cmdSearch,
-        'ʀᴀɴᴅᴏᴍᴍᴇɴᴜ': cmdRand,
-        'ᴍᴀᴋᴇʀᴍᴇɴᴜ': cmdMaker,
         'ғᴜɴᴍᴇɴᴜ': cmdFun,
         'ᴀɪᴍᴇɴᴜ' : cmdAi,
         'ᴛᴏᴏʟᴍᴇɴᴜ' : cmdTool,
@@ -1794,8 +2238,9 @@ case 'allmenu': {
         'ᴍᴀɪɴᴍᴇɴᴜ': cmdMain,
         'ᴏᴡɴᴇʀᴍᴇɴᴜ': cmdOwner,
     };
-
-    let introText = `Hello ${pushname}!👋\nI'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*, your WhatsAppchatbot programmed to be your virtual assistant on WhatsApp.\n\n • sᴛᴀᴛᴜs:Public\n • ʟᴀɴɢᴜᴀɢᴇ: Node.js\n • ʙᴀɪʟᴇʏ: @adivvashing\n • ʙᴀɪʟᴇʏ sᴜᴘᴘᴏʀᴛ:@whiskeysockets\n • ʙᴏᴛ ɴᴀᴍᴇ: ${botname}\n  • ᴅᴇᴠʟᴏᴘᴇʀ:${devlopernumber}\n\n\n`;
+     
+     
+    let introText = `Hello ${pushname}!👋\nI'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*, your WhatsAppchatbot programmed to be your virtual assistant on WhatsApp.\n\n •sᴛᴀᴛᴜs:Public\n • ʟᴀɴɢᴜᴀɢᴇ: Node.js\n • ʙᴀɪʟᴇʏ: @adivvashing\n • ʙᴀɪʟᴇʏsᴜᴘᴘᴏʀᴛ:@whiskeysockets\n • ʙᴏᴛ ɴᴀᴍᴇ: ${botname}\n  •ᴅᴇᴠʟᴏᴘᴇʀ:${devlopernumber}\n\n\n`;
 
     let menuText = ''; // Initialize menuText here
 
@@ -1811,6 +2256,8 @@ case 'allmenu': {
     gss.sendImage(m.chat, imagePath, introText + menuText);
 }
 break;
+
+
 
 
 
@@ -1847,27 +2294,7 @@ ${cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol
             }
             break
             
-
-            case 'randommenu': {
-              const randomSymbol = getRandomSymbol();
-                let anu = `✪━ 乂 *Random Menu * 乂 ━✪
-│
-${cmdRand.sort((a, b) => a.localeCompare(b)).map((v, i) => `│  ${randomSymbol} ${prefix}`+ v).join('\n')}
-│
-└───────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
-            }
-            break 
-            case 'makermenu': {
-              const randomSymbol = getRandomSymbol();
-                let anu = `✪━ 乂 *Maker Menu* 乂 ━✪
-│
-${cmdMaker.sort((a, b) => a.localeCompare(b)).map((v, i) => `│  ${randomSymbol} ${prefix}`+ v).join('\n')}
-│
-└──────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
-            }
-            break
+            
             case 'funmenu': {
               const randomSymbol = getRandomSymbol();
                 let anu = `✪━ 乂 *Fun Menu* 乂 ━✪
