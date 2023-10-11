@@ -1252,54 +1252,94 @@ case 'vid':
 
 
 
-case 'ytv': {
+async function downloadAndMergeVideo(url, outputFileName) {
     try {
-        if (!text) throw 'Enter Query Link!';
-        m.reply(mess.wait);
+        const videoInfo = await ytdl.getInfo(url);
+        const videoFormat = ytdl.chooseFormat(videoInfo.formats, { quality: 'highestvideo' });
+        const audioFormat = ytdl.chooseFormat(videoInfo.formats, { filter: 'audioonly' });
 
-        const apiUrl = `https://api.zahwazein.xyz/downloader/youtube?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(text)}`;
-
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch. Status: ${response.status}`);
+        if (!videoFormat || !audioFormat) {
+            throw new Error('No suitable formats found');
         }
 
-        const result = await response.json();
-        console.log('API Response:', result);
+        const videoOutput = fs.createWriteStream('tempVideo.mp4');
+        const audioOutput = fs.createWriteStream('tempAudio.mp3');
 
-        let videoUrl;
+        const videoStream = ytdl(url, { format: videoFormat });
+        const audioStream = ytdl(url, { format: audioFormat });
 
-        // Check if 'getVideo' array exists in the response
-        if (result && result.result && result.result.getVideo && result.result.getVideo.length > 0) {
-            for (const videoItem of result.result.getVideo) {
-                if (videoItem.url) {
-                    videoUrl = videoItem.url;
-                    break;
+        videoStream.pipe(videoOutput);
+        audioStream.pipe(audioOutput);
+
+        await Promise.all([
+            new Promise(resolve => videoOutput.on('finish', resolve)),
+            new Promise(resolve => audioOutput.on('finish', resolve)),
+        ]);
+
+        // Now, merge the video and audio using ffmpeg
+        const mergeCommand = `ffmpeg -i tempVideo.mp4 -i tempAudio.mp3 -c:v copy -c:a aac -strict experimental -y ${outputFileName}`;
+        await new Promise((resolve, reject) => {
+            exec(mergeCommand, (error) => {
+                if (error) {
+                    reject(`Error during ffmpeg merge: ${error}`);
+                } else {
+                    resolve();
                 }
-            }
-        } else {
-            throw new Error('No video URL found in getVideo array');
-        }
+            });
+        });
 
-        if (videoUrl) {
-            console.log('Video URL:', videoUrl);
-
-            // Use 'video/mp4' for video MIME type
-            let message = { text: `Download From ${text}` };
-            let msg = await gss.sendMessage(m.chat, message, { quoted: m });
-
-            // Send the video with the correct MIME type
-            gss.sendMessage(m.chat, { video: { url: videoUrl, mimetype: 'video/webm' }, caption: 'Your Video' }, { quoted: msg });
-
-        } else {
-            throw new Error('No video URL found in getVideo array');
-        }
+        console.log(`Download complete: ${outputFileName}`);
     } catch (error) {
         console.error('Error:', error.message || error);
-        // Handle errors appropriately, provide detailed error information
-        m.reply('Error downloading or playing the video. Please try again later.');
+        throw error;
+    } finally {
+        // Cleanup temporary files
+        fs.unlinkSync('tempVideo.mp4');
+        fs.unlinkSync('tempAudio.mp3');
+    }
+}
+
+// Example usage as a case:
+case 'ytv': {
+    try {
+        if (!text) throw 'Enter YouTube Video URL!';
+        m.reply(mess.wait);
+
+        const videoUrl = text; // Assuming 'text' contains the YouTube video URL
+        const outputFileName = 'downloaded_video.mp4';
+
+        await downloadAndMergeVideo(videoUrl, outputFileName);
+
+        // Send the video using gss.sendMessage
+        gss.sendMessage(m.chat, {
+            video: {
+                url: outputFileName,
+                mimetype: 'video/mp4',
+                filename: 'Downloaded Video'
+            },
+            caption: 'Video download by gss botwa'
+        }, { quoted: m });
+
+        // Respond back to the user or do further processing if needed
+        m.reply(`Download complete`);
+    } catch (error) {
+        console.error('Error:', error.message || error);
+        m.reply(`Error downloading or playing the video: ${error.message || 'Unknown error'}`);
     }
 } break;
+
+
+case 'ytmp3': case 'ytaudio': {
+  let { yta } = require('./lib/y2mate');
+  if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`;
+  let quality = args[1] ? args[1] : '128kbps';
+  let media = await yta(text, quality);
+  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
+  gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
+  gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
+}
+break;
+
 
 case 'git': case 'gitclone':
   if (!args[0]) return m.reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/sid238/Gss_Botwa`)
