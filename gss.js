@@ -1334,7 +1334,6 @@ if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFM
  let { ytv } = require('./lib/y2mate')
  let quality = args[1] ? args[1] : '360p'
  let media = await ytv(text, quality)
- if (media.filesize >= 100000) return m.reply('File Melebihi Batas '+util.format(media))
  gss.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`}, {quoted:m})
 }
 break
