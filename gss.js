@@ -1334,11 +1334,25 @@ case 'ytmp3': case 'ytaudio': {
   if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`;
   let quality = args[1] ? args[1] : '128kbps';
   let media = await yta(text, quality);
+  
+  // Add a check for null value
+  if (!media) {
+    console.error('Error fetching media information');
+    return m.reply('Error fetching media information. Please try again later.');
+  }
+
+  // Add a check for null filesize
+  if (media.filesize === null) {
+    console.error('Error getting filesize');
+    return m.reply('Error getting filesize. Please try again later.');
+  }
+
   if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
   gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${isUrl(text)}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
   gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
 }
 break;
+
 
 
 case 'git': case 'gitclone':
