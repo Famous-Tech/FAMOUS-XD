@@ -2240,7 +2240,7 @@ case 'allmenu': {
 
     for (const [category, commands] of Object.entries(categories)) {
         const randomSymbol = getRandomSymbol();
-        menuText += `✪━━ 乂 *${category}*乂 ━━✪\n${commands.map(cmd => `│ ${randomSymbol} ${prefix}${cmd}`).join('\n')}\n`;
+        menuText += `✪━━ 乂 *${category}* 乂 ━━✪\n${commands.map(cmd => `│ ${randomSymbol} ${prefix}${cmd}`).join('\n')}\n`;
     }
 
     menuText += '─────✪';
