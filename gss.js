@@ -1384,23 +1384,22 @@ case 'igdl':
     case 'ig':
 case 'instagram':
 {
- m.reply(mess.wait);
     const apiKeys = ['Uc3LRsLE2d', '8sXSeFyb7T', 'YsYFZwLgnS']; // Add your API keys here
     const url = text;
 
     if (!url) {
-        return reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
+        return m.reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
     }
-
+     m.reply(mess.wait);
     try {
         const videoUrl = await downloadInstagramVideo(apiKeys, url);
         await gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: 'Downloaded by your bot' }, { quoted: m });
     } catch (error) {
         if (error.message.includes('Video URL not found')) {
-            return reply('The Instagram video could not be found.');
+            return m.reply('The Instagram video could not be found.');
         } else {
             console.error('Error while processing Instagram video:', error);
-            return reply(`An error occurred: ${error.message}`);
+            return m.reply(`An error occurred: ${error.message}`);
         }
     }
     break;
