@@ -1393,7 +1393,7 @@ case 'instagram':
      m.reply(mess.wait);
     try {
         const videoUrl = await downloadInstagramVideo(apiKeys, url);
-        await gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: 'Downloaded by your bot' }, { quoted: m });
+        await gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: 'Downloaded by gss botwa' }, { quoted: m });
     } catch (error) {
         if (error.message.includes('Video URL not found')) {
             return m.reply('The Instagram video could not be found.');
