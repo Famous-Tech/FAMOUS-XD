@@ -1380,8 +1380,11 @@ async function downloadInstagramVideo(apiKeys, url) {
 
 // Example usage:
 case 'igdl':
+  case 'insta':
+    case 'ig':
 case 'instagram':
 {
+ m.reply(mess.wait);
     const apiKeys = ['Uc3LRsLE2d', '8sXSeFyb7T', 'YsYFZwLgnS']; // Add your API keys here
     const url = text;
 
@@ -1448,85 +1451,6 @@ case 'gimage': {
   });
 }
 break;
-
-
-case "facebook": case "fb": case "fbdl": {
-    if (!/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) return m.reply(`Example : ${prefix + command} https://www.facebook.com/watch/?v=2018727118289093`)
-    await m.reply("wait");
-
-    const apiUrl = `https://api.zahwazein.xyz/downloader/facebook?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(m.text)}`;
-
-    try {
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch. Status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log('API Response:', result);
-
-        if (result && result.result && result.result.url) {
-            await m.reply(result.result.url.hd || result.result.url.sd, { caption: result.result.title });
-        } else {
-            throw new Error('No video URL found in the API response');
-        }
-    } catch (error) {
-        console.error('Error:', error.message || error);
-        // Handle errors appropriately, provide detailed error information
-        m.reply('Error downloading or playing the video. Please try again later.');
-    }
-}
-break;
-// ... Your existing code ...
-
-case "instagram": case "insta": case "igstory": {
-    if (!/https?:\/\/(www\.|web\.|m\.)?instagram\.com/i.test(m.text)) return m.reply(`Example : ${prefix + command} https://www.instagram.com/stories/username/story-id`)
-    await m.reply("wait");
-
-    const apiUrl = `https://api.zahwazein.xyz/downloader/instagram/story?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(m.text)}`;
-
-    try {
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch. Status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log('API Response:', result);
-
-        if (result && result.result && result.result.length > 0 && result.result[0].url) {
-            const storyUrl = result.result[0].url;
-            const storyName = result.result[0].name;
-
-            // Download story and save to a temporary file
-            const tmpFilePath = path.join(__dirname, 'tmp', `${Date.now()}_${storyName}.mp4`);
-            
-            const storyResponse = await fetch(storyUrl);
-            if (!storyResponse.ok) {
-                throw new Error(`Failed to download story. Status: ${storyResponse.status}`);
-            }
-
-            const storyBuffer = await storyResponse.buffer();
-            fs.writeFileSync(tmpFilePath, storyBuffer);
-
-            // Send the file
-            await m.replyWithVideo({ source: tmpFilePath }, { caption: storyName });
-
-            // Delete the temporary file
-            fs.unlinkSync(tmpFilePath);
-        } else {
-            throw new Error('No story URL found in the API response');
-        }
-    } catch (error) {
-        console.error('Error:', error.message || error);
-        // Handle errors appropriately, provide detailed error information
-        m.reply('Error downloading or playing the Instagram story. Please try again later.');
-    }
-}
-break;
-
 
 
 
