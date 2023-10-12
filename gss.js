@@ -1329,14 +1329,80 @@ case 'ytv': {
 } break;
 
 
-case 'ytmp4': case 'ytvideo': {
-if (!text) throw `Example : ${prefix + command} https://youtube.com/watch?v=PtFMh6Tccag%27 360p`
- let { ytv } = require('./lib/y2mate')
- let quality = args[1] ? args[1] : '360p'
- let media = await ytv(text, quality)
- gss.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`}, {quoted:m})
+async function instaDownload(apiKeys, url) {
+    let currentIndex = 0;
+
+    while (currentIndex < apiKeys.length) {
+        const apiKey = apiKeys[currentIndex];
+
+        try {
+            const apiUrl = `https://api.xfarr.com/api/download/instagram?apikey=${encodeURIComponent(apiKey)}&url=${encodeURIComponent(url)}`;
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(`API Error (${response.status}): ${errorMessage}`);
+            }
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(`Error with API key ${apiKey}: ${error.message}`);
+            currentIndex++;
+        }
+    }
+
+    throw new Error('All API keys failed');
 }
-break
+
+async function downloadInstagramVideo(apiKeys, url) {
+    try {
+        const result = await instaDownload(apiKeys, url);
+
+        console.log('API Response:', result);
+
+        if (result.status === 200 && result.result && result.result.length > 0) {
+            const videoUrl = result.result[0];
+
+            if (videoUrl) {
+                return videoUrl;
+            } else {
+                throw new Error('Video URL not found in API response');
+            }
+        } else {
+            throw new Error('Invalid or unexpected API response');
+        }
+    } catch (error) {
+        console.error('Error downloading Instagram video:', error.message);
+        throw error;
+    }
+}
+
+// Example usage:
+case 'igdl':
+case 'instagram':
+{
+    const apiKeys = ['Uc3LRsLE2d', '8sXSeFyb7T', 'YsYFZwLgnS']; // Add your API keys here
+    const url = text;
+
+    if (!url) {
+        return reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/reel/Ctjt0srIQFg/?igshid=MzRlODBiNWFlZA==`);
+    }
+
+    try {
+        const videoUrl = await downloadInstagramVideo(apiKeys, url);
+        await gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: 'Downloaded by your bot' }, { quoted: m });
+    } catch (error) {
+        if (error.message.includes('Video URL not found')) {
+            return reply('The Instagram video could not be found.');
+        } else {
+            console.error('Error while processing Instagram video:', error);
+            return reply(`An error occurred: ${error.message}`);
+        }
+    }
+    break;
+}
+
 
 
 
