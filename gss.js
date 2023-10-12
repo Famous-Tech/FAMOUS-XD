@@ -1389,7 +1389,7 @@ case 'instagram':
     const url = text;
 
     if (!url) {
-        return reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/reel/Ctjt0srIQFg/?igshid=MzRlODBiNWFlZA==`);
+        return reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
     }
 
     try {
