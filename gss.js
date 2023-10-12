@@ -14,6 +14,7 @@ const chalk = require('chalk')
 const { exec, spawn, execSync } = require("child_process")
 const axios = require('axios')
 const path = require('path')
+const cheerio = require('cheerio');
 const os = require('os')
 const googleTTS = require("google-tts-api");
 const moment = require('moment-timezone')
@@ -1384,7 +1385,7 @@ case 'igdl':
     case 'ig':
 case 'instagram':
 {
-    const apiKeys = ['Uc3LRsLE2d', '8sXSeFyb7T', 'YsYFZwLgnS']; // Add your API keys here
+    const apiKeys = ['Uc3LRsLE2d']; // Add your API keys here
     const url = text;
 
     if (!url) {
@@ -1405,6 +1406,139 @@ case 'instagram':
     break;
 }
 
+
+async function downloadApk(apiKey, packageName, outputPath) {
+    try {
+        const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`API Error (${response.status}): ${errorMessage}`);
+        }
+
+        const result = await response.json();
+
+        // Log response details for debugging
+        console.log('Response Status:', response.status);
+        console.log('Content-Type:', response.headers.get('content-type'));
+        console.log('API Response:', JSON.stringify(result, null, 2)); // Pretty-print the JSON response
+
+        if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
+            const apkUrl = result.result.file.path;
+
+            const apkResponse = await fetch(apkUrl);
+            const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
+
+            // Save the APK
+            fs.writeFileSync(outputPath, apkBuffer, 'binary');
+
+            console.log(`APK downloaded successfully and saved to: ${outputPath}`);
+
+            return outputPath; // Return the path of the APK file
+        } else {
+            throw new Error('Invalid API response or APK link not found');
+        }
+    } catch (error) {
+        console.error('Error downloading APK:', error.message);
+        throw error; // Re-throw the error to handle it in the calling code
+    }
+}
+
+case 'download_app':
+case '*download_app*':
+{
+    const apiKeys = [ '8sXSeFyb7T']; // Add your API keys here
+    const packageName = text; // Assuming text contains only the package name
+    const outputPath = 'downloaded_app.apk';
+
+    if (!packageName) {
+        return m.reply(`Where is the package name?\n\nExample: ${prefix + command} com.whatsapp`);
+    }
+
+    try {
+        await downloadApk(apiKeys[0], packageName, outputPath);
+
+        // Send the APK file as a document using sendMessage
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(outputPath),
+        mimetype: 'application/vnd.android.package-archive', filename: 'downloaded_app.apk', caption: 'Downloaded by gss botwa' }, { quoted: m });
+
+        // Optionally, you can delete the temporary file
+        await fs.promises.unlink(outputPath);
+    } catch (error) {
+        if (error.message.includes('API key not found')) {
+            return m.reply('API key not found. Please check your API key and register if necessary.');
+        } else {
+            console.error('Error while processing APK download:', error);
+            return m.reply(`An error occurred: ${error.message}`);
+        }
+    }
+    break;
+}
+
+
+
+async function getAppPackageInfo(appName) {
+  try {
+    const searchUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
+    console.log('Search URL:', searchUrl);
+
+    // Make HTTP request
+    const response = await axios.get(searchUrl);
+    console.log('Response Status:', response.status);
+
+    // Load HTML content into Cheerio
+    const $ = cheerio.load(response.data);
+
+    // Extract the first package name from the search result
+    const firstPackageElement = $('[data-item-id]').first();
+
+    // Extract only the package name part using a regular expression
+    const packageNameMatch = firstPackageElement.attr('data-item-id').match(/"([^"]+)"/);
+    const packageName = packageNameMatch ? packageNameMatch[1] : null;
+
+    console.log('Package Name:', packageName);
+
+    return { packageNames: packageName ? [packageName] : [] }; // Return an array with the package name or an empty array
+  } catch (error) {
+    console.error('Error getting app package information:', error.message);
+    throw error;
+  }
+}
+
+
+
+    case 'app': 
+      case 'apk': 
+        case 'apkdl': {
+  const appName = text; // Assuming text contains the app name
+
+  if (!appName) {
+    m.reply('Please provide the app name.');
+    break;
+  }
+
+  // Immediately Invoked Async Function Expression (IIFE)
+  (async () => {
+    try {
+      const appInfo = await getAppPackageInfo(appName);
+
+      if (appInfo.packageNames && appInfo.packageNames.length > 0) {
+        const options = [`Your App Name: ${appName}`, ...appInfo.packageNames.map((packageName) => `*download_app* ${packageName}`)];
+
+        // Send a poll with package names and instructions
+        const pollMessage = `Select an option for ${appName}:\n\nInstructions:\nTo download, choose the second option.`;
+        await gss.sendPoll(m.chat, pollMessage, options);
+      } else {
+        m.reply(`Could not find package names for ${appName}.`);
+      }
+    } catch (error) {
+      m.reply(`An error occurred: ${error.message}`);
+    }
+  })();
+
+  break;
+}
 
 
 
