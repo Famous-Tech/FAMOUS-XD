@@ -1460,7 +1460,7 @@ case '*download_app*':
         await downloadApk(apiKeys[0], packageName, outputPath);
 
         // Send the APK file as a document using sendMessage
-        await m.reply(m.chat, { document: fs.readFileSync(outputPath),
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive', filename: 'downloaded_app.apk', caption: '' }, { quoted: m });
 
         // Optionally, you can delete the temporary file
