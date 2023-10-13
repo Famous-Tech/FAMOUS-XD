@@ -1448,7 +1448,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
 case 'download_app':
 case '*download_app*':
 {
-    const apiKeys = [ '8sXSeFyb7T']; // Add your API keys here
+    const apiKeys = ['8sXSeFyb7T']; // Add your API keys here
     const packageName = text; // Assuming text contains only the package name
     const outputPath = 'downloaded_app.apk';
 
@@ -1460,7 +1460,12 @@ case '*download_app*':
         await downloadApk(apiKeys[0], packageName, outputPath);
 
         // Send the APK file as a document using sendMessage
-        await gss.sendMessage(m.chat, { document: fs.readFileSync(outputPath), mimetype: 'application/vnd.android.package-archive',fileName:'${packageName}', caption: 'downloaded by gss botwa' }, { quoted: m });
+        await gss.sendMessage(m.chat, {
+            document: fs.readFileSync(outputPath),
+            mimetype: 'application/vnd.android.package-archive',
+            fileName: `${packageName}.apk`, // Use packageName in the fileName
+            caption: 'Downloaded by gss botwa'
+        }, { quoted: m });
 
         // Optionally, you can delete the temporary file
         await fs.promises.unlink(outputPath);
@@ -1474,6 +1479,7 @@ case '*download_app*':
     }
     break;
 }
+
 
 
 
