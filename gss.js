@@ -1406,7 +1406,6 @@ case 'instagram':
     break;
 }
 
-
 async function downloadApk(apiKey, packageName, outputPath) {
     try {
         const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
@@ -1448,7 +1447,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
 case 'download_app':
 case '*download_app*':
 {
-    const apiKeys = [ '8sXSeFyb7T']; // Add your API keys here
+    const apiKeys = ['8sXSeFyb7T']; // Add your API keys here
     const packageName = text; // Assuming text contains only the package name
     const outputPath = 'downloaded_app.apk';
 
@@ -1457,10 +1456,16 @@ case '*download_app*':
     }
 
     try {
+        const { appName } = await playstore.app({ appId: packageName });
         await downloadApk(apiKeys[0], packageName, outputPath);
 
         // Send the APK file as a document using sendMessage
-        await gss.sendMessage(m.chat, { document: fs.readFileSync(outputPath), mimetype: 'application/vnd.android.package-archivefileName:'${appName}', caption: 'downloaded by gss botwa' }, { quoted: m });
+        await gss.sendMessage(m.chat, {
+            document: fs.readFileSync(outputPath),
+            mimetype: 'application/vnd.android.package-archive',
+            fileName: `${appName}.apk`, // Use app name as the file name
+            caption: `Downloaded by gss botwa\n\nApp Name: ${appName}\nPackage Name: ${packageName}`
+        }, { quoted: m });
 
         // Optionally, you can delete the temporary file
         await fs.promises.unlink(outputPath);
