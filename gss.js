@@ -1457,19 +1457,10 @@ case '*download_app*':
     }
 
     try {
-        const appInfo = await playstore.app({ appId: packageName });
-
-        if (!appInfo) {
-            return m.reply('App not found on the Play Store.');
-        }
-
-        const appName = appInfo.title;
-        const fileName = `${appName}.apk`;
-
         await downloadApk(apiKeys[0], packageName, outputPath);
 
         // Send the APK file as a document using sendMessage
-        await gss.sendMessage(m.chat, { document: fs.readFileSync(outputPath), mimetype: 'application/vnd.android.package-archive', fileName: fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(outputPath), mimetype: 'application/vnd.android.package-archive',fileName:'${appName}', caption: 'downloaded by gss botwa' }, { quoted: m });
 
         // Optionally, you can delete the temporary file
         await fs.promises.unlink(outputPath);
