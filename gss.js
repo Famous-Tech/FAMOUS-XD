@@ -917,7 +917,25 @@ case 'listonline': case 'liston': {
 break;
 
 
-  
+case 'remini': case 'upscale': case 'enhance': {
+    if (!quoted) return m.reply(`Where is the picture?`);
+    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+    m.reply(mess.wait);
+    const { remini } = require('./lib/remini');
+    let media = await quoted.download();
+
+    try {
+        let proses = await remini(media, "enhance");
+
+        // Send the enhanced image with the new caption
+        gss.sendMessage(m.chat, { image: proses, caption: `${mess.success} enhanced by gss botwa` }, { quoted: m });
+    } catch (error) {
+        console.error('Error in Remini enhancement:', error);
+        m.reply(`An error occurred: ${error.message}`);
+    }
+    break;
+}
+
   
 
 case 'ebinary': {
