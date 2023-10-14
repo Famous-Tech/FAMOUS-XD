@@ -1545,6 +1545,66 @@ async function getAppPackageInfo(appName) {
   break;
 }
 
+case 'mediafire': {
+    // Check if the command has arguments
+    if (args.length === 0) {
+        return m.reply(`Where is the link? \n\nExample: ${prefix + command} https://www.mediafire.com/file/96mscj81p92na3r/images+(35).jpeg/file`);
+    }
+
+    // Check if the argument is a valid MediaFire link
+    if (!isUrl(args[0]) && !args[0].includes('mediafire.com')) {
+        return m.reply(`The link you provided is invalid`);
+    }
+
+    // Import the mediafireDl function from the mediafire.js file
+    const { mediafireDl } = require('./lib/mediafire.js');
+
+    // Reply with a "Please wait..." message
+    await m.reply(`Please wait...`);
+
+    try {
+        // Call the mediafireDl function to get details about the file
+        const fileInfo = await mediafireDl(text);
+
+        // Check if the file size is too big
+        if (fileInfo[0].size.split('MB')[0] >= 100) {
+            return m.reply('Oops, the file is too big...');
+        }
+
+        // Prepare result message with available information and added spaces
+        const resultMessage = `*gss mediafire downloader*
+
+*✪ Name* : ${fileInfo[0].nama}
+*✪ Size* : ${fileInfo[0].size}
+*✪ Mime* : ${fileInfo[0].mime}
+*✪ Creator* : ${fileInfo[0].creator ? fileInfo[0].creator : 'Not available'} 
+*✪ Upload Date* : ${fileInfo[0].uploadDate ? fileInfo[0].uploadDate : 'Not available'}`;  // If upload date is not available, show 'Not available'
+
+        // Send the result message
+        m.reply(`${resultMessage}`);
+
+        // Send the file to the user with a caption
+        gss.sendMessage(
+            m.chat,
+            {
+                document: {
+                    url: fileInfo[0].link,
+                },
+                fileName: fileInfo[0].nama,
+                mimetype: fileInfo[0].mime,
+                caption: `Downloaded by gss botwa: ${fileInfo[0].nama}`,  // Add your desired caption
+            },
+            { quoted: m }
+        );
+    } catch (error) {
+        // Handle any errors that may occur during the process
+        console.error('Error in mediafire download:', error);
+        m.reply(`An error occurred: ${error.message}`);
+    }
+
+    break;
+}
+
 
 
 case 'git': case 'gitclone':
