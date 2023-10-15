@@ -1,19 +1,34 @@
 {
-  "name": "whatsapp-bot GSS-Botwa",
-  "description": "Whatsapp bot.",
-  "keywords": ["whatsapp bot"],
-  "repository": "https://github.com/sid238/Gss-Botwa",
+  "name": "whatsapp-bot (GSS BOTWA V2.0)",
+  "description": " Whatsapp bot.",
+  "keywords": [
+    "whatsapp bot"
+  ],
+  "repository": "https://github.com/gssbotwa/Gssbotwa2",
   "stack": "container",
   "env": {
     "OPENAI_API_KEY": {
       "description": "openai apikey",
-      "required": true
+      "required": false,
+      "value": ""
+    },
+    "MONGO_DB": {
+      "description": "your mongodb database url",
+      "required": false,
+      "value": ""
+    },
+    "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/DuckyTeam/heroku-buildpack-imagemagick.git"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+    },
+    {
+      "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
     }
-  },
-  "buildpacks": [
-    { "url": "heroku/nodejs" },
-    { "url": "https://github.com/DuckyTeam/heroku-buildpack-imagemagick.git" },
-    { "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest" },
-    { "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git" }
   ]
 }
