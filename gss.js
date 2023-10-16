@@ -14,6 +14,7 @@ const chalk = require('chalk')
 const { exec, spawn, execSync } = require("child_process")
 const axios = require('axios')
 const path = require('path')
+const fg = require('api-dylux');
 const cheerio = require('cheerio');
 const os = require('os')
 const googleTTS = require("google-tts-api");
