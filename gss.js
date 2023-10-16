@@ -1659,7 +1659,7 @@ case 'mediafire': {
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
-        throw ` Please send the link of a Facebook video\n\nEXAMPLE :\n*${prefix + command} * https://fb.watch/7B5KBCgdO3`;
+        throw ` Please send the link of a Facebook video\n\nEXAMPLE :\n *${prefix + command}* https://fb.watch/7B5KBCgdO3`;
     }
 
     const urlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:facebook\.com|fb\.watch)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
