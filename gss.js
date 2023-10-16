@@ -1711,7 +1711,7 @@ case 'shinobu': case 'handhold': {
 
 axios.get(`https://api.waifu.pics/sfw/${command}`)
 .then(({data}) => {
-gss.sendImageAsSticker(m.from, data.url, m, { packname: global.packname, author: 'gss botwa' })
+gss.sendImageAsSticker(data.url, m, { packname: global.packname, author: 'gss botwa' })
 })
 }
 break
