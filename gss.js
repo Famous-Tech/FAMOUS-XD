@@ -1667,7 +1667,7 @@ case 'fb': case 'fbdl': case 'facebook': {
     if (!urlRegex.test(args[0])) {
         throw '⚠️ PLEASE GIVE A VALID URL.';
     }
-
+     await m.reply(`Please wait...`);
     try {
         const result = await fg.fbdl(args[0]);
         const tex = `
