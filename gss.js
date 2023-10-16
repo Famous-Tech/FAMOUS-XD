@@ -1704,6 +1704,29 @@ case 'fb': case 'fbdl': case 'facebook': {
     break;
 }
   
+case 'instastalk': case 'igs': {
+if (!args[0]) return m.reply(`Enter Instagram Username\n\nExample: ${prefix + command} world_reacode_egg`)
+
+const igs = require('api-dylux')
+await m.reply(`Please wait...`);
+    try {
+    let res = await igs.igStalk(args[0])
+    let te = `
+┌──「 *Information* 
+▢ *🔖Name:* ${res.name} 
+▢ *🔖Username:* ${res.username}
+▢ *👥Follower:* ${res.followersH}
+▢ *🫂Following:* ${res.followingH}
+▢ *📌Bio:* ${res.description}
+▢ *🏝️Posts:* ${res.postsH}
+▢ *🔗 Link* : https://instagram.com/${res.username.replace(/^@/, '')}
+└────────────`
+     await gss.sendMessage(m.chat, {image: { url: res.profilePic }, caption: te }, {quoted: m})
+      } catch {
+        m.reply(`Make sure the username comes from *Instagram*`)
+      }
+}
+break;
 
 case 'git': case 'gitclone':
   if (!args[0]) return m.reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/sid238/Gss_Botwa`)
