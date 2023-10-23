@@ -1728,7 +1728,7 @@ await m.reply(`Please wait...`);
 }
 break;
 
-case 'git': case 'gitclone':
+ case 'gitclone':
   if (!args[0]) return m.reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/sid238/Gss_Botwa`)
   if (!isUrl(args[0]) && !args[0].includes('github.com')) return m.reply(`Link invalid!!`)
   let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
@@ -2231,11 +2231,12 @@ case 'alive': {
 break;
 
 case "sc":
+  case 'git':
         case "script":
         case "scbot":
         case "repo":
            //m.reply("https://github.com/sid238/Gss_Botwa");
-          let api = "https://api.github.com/repos/gssbotwa/gss_botwa";
+          let api = "https://api.github.com/repos/gssbotwa/Gssbotwa2";
           axios.get(api).then(function (response) {
             github = response.data;
             let txt = `  *B O T  -  S C R I P T*\n\n`;
