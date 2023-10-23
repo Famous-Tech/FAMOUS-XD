@@ -1081,17 +1081,17 @@ break;
 }
 break;
 
-case'tagadmins': case 'admins': case 'tagadmin': {
-if (!m.isGroup) throw mess.group;
-  if (!isBotAdmins) throw mess.botAdmin;
-let teks = `*「 Tag Admins 」*`
+case'tagadmins': case 'admins': {
+if (!text) return m.reply(`*give me message for admin*`)
+let teks = `*「 Tag Admins 」*
+
+*Message : ${text}*\n\n`
 for (let mem of groupAdmins) {
 teks += ` @${mem.split('@')[0]}\n`
 }
 gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 }
 break;
-
 
 case 'yts':
 case 'ytsearch': {
