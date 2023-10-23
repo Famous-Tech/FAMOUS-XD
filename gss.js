@@ -1081,6 +1081,17 @@ break;
 }
 break;
 
+case'tagadmins': case 'admins': case 'tagadmin': {
+if (!m.isGroup) throw mess.group;
+  if (!isBotAdmins) throw mess.botAdmin;
+let teks = `*「 Tag Admins 」*`
+for (let mem of groupAdmins) {
+teks += ` @${mem.split('@')[0]}\n`
+}
+gss.sendMessage(m.chat, { teks, mentions: groupAdmins}, { quoted: m })
+}
+break;
+
 
 case 'yts':
 case 'ytsearch': {
