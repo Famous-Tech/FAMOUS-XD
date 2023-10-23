@@ -1093,6 +1093,50 @@ gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 }
 break;
 
+case 'yts': case 'ytsearch': {
+  if (!text) throw `Example : ${prefix + command} whatsapp status anime`;
+  let yts = require("yt-search");
+  let search = await yts(text);
+  let teks = 'YouTube Search\n\n Result From ' + text + '\n\n';
+  let no = 1;
+  for (let i of search.all) {
+    teks += `⭔ No : ${no++}\n⭔ Type : ${i.type}\n⭔ Video ID : ${i.videoId}\n⭔ Title : ${i.title}\n⭔ Views : ${i.views}\n⭔ Duration : ${i.timestamp}\n⭔ Upload At : ${i.ago}\n⭔ Author : ${i.author.name}\n⭔ Url : ${i.url}\n\n─────────────────\n\n`;
+  }
+  gss.sendMessage(m.chat, { image: { url: search.all[0].thumbnail }, caption: teks }, { quoted: m });
+}
+break;
+
+case 'getmusic': {
+  let { yta } = require('./lib/y2mate');
+  if (!text) throw `Example : ${prefix + command} 1`;
+  if (!m.quoted) return m.reply('Reply to a message');
+  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
+  let quality = args[1] ? args[1] : '128kbps';
+  let media = await yta(urls[text - 1], quality);
+  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
+  gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
+  gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
+}
+break;
+
+case 'getvideo': {
+  let { ytv } = require('./lib/y2mate');
+  if (!text) throw `Example : ${prefix + command} 1`;
+  if (!m.quoted) return m.reply('Reply to a message');
+  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
+  let quality = args[1] ? args[1] : '360p';
+  let media = await ytv(urls[text - 1], quality);
+  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
+  gss.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '360p'}` }, { quoted: m });
+}
+break;
+
+
+
 case 'yts':
 case 'ytsearch': {
     if (!text) throw `Example: ${prefix + command} whatsapp status anime`;
