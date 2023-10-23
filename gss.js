@@ -1115,7 +1115,13 @@ case 'getmusic': {
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
   let quality = args[1] ? args[1] : '128kbps';
   let media = await yta(urls[text - 1], quality);
+
+  if (!media || !media.filesize) {
+    return m.reply('Error getting media information.');
+  }
+
   if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
+
   gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
   gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
 }
@@ -1130,10 +1136,17 @@ case 'getvideo': {
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
   let quality = args[1] ? args[1] : '360p';
   let media = await ytv(urls[text - 1], quality);
+
+  if (!media || !media.filesize) {
+    return m.reply('Error getting media information.');
+  }
+
   if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
+
   gss.sendMessage(m.chat, { video: { url: media.dl_link }, mimetype: 'video/mp4', fileName: `${media.title}.mp4`, caption: `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '360p'}` }, { quoted: m });
 }
 break;
+
 
 
 
