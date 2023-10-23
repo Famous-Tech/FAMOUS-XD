@@ -1088,7 +1088,7 @@ let teks = `*「 Tag Admins 」*`
 for (let mem of groupAdmins) {
 teks += ` @${mem.split('@')[0]}\n`
 }
-gss.sendMessage(m.chat, { teks, mentions: groupAdmins}, { quoted: m })
+gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 }
 break;
 
