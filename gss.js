@@ -1114,18 +1114,26 @@ case 'getmusic': {
   let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
   let quality = args[1] ? args[1] : '128kbps';
-  let media = await yta(urls[text - 1], quality);
 
-  if (!media || !media.filesize) {
+  try {
+    let media = await yta(urls[text - 1], quality);
+
+    if (!media || !media.filesize) {
+      console.error('Media information is missing or incomplete', media);
+      return m.reply('Error getting media information.');
+    }
+
+    if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
+
+    gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
+    gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
+  } catch (error) {
+    console.error('Error getting media information:', error);
     return m.reply('Error getting media information.');
   }
-
-  if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
-
-  gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
-  gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
 }
 break;
+
 
 case 'getvideo': {
   let { ytv } = require('./lib/y2mate');
