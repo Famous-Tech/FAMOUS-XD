@@ -1111,10 +1111,10 @@ case 'getmusic': {
   if (!text) throw `Example : ${prefix + command} 1`;
   if (!m.quoted) return m.reply('Reply to a message');
   if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
-  let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  let urls = m.quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
   let quality = args[1] ? args[1] : '128kbps';
-
+  
   try {
     let media = await yta(urls[text - 1], quality);
 
@@ -1123,7 +1123,10 @@ case 'getmusic': {
       return m.reply('Error getting media information.');
     }
 
-    if (media.filesize >= 100000) return m.reply('File Exceeds Limit ' + util.format(media));
+    if (media.filesize >= 100000) {
+      console.error('File size exceeds limit', media.filesize);
+      return m.reply('File Exceeds Limit ' + util.format(media));
+    }
 
     gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
     gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
