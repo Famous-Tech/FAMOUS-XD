@@ -1111,37 +1111,40 @@ case 'getmusic': {
   if (!text) throw `Example : ${prefix + command} 1`;
   if (!m.quoted) return m.reply('Reply to a message');
   if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  
+  // Log extracted URLs for debugging
+  console.log('Extracted URLs:', m.quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi')));
+
   let urls = m.quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
+  
   let quality = args[1] ? args[1] : '128kbps';
   
- try {
-  let media = await yta(urls[text - 1], quality);
+  try {
+    let media = await yta(urls[text - 1], quality);
 
-  if (!media || !media.filesize || !media.dl_link) {
-    console.error('Media information is missing or incomplete', media);
+    // Log media information for debugging
+    console.log('Media Information:', media);
+
+    if (!media || !media.filesize || !media.dl_link || !media.dl_link.endsWith('.mp3')) {
+      console.error('Error getting media information:', media);
+      return m.reply('Error getting media information.');
+    }
+
+    if (media.filesize >= 100000) {
+      console.error('File size exceeds limit', media.filesize);
+      return m.reply('File Exceeds Limit ' + util.format(media));
+    }
+
+    gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
+    gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
+  } catch (error) {
+    console.error('Error getting media information:', error);
     return m.reply('Error getting media information.');
   }
-
-  if (media.filesize >= 100000) {
-    console.error('File size exceeds limit', media.filesize);
-    return m.reply('File Exceeds Limit ' + util.format(media));
-  }
-
-  if (!media.dl_link.endsWith('.mp3')) {
-    console.error('No MP3 link found', media.dl_link);
-    return m.reply('Error getting MP3 link.');
-  }
-
-  gss.sendImage(m.chat, media.thumb, `⭔ Title : ${media.title}\n⭔ File Size : ${media.filesizeF}\n⭔ Url : ${urls[text - 1]}\n⭔ Ext : MP3\n⭔ Resolution : ${args[1] || '128kbps'}`, m);
-  gss.sendMessage(m.chat, { audio: { url: media.dl_link }, mimetype: 'audio/mpeg', fileName: `${media.title}.mp3` }, { quoted: m });
-} catch (error) {
-  console.error('Error getting media information:', error);
-  return m.reply('Error getting media information.');
-}
-
 }
 break;
+
 
 
 case 'getvideo': {
