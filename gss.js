@@ -1985,7 +1985,8 @@ case 'dalle': case 'img': case 'image': {
   try {
     m.reply('*Please wait, generating images...*');
 
-    const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)`;
+    const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}`;
+
 
     axios.get(endpoint)
       .then(async (response) => {
