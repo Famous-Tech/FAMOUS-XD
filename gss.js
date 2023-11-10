@@ -2036,6 +2036,7 @@ fetchImageData();
 
 break;
 
+/*
 case "toanime":
                 let q = m.quoted ? m.quoted : m;
                 let mime = (q.msg || q).mimetype || q.mediaType || "";
@@ -2060,7 +2061,7 @@ case "toanime":
                     }
                 }
                 break;
-
+*/
   
 case 'bug':
 case 'request':
