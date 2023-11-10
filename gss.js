@@ -2021,8 +2021,23 @@ case 'toanime': {
 
   m.reply('*This command can turn your photo into anime*')
 
-  let data = await q.download?.()
-  let image = await uploadImage(data)
+  let data;
+if (q.download) {
+  try {
+    data = await q.download();
+  } catch (downloadError) {
+    throw `Error downloading the image: ${downloadError.message}`;
+  }
+} else {
+  throw 'No image to process.';
+}
+
+if (!data || !Buffer.isBuffer(data)) {
+  throw 'Invalid image data.';
+}
+
+let image = await uploadImage(data);
+
 
   try {
     let anime = `https://api.lolhuman.xyz/api/imagetoanime?apikey=${lolkeysapi}&img=${image}`
