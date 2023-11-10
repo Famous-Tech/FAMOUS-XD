@@ -1991,38 +1991,49 @@ case 'system': case 'info': case 'ram': case 'usage':
 mainSys();
 break;
 
-case 'dalle': case 'img': case 'image': {
-  if (!text) throw `*This command generates images from text*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} elon musk in pink output*`; 
+case 'imagine':
+  if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`; 
 
+async function fetchImageData() {
+  await doReact("⏳");
+  let thingMsg = await gss.sendMessage(m.chat, { text: 'Generating Images Please wait...' });
+  const texti = text;
   try {
-  m.reply('*Please wait, generating images...*');
+    const response = await axios.get(`https://v2-guru-indratensei.cloud.okteto.net/scrape?query=${texti}`);
+    const data = response.data;
 
-  const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}`;
-
-  axios.get(endpoint)
-    .then(async (response) => {
-        const data = response.data;
-
-        if (data.result && Array.isArray(data.result) && data.result.length >= 3) {
-
-          const [url1, url2, url3] = data.result.slice(0, 3);
-
-          await gss.sendMessage(m.chat, { image: { url: url1 }, caption: text }, { quoted: m });
-          await gss.sendMessage(m.chat, { image: { url: url2 }, caption: text }, { quoted: m });
-          await gss.sendMessage(m.chat, { image: { url: url3 }, caption: text }, { quoted: m });
-        } else {
-          throw '*Image generation failed*';
+    const images = data.image_links;
+    const timeforgen = data.execution_time;
+    const genetd =  `✅ Sucsessfully generated in ${timeforgen}`
+    const randomImageIndex = Math.floor(Math.random() * images.length);
+    const randomImageLink = images[randomImageIndex];
+    console.log(randomImageLink);
+    await gss.sendMessage(m.chat, {
+        image: {
+          url: randomImageLink,
+        },
+        caption: text,
+      }, {
+        quoted: m,
+      });
+     await gss.relayMessage(m.chat, {
+      protocolMessage: {
+        key: thingMsg.key,
+        type: 14,
+        editedMessage: {
+          conversation: genetd
         }
-})
-    .catch((error) => {
-      console.error('Error generating images:', error);
-      throw '*Oops! Something went wrong while generating images. Please try again later.*';
-    });
-} catch (error) {
-  console.error('Error in image generation:', error);
-  throw '*Oops! Something went wrong while generating images. Please try again later.*';
+      }
+    }, {});
+    await doReact("✅");
+    console.log(genetd)
+  } catch (error) {
+    console.error('Error fetching image data:', error);
+  }
 }
-}
+
+fetchImageData();
+
 break;
 
 case "toanime":
