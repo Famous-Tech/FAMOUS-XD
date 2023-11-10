@@ -2012,6 +2012,37 @@ case 'dalle': case 'img': case 'image': {
 }
 break;
 
+case 'toanime': {
+  let q = m.quoted ? m.quoted : m
+  let mime = (q.msg || q).mimetype || q.mediaType || ""
+
+  if (!/image/g.test(mime)) throw '*Respond to an image*'
+
+  m.reply('*This command can turn your photo into anime*')
+
+  let data = await q.download?.()
+  let image = await uploadImage(data)
+
+  try {
+    let anime = `https://api.lolhuman.xyz/api/imagetoanime?apikey=${lolkeysapi}&img=${image}`
+    await gss.sendFile(m.chat, anime, 'error.jpg', null, m)
+  } catch (i) {
+    try {
+      let anime2 = `https://api.zahwazein.xyz/photoeditor/jadianime?url=${image}&apikey=${keysxxx}`
+      await gss.sendFile(m.chat, anime2, 'error.jpg', null, m)
+    } catch (a) {
+      try {
+        let anime3 = `https://api.caliph.biz.id/api/animeai?img=${image}&apikey=caliphkey`
+        await gss.sendFile(m.chat, anime3, 'error.jpg', null, m)
+      } catch (e) {
+        throw '*Error: Check if the person\'s face is visible*'
+      }
+    }
+  }
+}
+break;
+
+
   
 case 'bug':
 case 'request':
