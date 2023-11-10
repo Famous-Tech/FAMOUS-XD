@@ -1984,32 +1984,33 @@ case 'dalle': case 'img': case 'image': {
   if (!text) throw `*This command generates images from text*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} elon musk in pink output*`; 
 
   try {
-    m.reply('*Please wait, generating images...*');
+  m.reply('*Please wait, generating images...*');
 
-    const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}`;
+  const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}`;
 
-
-    axios.get(endpoint)
-      .then(async (response) => {
+  axios.get(endpoint)
+    .then(async (response) => {
         const data = response.data;
 
         if (data.result && Array.isArray(data.result) && data.result.length >= 3) {
 
           const [url1, url2, url3] = data.result.slice(0, 3);
 
-          await client.sendMessage(m.chat, { image: { url: url1 }, caption: text }, { quoted: m });
-          await client.sendMessage(m.chat, { image: { url: url2 }, caption: text }, { quoted: m });
-          await client.sendMessage(m.chat, { image: { url: url3 }, caption: text }, { quoted: m });
+          await gss.sendMessage(m.chat, { image: { url: url1 }, caption: text }, { quoted: m });
+          await gss.sendMessage(m.chat, { image: { url: url2 }, caption: text }, { quoted: m });
+          await gss.sendMessage(m.chat, { image: { url: url3 }, caption: text }, { quoted: m });
         } else {
           throw '*Image generation failed*';
         }
-      })
-      .catch(() => {
-        throw '*Oops! Something went wrong while generating images. Please try again later.*';
-      });
-  } catch {
-    throw '*Oops! Something went wrong while generating images. Please try again later.*';
-  }
+})
+    .catch((error) => {
+      console.error('Error generating images:', error);
+      throw '*Oops! Something went wrong while generating images. Please try again later.*';
+    });
+} catch (error) {
+  console.error('Error in image generation:', error);
+  throw '*Oops! Something went wrong while generating images. Please try again later.*';
+}
 }
 break;
 
