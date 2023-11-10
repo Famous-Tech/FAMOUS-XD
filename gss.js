@@ -1995,7 +1995,6 @@ case 'imagine':
   if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`; 
 
 async function fetchImageData() {
-  await doReact("⏳");
   let thingMsg = await gss.sendMessage(m.chat, { text: 'Generating Images Please wait...' });
   const texti = text;
   try {
@@ -2016,17 +2015,6 @@ async function fetchImageData() {
       }, {
         quoted: m,
       });
-     await gss.relayMessage(m.chat, {
-      protocolMessage: {
-        key: thingMsg.key,
-        type: 14,
-        editedMessage: {
-          conversation: genetd
-        }
-      }
-    }, {});
-    await doReact("✅");
-    console.log(genetd)
   } catch (error) {
     console.error('Error fetching image data:', error);
   }
