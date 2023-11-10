@@ -1995,7 +1995,6 @@ case 'imagine':
   if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`; 
 
 async function fetchImageData() {
-  await doReact("⏳");
   let thingMsg = await gss.sendMessage(m.chat, { text: 'Generating Images Please wait...' });
   const texti = text;
   try {
