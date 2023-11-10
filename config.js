@@ -22,8 +22,8 @@ global.APIKeys = {
 // Other
 apikey: "bf2d2cf29b3edc604b447983",
 global.ownername = 'sid bhai'
-global.owner = ['919142294671']
-global.premium = ['919142294671']
+global.owner = ['917050906659']
+global.premium = ['917050906659']
 global.packname = 'gss botwa'
 global.author = 'gss botwa'
 global.sessionName = 'session'
