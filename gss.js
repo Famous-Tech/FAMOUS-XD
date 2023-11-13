@@ -1607,7 +1607,7 @@ async function getAppPackageInfoo(appName) {
     case 'app':
 case 'apk':
 case 'apkdl': {
-const apiKeyss = ['haikalgans']; // Replace 'your_api_key' with your actual API key
+const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
   const appName = text; // Assuming text contains the app name
 
   if (!appName) {
