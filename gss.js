@@ -1538,7 +1538,7 @@ case 'instagram':
 //via app name 
 async function downloadApkk(apiKey, packageName, outputPath) {
     try {
-        const apiUrl = `https://api.lolhuman.xyz/api/apkdownloader?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
+        const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -1553,19 +1553,19 @@ async function downloadApkk(apiKey, packageName, outputPath) {
         console.log('Content-Type:', response.headers.get('content-type'));
         console.log('API Response:', JSON.stringify(result, null, 2)); // Pretty-print the JSON response
 
-        if (result && result.status === 200 && result.result && result.result.apk_link) {
-    const apkUrl = result.result.apk_link;
+        if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
+            const apkUrl = result.result.file.path;
 
-    const apkResponse = await fetch(apkUrl);
-    const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
+            const apkResponse = await fetch(apkUrl);
+            const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
 
-    // Save the APK
-    fs.writeFileSync(outputPath, apkBuffer, 'binary');
+            // Save the APK
+            fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
-    console.log(`APK downloaded successfully and saved to: ${outputPath}`);
+            console.log(`APK downloaded successfully and saved to: ${outputPath}`);
 
-    return outputPath; // Return the path of the APK file
-} else {
+            return outputPath; // Return the path of the APK file
+        }  else {
     throw new Error('Invalid API response or APK link not found');
 }
     } catch (error) {
@@ -1757,9 +1757,9 @@ async function getAppPackageInfo(appName) {
 
 
 
-    case 'app': 
-      case 'apk': 
-        case 'apkdl': {
+    case 'app2': 
+      case 'apk2': 
+        case 'apkdl2': {
   const appName = text; // Assuming text contains the app name
 
   if (!appName) {
