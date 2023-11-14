@@ -1780,13 +1780,28 @@ const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API 
       // Download the APK directly
       const outputPath = 'downloaded_app.apk';
       await downloadApk(apiKeyss[0], packageName, outputPath);
+      
+      //send app details
+      await gss.sendMessage(m.chat, {
+icon: appDetails.icon,
+        name: appDetails.name,
+        package: appDetails.package,
+        developer: {
+          name: appDetails.developer.name,
+          website: appDetails.developer.website,
+          email: appDetails.developer.email,
+          privacy: appDetails.developer.privacy
+        },
+        updated: appDetails.updated,
+        size: appDetails.size
+      })
 
       // Send the APK file as a document using sendMessage
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive',
         fileName: `${appName}.apk`, // Use packageName in the fileName
-        caption: appDetails.developer.name,
+        caption: 'Downloaded by gss botwa'
       }, { quoted: m });
 
       // Optionally, you can delete the temporary file
