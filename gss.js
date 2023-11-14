@@ -1800,17 +1800,25 @@ case 'apkdl': {
         if (appInfo.packageNames && appInfo.packageNames.length > 0) {
             const packageName = appInfo.packageNames[0]; // Take the first package name
 
+            // Send the app icon
+            if (appInfo.icon) {
+                await gss.sendImage(m.chat, appInfo.icon, { quoted: m, caption: `*${appName}* - Icon` });
+            }
+
+            // Send app details as caption
+            const detailsCaption = `*${appName}*\n\nAuthor: ${appInfo.author}\nSize: ${appInfo.size}\nLast Update: ${appInfo.lastUpdate}`;
+            await m.reply(detailsCaption, { quoted: m });
+
             // Download the APK directly
             const outputPath = 'downloaded_app.apk';
             await downloadApk(apiKeyss[0], packageName, outputPath);
 
-            // Send the APK file as a document using sendMessage along with additional details
+            // Send the APK file as a document using sendMessage
             await gss.sendMessage(m.chat, {
                 document: fs.readFileSync(outputPath),
                 mimetype: 'application/vnd.android.package-archive',
                 fileName: `${packageName}.apk`, // Use packageName in the fileName
-                caption: `*Downloaded by gss botwa*\n\n*App Details:*\nSize: ${appInfo.appSize}\nAuthor: ${appInfo.appAuthor}\nLast Update: ${appInfo.appLastUpdate}`,
-                thumbnail: appInfo.appIcon // Use appIcon as a thumbnail for the document
+                caption: 'Downloaded by gss botwa'
             }, { quoted: m });
 
             // Optionally, you can delete the temporary file
@@ -1829,6 +1837,7 @@ case 'apkdl': {
 
     break;
 }
+
 
 
 case 'mediafire': {
