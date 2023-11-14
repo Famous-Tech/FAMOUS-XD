@@ -1690,7 +1690,8 @@ case 'qc':
 
 //apk downloader
 async function fetchAppDetails(packageName) {
-  const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
+const apiKeyy = '8sXSeFyb7T'; 
+  const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKeyy)}&package=${encodeURIComponent(packageName)}`;
 
   try {
     const response = await fetch(apiUrl);
