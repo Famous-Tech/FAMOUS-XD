@@ -1775,26 +1775,36 @@ const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API 
     const appInfo = await getAppPackageInfo(appName);
 
     if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-      const packageName = appInfo.packageNames[0]; // Take the first package name
+        const packageName = appInfo.packageNames[0]; // Take the first package name
 
-      // Download the APK directly
-      const outputPath = 'downloaded_app.apk';
-      await downloadApk(apiKeyss[0], packageName, outputPath);
+        // Additional information
+        const appDetails = await fetchAppDetails(packageName);
 
-      // Send the APK file as a document using sendMessage
-      await gss.sendMessage(m.chat, {
-        document: fs.readFileSync(outputPath),
-        mimetype: 'application/vnd.android.package-archive',
-        fileName: `${appName}.apk`, // Use packageName in the fileName
-        caption: 'Downloaded by gss botwa'
-      }, { quoted: m });
+        // Send app icon using sendMessage
+        await gss.sendMessage(m.chat, {
+            image: appDetails.icon,
+            caption: `*${appDetails.name}*\nPackage Name: ${appDetails.package}\nAuthor: ${appDetails.developer.name}\nLast Update: ${appDetails.updated}\nSize: ${appDetails.size}`,
+            quoted: m
+        });
 
-      // Optionally, you can delete the temporary file
-      await fs.promises.unlink(outputPath);
+        // Download the APK directly
+        const outputPath = 'downloaded_app.apk';
+        await downloadApk(apiKeyss[0], packageName, outputPath);
+
+        // Send the APK file as a document using sendMessage
+        await gss.sendMessage(m.chat, {
+            document: fs.readFileSync(outputPath),
+            mimetype: 'application/vnd.android.package-archive',
+            fileName: `${appName}.apk`, // Use packageName in the fileName
+            caption: 'Downloaded by gss botwa'
+        }, { quoted: m });
+
+        // Optionally, you can delete the temporary file
+        await fs.promises.unlink(outputPath);
     } else {
-      m.reply(`Could not find package names for ${appName}.`);
+        m.reply(`Could not find package names for ${appName}.`);
     }
-  } catch (error) {
+} catch (error) {
     if (error.message.includes('API key not found')) {
       m.reply('API key not found. Please check your API key and register if necessary.');
     } else {
