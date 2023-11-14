@@ -2247,7 +2247,7 @@ case "ai":
 case "gpt":
   try {
     const userInput = text;
-    let thinkingMessage = await gss.sendMessage(from, { text: 'Thinking...' }, { quoted: m });
+    let thinkingMessage = await gss.sendMessage(m.from, { text: 'Thinking...' }, { quoted: m });
     const { key } = thinkingMessage;
 
     const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(userInput)}`;
@@ -2269,7 +2269,7 @@ case "voiceai":
 case "voicegpt":
   try {
     const userInput = text;
-    let thinkingMessage = await gss.sendMessage(from, { text: 'Thinking...' }, { quoted: m });
+    let thinkingMessage = await gss.sendMessage(m.from, { text: 'Thinking...' }, { quoted: m });
     const { key } = thinkingMessage;
 
     const speechURL = `https://matrix-api-service.up.railway.app/speech?text=${encodeURIComponent(userInput)}`;
