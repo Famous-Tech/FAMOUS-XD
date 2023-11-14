@@ -10,6 +10,7 @@ const fs = require('fs')
 let yts = require("yt-search");
 const ytdl = require("@distube/ytdl-core");
 const util = require('util')
+const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk')
 const { exec, spawn, execSync } = require("child_process")
@@ -2062,6 +2063,63 @@ break;
   let filename = (await fetch(gitUrl, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
   gss.sendMessage(m.chat, { document: { url: gitUrl }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply(mess.error))
   break;
+  
+case 'true':
+case 'truecaller':
+if (!text) {
+  // Add a reply when no phone number is provided
+  m.reply('Please provide a phone number.');
+} else {
+  // Check if the provided phone number starts with a '+', if not, add the country code
+  const phoneNumber = text.startsWith('+') ? text : `+${text}`;
+try {
+  const installationId = 'a1i0Q--j6pQD-V1-BJnOIongGhfL3HZuNr-yb1WJChcUdQn7GEc9yAScT71cs8_F';
+  const apiUrl = `https://truecallerjs-api.vercel.app/search?phone=${encodeURIComponent(phoneNumber)}&id=${installationId}`;
+
+  let response = await axios.get(apiUrl);
+  console.log(response);
+  let json = response.data;
+
+const { name, alternateName, addresses, email, countryDetails } = json;
+
+let info = `╭––『 *Phone Detail* 』\n`;
+info += `┆ ⚝ *Name:* ${name}\n`;
+
+if (addresses && addresses.length > 0) {
+  info += `┆ ⚝ *Address:* ${addresses[0].city}, ${addresses[0].countryCode}\n`;
+  info += `┆ ⚝ *Time Zone:* ${addresses[0].timeZone}\n`;
+  info += `┆ ⚝ *Pin Code* ${addresses[0].zipCode}\n`;
+  info += `┆ ⚝ *Street* ${addresses[0].street}\n`;
+}
+
+info += `┆ ⚝ *Email:* ${email}\n`;
+info += `╰–––––––––––––––༓\n`
+
+if (countryDetails) {
+  info += `╭––『 *countryDetails* 』\n`;
+  info += `┆ ⚝ *Name:* ${countryDetails.name}\n`;
+  info += `┆ ⚝ *Native:* ${countryDetails.native}\n`;
+  info += `┆ ⚝ *Phone Code:* +${countryDetails.phone[0]}\n`;
+  info += `┆ ⚝ *Continent:* ${countryDetails.continent}\n`;
+  info += `┆ ⚝ *Capital:* ${countryDetails.capital}\n`;
+  info += `┆ ⚝ *Currency:* ${countryDetails.currency.join(', ')}\n`;
+  info += `┆ ⚝ *Languages:* ${countryDetails.languages.join(', ')}\n`;
+  info += `┆ ⚝ *Flag:* ${countryDetails.flag}\n`;
+  info += `╰–––––––––––––––༓`;
+}
+
+
+      await gss.sendMessage(m.chat, {
+        text: info,
+      }, {
+        quoted: m,
+      });
+
+} catch (error) {
+  console.error(error);
+}
+break;
+  
 
 case 'google': {
   if (!text) throw `Example : ${prefix + command} fatih arridho`;
