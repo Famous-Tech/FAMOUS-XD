@@ -1790,7 +1790,7 @@ if (!text) {
 break;
 
 case 'appd':
-  const apiKey = '8sXSeFyb7T'; // Replace with your actual API key
+  const apiKey = 'Uc3LRsLE2d'; // Replace with your actual API key
   const appDetailsUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(text)}`;
 
   try {
