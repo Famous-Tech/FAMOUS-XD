@@ -2261,22 +2261,26 @@ mainSys();
 break;
 
 case 'tiktok':
+  case 'tt':
 case 'tiktoknowm':
-  if (!text) throw 'Enter Query Link!';
-  m.reply(mess.wait);
-
   try {
-    let anu = await fetchJson(`https://api.zahwazein.xyz/downloader/tiktok?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(text)}`);
-    
-    if (anu.status) {
-      let message = {
-        video: { url: anu.result.nowatermark },
-        caption: `Download From ${text}`
-      };
-      
-      gss.sendMessage(m.chat, message, { quoted: m });
+    if (!text) throw 'Enter Query Link!';
+
+    m.reply(mess.wait);
+
+    let anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok2?apikey=haikalgans&url=${encodeURIComponent(text)}`);
+
+    console.log('TikTok API Response:', anu);
+
+    if (anu.status === 200 && anu.message === 'success' && anu.result) {
+      const videoUrl = anu.result;
+
+      const response = await axios.get(videoUrl, { responseType: 'arraybuffer' });
+      const mediaBuffer = Buffer.from(response.data);
+
+      await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
     } else {
-      m.reply(`Error: ${anu.message}`);
+      m.reply('Error: Unable to fetch TikTok video. Check the console logs for more details.');
     }
   } catch (error) {
     console.error(error);
