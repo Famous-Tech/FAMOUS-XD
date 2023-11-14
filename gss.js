@@ -1535,6 +1535,73 @@ case 'instagram':
     }
     break;
 }
+
+
+case 'anime':
+case 'girl':
+case 'animegirl':
+case 'sexy':
+case 'sexygirl':
+case 'sexyanime':
+  const arg1 = args[0];
+  let numImages = parseInt(args[args.length - 1]);
+
+  // Set a limit of 10 images
+  numImages = Math.min(numImages, 10);
+
+  if (numImages > 10) {
+    return m.reply('Sorry, you can request a maximum of 10 images at a time.');
+  }
+
+  if (!text) {
+    const imageUrl = 'https://matrix-api-service.up.railway.app/randomgirl';
+    gss.sendMessage(m.chat, {
+      image: {
+        url: imageUrl,
+      },
+      caption: text,
+    }, {
+      quoted: m,
+    });
+  } else {
+    for (let i = 0; i < numImages; i++) {
+      const imageUrl = `https://matrix-api-service.up.railway.app/${arg1}`;
+      gss.sendMessage(m.chat, {
+        image: {
+          url: imageUrl,
+        },
+        caption: text,
+      }, {
+        quoted: m,
+      });
+    }
+  }
+  break;
+
+
+
+case 'waifu':
+// Make a GET request to the API endpoint
+axios.get('https://matrix-api-service.up.railway.app/waifu') // Replace with your API URL
+  .then(response => {
+    const imageUrl = response.data.imageUrl;
+     gss.sendMessage(m.chat, {
+        image: {
+          url: imageUrl,
+        },
+        caption: text,
+      }, {
+        quoted: m,
+      });
+    console.log('Image URL:', imageUrl);
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+  });
+break;
+
+
+
 //via app name 
 async function downloadApkk(apiKey, packageName, outputPath) {
     try {
