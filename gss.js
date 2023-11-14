@@ -1807,7 +1807,7 @@ if (!text) {
 // Send the app icon as an image
 await gss.sendMessage(m.chat, {
   image: fs.readFileSync(appDetails.icon),
-  caption: 'App Icon',
+  caption: App Details,
   quoted: m
 });
       await gss.sendMessage(m.chat, {
