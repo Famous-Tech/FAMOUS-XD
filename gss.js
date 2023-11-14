@@ -122,8 +122,6 @@ async function typewriterEffect(result, key) {
   console.log('Typing effect complete');
 }
 
-// Example usage:
-const m = { key: 'Key' }; // Replace this with your actual message object
 const resultText = 'This is a sample result text';
 await typewriterEffect(resultText, m.key);
 
