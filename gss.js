@@ -2261,7 +2261,7 @@ async function typewriterEffectWordByWord(message, m) {
   for (const word of words) {
     await new Promise(resolve => setTimeout(resolve, 100)); // Adjust the delay as needed
     const currentMessage = words.slice(0, words.indexOf(word) + 1).join(' ');
-    gss.sendMessage(m.chat, currentMessage, m);
+    m.reply(m.chat, currentMessage, m);
   }
 }
 
