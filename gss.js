@@ -2358,38 +2358,6 @@ fetchImageData();
 
 break;
 
-case "toanime":
-  try {
-    let q = m.quoted ? m.quoted : m;
-    let mime = (q.msg || q).mimetype || q.mediaType || "";
-
-    if (!/image/g.test(mime)) throw "*Respond to an image*";
-
-    m.reply("*This command can turn your photo into anime*");
-
-    const image = encodeURIComponent(q.file);
-
-    const animeAPIs = [
-      `https://api.lolhuman.xyz/api/imagetoanime?apikey=GataDios&img=${image}`,
-      `https://api.zahwazein.xyz/photoeditor/jadianime?url=${image}&apikey=6fb0eff124`,
-      `https://api.caliph.biz.id/api/animeai?img=${image}&apikey=caliphkey`
-    ];
-
-    for (const animeAPI of animeAPIs) {
-      try {
-        await m.reply(animeAPI, { mimetype: "image/png" });
-        return; // If successful, exit the loop
-      } catch (error) {
-        console.log(`API failed: ${animeAPI}`);
-      }
-    }
-
-    throw "*Error: Check if the person's face is visible*";
-  } catch (error) {
-    console.error(error);
-    m.reply(error);
-  }
-  break;
 
   
 case 'bug':
