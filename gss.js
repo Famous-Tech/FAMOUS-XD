@@ -1651,7 +1651,7 @@ case 'qc':
 
             const buffer = Buffer.from(response.data.result.image, 'base64');
 
-            gss.sendSticker(m.chat, buffer, m, {
+            gss.sendImageAsSticker(m.chat, buffer, m, {
                 packname: global.packname,
                 author: global.author
             });
