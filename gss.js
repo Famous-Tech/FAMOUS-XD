@@ -1,4 +1,3 @@
-
 require("dotenv").config();  
 require('./config')
 const Func = ('./lib/function.js');
@@ -2243,19 +2242,20 @@ case 'system': case 'info': case 'ram': case 'usage':
 mainSys();
 break;
 
-case "ai":
-case "gpt":
-  try {
-    const userInput = text;
-    const replyMessage = await m.reply({ text: 'Thinking...' });
+case 'ai': case 'gpt': case 'chatgpt'
+  if (!text) {
+    await m.reply(`*You can use the AI command with text to get a response.*\n\n*Example usage:*\n*◉ ${prefix + command} How does photosynthesis work?*`);
+    break;
+  }
 
-    const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(userInput)}`;
+  try {
+    const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(text)}`;
     let response = await axios.get(apiEndpoint);
     let responseData = response.data;
 
     if (responseData.result) {
       const result = responseData.result;
-      await typewriterEffect(result, replyMessage.key);
+      await typewriterEffect(result, m.key);
     } else {
       console.log('API returned an unexpected response:', responseData);
     }
@@ -2264,27 +2264,38 @@ case "gpt":
   }
   break;
 
-case "voiceai":
-case "voicegpt":
-  try {
-    const userInput = text;
-    const replyMessage = await m.reply({ text: 'Thinking...' });
+case 'voiceai': case 'voicegpt':
+  if (!text) {
+    await m.reply(`*You can use the Voice AI command with text to get a spoken response.*\n\n*Example usage:*\n*◉ ${prefix + command} Tell me a joke.*`);
+    break;
+  }
 
-    const speechURL = `https://matrix-api-service.up.railway.app/speech?text=${encodeURIComponent(userInput)}`;
-    await gss.sendMessage(m.chat, {
-      audio: {
-        url: speechURL,
-      },
-      mimetype: 'audio/mp4',
-      ptt: true,
-      fileName: `${userInput}.mp3`,
-    }, {
-      quoted: replyMessage,
-    });
+  try {
+    const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(text)}`;
+    let response = await axios.get(apiEndpoint);
+    let responseData = response.data;
+
+    if (responseData.result) {
+      const result = responseData.result;
+      const speechURL = `https://matrix-api-service.up.railway.app/speech?text=${encodeURIComponent(result)}`;
+      await gss.sendMessage(m.chat, {
+        audio: {
+          url: speechURL,
+        },
+        mimetype: 'audio/mp4',
+        ptt: true,
+        fileName: `${text}.mp3`,
+      }, {
+        quoted: m,
+      });
+    } else {
+      console.log('API returned an unexpected response:', responseData);
+    }
   } catch (error) {
     console.error(error);
   }
   break;
+
 
 
 case 'imagine': case 'dalle': case 'aiimage':
