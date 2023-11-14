@@ -2260,21 +2260,27 @@ case 'system': case 'info': case 'ram': case 'usage':
 mainSys();
 break;
 
-case 'stalker':
-case 'stalk':
-  if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply('Your Daily Limit Has Been Exhausted');
-  if (!text) return m.reply(`Example: ${prefix + command} ff 552992060`);
-  
-  let [type, id] = args;
+case 'tiktok':
+case 'tiktoknowm':
+  if (!text) throw 'Enter Query Link!';
+  m.reply(mess.wait);
 
-  if (type.toLowerCase() == 'ff') {
-    if (!id) throw `No Query id, Example ${prefix + command} ff 552992060`;
-    let anu = await fetchJson(api('zenz', '/api/nickff', { apikey: global.APIKeys[global.APIs['zenz']], query: id }));
-    if (anu.status == false) return m.reply(anu.result.message);
-    m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`);
-    db.data.users[m.sender].limit -= 1;
-  } else {
-    m.reply(`Example: ${prefix + command} type id\n\nList Type:\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`);
+  try {
+    let anu = await fetchJson(`https://api.zahwazein.xyz/downloader/tiktok?apikey=zenzkey_a89b400e2876&url=${encodeURIComponent(text)}`);
+    
+    if (anu.status) {
+      let message = {
+        video: { url: anu.result.nowatermark },
+        caption: `Download From ${text}`
+      };
+      
+      gss.sendMessage(m.chat, message, { quoted: m });
+    } else {
+      m.reply(`Error: ${anu.message}`);
+    }
+  } catch (error) {
+    console.error(error);
+    m.reply('An error occurred while processing your request.');
   }
   break;
 
