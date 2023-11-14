@@ -1752,6 +1752,8 @@ async function getAppPackageInfo(appName) {
         const appIcon = firstPackageElement.find('.uzcko').attr('src'); // Extract app icon URL
         const appDetailsUrl = 'https://play.google.com' + firstPackageElement.find('.wXUyZd a').attr('href');
 
+        // Log appDetailsUrl
+        console.log('App Details URL:', appDetailsUrl);
 
         // Make another request to get detailed information
         const detailsResponse = await axios.get(appDetailsUrl);
@@ -1780,6 +1782,7 @@ async function getAppPackageInfo(appName) {
         throw error;
     }
 }
+
 
 
 
