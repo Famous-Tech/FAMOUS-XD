@@ -1808,8 +1808,9 @@ case 'appd':
 
       // Send app details
       await gss.sendMessage(m.chat, {
+        image: appDetails.icon,
         caption: `*${appDetails.appName}*\nSize: ${appDetails.size}\nLast Update: ${appDetails.lastUpdate}`,
-        thumbnail: appDetails.icon, // Assuming the API provides the icon URL
+         // Assuming the API provides the icon URL
       }, { quoted: m });
     } else {
       throw new Error('Invalid API response or app details not found');
