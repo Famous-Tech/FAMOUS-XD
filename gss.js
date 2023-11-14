@@ -1886,14 +1886,14 @@ const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API 
   }
 
   try {
-    const appInfo = await getAppPackageInfoo(appName);
+    const appInfo = await getAppPackageInfo(appName);
 
     if (appInfo.packageNames && appInfo.packageNames.length > 0) {
       const packageName = appInfo.packageNames[0]; // Take the first package name
 
       // Download the APK directly
       const outputPath = 'downloaded_app.apk';
-      await downloadApkk(apiKeyss[0], packageName, outputPath);
+      await downloadApk(apiKeyss[0], packageName, outputPath);
 
       // Send the APK file as a document using sendMessage
       await gss.sendMessage(m.chat, {
