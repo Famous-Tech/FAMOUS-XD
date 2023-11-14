@@ -2248,7 +2248,7 @@ break;
     if (responseData.result) {
       const result = responseData.result;
       // Assuming client is your chat client instance, adjust accordingly
-      client.sendMessage(m.chat, result, m);
+      gss.sendMessage(m.chat, result, m);
     } else {
       console.log('API returned an unexpected response:', responseData);
     }
