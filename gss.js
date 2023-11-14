@@ -1695,7 +1695,7 @@ async function getAppDetails(packageName) {
   // For example, you might use another API or database to get the details.
   // Return an object with the required details.
   return {
-    icon: 'https://pool.img.aptoide.com/india-market/7eb717e512141abdc5365d3f39e8d8f7_icon.png',
+    icon: icon,
     name: 'App Name',
     package: packageName,
     developer: {
