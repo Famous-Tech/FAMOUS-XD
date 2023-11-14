@@ -858,19 +858,21 @@ case 'setstatus': case 'setbiobot': case 'setbotbio': {
 break;
 
 case 'anticall': {
-  if (!isCreator) throw mess.owner;
-  let ciko = db.data.settings[botNumber].anticall;
-  if (args[0].toLowerCase() === "on") {
-    if (ciko) return m.reply(`Already Active Before`);
-    ciko = true;
-    m.reply(`AntiCall Active!`);
-  } else if (args[0].toLowerCase() === "off") {
-    if (!ciko) return m.reply(`Already Inactive Before`);
-    ciko = false;
-    m.reply(`AntiCall Deactivated!`);
-  } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} On`, `${command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
-  }
+    if (!isCreator) throw mess.owner;
+
+    let ciko = db.data.settings[botNumber].anticall;
+
+    if (args[0].toLowerCase() === "on") {
+        if (ciko) return m.reply(`Already Active Before`);
+        db.data.settings[botNumber].anticall = true;
+        m.reply(`AntiCall Active!`);
+    } else if (args[0].toLowerCase() === "off") {
+        if (!ciko) return m.reply(`Already Inactive Before`);
+        db.data.settings[botNumber].anticall = false;
+        m.reply(`AntiCall Deactivated!`);
+    } else {
+        gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} On`, `${command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
+    }
 }
 break;
 
