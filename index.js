@@ -83,23 +83,24 @@ async function startgss() {
 
     store.bind(gss.ev)
     
-    // Anti Call
-    gss.ev.on('call', async (fatihh) => {
-    let botNumber = await gss.decodeJid(gss.user.id)
-    let ciko = db.data.settings[botNumber].anticall
-    if (!ciko) return
-    console.log(fatihh)
-    for (let tihh of fatihh) {
-    if (tihh.isGroup == false) {
-    if (tihh.status == "offer") {
-    let pa7rick = await gss.sendTextWithMentions(tihh.from, `*${gss.user.name}* can't receive calls  ${tihh.isVideo ? `video` : `suara`}. Sorry @${tihh.from.split('@')[0]} you will be blocked. If by accident, please contact the owner to open it !`)
-    gss.sendContact(tihh.from, global.owner, pa7rick)
-    await sleep(8000)
-    await gss.updateBlockStatus(tihh.from, "block")
+// auto reject call when user calls
+gss.ev.on("call", async (json) => {
+    const botNumber = await gss.decodeJid(gss.user.id);
+    let ciko = db.data.settings[botNumber].anticall;
+
+    if (ciko) {
+        for (const id of json) {
+            if (id.status === "offer") {
+                console.log("Rejecting call:", id);
+                let msg = await gss.sendMessage(id.from, {
+                    text: `anti call enabled`,
+                    mentions: [id.from],
+                });
+                await gss.rejectCall(id.id, id.from);
+            }
+        }
     }
-    }
-    }
-    })
+});
 
     gss.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
