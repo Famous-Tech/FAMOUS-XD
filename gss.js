@@ -104,28 +104,6 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
-async function typewriterEffect(result, key) {
-  const typeEffect = async (message, delay) => {
-    for (let i = 0; i < message.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, delay));
-      console.log(message.substring(0, i + 1));
-    }
-  };
-
-  const words = result.split(' ');
-
-  for (const word of words) {
-    await typeEffect(word, 100); // Adjust the delay as needed
-  }
-
-  // Assuming 'key' is used for something specific, adjust accordingly
-  console.log('Typing effect complete');
-}
-
-const resultText = 'This is a sample result text';
-await typewriterEffect(resultText, m.key);
-
-  
 	
 async function getIPInfo() {
   try {
@@ -2257,26 +2235,36 @@ break;
 
 
     case 'ai':
-      if (!text) {
-        await m.reply(`*You can use the AI command with text to get a response.*\n\n*Example usage:*\n*◉ ${prefix + command} How does photosynthesis work?*`);
-        break;
-      }
+  if (!text) {
+    await m.reply(`*You can use the AI command with text to get a response.*\n\n*Example usage:*\n*◉ ${prefix + command} How does photosynthesis work?*`);
+    break;
+  }
 
-      try {
-        const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(text)}`;
-        let response = await axios.get(apiEndpoint);
-        let responseData = response.data;
+  try {
+    const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(text)}`;
+    let response = await axios.get(apiEndpoint);
+    let responseData = response.data;
 
-        if (responseData.result) {
-          const result = responseData.result;
-          await typewriterEffect(result, m.key);
-        } else {
-          console.log('API returned an unexpected response:', responseData);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      break;
+    if (responseData.result) {
+      const result = responseData.result;
+      await typewriterEffectWordByWord(result, m);
+    } else {
+      console.log('API returned an unexpected response:', responseData);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  break;
+
+async function typewriterEffectWordByWord(message, m) {
+  const words = message.split(' ');
+  for (const word of words) {
+    await new Promise(resolve => setTimeout(resolve, 100)); // Adjust the delay as needed
+    const currentMessage = words.slice(0, words.indexOf(word) + 1).join(' ');
+    client.sendMessage(m.chat, currentMessage, m);
+  }
+}
+
 
     case 'voiceai':
       if (!text) {
