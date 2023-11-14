@@ -1687,7 +1687,7 @@ case 'qc':
     break;
 
 
-
+/*
 //via app name 
 async function downloadApkk(apiKey, packageName, outputPath) {
     try {
@@ -1801,8 +1801,7 @@ const apiKeyss = ['haikalgans']; // Replace 'your_api_key' with your actual API 
   }
 
   break;
-}
-
+}  */
 //apk with poll
 async function downloadApk(apiKey, packageName, outputPath) {
     try {
@@ -1842,41 +1841,6 @@ async function downloadApk(apiKey, packageName, outputPath) {
     }
 }
 
-case 'download_app':
-case '*download_app*':
-{
-    const apiKeys = ['8sXSeFyb7T']; // Add your API keys here
-    const packageName = text; // Assuming text contains only the package name
-    const outputPath = 'downloaded_app.apk';
-
-    if (!packageName) {
-        return m.reply(`Where is the package name?\n\nExample: ${prefix + command} com.whatsapp`);
-    }
-
-    try {
-        await downloadApk(apiKeys[0], packageName, outputPath);
-
-        // Send the APK file as a document using sendMessage
-        await gss.sendMessage(m.chat, {
-            document: fs.readFileSync(outputPath),
-            mimetype: 'application/vnd.android.package-archive',
-            fileName: `${packageName}.apk`, // Use packageName in the fileName
-            caption: 'Downloaded by gss botwa'
-        }, { quoted: m });
-
-        // Optionally, you can delete the temporary file
-        await fs.promises.unlink(outputPath);
-    } catch (error) {
-        if (error.message.includes('API key not found')) {
-            return m.reply('API key not found. Please check your API key and register if necessary.');
-        } else {
-            console.error('Error while processing APK download:', error);
-            return m.reply(`An error occurred: ${error.message}`);
-        }
-    }
-    break;
-}
-
 
 
 
@@ -1910,9 +1874,10 @@ async function getAppPackageInfo(appName) {
 
 
 
-    case 'app2': 
-      case 'apk2': 
-        case 'apkdl2': {
+    case 'app':
+case 'apk':
+case 'apkdl': {
+const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
   const appName = text; // Assuming text contains the app name
 
   if (!appName) {
@@ -1920,24 +1885,37 @@ async function getAppPackageInfo(appName) {
     break;
   }
 
-  // Immediately Invoked Async Function Expression (IIFE)
-  (async () => {
-    try {
-      const appInfo = await getAppPackageInfo(appName);
+  try {
+    const appInfo = await getAppPackageInfoo(appName);
 
-      if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-        const options = [`Your App Name: ${appName}`, ...appInfo.packageNames.map((packageName) => `*download_app* ${packageName}`)];
+    if (appInfo.packageNames && appInfo.packageNames.length > 0) {
+      const packageName = appInfo.packageNames[0]; // Take the first package name
 
-        // Send a poll with package names and instructions
-        const pollMessage = `Select an option for ${appName}:\n\nInstructions:\nTo download, choose the second option.`;
-        await gss.sendPoll(m.chat, pollMessage, options);
-      } else {
-        m.reply(`Could not find package names for ${appName}.`);
-      }
-    } catch (error) {
+      // Download the APK directly
+      const outputPath = 'downloaded_app.apk';
+      await downloadApkk(apiKeyss[0], packageName, outputPath);
+
+      // Send the APK file as a document using sendMessage
+      await gss.sendMessage(m.chat, {
+        document: fs.readFileSync(outputPath),
+        mimetype: 'application/vnd.android.package-archive',
+        fileName: `${packageName}.apk`, // Use packageName in the fileName
+        caption: 'Downloaded by gss botwa'
+      }, { quoted: m });
+
+      // Optionally, you can delete the temporary file
+      await fs.promises.unlink(outputPath);
+    } else {
+      m.reply(`Could not find package names for ${appName}.`);
+    }
+  } catch (error) {
+    if (error.message.includes('API key not found')) {
+      m.reply('API key not found. Please check your API key and register if necessary.');
+    } else {
+      console.error('Error while processing APK download:', error);
       m.reply(`An error occurred: ${error.message}`);
     }
-  })();
+  }
 
   break;
 }
