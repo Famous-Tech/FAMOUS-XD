@@ -1785,7 +1785,7 @@ const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API 
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive',
-        fileName: `${packageName}.apk`, // Use packageName in the fileName
+        fileName: `${appName}.apk`, // Use packageName in the fileName
         caption: 'Downloaded by gss botwa'
       }, { quoted: m });
 
