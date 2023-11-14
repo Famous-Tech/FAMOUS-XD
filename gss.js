@@ -1731,122 +1731,80 @@ async function downloadApk(apiKey, packageName, outputPath) {
 
 
 async function getAppPackageInfo(appName) {
-    try {
-        const searchUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
-        console.log('Search URL:', searchUrl);
+  try {
+    const searchUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
+    console.log('Search URL:', searchUrl);
 
-        // Make HTTP request
-        const response = await axios.get(searchUrl);
-        console.log('Response Status:', response.status);
+    // Make HTTP request
+    const response = await axios.get(searchUrl);
+    console.log('Response Status:', response.status);
 
-        // Load HTML content into Cheerio
-        const $ = cheerio.load(response.data);
+    // Load HTML content into Cheerio
+    const $ = cheerio.load(response.data);
 
-        // Extract the first package element from the search result
-        const firstPackageElement = $('[data-item-id]').first();
+    // Extract the first package name from the search result
+    const firstPackageElement = $('[data-item-id]').first();
 
-        // Extract app details
-        const packageNameMatch = firstPackageElement.attr('data-item-id').match(/"([^"]+)"/);
-        const packageName = packageNameMatch ? packageNameMatch[1] : null;
+    // Extract only the package name part using a regular expression
+    const packageNameMatch = firstPackageElement.attr('data-item-id').match(/"([^"]+)"/);
+    const packageName = packageNameMatch ? packageNameMatch[1] : null;
 
-        const appIcon = firstPackageElement.find('.uzcko').attr('src'); // Extract app icon URL
-        const appDetailsUrlElement = firstPackageElement.find('.wXUyZd a');
-const appDetailsUrl = appDetailsUrlElement.length > 0 ? 'https://play.google.com' + appDetailsUrlElement.attr('href') : null;
+    console.log('Package Name:', packageName);
 
-if (!appDetailsUrl) {
-    console.error('App Details URL not found');
-    throw new Error('App Details URL not found'); // Throw an error to handle this situation in the calling code
+    return { packageNames: packageName ? [packageName] : [] }; // Return an array with the package name or an empty array
+  } catch (error) {
+    console.error('Error getting app package information:', error.message);
+    throw error;
+  }
 }
-        // Log appDetailsUrl
-        console.log('App Details URL:', appDetailsUrl);
-
-        // Make another request to get detailed information
-        const detailsResponse = await axios.get(appDetailsUrl);
-        const detailsHtml = detailsResponse.data;
-        const $$ = cheerio.load(detailsHtml);
-
-        const appSize = $$('.hAyfc .BgcNfc').eq(2).text(); // Extract app size
-        const appAuthor = $$('.hAyfc .BgcNfc').eq(6).text(); // Extract app author
-        const appLastUpdate = $$('.hAyfc .BgcNfc').eq(8).text(); // Extract app last update
-
-        console.log('Package Name:', packageName);
-        console.log('App Icon:', appIcon);
-        console.log('App Size:', appSize);
-        console.log('App Author:', appAuthor);
-        console.log('App Last Update:', appLastUpdate);
-
-        return {
-            packageNames: packageName ? [packageName] : [],
-            appIcon,
-            appSize,
-            appAuthor,
-            appLastUpdate
-        };
-    } catch (error) {
-        console.error('Error getting app package information:', error.message);
-        throw error;
-    }
-}
-
 
 
 
     case 'app':
 case 'apk':
 case 'apkdl': {
-    const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
-    const appName = text; // Assuming text contains the app name
+const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
+  const appName = text; // Assuming text contains the app name
 
-    if (!appName) {
-        m.reply('Please provide the app name.');
-        break;
-    }
-
-    try {
-        const appInfo = await getAppPackageInfo(appName);
-
-        if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-            const packageName = appInfo.packageNames[0]; // Take the first package name
-
-            // Send the app icon
-            if (appInfo.icon) {
-                await gss.sendImage(m.chat, appInfo.icon, { quoted: m, caption: `*${appName}* - Icon` });
-            }
-
-            // Send app details as caption
-            const detailsCaption = `*${appName}*\n\nAuthor: ${appInfo.author}\nSize: ${appInfo.size}\nLast Update: ${appInfo.lastUpdate}`;
-            await m.reply(detailsCaption, { quoted: m });
-
-            // Download the APK directly
-            const outputPath = 'downloaded_app.apk';
-            await downloadApk(apiKeyss[0], packageName, outputPath);
-
-            // Send the APK file as a document using sendMessage
-            await gss.sendMessage(m.chat, {
-                document: fs.readFileSync(outputPath),
-                mimetype: 'application/vnd.android.package-archive',
-                fileName: `${packageName}.apk`, // Use packageName in the fileName
-                caption: 'Downloaded by gss botwa'
-            }, { quoted: m });
-
-            // Optionally, you can delete the temporary file
-            await fs.promises.unlink(outputPath);
-        } else {
-            m.reply(`Could not find package names for ${appName}.`);
-        }
-    } catch (error) {
-        if (error.message.includes('API key not found')) {
-            m.reply('API key not found. Please check your API key and register if necessary.');
-        } else {
-            console.error('Error while processing APK download:', error);
-            m.reply(`An error occurred: ${error.message}`);
-        }
-    }
-
+  if (!appName) {
+    m.reply('Please provide the app name.');
     break;
+  }
+
+  try {
+    const appInfo = await getAppPackageInfo(appName);
+
+    if (appInfo.packageNames && appInfo.packageNames.length > 0) {
+      const packageName = appInfo.packageNames[0]; // Take the first package name
+
+      // Download the APK directly
+      const outputPath = 'downloaded_app.apk';
+      await downloadApk(apiKeyss[0], packageName, outputPath);
+
+      // Send the APK file as a document using sendMessage
+      await gss.sendMessage(m.chat, {
+        document: fs.readFileSync(outputPath),
+        mimetype: 'application/vnd.android.package-archive',
+        fileName: `${packageName}.apk`, // Use packageName in the fileName
+        caption: 'Downloaded by gss botwa'
+      }, { quoted: m });
+
+      // Optionally, you can delete the temporary file
+      await fs.promises.unlink(outputPath);
+    } else {
+      m.reply(`Could not find package names for ${appName}.`);
+    }
+  } catch (error) {
+    if (error.message.includes('API key not found')) {
+      m.reply('API key not found. Please check your API key and register if necessary.');
+    } else {
+      console.error('Error while processing APK download:', error);
+      m.reply(`An error occurred: ${error.message}`);
+    }
+  }
+
+  break;
 }
-
-
 
 case 'mediafire': {
     // Check if the command has arguments
