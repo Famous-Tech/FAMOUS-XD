@@ -1,14 +1,13 @@
 const fs = require('fs')
 const chalk = require('chalk')
 
-// Website Api
 global.APIs = {
-	xfarr: 'https://api.xfarr.com',
+	zenz: 'https://api.zahwazein.xyz',
 }
 
 // Apikey Website Api
 global.APIKeys = {
-	'https://api.xfarr.com': 'Uc3LRsLE2d',
+	'https://api.zahwazein.xyz': 'Your Key',
 }
 
 // Set your URL and API key here
