@@ -2298,7 +2298,52 @@ case 'system': case 'info': case 'ram': case 'usage':
 mainSys();
 break;
 
-case 'imagine':
+case "ai":
+case "gpt":
+  try {
+    const userInput = text;
+    let thinkingMessage = await gss.sendMessage(from, { text: 'Thinking...' }, { quoted: m });
+    const { key } = thinkingMessage;
+
+    const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(userInput)}`;
+    let response = await axios.get(apiEndpoint);
+    let responseData = response.data;
+
+    if (responseData.result) {
+      const result = responseData.result;
+      await typewriterEffect(result, key);
+    } else {
+      console.log('API returned an unexpected response:', responseData);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  break;
+
+case "voiceai":
+case "voicegpt":
+  try {
+    const userInput = text;
+    let thinkingMessage = await gss.sendMessage(from, { text: 'Thinking...' }, { quoted: m });
+    const { key } = thinkingMessage;
+
+    const speechURL = `https://matrix-api-service.up.railway.app/speech?text=${encodeURIComponent(userInput)}`;
+    await gss.sendMessage(m.chat, {
+      audio: {
+        url: speechURL,
+      },
+      mimetype: 'audio/mp4',
+      ptt: true,
+      fileName: `${userInput}.mp3`,
+    }, {
+      quoted: m,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+  break;
+
+case 'imagine': case 'dalle': case 'aiimage':
   if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`; 
 
 async function fetchImageData() {
