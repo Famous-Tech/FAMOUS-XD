@@ -1753,7 +1753,7 @@ async function getAppPackageInfo(appName) {
         const appDetailsUrl = 'https://play.google.com' + firstPackageElement.find('.wXUyZd a').attr('href');
 
         // Log appDetailsUrl
-        console.log('App Details URL:', appDetailsUrl);
+        m.reply('App Details URL:', appDetailsUrl);
 
         // Make another request to get detailed information
         const detailsResponse = await axios.get(appDetailsUrl);
