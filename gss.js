@@ -1689,26 +1689,6 @@ case 'qc':
 
 
 //apk with poll
-// Define the placeholder function to get app details
-async function getAppDetails(packageName) {
-  // Replace this with your implementation to fetch app details based on the packageName
-  // For example, you might use another API or database to get the details.
-  // Return an object with the required details.
-  return {
-    icon: icon,
-    name: 'App Name',
-    package: packageName,
-    developer: {
-      name: 'Developer Name',
-      website: 'Developer Website',
-      email: 'Developer Email',
-      privacy: 'Privacy Policy URL'
-    },
-    updated: 'Last Updated Date',
-    size: 'App Size'
-  };
-}
-
 async function downloadApk(apiKey, packageName, outputPath) {
   try {
     const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
@@ -1786,25 +1766,7 @@ if (!text) {
       const outputPath = 'downloaded_app.apk';
       await downloadApk(apiKeyss[0], packageName, outputPath);
 
-      const appDetails = await getAppDetails(packageName);
-
-      await gss.sendMessage(m.chat, {
-    image: fs.readFileSync(appDetails.icon),
-  caption: `
-*App Details:*
-- *Name:* ${appDetails.name}
-- *Package:* ${appDetails.package}
-- *Developer:*
-  - *Name:* ${appDetails.developer.name}
-  - *Website:* ${appDetails.developer.website}
-  - *Email:* ${appDetails.developer.email}
-  - *Privacy:* ${appDetails.developer.privacy}
-- *Updated:* ${appDetails.updated}
-- *Size:* ${appDetails.size}
-  `,
-  quoted: m
-});
-
+      
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive',
