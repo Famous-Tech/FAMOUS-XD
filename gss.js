@@ -2234,7 +2234,7 @@ break;
 
 
 
-    case 'ai':
+    case 'ai': case 'gpt': case 'chatgpt':
   if (!text) {
     await m.reply(`*You can use the AI command with text to get a response.*\n\n*Example usage:*\n*◉ ${prefix + command} How does photosynthesis work?*`);
     break;
@@ -2247,7 +2247,8 @@ break;
 
     if (responseData.result) {
       const result = responseData.result;
-      await typewriterEffectWordByWord(result, m);
+      // Assuming client is your chat client instance, adjust accordingly
+      client.sendMessage(m.chat, result, m);
     } else {
       console.log('API returned an unexpected response:', responseData);
     }
@@ -2256,17 +2257,8 @@ break;
   }
   break;
 
-async function typewriterEffectWordByWord(message, m) {
-  const words = message.split(' ');
-  for (const word of words) {
-    await new Promise(resolve => setTimeout(resolve, 100)); // Adjust the delay as needed
-    const currentMessage = words.slice(0, words.indexOf(word) + 1).join(' ');
-    m.reply(m.chat, currentMessage, m);
-  }
-}
 
-
-    case 'voiceai':
+    case 'voiceai': case 'voicegpt':
       if (!text) {
         await m.reply(`*You can use the Voice AI command with text to get a spoken response.*\n\n*Example usage:*\n*◉ ${prefix + command} Tell me a joke.*`);
         break;
