@@ -7,7 +7,7 @@ global.APIs = {
 
 // Apikey Website Api
 global.APIKeys = {
-	'https://api.zahwazein.xyz': 'Your Key',
+	'https://api.zahwazein.xyz': '6fb0eff124',
 }
 
 // Set your URL and API key here
