@@ -2247,8 +2247,7 @@ case "ai":
 case "gpt":
   try {
     const userInput = text;
-    let thinkingMessage = await gss.sendMessage(m.from, { text: 'Thinking...' }, { quoted: m });
-    const { key } = thinkingMessage;
+    const replyMessage = await m.reply({ text: 'Thinking...' });
 
     const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(userInput)}`;
     let response = await axios.get(apiEndpoint);
@@ -2256,7 +2255,7 @@ case "gpt":
 
     if (responseData.result) {
       const result = responseData.result;
-      await typewriterEffect(result, key);
+      await typewriterEffect(result, replyMessage.key);
     } else {
       console.log('API returned an unexpected response:', responseData);
     }
@@ -2269,8 +2268,7 @@ case "voiceai":
 case "voicegpt":
   try {
     const userInput = text;
-    let thinkingMessage = await gss.sendMessage(m.from, { text: 'Thinking...' }, { quoted: m });
-    const { key } = thinkingMessage;
+    const replyMessage = await m.reply({ text: 'Thinking...' });
 
     const speechURL = `https://matrix-api-service.up.railway.app/speech?text=${encodeURIComponent(userInput)}`;
     await gss.sendMessage(m.chat, {
@@ -2281,12 +2279,13 @@ case "voicegpt":
       ptt: true,
       fileName: `${userInput}.mp3`,
     }, {
-      quoted: m,
+      quoted: replyMessage,
     });
   } catch (error) {
     console.error(error);
   }
   break;
+
 
 case 'imagine': case 'dalle': case 'aiimage':
   if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`; 
