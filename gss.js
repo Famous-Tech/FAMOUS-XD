@@ -1652,8 +1652,8 @@ case 'qc':
             const buffer = Buffer.from(response.data.result.image, 'base64');
 
             gss.sendSticker(m.chat, buffer, m, {
-                packname: settings.sk_pack,
-                author: settings.sk_author
+                packname: global.packname,
+                author: global.author
             });
         } catch (error) {
             console.error('Error during HTTP request:', error);
