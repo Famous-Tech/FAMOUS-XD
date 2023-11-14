@@ -104,15 +104,29 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
-async function doReact(emoji) {
-      let reactm = {
-        react: {
-          text: emoji,
-          key: m.key,
-        },
-      };
-      await gss.sendMessage(m.from, reactm);
+async function typewriterEffect(result, key) {
+  const typeEffect = async (message, delay) => {
+    for (let i = 0; i < message.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, delay));
+      console.log(message.substring(0, i + 1));
     }
+  };
+
+  const words = result.split(' ');
+
+  for (const word of words) {
+    await typeEffect(word, 100); // Adjust the delay as needed
+  }
+
+  // Assuming 'key' is used for something specific, adjust accordingly
+  console.log('Typing effect complete');
+}
+
+// Example usage:
+const m = { key: 'Key' }; // Replace this with your actual message object
+const resultText = 'This is a sample result text';
+await typewriterEffect(resultText, m.key);
+
   
 	
 async function getIPInfo() {
