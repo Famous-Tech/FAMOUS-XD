@@ -1786,7 +1786,7 @@ const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API 
         document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive',
         fileName: `${appName}.apk`, // Use packageName in the fileName
-        caption: 'Downloaded by gss botwa'
+        caption: appDetails.developer.name,
       }, { quoted: m });
 
       // Optionally, you can delete the temporary file
