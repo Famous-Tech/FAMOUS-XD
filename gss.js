@@ -1690,15 +1690,45 @@ case 'qc':
 
 //apk downloader
 async function fetchAppDetails(packageName) {
-  return {
-    icon: 'app_icon_url',
-    name: 'App Name',
-    package: packageName,
-    developer: { name: 'Developer Name' },
-    updated: 'Last Update Date',
-    size: 'App Size'
-  };
+  const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
+
+  try {
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch app details. Status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result && result.status === 200 && result.result) {
+      const appDetails = result.result;
+
+      // Log the app details for debugging
+      console.log('App Details:', JSON.stringify(appDetails, null, 2));
+
+      return {
+        icon: appDetails.icon,
+        name: appDetails.name,
+        package: appDetails.package,
+        developer: {
+          name: appDetails.developer.name,
+          website: appDetails.developer.website,
+          email: appDetails.developer.email,
+          privacy: appDetails.developer.privacy
+        },
+        updated: appDetails.updated,
+        size: appDetails.size
+      };
+    } else {
+      throw new Error('Invalid API response or app details not found');
+    }
+  } catch (error) {
+    console.error('Error fetching app details:', error.message);
+    throw error;
+  }
 }
+
 
 async function downloadApk(apiKey, packageName, outputPath) {
   try {
