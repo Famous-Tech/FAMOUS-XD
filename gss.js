@@ -2260,6 +2260,23 @@ case 'system': case 'info': case 'ram': case 'usage':
 mainSys();
 break;
 
+case 'stalker':
+case 'stalk':
+  if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply('Your Daily Limit Has Been Exhausted');
+  if (!text) return m.reply(`Example: ${prefix + command} ff 552992060`);
+  
+  let [type, id] = args;
+
+  if (type.toLowerCase() == 'ff') {
+    if (!id) throw `No Query id, Example ${prefix + command} ff 552992060`;
+    let anu = await fetchJson(api('zenz', '/api/nickff', { apikey: global.APIKeys[global.APIs['zenz']], query: id }));
+    if (anu.status == false) return m.reply(anu.result.message);
+    m.reply(`ID : ${anu.result.gameId}\nUsername : ${anu.result.userName}`);
+    db.data.users[m.sender].limit -= 1;
+  } else {
+    m.reply(`Example: ${prefix + command} type id\n\nList Type:\n1. ff (Free Fire)\n2. ml (Mobile Legends)\n3. aov (Arena Of Valor)\n4. cod (Call Of Duty)\n5. pb (point Blank)\n6. ig (Instagram)\n7. npm (https://npmjs.com)`);
+  }
+  break;
 
 
     case 'ai':
