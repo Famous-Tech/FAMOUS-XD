@@ -1601,6 +1601,72 @@ axios.get('https://matrix-api-service.up.railway.app/waifu') // Replace with you
 break;
 
 
+case 'qc':
+    try {
+        if (!text) {
+            return m.reply('Please provide text for the quote.');
+        }
+
+        if (text.length > 30) {
+            return m.reply('Please provide text with a maximum of 30 characters.');
+        }
+
+        const settings = global.db.setting;
+        let profilePicture;
+
+        try {
+            profilePicture = await gss.profilePictureUrl(m.quoted ? m.quoted.sender : m.sender, 'image');
+        } catch {
+            profilePicture = 'https://srv.neoxr.tk/files/z8hI5T.jpg';
+        }
+
+        const quoteObject = {
+            "type": "quote",
+            "format": "png",
+            "backgroundColor": "#FFFFFF",
+            "width": 512,
+            "height": 768,
+            "scale": 2,
+            "messages": [{
+                "entities": [],
+                "avatar": true,
+                "from": {
+                    "id": 1,
+                    "name": m.quoted ? global.db.users.find(v => v.jid == m.quoted.sender).name : m.pushName,
+                    "photo": {
+                        "url": profilePicture
+                    }
+                },
+                "text": text,
+                "replyMessage": {}
+            }]
+        };
+
+        try {
+            const response = await axios.post('https://bot.lyo.su/quote/generate', quoteObject, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const buffer = Buffer.from(response.data.result.image, 'base64');
+
+            gss.sendSticker(m.chat, buffer, m, {
+                packname: settings.sk_pack,
+                author: settings.sk_author
+            });
+        } catch (error) {
+            console.error('Error during HTTP request:', error);
+            return m.reply('Error generating sticker. Please try again later.');
+        }
+
+    } catch (error) {
+        console.error('Unexpected error in sticker case:', error);
+        // Handle any other unexpected errors
+    }
+    break;
+
+
 
 //via app name 
 async function downloadApkk(apiKey, packageName, outputPath) {
