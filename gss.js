@@ -365,15 +365,44 @@ if (!('autobio' in setting)) setting.autobio = false
             timezone: "Asia/kolkata"
         })
         
-	// auto set bio
-	if (db.data.settings[botNumber].autobio) {
-	    let setting = global.db.data.settings[botNumber]
-	    if (new Date() * 1 - setting.status > 1000) {
-		let uptime = await runtime(process.uptime())
-		await gss.updateProfileStatus(`${gss.user.name} | Runtime : ${runtime(uptime)}`)
-		setting.status = new Date() * 1
-	    }
-	}
+// Define a function to format the time in 12-hour format
+function formatTime(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let period = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert to 12-hour format
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${period}`;
+}
+
+// Define a function to format the date in Indian timezone
+function formatIndianDate(date) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' };
+    return date.toLocaleDateString('en-IN', options);
+}
+
+// Define a function to update the bio
+async function updateBio() {
+    try {
+        let now = new Date();
+
+        // Calculate uptime in hours, minutes, and seconds
+        let uptime = await runtime(process.uptime());
+
+        // Get Indian date and time
+        let formattedIndianTime = formatTime(now);
+        let formattedIndianDate = formatIndianDate(now);
+
+        await gss.updateProfileStatus(`auto bio by ${botname} 
+| Runtime: ${hours}h ${minutes}m ${seconds}s
+| Indian Time: ${formattedIndianTime} 
+| Indian Date: ${formattedIndianDate}`);
+    } catch (error) {
+        // Remove the error log statement
+    }
+}
+
+// Schedule auto-update every 10 seconds for testing purposes
+setInterval(updateBio, 60000);
 	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
