@@ -2358,32 +2358,39 @@ fetchImageData();
 
 break;
 
-/*
 case "toanime":
-                let q = m.quoted ? m.quoted : m;
-                let mime = (q.msg || q).mimetype || q.mediaType || "";
-                if (!/image/g.test(mime)) throw "*Respond to a image*";
-                m.reply("*This command can turn your photo into anime*");
-                let data = await quoted.download();
-                let image = await uploadImage(data);
-                try {
-                    let anime = `https://api.lolhuman.xyz/api/imagetoanime?apikey=GataDios&img=${image}`;
-                    await m.reply(anime, { mimetype: "image/png" });
-                } catch (i) {
-                    try {
-                        let anime2 = `https://api.zahwazein.xyz/photoeditor/jadianime?url=${image}&apikey=6fb0eff124`;
-                        await m.reply(anime2, { mimetype: "image/png" });
-                    } catch (a) {
-                        try {
-                            let anime3 = `https://api.caliph.biz.id/api/animeai?img=${image}&apikey=caliphkey`;
-                            await m.reply(anime3, { mimetype: "image/png" });
-                        } catch (e) {
-                            throw "*Error check if the persons face is visible*";
-                        }
-                    }
-                }
-                break;
-*/
+  try {
+    let q = m.quoted ? m.quoted : m;
+    let mime = (q.msg || q).mimetype || q.mediaType || "";
+
+    if (!/image/g.test(mime)) throw "*Respond to an image*";
+
+    m.reply("*This command can turn your photo into anime*");
+
+    const image = encodeURIComponent(q.file);
+
+    const animeAPIs = [
+      `https://api.lolhuman.xyz/api/imagetoanime?apikey=GataDios&img=${image}`,
+      `https://api.zahwazein.xyz/photoeditor/jadianime?url=${image}&apikey=6fb0eff124`,
+      `https://api.caliph.biz.id/api/animeai?img=${image}&apikey=caliphkey`
+    ];
+
+    for (const animeAPI of animeAPIs) {
+      try {
+        await m.reply(animeAPI, { mimetype: "image/png" });
+        return; // If successful, exit the loop
+      } catch (error) {
+        console.log(`API failed: ${animeAPI}`);
+      }
+    }
+
+    throw "*Error: Check if the person's face is visible*";
+  } catch (error) {
+    console.error(error);
+    m.reply(error);
+  }
+  break;
+
   
 case 'bug':
 case 'request':
