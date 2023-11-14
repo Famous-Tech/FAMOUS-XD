@@ -1750,8 +1750,8 @@ async function getAppPackageInfo(appName) {
         const packageName = packageNameMatch ? packageNameMatch[1] : null;
 
         const appIcon = firstPackageElement.find('.uzcko').attr('src'); // Extract app icon URL
-        const appDetailsPath = firstPackageElement.find('.wXUyZd a').attr('href');
-const appDetailsUrl = appDetailsPath ? 'https://play.google.com' + appDetailsPath : null;
+        const appDetailsUrlElement = firstPackageElement.find('.wXUyZd a');
+const appDetailsUrl = appDetailsUrlElement.length > 0 ? 'https://play.google.com' + appDetailsUrlElement.attr('href') : null;
 
 if (!appDetailsUrl) {
     console.error('App Details URL not found');
