@@ -1789,6 +1789,38 @@ if (!text) {
 }
 break;
 
+case 'appd':
+  const apiKey = '8sXSeFyb7T'; // Replace with your actual API key
+  const appDetailsUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(text)}`;
+
+  try {
+    const response = await fetch(appDetailsUrl);
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`API Error (${response.status}): ${errorMessage}`);
+    }
+
+    const result = await response.json();
+
+    if (result && result.status === 200 && result.result && result.result.file) {
+      const appDetails = result.result.file;
+
+      // Send app details
+      await gss.sendMessage(m.chat, {
+        caption: `*${appDetails.appName}*\nSize: ${appDetails.size}\nLast Update: ${appDetails.lastUpdate}`,
+        thumbnail: appDetails.icon, // Assuming the API provides the icon URL
+      }, { quoted: m });
+    } else {
+      throw new Error('Invalid API response or app details not found');
+    }
+  } catch (error) {
+    console.error('Error fetching app details:', error.message);
+    throw error;
+  }
+  break;
+
+
 case 'mediafire': {
     // Check if the command has arguments
     if (args.length === 0) {
