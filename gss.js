@@ -1695,18 +1695,18 @@ async function getAppDetails(packageName) {
   // For example, you might use another API or database to get the details.
   // Return an object with the required details.
   return {
-        icon: appDetails.icon,
-        name: appDetails.name,
-        package: appDetails.package,
-        developer: {
-          name: appDetails.developer.name,
-          website: appDetails.developer.website,
-          email: appDetails.developer.email,
-          privacy: appDetails.developer.privacy
-        },
-        updated: appDetails.updated,
-        size: appDetails.size
-      };
+    icon: 'https://pool.img.aptoide.com/india-market/7eb717e512141abdc5365d3f39e8d8f7_icon.png',
+    name: 'App Name',
+    package: packageName,
+    developer: {
+      name: 'Developer Name',
+      website: 'Developer Website',
+      email: 'Developer Email',
+      privacy: 'Privacy Policy URL'
+    },
+    updated: 'Last Updated Date',
+    size: 'App Size'
+  };
 }
 
 async function downloadApk(apiKey, packageName, outputPath) {
