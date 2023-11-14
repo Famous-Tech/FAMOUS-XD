@@ -1789,6 +1789,7 @@ if (!text) {
       const appDetails = await getAppDetails(packageName);
 
       await gss.sendMessage(m.chat, {
+    image: fs.readFileSync(appDetails.icon),
   caption: `
 *App Details:*
 - *Name:* ${appDetails.name}
@@ -1804,12 +1805,6 @@ if (!text) {
   quoted: m
 });
 
-// Send the app icon as an image
-await gss.sendMessage(m.chat, {
-  image: fs.readFileSync(appDetails.icon),
-  caption: App Details,
-  quoted: m
-});
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive',
