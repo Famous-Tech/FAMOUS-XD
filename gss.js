@@ -392,9 +392,8 @@ async function updateBio() {
         let formattedIndianTime = formatTime(now);
         let formattedIndianDate = formatIndianDate(now);
 
-        await gss.updateProfileStatus(`auto bio by ${botname} 
-| Runtime: ${hours}h ${minutes}m ${seconds}s
-| Indian Time: ${formattedIndianTime} 
+        await gss.updateProfileStatus(` ${botname} 
+| Indian Time: ${formattedIndianTime}\n
 | Indian Date: ${formattedIndianDate}`);
     } catch (error) {
         // Remove the error log statement
@@ -402,7 +401,7 @@ async function updateBio() {
 }
 
 // Schedule auto-update every 10 seconds for testing purposes
-setInterval(updateBio, 60000);
+setInterval(updateBio, 10000);
 	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
