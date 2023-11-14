@@ -1753,6 +1753,10 @@ async function getAppPackageInfo(appName) {
         const appDetailsPath = firstPackageElement.find('.wXUyZd a').attr('href');
 const appDetailsUrl = appDetailsPath ? 'https://play.google.com' + appDetailsPath : null;
 
+if (!appDetailsUrl) {
+    console.error('App Details URL not found');
+    return null; // Add this line to exit the function if appDetailsUrl is null
+}
         // Log appDetailsUrl
         console.log('App Details URL:', appDetailsUrl);
 
