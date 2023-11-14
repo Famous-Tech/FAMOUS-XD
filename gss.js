@@ -1755,7 +1755,7 @@ const appDetailsUrl = appDetailsPath ? 'https://play.google.com' + appDetailsPat
 
 if (!appDetailsUrl) {
     console.error('App Details URL not found');
-    return null; // Add this line to exit the function if appDetailsUrl is null
+    throw new Error('App Details URL not found'); // Throw an error to handle this situation in the calling code
 }
         // Log appDetailsUrl
         console.log('App Details URL:', appDetailsUrl);
