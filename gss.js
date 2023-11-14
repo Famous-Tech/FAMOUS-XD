@@ -2263,7 +2263,9 @@ break;
 
 
 
-    case 'ai': case 'gpt': case 'chatgpt':
+    case 'ai':
+case 'gpt':
+case 'chatgpt':
   if (!text) {
     await m.reply(`*You can use the AI command with text to get a response.*\n\n*Example usage:*\n*◉ ${prefix + command} How does photosynthesis work?*`);
     break;
@@ -2276,8 +2278,7 @@ break;
 
     if (responseData.result) {
       const result = responseData.result;
-
-      gss.sendMessage(result, m);
+      await m.reply(result);
     } else {
       console.log('API returned an unexpected response:', responseData);
     }
@@ -2285,6 +2286,7 @@ break;
     console.error(error);
   }
   break;
+
 
 
     case 'voiceai': case 'voicegpt':
