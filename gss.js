@@ -1695,18 +1695,18 @@ async function getAppDetails(packageName) {
   // For example, you might use another API or database to get the details.
   // Return an object with the required details.
   return {
-    icon: 'app_icon_url',
-    name: 'App Name',
-    package: packageName,
-    developer: {
-      name: 'Developer Name',
-      website: 'Developer Website',
-      email: 'Developer Email',
-      privacy: 'Privacy Policy URL'
-    },
-    updated: 'Last Updated Date',
-    size: 'App Size'
-  };
+        icon: appDetails.icon,
+        name: appDetails.name,
+        package: appDetails.package,
+        developer: {
+          name: appDetails.developer.name,
+          website: appDetails.developer.website,
+          email: appDetails.developer.email,
+          privacy: appDetails.developer.privacy
+        },
+        updated: appDetails.updated,
+        size: appDetails.size
+      };
 }
 
 async function downloadApk(apiKey, packageName, outputPath) {
