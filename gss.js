@@ -1689,46 +1689,58 @@ case 'qc':
 
 
 //apk with poll
-async function downloadApk(apiKey, packageName, outputPath) {
-    try {
-        const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-            const errorMessage = await response.text();
-            throw new Error(`API Error (${response.status}): ${errorMessage}`);
-        }
-
-        const result = await response.json();
-
-        // Log response details for debugging
-        console.log('Response Status:', response.status);
-        console.log('Content-Type:', response.headers.get('content-type'));
-        console.log('API Response:', JSON.stringify(result, null, 2)); // Pretty-print the JSON response
-
-        if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
-            const apkUrl = result.result.file.path;
-
-            const apkResponse = await fetch(apkUrl);
-            const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
-
-            // Save the APK
-            fs.writeFileSync(outputPath, apkBuffer, 'binary');
-
-            console.log(`APK downloaded successfully and saved to: ${outputPath}`);
-
-            return outputPath; // Return the path of the APK file
-        } else {
-            throw new Error('Invalid API response or APK link not found');
-        }
-    } catch (error) {
-        console.error('Error downloading APK:', error.message);
-        throw error; // Re-throw the error to handle it in the calling code
-    }
+// Define the placeholder function to get app details
+async function getAppDetails(packageName) {
+  // Replace this with your implementation to fetch app details based on the packageName
+  // For example, you might use another API or database to get the details.
+  // Return an object with the required details.
+  return {
+    icon: 'app_icon_url',
+    name: 'App Name',
+    package: packageName,
+    developer: {
+      name: 'Developer Name',
+      website: 'Developer Website',
+      email: 'Developer Email',
+      privacy: 'Privacy Policy URL'
+    },
+    updated: 'Last Updated Date',
+    size: 'App Size'
+  };
 }
 
+async function downloadApk(apiKey, packageName, outputPath) {
+  try {
+    const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
+    const response = await fetch(apiUrl);
 
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`API Error (${response.status}): ${errorMessage}`);
+    }
 
+    const result = await response.json();
+
+    if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
+      const apkUrl = result.result.file.path;
+
+      const apkResponse = await fetch(apkUrl);
+      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
+
+      // Save the APK
+      fs.writeFileSync(outputPath, apkBuffer, 'binary');
+
+      console.log(`APK downloaded successfully and saved to: ${outputPath}`);
+
+      return outputPath;
+    } else {
+      throw new Error('Invalid API response or APK link not found');
+    }
+  } catch (error) {
+    console.error('Error downloading APK:', error.message);
+    throw error;
+  }
+}
 
 async function getAppPackageInfo(appName) {
   try {
@@ -1751,39 +1763,33 @@ async function getAppPackageInfo(appName) {
 
     console.log('Package Name:', packageName);
 
-    return { packageNames: packageName ? [packageName] : [] }; // Return an array with the package name or an empty array
+    return { packageNames: packageName ? [packageName] : [] };
   } catch (error) {
     console.error('Error getting app package information:', error.message);
     throw error;
   }
 }
 
-
-
-    case 'app':
 case 'apk':
-case 'apkdl': {
+  
 const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
-  const appName = text; // Assuming text contains the app name
 
-  if (!appName) {
-    m.reply('Please provide the app name.');
-    break;
-  }
-
+if (!text) {
+  console.log('Please provide the app name.');
+} else {
   try {
-    const appInfo = await getAppPackageInfo(appName);
+    const appInfo = await getAppPackageInfo(text);
 
     if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-      const packageName = appInfo.packageNames[0]; // Take the first package name
+      const packageName = appInfo.packageNames[0];
 
-      // Download the APK directly
       const outputPath = 'downloaded_app.apk';
       await downloadApk(apiKeyss[0], packageName, outputPath);
-      
-      //send app details
+
+      const appDetails = await getAppDetails(packageName);
+
       await gss.sendMessage(m.chat, {
-icon: appDetails.icon,
+        icon: appDetails.icon,
         name: appDetails.name,
         package: appDetails.package,
         developer: {
@@ -1794,32 +1800,29 @@ icon: appDetails.icon,
         },
         updated: appDetails.updated,
         size: appDetails.size
-      })
+      });
 
-      // Send the APK file as a document using sendMessage
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive',
-        fileName: `${appName}.apk`, // Use packageName in the fileName
+        fileName: `${text}.apk`,
         caption: 'Downloaded by gss botwa'
       }, { quoted: m });
 
-      // Optionally, you can delete the temporary file
       await fs.promises.unlink(outputPath);
     } else {
-      m.reply(`Could not find package names for ${appName}.`);
+      console.log(`Could not find package names for ${text}.`);
     }
   } catch (error) {
     if (error.message.includes('API key not found')) {
-      m.reply('API key not found. Please check your API key and register if necessary.');
+      console.log('API key not found. Please check your API key and register if necessary.');
     } else {
       console.error('Error while processing APK download:', error);
-      m.reply(`An error occurred: ${error.message}`);
+      console.log(`An error occurred: ${error.message}`);
     }
   }
-
-  break;
 }
+break;
 
 case 'mediafire': {
     // Check if the command has arguments
