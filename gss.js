@@ -1789,19 +1789,27 @@ if (!text) {
       const appDetails = await getAppDetails(packageName);
 
       await gss.sendMessage(m.chat, {
-        icon: appDetails.icon,
-        name: appDetails.name,
-        package: appDetails.package,
-        developer: {
-          name: appDetails.developer.name,
-          website: appDetails.developer.website,
-          email: appDetails.developer.email,
-          privacy: appDetails.developer.privacy
-        },
-        updated: appDetails.updated,
-        size: appDetails.size
-      });
+  caption: `
+*App Details:*
+- *Name:* ${appDetails.name}
+- *Package:* ${appDetails.package}
+- *Developer:*
+  - *Name:* ${appDetails.developer.name}
+  - *Website:* ${appDetails.developer.website}
+  - *Email:* ${appDetails.developer.email}
+  - *Privacy:* ${appDetails.developer.privacy}
+- *Updated:* ${appDetails.updated}
+- *Size:* ${appDetails.size}
+  `,
+  quoted: m
+});
 
+// Send the app icon as an image
+await gss.sendMessage(m.chat, {
+  image: fs.readFileSync(appDetails.icon),
+  caption: 'App Icon',
+  quoted: m
+});
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
         mimetype: 'application/vnd.android.package-archive',
