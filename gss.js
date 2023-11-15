@@ -1758,20 +1758,20 @@ async function downloadApk(apiKey, packageName, outputPath) {
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
       const apkUrl = result.result.file.path;
 
-      // Fetch Extra data
-      const appDetails = {
-        name: result.result.name,
-        icon: result.result.icon,
-        modified: result.result.modified
-        developer: {
-          name: result.result.developer.name,
-          email: result.result.developer.email,
-          website: result.result.developer.website,
-        },
-        size: result.result.size, 
-        vername: result.result.file.vername,
-        filePath: apkUrl,
-      };
+const appDetails = {
+  name: result.result.name,
+  icon: result.result.icon,
+  modified: result.result.modified,
+  developer: {
+    name: result.result.developer.name,
+    email: result.result.developer.email,
+    website: result.result.developer.website,
+  },
+  size: result.result.size,
+  filePath: apkUrl,
+  vername: result.result.file.vername, // Adding vername
+};
+
 
       const appInformation = `
   *App Information*
