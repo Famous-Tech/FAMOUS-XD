@@ -104,6 +104,16 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
+async function doReact(emoji) {
+      let reactm = {
+        react: {
+          text: emoji,
+          key: m.key,
+        },
+      };
+      await gss.sendMessage(m.from, reactm);
+    }
+  
 	
 async function getIPInfo() {
   try {
