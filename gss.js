@@ -899,6 +899,7 @@ case 'anticall': {
 break;
 
             case 'delete': case 'del': {
+              await doReact("😘");
   if (!m.quoted) throw false;
   let { chat, fromMe, id, isBaileys } = m.quoted;
   if (!isBaileys) throw 'The message is not sent by the bot!';
