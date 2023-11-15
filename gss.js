@@ -389,8 +389,6 @@ async function updateBio() {
         let formattedIndianTime = formatTime(now);
         let formattedIndianDate = formatIndianDate(now);
 
-        console.log('Indian Time:', formattedIndianTime);
-        console.log('Indian Date:', formattedIndianDate);
 
         // Assuming gss.updateProfileStatus is working correctly
         await gss.updateProfileStatus(` ${botname} 
