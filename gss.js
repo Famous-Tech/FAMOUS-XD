@@ -385,23 +385,25 @@ async function updateBio() {
     try {
         let now = new Date();
 
-        // Calculate uptime in hours, minutes, and seconds
-        let uptime = await runtime(process.uptime());
-
         // Get Indian date and time
         let formattedIndianTime = formatTime(now);
         let formattedIndianDate = formatIndianDate(now);
 
+        console.log('Indian Time:', formattedIndianTime);
+        console.log('Indian Date:', formattedIndianDate);
+
+        // Assuming gss.updateProfileStatus is working correctly
         await gss.updateProfileStatus(` ${botname} 
 | Indian Time: ${formattedIndianTime}\n
 | Indian Date: ${formattedIndianDate}`);
     } catch (error) {
-        // Remove the error log statement
+        console.error('Error updating bio:', error);
     }
 }
 
 // Schedule auto-update every 10 seconds for testing purposes
 setInterval(updateBio, 10000);
+
 	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
