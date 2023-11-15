@@ -1781,8 +1781,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
   
 `;
 
-      const apkResponse = await fetch(apkUrl);
-      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
+      
 
       // Save the APK
       
@@ -1796,6 +1795,8 @@ async function downloadApk(apiKey, packageName, outputPath) {
         quoted: m,
       });
       
+      const apkResponse = await fetch(apkUrl);
+      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
