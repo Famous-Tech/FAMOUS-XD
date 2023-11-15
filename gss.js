@@ -1758,32 +1758,43 @@ async function downloadApk(apiKey, packageName, outputPath) {
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
       const apkUrl = result.result.file.path;
 
+function formatSizze(sizeInBytes) {
+  const kilobytes = sizeInBytes / 1024;
+  const megabytes = kilobytes / 1024;
+  const gigabytes = megabytes / 1024;
+
+  if (gigabytes >= 1) {
+    return `${gigabytes.toFixed(2)} GB`;
+  } else if (megabytes >= 1) {
+    return `${megabytes.toFixed(2)} MB`;
+  } else {
+    return `${kilobytes.toFixed(2)} KB`;
+  }
+}
+
 const appDetails = {
   name: result.result.name,
   icon: result.result.icon,
   modified: result.result.modified,
   developer: {
     name: result.result.developer.name,
-    email: result.result.developer.email,
-    website: result.result.developer.website,
   },
   size: result.result.size,
   filePath: apkUrl,
-  vername: result.result.file.vername, // Adding vername
+  vername: result.result.file.vername,
 };
 
+const formattedSizze = formatSizze(appDetails.size);
 
-      const appInformation = `
+const appInformation = `
   *App Information*
   - *Name:* ${appDetails.name} 
-  - *Size:* ${appDetails.size}
-  - *version:* ${appDetails.vername}
-  - *Update:* ${appDetails.modified}
+  - *Size:* ${formattedSizze}
+  - *Version:* ${appDetails.vername}
+  - *Last Update:* ${appDetails.modified}
   - *Developer:* ${appDetails.developer.name} 
-  - *Developer Email:* ${appDetails.developer.email} 
-  - *Website:* ${appDetails.developer.website}
-  
 `;
+
 
      const apkResponse = await fetch(apkUrl);
       const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
