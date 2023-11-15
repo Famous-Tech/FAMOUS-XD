@@ -365,19 +365,17 @@ if (!('autobio' in setting)) setting.autobio = true
             timezone: "Asia/kolkata"
         })
         
-function formatTime(date) {
-    let hours = date.toLocaleString('en-IN', { hour: 'numeric', hour12: true, timeZone: 'Asia/Kolkata' });
-    let minutes = date.getMinutes();
-    let period = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert to 12-hour format
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${period}`;
-}
 
+// Define a function to format the time in 12-hour format
+function formatTime(date) {
+    let formattedTime = moment(date).tz('Asia/Kolkata').format('hh:mm A');
+    return formattedTime;
+}
 
 // Define a function to format the date in Indian timezone
 function formatIndianDate(date) {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' };
-    return date.toLocaleDateString('en-IN', options);
+    let formattedDate = moment(date).tz('Asia/Kolkata').format('dddd, D MMMM, YYYY');
+    return formattedDate;
 }
 
 // Define a function to update the bio
@@ -388,7 +386,6 @@ async function updateBio() {
         // Get Indian date and time
         let formattedIndianTime = formatTime(now);
         let formattedIndianDate = formatIndianDate(now);
-
 
         // Assuming gss.updateProfileStatus is working correctly
         await gss.updateProfileStatus(` ${botname} 
