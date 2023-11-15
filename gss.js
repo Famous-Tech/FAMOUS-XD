@@ -365,14 +365,14 @@ if (!('autobio' in setting)) setting.autobio = true
             timezone: "Asia/kolkata"
         })
         
-// Define a function to format the time in 12-hour format
 function formatTime(date) {
-    let hours = date.getHours();
+    let hours = date.toLocaleString('en-US', { hour: 'numeric', hour12: true, timeZone: 'Asia/Kolkata' });
     let minutes = date.getMinutes();
     let period = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12; // Convert to 12-hour format
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${period}`;
 }
+
 
 // Define a function to format the date in Indian timezone
 function formatIndianDate(date) {
