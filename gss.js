@@ -1692,6 +1692,8 @@ case 'qc':
 async function downloadApk(apiKey, packageName, outputPath) {
   try {
     const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
+    console.log('API URL:', apiUrl);
+
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
@@ -1700,9 +1702,12 @@ async function downloadApk(apiKey, packageName, outputPath) {
     }
 
     const result = await response.json();
+    console.log('API Response:', result);
 
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
-      const apkUrl = result.result.file.path;
+      const { path, lastUpdate, size, appName, author } = result.result.file;
+
+      const apkUrl = path;
 
       const apkResponse = await fetch(apkUrl);
       const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
@@ -1711,8 +1716,18 @@ async function downloadApk(apiKey, packageName, outputPath) {
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
+      console.log('App Name:', appName);
+      console.log('Author:', author);
+      console.log('File Size:', size);
+      console.log('Last Update:', lastUpdate);
 
-      return outputPath;
+      return {
+        outputPath,
+        appName,
+        author,
+        size,
+        lastUpdate,
+      };
     } else {
       throw new Error('Invalid API response or APK link not found');
     }
@@ -1721,6 +1736,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
     throw error;
   }
 }
+
 
 async function getAppPackageInfo(appName) {
   try {
