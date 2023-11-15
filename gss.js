@@ -1689,8 +1689,6 @@ case 'qc':
 
 
 //apk with poll
-const { fetch, Buffer } = require('fetch-ponyfill')();
-const fs = require('fs');
 
 async function downloadApk(apiKey, packageName, outputPath) {
   try {
