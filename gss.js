@@ -899,7 +899,6 @@ case 'anticall': {
 break;
 
             case 'delete': case 'del': {
-              await doReact("😘");
   if (!m.quoted) throw false;
   let { chat, fromMe, id} = m.quoted;
   gss.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } });
@@ -921,7 +920,7 @@ case 'bcgc': case 'bcgroup': {
   m.reply(`Successfully Sent Broadcast to ${anu.length} Groups`);
 }
 break;
-
+  
 case 'bc': case 'broadcast': case 'bcall': {
   if (!isCreator) throw mess.owner;
   if (!text) throw `Where's the text?\n\nExample: ${prefix + command} fatih-san`;
@@ -982,6 +981,7 @@ case 'listgc': {
 break;
 
 case 'listonline': case 'liston': {
+  await doReact("😘");
   let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat;
   let online = [...Object.keys(store.presences[id]), botNumber];
   gss.sendText(m.chat, 'List Online:\n\n' + online.map(v => '⭔ @' + v.replace(/@.+/, '')).join`\n`, m, { mentions: online });
