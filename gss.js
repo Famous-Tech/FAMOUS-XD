@@ -366,7 +366,7 @@ if (!('autobio' in setting)) setting.autobio = true
         })
         
 function formatTime(date) {
-    let hours = date.toLocaleString('en-US', { hour: 'numeric', hour12: true, timeZone: 'Asia/Kolkata' });
+    let hours = date.toLocaleString('en-IN', { hour: 'numeric', hour12: true, timeZone: 'Asia/Kolkata' });
     let minutes = date.getMinutes();
     let period = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12; // Convert to 12-hour format
