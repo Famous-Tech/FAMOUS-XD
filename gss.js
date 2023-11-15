@@ -1758,24 +1758,40 @@ async function downloadApk(apiKey, packageName, outputPath) {
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
       const apkUrl = result.result.file.path;
 
+      // Fetch Extra data
+      const appDetails = {
+        name: result.result.name,
+        icon: result.result.icon,
+        developer: {
+          name: result.result.developer.name,
+          email: result.result.developer.email,
+          website: result.result.developer.website,
+        },
+        size: result.result.size, 
+        filePath: apkUrl,
+      };
 
-
-      console.log(`App Name: ${appDetails.name}`);
-      console.log(`Icon URL: ${appDetails.icon}`);
-      console.log(`Developer Name: ${appDetails.developer.name}`);
-      console.log(`Developer Email: ${appDetails.developer.email}`);
-      console.log(`Developer Website: ${appDetails.developer.website}`);
-      console.log(`APK File Path: ${appDetails.filePath}`);
-      console.log(`Size: ${appDetails.size}`);
-      console.log(`Author: ${appDetails.author}`);
-
-      const apkResponse = await fetch(apkUrl);
-      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
+      const appInformation = `
+  *App Information*
+  - *Name:* ${appDetails.name} 
+  - *Size:* ${appDetails.size}
+  - *Developer:* ${appDetails.developer.name} 
+  - *Developer Email:* ${appDetails.developer.email} 
+  - *Website:* ${appDetails.developer.website}
+  
+`;
 
       // Save the APK
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
-      
+      gss.sendMessage(m.chat, {
+        image: {
+          url: appDetails.icon,
+        },
+        caption: appInformation,
+      }, {
+        quoted: m,
+      });
 
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
 
@@ -1846,37 +1862,6 @@ if (!text) {
       const outputPath = 'downloaded_app.apk';
       await downloadApk(apiKeyss[0], packageName, outputPath);
 
-      // Fetch Extra data
-      const appDetails = {
-        name: result.result.name,
-        icon: result.result.icon,
-        developer: {
-          name: result.result.developer.name,
-          email: result.result.developer.email,
-          website: result.result.developer.website,
-        },
-        size: result.result.size, 
-        filePath: apkUrl,
-      };
-
-      const appInformation = `
-  *App Information*
-  - *Name:* ${appDetails.name} 
-  - *Size:* ${appDetails.size}
-  - *Developer:* ${appDetails.developer.name} 
-  - *Developer Email:* ${appDetails.developer.email} 
-  - *Website:* ${appDetails.developer.website}
-  
-`;
-
-     await gss.sendMessage(m.chat, {
-        image: {
-          url: appDetails.icon,
-        },
-        caption: appInformation,
-      }, {
-        quoted: m,
-      });
       
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
