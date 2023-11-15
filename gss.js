@@ -521,8 +521,6 @@ during ${clockString(new Date - user.afkTime)}`)
         const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke","poll"]
  const cmdDown = ["facebook","apk","mediafire","gdrive","insta","pinterestdl","ytmp3","ytmp4","gitclone"]
  const cmdSearch = ["play","yts","imdb","google","gimage","pinterest","wallpaper","wikimedia","ytsearch","ringtone","weather","lyrics"]
-// const cmdRand = ["quotesanime","puisi","couple","anime","waifu","husbu","neko","shinobu","waifus","nekos","trap","blowjob"]
-// const cmdMaker = ["3dchristmas","3ddeepsea","americanflag","3dscifi","3drainbow","3dwaterpipe","halloweenskeleton","sketch","bluecircuit","space","metallic","fiction","greenhorror","transformer","berry","thunder","magma","3dcrackedstone","3dneonlight","impressiveglitch","naturalleaves","fireworksparkle","matrix","dropwater","harrypotter","foggywindow","neondevils","christmasholiday","3dgradient","blackpink","gluetext","shadow","romantic","smoke","burnpapper","naruto","lovemsg","grassmsg","lovetext","coffecup","butterfly","harrypotter","retrolol","ffcover","crossfire","galaxy","glass","neon","beach","blackpink","igcertificate","ytcertificate"]
         const cmdFun = ["delttt","tictactoe"]
    const cmdConv = ["removebg","sticker","emojimix","tovideo","togif","tourl","tovn","tomp3","toaudio","ebinary","dbinary","styletext","fontchange","fancy","upscale","hd"]
         const cmdMain = ["ping","owner","menu","delete","infochat","quoted","listpc","listgc","listonline"]
