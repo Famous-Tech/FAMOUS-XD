@@ -2311,7 +2311,6 @@ break;
 case 'changename':
    try {
       if (!text) return m.reply(prefix, command, 'neoxr bot');
-      if (text.length > 25) return m.reply(m.chat, `🚩 Text is too long, maximum 25 characters.`);
       gss.authState.creds.me.name = text;
       await props.save(global.db);
       return m.reply(`🚩 Name successfully changed.`);
