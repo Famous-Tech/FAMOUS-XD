@@ -7,7 +7,6 @@ const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 let yts = require("yt-search");
-const { fetch, Buffer } = require('fetch-ponyfill')();
 const ytdl = require("@distube/ytdl-core");
 const util = require('util')
 const truecallerjs = require("truecallerjs");
@@ -1694,8 +1693,6 @@ case 'qc':
 async function downloadApk(apiKey, packageName, outputPath) {
   try {
     const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
-    console.log('API URL:', apiUrl);
-
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
@@ -1704,12 +1701,9 @@ async function downloadApk(apiKey, packageName, outputPath) {
     }
 
     const result = await response.json();
-    console.log('API Response:', result);
 
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
-      const { path, size, name, creator, icon } = result.result.file;
-
-      const apkUrl = path;
+      const apkUrl = result.result.file.path;
 
       const apkResponse = await fetch(apkUrl);
       const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
@@ -1717,37 +1711,9 @@ async function downloadApk(apiKey, packageName, outputPath) {
       // Save the APK
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
-      try {
-        // Try to fetch the app icon
-        const iconResponse = await fetch(icon);
-        const iconBuffer = Buffer.from(await iconResponse.arrayBuffer());
-
-        // Send details as a caption along with the icon
-        gss.sendMessage({
-          text: `*App Details*:\n\n- *Name:* ${name}\n- *Creator:* ${creator}\n- *Size:* ${size} bytes`,
-          files: [
-            {
-              name: 'icon.png',
-              type: 'image/png',
-              content: iconBuffer,
-            },
-          ],
-        });
-      } catch (iconError) {
-        console.error('Error fetching app icon:', iconError.message);
-      }
-
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
-      console.log('App Name:', name);
-      console.log('Creator:', creator);
-      console.log('File Size:', size);
 
-      return {
-        outputPath,
-        appName: name,
-        creator,
-        size,
-      };
+      return outputPath;
     } else {
       throw new Error('Invalid API response or APK link not found');
     }
