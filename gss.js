@@ -7,6 +7,7 @@ const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 let yts = require("yt-search");
+const { fetch, Buffer } = require('fetch-ponyfill')();
 const ytdl = require("@distube/ytdl-core");
 const util = require('util')
 const truecallerjs = require("truecallerjs");
@@ -1716,17 +1717,25 @@ async function downloadApk(apiKey, packageName, outputPath) {
       // Save the APK
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
-      // Send details as a caption along with the icon
-      gss.sendMessage({
-        text: `*App Details*:\n\n- *Name:* ${name}\n- *Creator:* ${creator}\n- *Size:* ${size} bytes`,
-        files: [
-          {
-            name: 'icon.png',
-            type: 'image/png',
-            content: await (await fetch(icon)).arrayBuffer(),
-          },
-        ],
-      });
+      try {
+        // Try to fetch the app icon
+        const iconResponse = await fetch(icon);
+        const iconBuffer = Buffer.from(await iconResponse.arrayBuffer());
+
+        // Send details as a caption along with the icon
+        gss.sendMessage({
+          text: `*App Details*:\n\n- *Name:* ${name}\n- *Creator:* ${creator}\n- *Size:* ${size} bytes`,
+          files: [
+            {
+              name: 'icon.png',
+              type: 'image/png',
+              content: iconBuffer,
+            },
+          ],
+        });
+      } catch (iconError) {
+        console.error('Error fetching app icon:', iconError.message);
+      }
 
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
       console.log('App Name:', name);
