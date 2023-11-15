@@ -1743,7 +1743,14 @@ async function getAppPackageInfo(appName) {
 
     console.log('Package Name:', packageName);
 
-    return { packageNames: packageName ? [packageName] : [] };
+    // Extract additional details like size and last update
+    const size = firstPackageElement.find('.htlgb span').first().text();
+    const lastUpdate = firstPackageElement.find('.htlgb span').last().text();
+
+    console.log('Size:', size);
+    console.log('Last Update:', lastUpdate);
+
+    return { packageNames: packageName ? [packageName] : [], size, lastUpdate };
   } catch (error) {
     console.error('Error getting app package information:', error.message);
     throw error;
@@ -1789,37 +1796,6 @@ if (!text) {
 }
 break;
 
-case 'appd':
-  const apiKey = 'Uc3LRsLE2d'; // Replace with your actual API key
-  const appDetailsUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(text)}`;
-
-  try {
-    const response = await fetch(appDetailsUrl);
-
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(`API Error (${response.status}): ${errorMessage}`);
-    }
-
-    const result = await response.json();
-
-    if (result && result.status === 200 && result.result && result.result.file) {
-      const appDetails = result.result.file;
-
-      // Send app details
-      await gss.sendMessage(m.chat, {
-        image: appDetails.icon,
-        caption: `*${appDetails.appName}*\nSize: ${appDetails.size}\nLast Update: ${appDetails.lastUpdate}`,
-         // Assuming the API provides the icon URL
-      }, { quoted: m });
-    } else {
-      throw new Error('Invalid API response or app details not found');
-    }
-  } catch (error) {
-    console.error('Error fetching app details:', error.message);
-    throw error;
-  }
-  break;
 
 
 case 'mediafire': {
