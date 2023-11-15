@@ -1554,15 +1554,15 @@ case 'instagram':
 
 
 case 'anime':
-case 'girl':
-case 'animegirl':
-case 'sexy':
-case 'sexygirl':
-case 'sexyanime':
-  const imgnum = 10;
-  const count = Math.min(parseInt(args[0]) || 1, imgnum); // Parse the provided argument as a number, default to 1
-  const imageUrl = `https://matrix-api-service.up.railway.app/randomgirl`;
-  const timeout = 10000; // 10 seconds timeout for Axios requests
+  case 'girl':
+  case 'animegirl':
+  case 'sexy':
+  case 'sexygirl':
+  case 'sexyanime':
+    const imgnum = 10;
+    const count = Math.min(parseInt(args[1]) || 1, imgnum);
+    const imageUrl = count === 1 ? 'https://matrix-api-service.up.railway.app/randomgirl' : `https://matrix-api-service.up.railway.app/${count}`;
+    const timeout = 10000;
 
     gss.sendMessage(m.chat, {
       image: {
@@ -1572,20 +1572,7 @@ case 'sexyanime':
     }, {
       quoted: m,
     });
-  } else {
-    for (let i = 0; i < numImages; i++) {
-      const imageUrl = `https://matrix-api-service.up.railway.app/${count}`;
-      gss.sendMessage(m.chat, {
-        image: {
-          url: imageUrl,
-        },
-        caption: text,
-      }, {
-        quoted: m,
-      });
-    }
-  }
-break;
+    break;
 
 
 
