@@ -44,7 +44,7 @@ let TYPING_ENABLED = false;
 let PUBLIC_MODE = false; // added
 let ANTICALL_MODE = false; // added
 
-
+let props;
 const reportedMessages = {};
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
@@ -2304,10 +2304,14 @@ fetchImageData();
 
 break;
 
+
+
+// ...
+
 case 'changename':
    try {
-      if (!text) return gss.reply(prefix, command, 'neoxr bot'); // Removed the comma here
-      if (text.length > 25) return gss.reply(m.chat, `🚩 Text is too long, maximum 25 characters.`);
+      if (!text) return m.reply(prefix, command, 'neoxr bot');
+      if (text.length > 25) return m.reply(m.chat, `🚩 Text is too long, maximum 25 characters.`);
       gss.authState.creds.me.name = text;
       await props.save(global.db);
       return m.reply(`🚩 Name successfully changed.`);
@@ -2316,6 +2320,7 @@ case 'changename':
       return m.reply(`🚩 Name failed to change.`);
    }
    break;
+
 
   
 case 'bug':
