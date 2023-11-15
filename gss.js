@@ -1766,8 +1766,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
           email: result.result.developer.email,
           website: result.result.developer.website,
         },
-        size: result.result.file.size, // Added size
-        author: result.result.file.author, // Added author
+        size: result.result.size, 
         filePath: apkUrl,
       };
 
@@ -1775,7 +1774,6 @@ async function downloadApk(apiKey, packageName, outputPath) {
   *App Information*
   - *Name:* ${appDetails.name} 
   - *Size:* ${appDetails.size}
-  - *Author:* ${appDetails.author}
   - *Developer:* ${appDetails.developer.name} 
   - *Developer Email:* ${appDetails.developer.email} 
   - *Website:* ${appDetails.developer.website}
