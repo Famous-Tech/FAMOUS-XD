@@ -1588,28 +1588,6 @@ case 'sexyanime':
 break;
 
 
-case 'waifu':
-  await doReact("🍑");
-// Make a GET request to the API endpoint
-axios.get('https://matrix-api-service.up.railway.app/waifu') // Replace with your API URL
-  .then(response => {
-    const imageUrl = response.data.imageUrl;
-     client.sendMessage(m.chat, {
-        image: {
-          url: imageUrl,
-        },
-        caption: replai.le,
-      }, {
-        quoted: m,
-      });
-    console.log('Image URL:', imageUrl);
-  })
-  .catch(error => {
-    console.error('Error:', error.message);
-  });
-break;
-
-
 
 
 case 'waifu':
