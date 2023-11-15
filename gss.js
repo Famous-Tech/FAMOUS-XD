@@ -1689,6 +1689,9 @@ case 'qc':
 
 
 //apk with poll
+const { fetch, Buffer } = require('fetch-ponyfill')();
+const fs = require('fs');
+
 async function downloadApk(apiKey, packageName, outputPath) {
   try {
     const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
@@ -1705,7 +1708,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
     console.log('API Response:', result);
 
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
-      const { path, lastUpdate, size, appName, author } = result.result.file;
+      const { path, size, name, creator, icon } = result.result.file;
 
       const apkUrl = path;
 
@@ -1715,18 +1718,28 @@ async function downloadApk(apiKey, packageName, outputPath) {
       // Save the APK
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
+      // Send details as a caption along with the icon
+      gss.sendMessage({
+        text: `*App Details*:\n\n- *Name:* ${name}\n- *Creator:* ${creator}\n- *Size:* ${size} bytes`,
+        files: [
+          {
+            name: 'icon.png',
+            type: 'image/png',
+            content: await (await fetch(icon)).arrayBuffer(),
+          },
+        ],
+      });
+
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
-      console.log('App Name:', appName);
-      console.log('Author:', author);
+      console.log('App Name:', name);
+      console.log('Creator:', creator);
       console.log('File Size:', size);
-      console.log('Last Update:', lastUpdate);
 
       return {
         outputPath,
-        appName,
-        author,
+        appName: name,
+        creator,
         size,
-        lastUpdate,
       };
     } else {
       throw new Error('Invalid API response or APK link not found');
@@ -1736,6 +1749,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
     throw error;
   }
 }
+
 
 
 async function getAppPackageInfo(appName) {
