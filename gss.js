@@ -1625,7 +1625,7 @@ case 'truecaller':
   try {
     if (!text) {
       // Reply when no phone number is provided
-      throw ('Please provide a phone number.');
+    return  m.reply ('Please provide a phone number.');
       break;
     }
 
