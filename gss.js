@@ -1847,17 +1847,8 @@ async function getAppPackageInfo(appName) {
 
     console.log('Package Name:', packageName);
 
-    // Extract additional details like size and last update
-    const sizeElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Size'));
-    const size = sizeElement.next().text();
 
-    const lastUpdateElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Updated'));
-    const lastUpdate = lastUpdateElement.next().text();
-
-    console.log('Size:', size);
-    console.log('Last Update:', lastUpdate);
-
-    return { packageNames: packageName ? [packageName] : [], size, lastUpdate };
+    return { packageNames: packageName ? [packageName] : []};
   } catch (error) {
     console.error('Error getting app package information:', error.message);
     throw error;
