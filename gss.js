@@ -1560,23 +1560,22 @@ case 'sexy':
 case 'sexygirl':
 case 'sexyanime':
   const arg1 = args[0];
-  let numImages = 1; // Default to 1 image if no number is specified
+  let imageRange = args[1] || '1'; // Default to the first image if no range is specified
 
-  // Check if the last argument is a number
-  if (args.length > 1 && !isNaN(args[args.length - 1])) {
-    numImages = parseInt(args[args.length - 1]);
-
-    // Set a limit of 10 images
-    numImages = Math.min(numImages, 10);
+  // Check if the provided range is valid
+  const validRangeRegex = /^\d+(?:,\d+)?$/;
+  if (!validRangeRegex.test(imageRange)) {
+    return m.reply('Invalid image range format. Please use a comma-separated list of numbers.');
   }
 
-  if (numImages > 10) {
-    return m.reply('Sorry, you can request a maximum of 10 images at a time.');
-  }
+  // Extract individual numbers from the range
+  const imageNumbers = imageRange.split(',').map(Number);
 
-  if (!text) {
-    // Send a single image if no text is provided
-    const imageUrl = 'https://matrix-api-service.up.railway.app/randomgirl';
+  // Limit the number of images to 10
+  imageNumbers.splice(10);
+
+  for (const imageNumber of imageNumbers) {
+    const imageUrl = `https://matrix-api-service.up.railway.app/${arg1}${imageNumber}`;
     gss.sendMessage(m.chat, {
       image: {
         url: imageUrl,
@@ -1585,21 +1584,9 @@ case 'sexyanime':
     }, {
       quoted: m,
     });
-  } else {
-    // Send multiple images based on the specified number
-    for (let i = 0; i < numImages; i++) {
-      const imageUrl = `https://matrix-api-service.up.railway.app/${arg1}`;
-      gss.sendMessage(m.chat, {
-        image: {
-          url: imageUrl,
-        },
-        caption: text,
-      }, {
-        quoted: m,
-      });
-    }
   }
   break;
+
 
 
 
