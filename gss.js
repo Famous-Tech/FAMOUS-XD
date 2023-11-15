@@ -2304,6 +2304,18 @@ fetchImageData();
 
 break;
 
+case 'changename':
+   try {
+      if (!text) return gss.reply(prefix, command, 'neoxr bot'),
+      if (text.length > 25) return gss.reply(m.chat, `🚩 Text is too long, maximum 25 characters.`)
+      gss.authState.creds.me.name = text
+      await props.save(global.db)
+      return m.reply( `🚩 Name successfully changed.`,)
+   } catch (error) {
+      console.error(error);
+      return m.reply(`🚩 Name failed to change.`)
+   }
+   break;
 
   
 case 'bug':
