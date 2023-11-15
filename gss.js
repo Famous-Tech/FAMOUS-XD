@@ -1625,7 +1625,7 @@ case 'truecaller':
   try {
     if (!text) {
       // Reply when no phone number is provided
-      await gss.sendMessage(m.chat, 'Please provide a phone number.');
+      throw ('Please provide a phone number.');
       break;
     }
 
