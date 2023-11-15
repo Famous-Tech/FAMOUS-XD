@@ -104,19 +104,6 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
-async function doReact(emoji) {
-  if (m && m.key) {
-    let reactm = {
-      react: {
-        text: emoji,
-        key: m.key,
-      },
-    };
-    await gss.sendMessage(m.from, reactm);
-  } else {
-    console.error('Invalid or undefined message object:', m);
-  }
-}
 
 	
 async function getIPInfo() {
@@ -985,7 +972,6 @@ case 'listgc': {
 break;
 
 case 'listonline': case 'liston': {
-  await doReact("😘");
   let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat;
   let online = [...Object.keys(store.presences[id]), botNumber];
   gss.sendText(m.chat, 'List Online:\n\n' + online.map(v => '⭔ @' + v.replace(/@.+/, '')).join`\n`, m, { mentions: online });
@@ -1865,7 +1851,7 @@ async function getAppPackageInfo(appName) {
 }
 
 
-case 'apk':
+case 'apk': case 'app': case 'apkdl':
   
 const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
 
