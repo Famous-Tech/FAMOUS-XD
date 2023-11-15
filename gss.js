@@ -1620,6 +1620,62 @@ axios.get('https://matrix-api-service.up.railway.app/waifu') // Replace with you
   });
 break;
 
+case 'true':
+case 'truecaller':
+  try {
+    if (!text) {
+      // Reply when no phone number is provided
+      await gss.sendMessage(m.chat, 'Please provide a phone number.');
+      break;
+    }
+
+    const installationId = 'a1i0Q--j6pQD-V1-BJnOIongGhfL3HZuNr-yb1WJChcUdQn7GEc9yAScT71cs8_F';
+    const apiUrl = `https://matrix-api-service.up.railway.app/truecaller?phone=${encodeURIComponent(text)}&id=${installationId}`;
+
+    let response = await axios.get(apiUrl);
+    console.log(response);
+    let json = response.data;
+
+    const { name, alternateName, addresses, email, countryDetails } = json;
+
+    let info = `╭––『 *Phone Detail* 』\n`;
+    info += `┆ ⚝ *Name:* ${name}\n`;
+
+    if (addresses && addresses.length > 0) {
+      info += `┆ ⚝ *Address:* ${addresses[0].city}, ${addresses[0].countryCode}\n`;
+      info += `┆ ⚝ *Time Zone:* ${addresses[0].timeZone}\n`;
+      info += `┆ ⚝ *Pin Code* ${addresses[0].zipCode}\n`;
+      info += `┆ ⚝ *Street* ${addresses[0].street}\n`;
+    }
+
+    info += `┆ ⚝ *Email:* ${email}\n`;
+    info += `╰–––––––––––––––༓\n`;
+
+    if (countryDetails) {
+      info += `╭––『 *countryDetails* 』\n`;
+      info += `┆ ⚝ *Name:* ${countryDetails.name}\n`;
+      info += `┆ ⚝ *Native:* ${countryDetails.native}\n`;
+      info += `┆ ⚝ *Phone Code:* +${countryDetails.phone[0]}\n`;
+      info += `┆ ⚝ *Continent:* ${countryDetails.continent}\n`;
+      info += `┆ ⚝ *Capital:* ${countryDetails.capital}\n`;
+      info += `┆ ⚝ *Currency:* ${countryDetails.currency.join(', ')}\n`;
+      info += `┆ ⚝ *Languages:* ${countryDetails.languages.join(', ')}\n`;
+      info += `┆ ⚝ *Flag:* ${countryDetails.flag}\n`;
+      info += `╰–––––––––––––––༓`;
+    }
+
+    await gss.sendMessage(m.chat, {
+      text: info,
+    }, {
+      quoted: m,
+    });
+
+  } catch (error) {
+    console.error(error);
+  }
+  break;
+
+
 
 case 'qc':
     try {
