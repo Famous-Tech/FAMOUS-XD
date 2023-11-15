@@ -901,8 +901,7 @@ break;
             case 'delete': case 'del': {
               await doReact("😘");
   if (!m.quoted) throw false;
-  let { chat, fromMe, id, isBaileys } = m.quoted;
-  if (!isBaileys) throw 'The message is not sent by the bot!';
+  let { chat, fromMe, id} = m.quoted;
   gss.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } });
 }
 break;
