@@ -1560,22 +1560,10 @@ case 'sexy':
 case 'sexygirl':
 case 'sexyanime':
   const arg1 = args[0];
-  let imageRange = args[1] || '1'; // Default to the first image if no range is specified
-
-  // Check if the provided range is valid
-  const validRangeRegex = /^\d+(?:,\d+)?$/;
-  if (!validRangeRegex.test(imageRange)) {
-    return m.reply('Invalid image range format. Please use a comma-separated list of numbers.');
-  }
-
-  // Extract individual numbers from the range
-  const imageNumbers = imageRange.split(',').map(Number);
-
-  // Limit the number of images to 10
-  imageNumbers.splice(10);
-
-  for (const imageNumber of imageNumbers) {
-    const imageUrl = `https://matrix-api-service.up.railway.app/${arg1}${imageNumber}`;
+  const numImages = parseInt(args[args.length - 1]);
+  
+  if (!text) {
+    const imageUrl = `https://matrix-api-service.up.railway.app/randomgirl`;
     gss.sendMessage(m.chat, {
       image: {
         url: imageUrl,
@@ -1584,9 +1572,42 @@ case 'sexyanime':
     }, {
       quoted: m,
     });
+  } else {
+    for (let i = 0; i < numImages; i++) {
+      const imageUrl = `https://matrix-api-service.up.railway.app/${arg1}`;
+      gss.sendMessage(m.chat, {
+        image: {
+          url: imageUrl,
+        },
+        caption: text,
+      }, {
+        quoted: m,
+      });
+    }
   }
-  break;
+break;
 
+
+case 'waifu':
+  await doReact("🍑");
+// Make a GET request to the API endpoint
+axios.get('https://matrix-api-service.up.railway.app/waifu') // Replace with your API URL
+  .then(response => {
+    const imageUrl = response.data.imageUrl;
+     client.sendMessage(m.chat, {
+        image: {
+          url: imageUrl,
+        },
+        caption: replai.le,
+      }, {
+        quoted: m,
+      });
+    console.log('Image URL:', imageUrl);
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+  });
+break;
 
 
 
