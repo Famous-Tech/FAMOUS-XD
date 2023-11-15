@@ -1559,11 +1559,11 @@ case 'animegirl':
 case 'sexy':
 case 'sexygirl':
 case 'sexyanime':
-  const arg1 = args[0];
-  const numImages = parseInt(args[args.length - 1]);
-  
-  if (!text) {
-    const imageUrl = `https://matrix-api-service.up.railway.app/randomgirl`;
+  const imgnum = 10;
+  const count = Math.min(parseInt(args[0]) || 1, imgnum); // Parse the provided argument as a number, default to 1
+  const imageUrl = `https://matrix-api-service.up.railway.app/randomgirl`;
+  const timeout = 10000; // 10 seconds timeout for Axios requests
+
     gss.sendMessage(m.chat, {
       image: {
         url: imageUrl,
@@ -1574,7 +1574,7 @@ case 'sexyanime':
     });
   } else {
     for (let i = 0; i < numImages; i++) {
-      const imageUrl = `https://matrix-api-service.up.railway.app/${arg1}`;
+      const imageUrl = `https://matrix-api-service.up.railway.app/${count}`;
       gss.sendMessage(m.chat, {
         image: {
           url: imageUrl,
