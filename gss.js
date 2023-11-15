@@ -890,7 +890,8 @@ case 'anticall': {
 break;
 
             case 'delete': case 'del': {
-  if (!m.quoted) throw false;
+if (!m.quoted) return m.reply('Reply to the message!');
+if (!isCreator) throw mess.owner;
   let { chat, fromMe, id} = m.quoted;
   gss.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } });
 }
