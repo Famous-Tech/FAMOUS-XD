@@ -1762,12 +1762,14 @@ async function downloadApk(apiKey, packageName, outputPath) {
       const appDetails = {
         name: result.result.name,
         icon: result.result.icon,
+        modified: result.result.modified
         developer: {
           name: result.result.developer.name,
           email: result.result.developer.email,
           website: result.result.developer.website,
         },
         size: result.result.size, 
+        vername: result.result.file.vername,
         filePath: apkUrl,
       };
 
@@ -1775,16 +1777,19 @@ async function downloadApk(apiKey, packageName, outputPath) {
   *App Information*
   - *Name:* ${appDetails.name} 
   - *Size:* ${appDetails.size}
+  - *version:* ${appDetails.vername}
+  - *Update:* ${appDetails.modified}
   - *Developer:* ${appDetails.developer.name} 
   - *Developer Email:* ${appDetails.developer.email} 
   - *Website:* ${appDetails.developer.website}
   
 `;
 
-      
+     const apkResponse = await fetch(apkUrl);
+      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
 
       // Save the APK
-      
+      fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
       gss.sendMessage(m.chat, {
         image: {
@@ -1795,9 +1800,6 @@ async function downloadApk(apiKey, packageName, outputPath) {
         quoted: m,
       });
       
-      const apkResponse = await fetch(apkUrl);
-      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
-      fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
 
