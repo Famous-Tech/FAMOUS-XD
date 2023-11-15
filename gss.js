@@ -1785,7 +1785,7 @@ async function downloadApk(apiKey, packageName, outputPath) {
       const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
 
       // Save the APK
-      fs.writeFileSync(outputPath, apkBuffer, 'binary');
+      
 
       gss.sendMessage(m.chat, {
         image: {
@@ -1795,6 +1795,8 @@ async function downloadApk(apiKey, packageName, outputPath) {
       }, {
         quoted: m,
       });
+      
+      fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
 
