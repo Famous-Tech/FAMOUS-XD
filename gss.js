@@ -1744,8 +1744,11 @@ async function getAppPackageInfo(appName) {
     console.log('Package Name:', packageName);
 
     // Extract additional details like size and last update
-    const size = firstPackageElement.find('.htlgb span').first().text();
-    const lastUpdate = firstPackageElement.find('.htlgb span').last().text();
+    const sizeElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Size'));
+    const size = sizeElement.next().text();
+
+    const lastUpdateElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Updated'));
+    const lastUpdate = lastUpdateElement.next().text();
 
     console.log('Size:', size);
     console.log('Last Update:', lastUpdate);
@@ -1756,6 +1759,7 @@ async function getAppPackageInfo(appName) {
     throw error;
   }
 }
+
 
 case 'apk':
   
