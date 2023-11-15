@@ -1756,7 +1756,8 @@ async function downloadApk(apiKey, packageName, outputPath) {
 
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
       const apkUrl = result.result.file.path;
-// Fetch Extra deta
+
+      // Fetch Extra data
       const appDetails = {
         name: result.result.name,
         icon: result.result.icon,
@@ -1765,41 +1766,45 @@ async function downloadApk(apiKey, packageName, outputPath) {
           email: result.result.developer.email,
           website: result.result.developer.website,
         },
+        size: result.result.file.size, // Added size
+        author: result.result.file.author, // Added author
         filePath: apkUrl,
       };
 
-
-const appInformation =`
- ┏━━━━━━━━━━━━━━━━━━━━┓ 
- ┃ *Information*
- ┃ Name: ${appDetails.name} 
- ┃ Dev's Name: ${appDetails.developer.name} 
- ┃ Dev;s Emel: ${appDetails.developer.email} 
- ┃ Website: ${appDetails.developer.website} 
- ┃ Down Link: ${appDetails.filePath} 
- ┗━━━━━━━━━━━━━━━━━━━━┛
+      const appInformation = `
+  *App Information*
+  - *Name:* ${appDetails.name} 
+  - *Size:* ${appDetails.size}
+  - *Author:* ${appDetails.author}
+  - *Developer:* ${appDetails.developer.name} 
+  - *Developer Email:* ${appDetails.developer.email} 
+  - *Website:* ${appDetails.developer.website}
+  
 `;
+
       console.log(`App Name: ${appDetails.name}`);
       console.log(`Icon URL: ${appDetails.icon}`);
       console.log(`Developer Name: ${appDetails.developer.name}`);
       console.log(`Developer Email: ${appDetails.developer.email}`);
       console.log(`Developer Website: ${appDetails.developer.website}`);
       console.log(`APK File Path: ${appDetails.filePath}`);
-      
+      console.log(`Size: ${appDetails.size}`);
+      console.log(`Author: ${appDetails.author}`);
+
       const apkResponse = await fetch(apkUrl);
       const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
 
       // Save the APK
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
-      
-    gss.sendMessage(m.chat, {
-      image: {
-        url: appDetails.icon,
-      },
-      caption: appInformation,
-    }, {
-      quoted: m,
-    });
+
+      gss.sendMessage(m.chat, {
+        image: {
+          url: appDetails.icon,
+        },
+        caption: appInformation,
+      }, {
+        quoted: m,
+      });
 
       console.log(`APK downloaded successfully and saved to: ${outputPath}`);
 
