@@ -1742,6 +1742,7 @@ case 'qc':
     }
     break;
 
+
 async function downloadApk(apiKey, packageName, outputPath) {
   try {
     const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
@@ -1795,7 +1796,78 @@ async function downloadApk(apiKey, packageName, outputPath) {
       // Save the APK
       fs.writeFileSync(outputPath, apkBuffer, 'binary');
 
-      gss.sendMessage(m.chat, {
+      
+
+      console.log(`APK downloaded successfully and saved to: ${outputPath}`);
+
+      return outputPath;
+    } else {
+      throw new Error('Invalid API response or APK link not found');
+    }
+  } catch (error) {
+    console.error('Error downloading APK:', error.message);
+    throw error;
+  }
+}
+
+
+
+async function getAppPackageInfo(appName) {
+  try {
+    const searchUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
+    console.log('Search URL:', searchUrl);
+
+    // Make HTTP request
+    const response = await axios.get(searchUrl);
+    console.log('Response Status:', response.status);
+
+    // Load HTML content into Cheerio
+    const $ = cheerio.load(response.data);
+
+    // Extract the first package name from the search result
+    const firstPackageElement = $('[data-item-id]').first();
+
+    // Extract only the package name part using a regular expression
+    const packageNameMatch = firstPackageElement.attr('data-item-id').match(/"([^"]+)"/);
+    const packageName = packageNameMatch ? packageNameMatch[1] : null;
+
+    console.log('Package Name:', packageName);
+
+    // Extract additional details like size and last update
+    const sizeElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Size'));
+    const size = sizeElement.next().text();
+
+    const lastUpdateElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Updated'));
+    const lastUpdate = lastUpdateElement.next().text();
+
+    console.log('Size:', size);
+    console.log('Last Update:', lastUpdate);
+
+    return { packageNames: packageName ? [packageName] : [], size, lastUpdate };
+  } catch (error) {
+    console.error('Error getting app package information:', error.message);
+    throw error;
+  }
+}
+
+
+case 'apk':
+  
+const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
+
+if (!text) {
+  console.log('Please provide the app name.');
+} else {
+  try {
+    const appInfo = await getAppPackageInfo(text);
+
+    if (appInfo.packageNames && appInfo.packageNames.length > 0) {
+      const packageName = appInfo.packageNames[0];
+
+      const outputPath = 'downloaded_app.apk';
+      await downloadApk(apiKeyss[0], packageName, outputPath);
+
+     await gss.sendMessage(m.chat, {
         image: {
           url: appDetails.icon,
         },
@@ -1803,76 +1875,6 @@ async function downloadApk(apiKey, packageName, outputPath) {
       }, {
         quoted: m,
       });
-
-      console.log(`APK downloaded successfully and saved to: ${outputPath}`);
-
-      return outputPath;
-    } else {
-      throw new Error('Invalid API response or APK link not found');
-    }
-  } catch (error) {
-    console.error('Error downloading APK:', error.message);
-    throw error;
-  }
-}
-
-
-
-async function getAppPackageInfo(appName) {
-  try {
-    const searchUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
-    console.log('Search URL:', searchUrl);
-
-    // Make HTTP request
-    const response = await axios.get(searchUrl);
-    console.log('Response Status:', response.status);
-
-    // Load HTML content into Cheerio
-    const $ = cheerio.load(response.data);
-
-    // Extract the first package name from the search result
-    const firstPackageElement = $('[data-item-id]').first();
-
-    // Extract only the package name part using a regular expression
-    const packageNameMatch = firstPackageElement.attr('data-item-id').match(/"([^"]+)"/);
-    const packageName = packageNameMatch ? packageNameMatch[1] : null;
-
-    console.log('Package Name:', packageName);
-
-    // Extract additional details like size and last update
-    const sizeElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Size'));
-    const size = sizeElement.next().text();
-
-    const lastUpdateElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Updated'));
-    const lastUpdate = lastUpdateElement.next().text();
-
-    console.log('Size:', size);
-    console.log('Last Update:', lastUpdate);
-
-    return { packageNames: packageName ? [packageName] : [], size, lastUpdate };
-  } catch (error) {
-    console.error('Error getting app package information:', error.message);
-    throw error;
-  }
-}
-
-
-case 'apk':
-  
-const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
-
-if (!text) {
-  console.log('Please provide the app name.');
-} else {
-  try {
-    const appInfo = await getAppPackageInfo(text);
-
-    if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-      const packageName = appInfo.packageNames[0];
-
-      const outputPath = 'downloaded_app.apk';
-      await downloadApk(apiKeyss[0], packageName, outputPath);
-
       
       await gss.sendMessage(m.chat, {
         document: fs.readFileSync(outputPath),
@@ -1897,124 +1899,6 @@ if (!text) {
 break;
 
 
-/*
-
-//apk with poll
-
-async function downloadApk(apiKey, packageName, outputPath) {
-  try {
-    const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
-    const response = await fetch(apiUrl);
-
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(`API Error (${response.status}): ${errorMessage}`);
-    }
-
-    const result = await response.json();
-
-    if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
-      const apkUrl = result.result.file.path;
-
-      const apkResponse = await fetch(apkUrl);
-      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
-
-      // Save the APK
-      fs.writeFileSync(outputPath, apkBuffer, 'binary');
-
-      console.log(`APK downloaded successfully and saved to: ${outputPath}`);
-
-      return outputPath;
-    } else {
-      throw new Error('Invalid API response or APK link not found');
-    }
-  } catch (error) {
-    console.error('Error downloading APK:', error.message);
-    throw error;
-  }
-}
-
-
-
-async function getAppPackageInfo(appName) {
-  try {
-    const searchUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
-    console.log('Search URL:', searchUrl);
-
-    // Make HTTP request
-    const response = await axios.get(searchUrl);
-    console.log('Response Status:', response.status);
-
-    // Load HTML content into Cheerio
-    const $ = cheerio.load(response.data);
-
-    // Extract the first package name from the search result
-    const firstPackageElement = $('[data-item-id]').first();
-
-    // Extract only the package name part using a regular expression
-    const packageNameMatch = firstPackageElement.attr('data-item-id').match(/"([^"]+)"/);
-    const packageName = packageNameMatch ? packageNameMatch[1] : null;
-
-    console.log('Package Name:', packageName);
-
-    // Extract additional details like size and last update
-    const sizeElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Size'));
-    const size = sizeElement.next().text();
-
-    const lastUpdateElement = firstPackageElement.find('.htlgb span').filter((index, element) => $(element).text().includes('Updated'));
-    const lastUpdate = lastUpdateElement.next().text();
-
-    console.log('Size:', size);
-    console.log('Last Update:', lastUpdate);
-
-    return { packageNames: packageName ? [packageName] : [], size, lastUpdate };
-  } catch (error) {
-    console.error('Error getting app package information:', error.message);
-    throw error;
-  }
-}
-
-
-case 'apk':
-  
-const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
-
-if (!text) {
-  console.log('Please provide the app name.');
-} else {
-  try {
-    const appInfo = await getAppPackageInfo(text);
-
-    if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-      const packageName = appInfo.packageNames[0];
-
-      const outputPath = 'downloaded_app.apk';
-      await downloadApk(apiKeyss[0], packageName, outputPath);
-
-      
-      await gss.sendMessage(m.chat, {
-        document: fs.readFileSync(outputPath),
-        mimetype: 'application/vnd.android.package-archive',
-        fileName: `${text}.apk`,
-        caption: 'Downloaded by gss botwa'
-      }, { quoted: m });
-
-      await fs.promises.unlink(outputPath);
-    } else {
-      console.log(`Could not find package names for ${text}.`);
-    }
-  } catch (error) {
-    if (error.message.includes('API key not found')) {
-      console.log('API key not found. Please check your API key and register if necessary.');
-    } else {
-      console.error('Error while processing APK download:', error);
-      console.log(`An error occurred: ${error.message}`);
-    }
-  }
-}
-break;
-
-*/
 
 case 'mediafire': {
     // Check if the command has arguments
