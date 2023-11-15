@@ -271,16 +271,6 @@ const reactionMessage = {
 }
 
 
-if (m.isAntiBotz && isBotGroupAdmins) {
-if (m.isBaileys && !m.key.fromMe) {
-if (!m.isCreator && !isGroupAdmins) {
-m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
-setTimeout(() => {
-gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
-}, 2000)
-}}}
-
-
 
 let TYPING_ENABLED = process.env.AUTO_TYPING === 'true';
 let AUTO_READ_ENABLED = process.env.AUTO_READ === 'true';
@@ -340,7 +330,6 @@ if (!('autobio' in setting)) setting.autobio = true
 	    } else global.db.data.settings[botNumber] = {
 	    anticall: true,
 		status: 0,
-		antibot: true, 
 		autobio: true
 	    }
 	    
