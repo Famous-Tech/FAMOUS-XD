@@ -1561,7 +1561,7 @@ case 'anime':
   case 'sexyanime':
     const imgnum = 10;
     const count = Math.min(parseInt(args[1]) || 1, imgnum);
-    const imageUrl = count === 1 ? 'https://matrix-api-service.up.railway.app/randomgirl' : `https://matrix-api-service.up.railway.app/${count}`;
+    const imageUrl = count === 1 ? 'https://matrix-api-service.up.railway.app/randomgirl' : `https://matrix-api-service.up.railway.app/${text}`;
     const timeout = 10000;
 
     gss.sendMessage(m.chat, {
