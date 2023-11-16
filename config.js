@@ -26,7 +26,7 @@ global.premium = ['917050906659']
 global.packname = 'gss botwa'
 global.author = 'gss botwa'
 global.sessionName = 'session'
-global.prefa = ['','!','.',]
+global.prefa = ['','!','.','#','&']
 global.sp = '✪'
 global.mess = {
     success: '✓ Success',
