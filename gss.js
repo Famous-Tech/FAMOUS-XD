@@ -1252,16 +1252,17 @@ here is your search result`;
 }
 break;
 
-case "rvo": {
-    if (!quoted.msg || !quoted.msg.viewOnce) {
-        return m.reply(`Reply view once with command ${prefix + command}`);
-    }
-    
-    quoted.msg.viewOnce = false;
-    await gss.sendMessage(m.from, { forward: quoted }, { quoted: m });
+case 'toonce': case 'toviewonce': { 
+if (!quoted) return m.reply(`Reply Image/Video`)
+if (/image/.test(mime)) {
+anuan = await gss.downloadAndSaveMediaMessage(quoted)
+gss.sendMessage(m.chat, {image: {url:anuan}, caption: `Here you go!`, fileLength: "999", viewOnce : true},{quoted: m })
+} else if (/video/.test(mime)) {
+anuanuan = await gss.downloadAndSaveMediaMessage(quoted)
+gss.sendMessage(m.chat, {video: {url:anuanuan}, caption: `Here you go!`, fileLength: "99999999", viewOnce : true},{quoted: m })
 }
-break;
-
+}
+break
 
 case 'song':
 case 'ytmp3':
