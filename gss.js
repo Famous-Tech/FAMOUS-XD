@@ -386,8 +386,8 @@ async function updateBio() {
     }
 }
 
-// Schedule auto-update every 10 seconds for testing purposes
-setInterval(updateBio, 10000);
+// Schedule auto-update every 60 seconds for testing purposes
+setInterval(updateBio, 60000);
 
 	    
 	  // Anti Link
