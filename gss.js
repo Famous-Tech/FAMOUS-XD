@@ -1252,6 +1252,12 @@ here is your search result`;
 }
 break;
 
+case "rvo": {
+                if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
+                quoted.msg.viewOnce = false
+                await gss.sendMessage(m.from, { forward: quoted }, { quoted: m })
+            }
+            break
 
 case 'song':
 case 'ytmp3':
