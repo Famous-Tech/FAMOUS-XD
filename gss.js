@@ -329,8 +329,8 @@ if (ALWAYS_ONLINE) {
 if (!('autobio' in setting)) setting.autobio = true
 	    } else global.db.data.settings[botNumber] = {
 	    anticall: true,
-		status: 0,
-		autobio: true
+		status: 1,
+		autobio: false
 	    }
 	    
         } catch (err) {
@@ -340,6 +340,7 @@ if (!('autobio' in setting)) setting.autobio = true
         // Public & Self
         if (!gss.public) {
             if (!m.key.fromMe) return
+            if (!isCreator) throw mess.owner;
         }
 
         
