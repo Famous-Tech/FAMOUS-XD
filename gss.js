@@ -325,11 +325,11 @@ if (ALWAYS_ONLINE) {
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
 	    if (!('anticall' in setting)) setting.anticall = true
-		if (!isNumber(setting.status)) setting.status = 0
+		if (!isNumber(setting.status)) setting.status = 5
 if (!('autobio' in setting)) setting.autobio = true
 	    } else global.db.data.settings[botNumber] = {
 	    anticall: true,
-		status: 1,
+		status: 5,
 		autobio: false
 	    }
 	    
