@@ -1400,19 +1400,11 @@ case 'vid':
 
 case 'ytv':
   try {
-    if (!text) throw 'Enter YouTube Video Link!';
+    if (!text) throw 'Enter YouTube Video Link or Search Query!';
 
     m.reply(mess.wait);
 
-    const match = text.match(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?(?:music\.)?youtube\.com\/(?:watch|v|embed|shorts))([^"&?\/\s]{11})/i);
-
-    if (!match) {
-      return m.reply(`Invalid YouTube URL. Example: ${prefix + command} https://youtu.be/_EYbfKMTpRs`);
-    }
-
-    const videoId = match[1];
-
-    const apiURL = `https://ytdl-78w9.onrender.com/download?url=https://youtu.be/${videoId}&quality=144p`;
+    const apiURL = `https://ytdl-78w9.onrender.com/download?query=${encodeURIComponent(text)}`;
 
     const req = await fetch(apiURL);
 
