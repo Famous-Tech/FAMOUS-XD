@@ -1,7 +1,6 @@
 require("dotenv").config();  
 require('./config')
 const Func = ('./lib/function.js');
-const uploadImage = require('./lib/upload.js')
 const fonts = require('./lib/font.js');
 const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
