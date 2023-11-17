@@ -32,6 +32,8 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
+// read database
+let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 
 // Initialize default values
 let AUTO_READ = false;
@@ -74,6 +76,10 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
 	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
+        const antiToxic = m.isGroup ? nttoxic.includes(m.sender) : false
+          const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
  
@@ -290,6 +296,7 @@ if (ALWAYS_ONLINE) {
 
 	try {
             let isNumber = x => typeof x === 'number' && !isNaN(x)
+            let limitUser = isPremium ? global.limitawal.premium : global.limitawal.free
             let user = db.data.users[m.sender]
             if (typeof user !== 'object') db.data.users[m.sender] = {}
             if (user) {
@@ -316,12 +323,13 @@ if (ALWAYS_ONLINE) {
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
 	    if (!('anticall' in setting)) setting.anticall = true
-		if (!isNumber(setting.status)) setting.status = 5
-if (!('autobio' in setting)) setting.autobio = true
+		if (!isNumber(setting.status)) setting.status = 0
+if (!('autobio' in setting)) setting.autobio = false
 	    } else global.db.data.settings[botNumber] = {
 	    anticall: true,
-		status: 5,
-		autobio: false
+		status: 0,
+		antibot: true, 
+		autobio: true
 	    }
 	    
         } catch (err) {
@@ -331,7 +339,6 @@ if (!('autobio' in setting)) setting.autobio = true
         // Public & Self
         if (!gss.public) {
             if (!m.key.fromMe) return
-            if (!isCreator) throw mess.owner;
         }
 
         
@@ -346,7 +353,6 @@ if (!('autobio' in setting)) setting.autobio = true
             scheduled: true,
             timezone: "Asia/kolkata"
         })
-        
 
 // Define a function to format the time in 12-hour format
 function formatTime(date) {
