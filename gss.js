@@ -1398,83 +1398,65 @@ case 'vid':
   });
   break;
 
+case 'ytv':
+  try {
+    if (!text) throw 'Enter YouTube Video Link!';
 
+    m.reply(mess.wait);
 
-async function downloadAndMergeVideo(url, outputFileName) {
-    try {
-        const videoInfo = await ytdl.getInfo(url);
-        const videoFormat = ytdl.chooseFormat(videoInfo.formats, { quality: 'highestvideo' });
-        const audioFormat = ytdl.chooseFormat(videoInfo.formats, { filter: 'audioonly' });
+    const match = text.match(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?(?:music\.)?youtube\.com\/(?:watch|v|embed|shorts))([^"&?\/\s]{11})/i);
 
-        if (!videoFormat || !audioFormat) {
-            throw new Error('No suitable formats found');
-        }
-
-        const videoOutput = fs.createWriteStream('tempVideo.mp4');
-        const audioOutput = fs.createWriteStream('tempAudio.mp3');
-
-        const videoStream = ytdl(url, { format: videoFormat });
-        const audioStream = ytdl(url, { format: audioFormat });
-
-        videoStream.pipe(videoOutput);
-        audioStream.pipe(audioOutput);
-
-        await Promise.all([
-            new Promise(resolve => videoOutput.on('finish', resolve)),
-            new Promise(resolve => audioOutput.on('finish', resolve)),
-        ]);
-
-        // Now, merge the video and audio using ffmpeg
-        const mergeCommand = `ffmpeg -i tempVideo.mp4 -i tempAudio.mp3 -c:v copy -c:a aac -strict experimental -y ${outputFileName}`;
-        await new Promise((resolve, reject) => {
-            exec(mergeCommand, (error) => {
-                if (error) {
-                    reject(`Error during ffmpeg merge: ${error}`);
-                } else {
-                    resolve();
-                }
-            });
-        });
-
-        console.log(`Download complete: ${outputFileName}`);
-    } catch (error) {
-        console.error('Error:', error.message || error);
-        throw error;
-    } finally {
-        // Cleanup temporary files
-        fs.unlinkSync('tempVideo.mp4');
-        fs.unlinkSync('tempAudio.mp3');
+    if (!match) {
+      return m.reply(`Invalid YouTube URL. Example: ${prefix + command} https://youtu.be/_EYbfKMTpRs`);
     }
-}
 
-// Example usage as a case:
-case 'ytv': {
-    try {
-        if (!text) throw 'Enter YouTube Video URL!';
-        m.reply(mess.wait);
+    const videoId = match[1];
 
-        const videoUrl = text; // Assuming 'text' contains the YouTube video URL
-        const outputFileName = 'downloaded_video.mp4';
+    const apiURL = `https://ytdl-78w9.onrender.com/download?url=https://youtu.be/${videoId}&quality=144p`;
 
-        await downloadAndMergeVideo(videoUrl, outputFileName);
+    const req = await fetch(apiURL);
+
+    console.log('Response Status:', req.status);
+
+    const contentType = req.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+
+    if (req.status === 404) {
+      return m.reply('Video not found.');
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result = await req.json().catch(async (error) => {
+        console.error('Error parsing JSON:', await req.text());
+        throw error;
+      });
+
+      console.log('Full API Response:', result);
+
+      if (result && result.downloadURL) {
+        // Fetch the video content
+        const videoBufferReq = await fetch(result.downloadURL);
+        const videoBuffer = await videoBufferReq.arrayBuffer();
+        const mediaBuffer = Buffer.from(videoBuffer);
 
         // Send the video using gss.sendMessage
-        gss.sendMessage(m.chat, {
-            video: {
-                url: outputFileName,
-                mimetype: 'video/mp4',
-                filename: 'Downloaded Video'
-            },
-            caption: 'Video download by gss botwa'
-        }, { quoted: m });
-
-        // Respond back to the user or do further processing if needed
-        m.reply(`Download complete`);
-    } catch (error) {
-        console.error('Error:', error.message || error);
-        m.reply(`Error downloading or playing the video: ${error.message || 'Unknown error'}`);
+        await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('An error occurred during the operation.');
+      }
+    } else {
+      console.error('Invalid Content-Type:', contentType);
+      m.reply('Unexpected response format.');
     }
-} break;
+  } catch (error) {
+    console.error('Error during ytv:', error);
+    m.reply('An error occurred during the operation.');
+  }
+  break;
+
 
 
 async function instaDownload(apiKeys, url) {
