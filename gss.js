@@ -290,7 +290,6 @@ if (ALWAYS_ONLINE) {
 
 	try {
             let isNumber = x => typeof x === 'number' && !isNaN(x)
-            let limitUser = isPremium ? global.limitawal.premium : global.limitawal.free
             let user = db.data.users[m.sender]
             if (typeof user !== 'object') db.data.users[m.sender] = {}
             if (user) {
