@@ -74,6 +74,7 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
 	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
  
@@ -310,7 +311,7 @@ if (ALWAYS_ONLINE) {
             } else global.db.data.chats[m.chat] = {
                 mute: false,
                 antilink: false,
-            }
+  
 		
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
