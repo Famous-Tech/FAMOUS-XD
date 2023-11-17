@@ -33,8 +33,7 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
-// read database
-let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
+
 // Initialize default values
 let AUTO_READ = false;
 let ALWAYS_ONLINE = false;
@@ -76,10 +75,6 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
 	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
-const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
-        const antiToxic = m.isGroup ? nttoxic.includes(m.sender) : false
-          const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
  
