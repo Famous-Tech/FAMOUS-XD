@@ -74,7 +74,6 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
 	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
  
@@ -311,9 +310,9 @@ if (ALWAYS_ONLINE) {
             } else global.db.data.chats[m.chat] = {
                 mute: false,
                 antilink: false,
-  
+            }
 		
-	/*    let setting = db.data.settings[botNumber]
+	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
 	    if (!('anticall' in setting)) setting.anticall = true
@@ -328,7 +327,7 @@ if (!('autobio' in setting)) setting.autobio = true
         } catch (err) {
             console.error(err)
         }
-	    */
+	    
         // Public & Self
         if (!gss.public) {
             if (!m.key.fromMe) return
@@ -382,7 +381,7 @@ async function updateBio() {
 // Schedule auto-update every 60 seconds for testing purposes
 setInterval(updateBio, 60000);
 
-	 /*   
+	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
         if (budy.match(`chat.whatsapp.com`)) {
@@ -397,7 +396,7 @@ setInterval(updateBio, 60000);
         gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
         }
         }
-        */
+        
       // Mute Chat
       if (db.data.chats[m.chat].mute && !isAdmins && !isCreator) {
       return
