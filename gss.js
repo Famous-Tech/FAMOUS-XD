@@ -382,7 +382,7 @@ async function updateBio() {
 // Schedule auto-update every 60 seconds for testing purposes
 setInterval(updateBio, 60000);
 
-	    
+	 /*   
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
         if (budy.match(`chat.whatsapp.com`)) {
@@ -397,7 +397,7 @@ setInterval(updateBio, 60000);
         gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
         }
         }
-        
+        */
       // Mute Chat
       if (db.data.chats[m.chat].mute && !isAdmins && !isCreator) {
       return
