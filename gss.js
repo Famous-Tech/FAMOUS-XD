@@ -313,7 +313,7 @@ if (ALWAYS_ONLINE) {
                 antilink: false,
   
 		
-	    let setting = db.data.settings[botNumber]
+	/*    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
 	    if (!('anticall' in setting)) setting.anticall = true
@@ -328,7 +328,7 @@ if (!('autobio' in setting)) setting.autobio = true
         } catch (err) {
             console.error(err)
         }
-	    
+	    */
         // Public & Self
         if (!gss.public) {
             if (!m.key.fromMe) return
