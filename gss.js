@@ -347,6 +347,8 @@ if (!('autobio' in setting)) setting.autobio = false
             timezone: "Asia/kolkata"
         })
 
+
+/*
 // Define a function to format the time in 12-hour format
 function formatTime(date) {
     let formattedTime = moment(date).tz('Asia/Kolkata').format('hh:mm A');
@@ -379,6 +381,7 @@ async function updateBio() {
 
 // Schedule auto-update every 60 seconds for testing purposes
 setInterval(updateBio, 60000);
+*/
 
 if (isCommand) {
             
