@@ -1,33 +1,35 @@
-const fs = require('fs')
-const chalk = require('chalk')
+const fs = require('fs');
+const chalk = require('chalk');
 
+// Website Api
 global.APIs = {
-	zenz: 'https://api.zahwazein.xyz',
-}
+    xfarr: 'https://api.xfarr.com',
+};
 
 // Apikey Website Api
 global.APIKeys = {
-	'https://api.zahwazein.xyz': '6fb0eff124',
-}
+    'https://api.xfarr.com': 'Uc3LRsLE2d',
+};
 
 // Set your URL and API key here
-   APIs: {
-      xfarr: {
-         baseURL: 'https://api.xfarr.com'
-         Key: "Uc3LRsLE2d"
-      }
-   }
+global.APIs = {
+    xfarr: {
+        baseURL: 'https://api.xfarr.com',
+        Key: 'Uc3LRsLE2d'
+    }
+};
+
 
 // Other
-apikey: "bf2d2cf29b3edc604b447983",
-global.ownername = 'sid bhai'
-global.owner = ['917050906659']
-global.premium = ['917050906659']
-global.packname = 'gss botwa'
-global.author = 'gss botwa'
-global.sessionName = 'session'
-global.prefa = [',', '.', '']
-global.sp = '✪'
+global.apikey = 'bf2d2cf29b3edc604b447983';
+global.ownername = 'sid bhai';
+global.owner = ['917050906659'];
+global.premium = ['917050906659'];
+global.packname = 'gss botwa';
+global.author = 'gss botwa';
+global.sessionName = 'session';
+global.prefa = ['', '!', '.'];
+global.sp = '✪';
 global.mess = {
     success: '✓ Success',
     admin: 'Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs',
@@ -38,16 +40,30 @@ global.mess = {
     bot: 'ʙᴏᴛ ɴᴜᴍʙᴇʀ ᴜsᴇʀ sᴘᴇᴄɪᴀʟ ғᴇᴀᴛᴜʀᴇs',
     wait: 'Loading...',
     endLimit: 'ʏᴏᴜʀ ᴅᴀɪʟʏ ʟɪᴍɪᴛ ʜᴀs ᴇxᴘɪʀᴇᴅ, ᴛʜᴇ ʟɪᴍɪᴛ ᴡɪʟʟ ʙᴇ ʀᴇsᴇᴛ ᴇᴠᴇʀʏ 12 ʜᴏᴜʀs',
-}
+};
+global.link = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp'
+global.typemenu = 'v1' // 'v1' => 'v6'
+global.onlygroup = true // onlygroup
+global.onlypc = false
 global.limitawal = {
-    premium: "Infinity",
+    premium: 'Infinity',
     free: 100
-}
+};
 
-let file = require.resolve(__filename)
-fs.watchFile(file, () => {
-	fs.unwatchFile(file)
-	console.log(chalk.redBright(`Update'${__filename}'`))
-	delete require.cache[file]
-	require(file)
-})
+// Add anticall option
+global.config = {
+    options: {
+        antiCall: true, // Set to true for anticall functionality, false otherwise
+    },
+};
+
+// Ensure config object is defined before using it
+if (config && config.options && config.options.antiCall) {
+    let file = require.resolve(__filename);
+    fs.watchFile(file, () => {
+        fs.unwatchFile(file);
+        console.log(chalk.redBright(`Update'${__filename}'`));
+        delete require.cache[file];
+        require(file);
+    });
+}
