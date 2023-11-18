@@ -2,9 +2,12 @@ require("dotenv").config();
 require('./config')
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
+const more = String.fromCharCode(8206)
+const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
+const fsx = require('fs-extra')
 const util = require('util')
 const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
@@ -42,6 +45,8 @@ let TYPING_ENABLED = false;
 let PUBLIC_MODE = false; // added
 let ANTICALL_MODE = false; // added
 
+let akinator = global.db.data.game.akinator = []
+
 let props;
 const reportedMessages = {};
 
@@ -52,9 +57,13 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
         global.prefix = prefix
         const isCmd = body.startsWith(prefix)
-        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+        const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
         var args = body.trim().split(/ +/).slice(1)
         args = args.concat(['','','','','',''])
+//prefix v2 
+const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
+        const isAsu = body.startsWith(pric)
+        const isCommand = isAsu ? body.replace(pric, '').trim().split(/ +/).shift().toLowerCase() : ""
         const pushname = m.pushName || "No Name"
         const botNumber = await gss.decodeJid(gss.user.id)
         const isCreator = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
@@ -102,7 +111,11 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
-
+async function generateProfilePicture(media) {
+    return {
+        img: 'placeholder_image_data'
+    };
+}
 	
 async function getIPInfo() {
   try {
@@ -268,31 +281,11 @@ const reactionMessage = {
   `);
 }
 
-
+const typemenu = process.env.TYPEMENU || global.typemenu;
 
 let TYPING_ENABLED = process.env.AUTO_TYPING === 'true';
 let AUTO_READ_ENABLED = process.env.AUTO_READ === 'true';
 let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
-
-// Now, you can use these variables in your conditions:
-
-if (TYPING_ENABLED && command) {
-  // Execute code when REACODING is enabled
-  gss.sendPresenceUpdate('composing');
-}
-
-if (AUTO_READ_ENABLED && command) {
-  // Execute code when AUTO_READ is enabled
-  gss.readMessages([m.key]);
-}
-
-if (ALWAYS_ONLINE) {
-  // Execute code when ALWAYS_ONLINE is enabled
-  gss.sendPresenceUpdate('available', m.chat);
-} else {
-  // Execute code when ALWAYS_ONLINE is disabled
-  gss.sendPresenceUpdate('unavailable', m.chat);
-}
 
 	try {
             let isNumber = x => typeof x === 'number' && !isNaN(x)
@@ -387,6 +380,27 @@ async function updateBio() {
 // Schedule auto-update every 60 seconds for testing purposes
 setInterval(updateBio, 60000);
 
+if (isCommand) {
+            
+if (!m.isGroup && !isCreator && global.onlygroup) {
+    return m.reply("Hello, because we want to reduce spam, please use the bot in a group!\n\nIf there are joint interests, please type .owner to contact the owner.")
+}
+// Private Only
+if (!isCreator && global.onlypc && m.isGroup) {
+    return m.reply("Hello, if you want to use this bot, please chat privately with the bot.")
+}
+
+if (TYPING_ENABLED && command) {
+  // Execute code when REACODING is enabled
+  gss.sendPresenceUpdate('composing');
+}
+
+if (AUTO_READ_ENABLED && command) {
+  // Execute code when AUTO_READ is enabled
+  gss.readMessages([m.key]);
+}
+}
+
 	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
@@ -407,6 +421,83 @@ setInterval(updateBio, 60000);
       if (db.data.chats[m.chat].mute && !isAdmins && !isCreator) {
       return
       }
+
+if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", "3", "4", "5"].includes(body)) {
+    kuis = true;
+    var {
+        server,
+        frontaddr,
+        session,
+        signature,
+        question,
+        step
+    } = akinator[m.sender.split('@')[0]];
+    if (step == "0" && body == "5") m.reply("Sorry, you have reached the first question");
+
+    // Translate the question to English
+    const translatedQuestion = await translate(question, { to: 'en' });
+    console.log('Translated Question:', translatedQuestion);
+
+    var ini_url = `https://api.lolhuman.xyz/api/akinator/answer?apikey=haikalgans&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
+    var get_result = await fetchJson(ini_url);
+    var get_result = get_result.result;
+    if (get_result.hasOwnProperty("name")) {
+        var ini_name = get_result.name;
+        var description = get_result.description;
+        ini_txt = `${ini_name} - ${description}\n\n`;
+        ini_txt += "*Thank You*\n*Powered By  gssbotwa*";
+        await gss.sendMessage(m.chat, {
+            image: {
+                url: get_result.image
+            },
+            caption: ini_txt
+        }).then(() => {
+            delete akinator[m.sender.split('@')[0]];
+            fs.writeFileSync("./src/data/akinator.json", JSON.stringify(akinator));
+        });
+        return;
+    }
+
+    ini_txt = `${translatedQuestion}\n\n`;
+    ini_txt += "0 - Yes\n";
+    ini_txt += "1 - No\n";
+    ini_txt += "2 - I Don't Know\n";
+    ini_txt += "3 - Maybe\n";
+    ini_txt += "4 - Maybe Not\n";
+    ini_txt += "5 - Go Back to the Previous Question";
+
+    if (args[0] === '5') {
+        var ini_url = `https://api.lolhuman.xyz/api/akinator/back?apikey=haikalgans&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
+        var get_result = await fetchJson(ini_url);
+        var get_result = get_result.result;
+        var {
+            question,
+            _,
+            step
+        } = get_result;
+
+        // Translate the question to English
+        const translatedBackQuestion = await translate(question, { to: 'en' });
+        console.log('Translated Back Question:', translatedBackQuestion);
+
+        ini_txt = `${translatedBackQuestion}\n\n`;
+        ini_txt += "0 - Yes\n";
+        ini_txt += "1 - No\n";
+        ini_txt += "2 - I Don't Know\n";
+        ini_txt += "3 - Maybe\n";
+        ini_txt += "4 - Maybe Not\n";
+        ini_txt += "5 - Go Back to the Previous Question";
+    }
+
+    gss.sendText(m.chat, ini_txt, m).then(() => {
+        const data_ = akinator[m.sender.split('@')[0]];
+        data_["question"] = question;
+        data_["step"] = step;
+        akinator[m.sender.split('@')[0]] = data_;
+        fs.writeFileSync("./src/data/akinator.json", JSON.stringify(akinator));
+    });
+}
+
 
         // Respon Cmd with media
         if (isMedia && m.msg.fileSha256 && (m.msg.fileSha256.toString('base64') in global.db.data.sticker)) {
@@ -715,6 +806,36 @@ break;
 }
 break;
 
+case 'setppfull': case 'setfullpp':
+    if (!isCreator) return m.reply(mess.owner);
+    if (!quoted) return m.reply(`No image found ${prefix + command}`);
+    if (!/image/.test(mime)) return m.reply(`Send/Reply with an image and caption ${prefix + command}`);
+    if (/webp/.test(mime)) return m.reply(`Send/Reply with an image and caption ${prefix + command}`);
+    var mediaFull = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot');
+    var {
+        img
+    } = await generateProfilePicture(mediaFull);
+    await gss.query({
+        tag: 'iq',
+        attrs: {
+            to: botNumber,
+            type: 'set',
+            xmlns: 'w:profile:picture'
+        },
+        content: [{
+            tag: 'picture',
+            attrs: {
+                type: 'image'
+            },
+            content: img
+        }]
+    });
+    fs.unlinkSync(mediaFull);
+    m.reply(mess.success);
+    break;
+    
+    
+
 case 'setppgroup': case 'setppgrup': case 'setppgc': {
   if (!m.isGroup) throw mess.group;
   if (!isAdmins) throw mess.admin;
@@ -725,6 +846,78 @@ case 'setppgroup': case 'setppgrup': case 'setppgc': {
   m.reply(mess.success);
 }
 break;
+
+case 'sc':
+            case 'script':
+            case 'scriptbot':
+                uy = `https://github.com/sid238/Gssbotwa2`
+                gss.sendMessage(m.chat, {
+                    text: uy,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: true,
+                            title: 'Script Free',
+                            body: `SCRIPT BOT ${botname}`,
+                            thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
+                            sourceUrl: global.link,
+                            mediaType: 1,
+                            renderLargerThumbnail: true
+                        }
+                    }
+                }, {
+                    quoted: m
+                })
+                break
+
+
+ case 'setimgmenu':
+            {
+                if (!isCreator) return m.reply(mess.owner)
+                let delb = await gss.downloadAndSaveMediaMessage(quoted)
+                await fsx.copy(delb, './gss.jpg')
+                fs.unlinkSync(delb)
+                m.reply(mess.success)
+            }
+            break
+            
+            
+case 'akinator':
+    m.reply(`Akinator is a game and mobile application that attempts to accurately guess the user's thoughts through a series of detailed questions.\n\n~> ${prefix}akinatorstart: To start\n~> ${prefix}akinatorstop: To stop`)
+    break;
+case 'akinatorstart':
+    if (akinator.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Finish the previous one first, please.")
+    get_result = await fetchJson(`https://api.lolhuman.xyz/api/akinator/start?apikey=haikalgans`);
+    let {
+        server, frontaddr, session, signature, question, step
+    } = get_result.result;
+    const data = {};
+    data["server"] = server;
+    data["frontaddr"] = frontaddr;
+    data["session"] = session;
+    data["signature"] = signature;
+    data["question"] = question;
+    data["step"] = step;
+
+    // Translate the question to English
+    const translatedQuestion = await translate(question, { to: 'en' });
+    imi_txt = `${translatedQuestion}\n\n`;
+    imi_txt += "0 - Yes\n";
+    imi_txt += "1 - No\n";
+    imi_txt += "2 - I Don't Know\n";
+    imi_txt += "3 - Maybe\n";
+    imi_txt += "4 - Maybe Not";
+
+    gss.sendText(m.chat, imi_txt, m).then(() => {
+        akinator[m.sender.split('@')[0]] = data;
+        fs.writeFileSync("./src/data/akinator.json", JSON.stringify(akinator));
+    });
+    break;
+case 'akinatorstop':
+    if (!akinator.hasOwnProperty(m.sender.split('@')[0])) return m.reply("You don't have an ongoing akinator session.");
+    delete akinator[m.sender.split('@')[0]];
+    fs.writeFileSync("./src/data/akinator.json", JSON.stringify(akinator));
+    m.reply("Successfully canceled the previous akinator session.");
+    break;
 
 case 'tagall': case 'all':{
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
@@ -779,7 +972,7 @@ case 'group': case 'grup': {
   } else if (args[0].toLowerCase() === 'open') {
     await gss.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`Successfully Opened the Group`)).catch((err) => m.reply(jsonformat(err)));
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} Open`, `${command.charAt(0).toUpperCase() + command.slice(1)} Close`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Open`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Close`]);
   }
 }
 break;
@@ -793,7 +986,7 @@ case 'editinfo': {
   } else if (args[0].toLowerCase() === 'close') {
     await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Successfully Closed Group Edit Info`)).catch((err) => m.reply(jsonformat(err)));
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} Open`, `${command.charAt(0).toUpperCase() + command.slice(1)} Close`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Open`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Close`]);
   }
 }
 break;
@@ -811,7 +1004,7 @@ break;
     db.data.chats[m.chat].antilink = false;
     m.reply(`Antilink Deactivated!`);
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} On`, `${command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} On`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
   }
 }
 break;
@@ -829,7 +1022,7 @@ case 'mute': {
     db.data.chats[m.chat].mute = false;
     m.reply(`${gss.user.name} has been unmuted in this group!`);
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} On`, `${command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} On`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
   }
 }
 break;
@@ -871,10 +1064,11 @@ case 'anticall': {
         db.data.settings[botNumber].anticall = false;
         m.reply(`AntiCall Deactivated!`);
     } else {
-        gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} On`, `${command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
+        gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} On`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
     }
 }
 break;
+
 
             case 'delete': case 'del': {
 if (!m.quoted) return m.reply('Reply to the message!');
@@ -1881,6 +2075,15 @@ case 'system': case 'info': case 'ram': case 'usage':
 mainSys();
 break;
 
+case 'setmenu': {
+    if (!isCreator) return m.reply(mess.owner);
+    if (!text) return m.reply('setmenu has 5 views');
+
+    process.env.TYPEMENU = text; // Set the environment variable
+    m.reply(mess.success);
+}
+break;
+
 case 'tiktok':
   case 'tt':
 case 'tiktoknowm':
@@ -2056,7 +2259,7 @@ if (!isCreator) throw mess.owner
     process.env.AUTO_READ = 'false';
     m.reply('*Auto Read turned off.*');
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} on`, `${command.charAt(0).toUpperCase() + command.slice(1)} off`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
 
@@ -2072,7 +2275,7 @@ if (!isCreator) throw mess.owner
     process.env.ALWAYS_ONLINE = 'false';
     m.reply('Always Online turned off.');
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} on`, `${command.charAt(0).toUpperCase() + command.slice(1)} off`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
 
@@ -2088,7 +2291,7 @@ if (!isCreator) throw mess.owner
     process.env.AUTO_TYPING = 'false';
     m.reply('*AUTO TYPING turned off.*');
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${command.charAt(0).toUpperCase() + command.slice(1)} on`, `${command.charAt(0).toUpperCase() + command.slice(1)} off`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
   
@@ -2096,7 +2299,7 @@ if (!isCreator) throw mess.owner
 case 'gcsetting':
 if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
 if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-    const options = ['group close', 'group open', 'revoke', 'mute', 'leave', 'editinfo', 'tagall','antilink', 'linkgc'];
+    const options = ['.group close', '.group open', '.revoke', '.mute', '.leave', '.editinfo', '.tagall','.antilink', '.linkgc'];
     gss.sendPoll(m.chat, 'Select your preferences:', options);
     break;
 
@@ -2111,22 +2314,21 @@ if (!isCreator) throw mess.owner
   // Delay for 2 seconds
   setTimeout(() => {
     const options = [
-      'Autoread on',
-      'Autoread off',
-      'Alwaysonline on',
-      'Alwaysonline off',
-      'Autotyping on',
-      'Autotyping off',
-      'Public',
-      'self',
-      'Anticall on',
-      'Anticall off',
+      '.Autoread on',
+      '.Autoread off',
+      '.Alwaysonline on',
+      '.Alwaysonline off',
+      '.Autotyping on',
+      '.Autotyping off',
+      '.Public',
+      '.self',
+      '.Anticall on',
+      '.Anticall off',
     ];
 
     gss.sendPoll(m.chat, 'Select your preferences:', options);
   }, 2000);
   break;
-
 
 
 const languages = require('./lib/languages'); // Import the language codes module
@@ -2371,8 +2573,9 @@ case "sc":
           break; 
           
           
+          
 case 'tempmail':
-    const option = ['mail 1','mail 3','mail 5'];
+    const option = ['.mail 1','.mail 3','.mail 5'];
     gss.sendPoll(m.chat, 'Select your mail:', option);
     break;
 
@@ -2650,7 +2853,7 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
                 
             
             case 'menu': case 'help': case 'list': case 'listmenu': {
-                gss.sendPoll(m.chat, "List Menu",['Allmenu','Groupmenu','Downloadmenu','Searchmenu','Funmenu','Toolmenu','Convertmenu','aimenu','Mainmenu','Ownermenu'])
+                gss.sendPoll(m.chat, "List Menu",['.Allmenu','.Groupmenu','.Downloadmenu','.Searchmenu','.Funmenu','.Toolmenu','.Convertmenu','.aimenu','.Mainmenu','.Ownermenu'])
             }
             break
           // Assuming you have a getRandomSymbol function to generate a random symbol
@@ -2660,42 +2863,199 @@ function getRandomSymbol() {
     return symbols[randomIndex];
 }
 
-// ...
-
 case 'menuall':
 case 'allmenu': {
-    const categories = {
-        'ɢʀᴏᴜᴘᴍᴇɴᴜ': cmdGrup,
-        'ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ': cmdDown,
-        'sᴇᴀʀᴄʜᴍᴇɴᴜ': cmdSearch,
-        'ғᴜɴᴍᴇɴᴜ': cmdFun,
-        'ᴀɪᴍᴇɴᴜ' : cmdAi,
-        'ᴛᴏᴏʟᴍᴇɴᴜ' : cmdTool,
-       'ʙᴜɢᴍᴇɴᴜ' : cmdBug,
-       // 'ᴘʀɪᴍʙᴏɴᴍᴇɴᴜ': cmdPrimbon,
-        'ᴄᴏɴᴠᴇʀᴍᴇɴᴜ': cmdConv,
-        'ᴍᴀɪɴᴍᴇɴᴜ': cmdMain,
-        'ᴏᴡɴᴇʀᴍᴇɴᴜ': cmdOwner,
-    };
-     
-     
-    let introText = `Hello ${pushname}!👋\nI'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*, your WhatsAppchatbot programmed to be your virtual assistant on WhatsApp.\n\n •sᴛᴀᴛᴜs:Public\n • ʟᴀɴɢᴜᴀɢᴇ: Node.js\n • ʙᴀɪʟᴇʏ: @adivvashing\n • ʙᴀɪʟᴇʏsᴜᴘᴘᴏʀᴛ:@whiskeysockets\n • ʙᴏᴛ ɴᴀᴍᴇ: ${botname}\n  •ᴅᴇᴠʟᴏᴘᴇʀ:${devlopernumber}\n\n\n`;
 
-    let menuText = ''; // Initialize menuText here
+    let a = db.data.users[m.sender];
+    let introText = `Hello ${pushname}!👋\nI'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*, your WhatsAppchatbot programmed to be your virtual assistant on WhatsApp.\n\n •sᴛᴀᴛᴜs:Public\n • ʟᴀɴɢᴜᴀɢᴇ: Node.js\n • ʙᴀɪʟᴇʏ: @adivvashing\n • ʙᴀɪʟᴇʏsᴜᴘᴘᴏʀᴛ:@whiskeysockets\n • ʙᴏᴛ ɴᴀᴍᴇ: ${botname}\n  •ᴅᴇᴠʟᴏᴘᴇʀ:${devlopernumber}\n
+*ᴛᴏᴛᴀʟᴜsᴇʀ:* ${Object.keys(global.db.data.users).length} ᴜsᴇʀs
+*ᴛᴏᴛᴀʟᴄʜᴀᴛ:* ${Object.keys(global.db.data.chats).length} ɢʀᴏᴜᴘ/ᴄʜᴀᴛ
+${readmore}
 
-    for (const [category, commands] of Object.entries(categories)) {
-        const randomSymbol = getRandomSymbol();
-        menuText += `✪━━ 乂 *${category}* 乂 ━━✪\n${commands.map(cmd => `│ ${randomSymbol} ${prefix}${cmd}`).join('\n')}\n`;
-    }
+*ᴄᴏᴍᴍᴀɴᴅs - ʙᴜɢ ʀᴇᴘᴏʀᴛ:*
+• .ʙᴜɢ
+• .ʀᴇᴘᴏʀᴛ
 
-    menuText += '─────✪';
+*ᴄᴏᴍᴍᴀɴᴅs - ᴀɪ:*
+• .ᴀɪ
+• .ɢᴘᴛ
+• .ᴅᴀʟʟᴇ
+• .ʙᴀʀᴅ
+• .ʀᴇᴍɪɴɪ
 
-    // Assuming there's a sendImage function that takes the chat, image path, and caption
-    const imagePath = './gss.jpg'; // Replace with the actual image path
-    gss.sendImage(m.chat, imagePath, introText + menuText);
+*ᴄᴏᴍᴍᴀɴᴅs - ᴛᴏᴏʟs:*
+• .ᴛᴇᴍᴘᴍᴀɪʟ
+• .ᴄʜᴇᴄᴋᴍᴀɪʟ
+• .ɪɴꜰᴏ
+• .ᴛʀᴛ
+• .ᴛᴛs
+
+*ᴄᴏᴍᴍᴀɴᴅs - ɢʀᴏᴜᴘ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ:*
+• .ʟɪɴᴋɢʀᴏᴜᴘ
+• .sᴇᴛᴘᴘɢᴄ
+• .sᴇᴛɴᴀᴍᴇ
+• .sᴇᴛᴅᴇsᴄ
+• .ɢʀᴏᴜᴘ
+• .ᴇᴅɪᴛɪɴꜰᴏ
+• .ᴀᴅᴅ
+• .ᴋɪᴄᴋ
+• .ʜɪᴅᴇᴛᴀɢ
+• .ᴛᴀɢᴀʟʟ
+• .ᴛᴏᴛᴀɢ
+• .ᴀɴᴛɪʟɪɴᴋ
+• .ᴀɴᴛɪTᴏxɪᴄ
+• .ᴍᴜᴛᴇ
+• .ᴘʀᴏᴍᴏᴛᴇ
+• .ᴅᴇᴍᴏᴛᴇ
+• .ʀᴇᴠᴏᴋᴇ
+• .ᴘᴏʟʟ
+
+*ᴄᴏᴍᴍᴀɴᴅs - ᴅᴏᴡɴʟᴏᴀᴅ:*
+• .ꜰᴀᴄᴇʙᴏᴏᴋ
+• .ᴀᴘᴋ
+• .ᴍᴇᴅɪᴀꜰɪʀᴇ
+• .ɢᴅʀɪᴠᴇ
+• .ɪɴsᴛᴀ
+• .ᴘɪɴᴛᴇʀᴇsᴛᴅʟ
+• .ʏᴛᴍᴘ3
+• .ʏᴛᴍᴘ4
+• .ɢɪᴛᴄʟᴏɴᴇ
+
+*ᴄᴏᴍᴍᴀɴᴅs - ꜱᴇᴀʀᴄʜ:*
+• .ᴘʟᴀʏ
+• .ʏᴛs
+• .ɪᴍᴅʙ
+• .ɢᴏᴏɢʟᴇ
+• .ɢɪᴍᴀɢᴇ
+• .ᴘɪɴᴛᴇʀᴇsᴛ
+• .ᴡᴀʟʟᴘᴀᴘᴇʀ
+• .ᴡɪᴋɪᴍᴇᴅɪᴀ
+• .ʏᴛsᴇᴀʀᴄʜ
+• .ʀɪɴɢᴛᴏɴᴇ
+• .ᴡᴇᴀᴛʜᴇʀ
+• .ʟʏʀɪᴄs
+
+*ᴄᴏᴍᴍᴀɴᴅs - ꜰᴜɴ:*
+• .ᴅᴇʟᴛᴛᴛ
+• .ᴛɪᴄᴛᴀᴄᴛᴏᴇ
+
+*ᴄᴏᴍᴍᴀɴᴅs - ᴄᴏɴᴠᴇʀꜱɪᴏɴ:*
+• .ʀᴇᴍᴏᴠᴇʙɢ
+• .sᴛɪᴄᴋᴇʀ
+• .ᴇᴍᴏᴊɪᴍɪx
+• .ᴛᴏᴠɪᴅᴇᴏ
+• .ᴛᴏɢɪꜰ
+• .ᴛᴏᴜʀʟ
+• .ᴛᴏᴠɴ
+• .ᴛᴏᴍᴘ3
+• .ᴛᴏᴀᴜᴅɪᴏ
+• .ᴇʙɪɴᴀʀʏ
+• .ᴅʙɪɴᴀʀʏ
+• .sᴛʏʟᴇᴛᴇxᴛ
+• .ꜰᴏɴᴛᴄʜᴀɴɢᴇ
+• .ꜰᴀɴᴄʏ
+• .ᴜᴘsᴄᴀʟᴇ
+• .ʜᴅ
+
+*ᴄᴏᴍᴍᴀɴᴅs - ᴍᴀɪɴ:*
+• .ᴘɪɴɢ
+• .ᴏᴡɴᴇʀ
+• .ᴍᴇɴᴜ
+• .ᴅᴇʟᴇᴛᴇ
+• .ɪɴꜰᴏᴄʜᴀᴛ
+• .ǫᴜᴏᴛᴇᴅ
+• .ʟɪsᴛᴘᴄ
+• .ʟɪsᴛɢᴄ
+• .ʟɪsᴛᴏɴʟɪɴᴇ
+
+*ᴄᴏᴍᴍᴀɴᴅs - ᴏᴡɴᴇʀ:*
+• .ʀᴇᴀᴄᴛ
+• .ᴄʜᴀᴛ
+• .ᴊᴏɪɴ
+• .ʟᴇᴀᴠᴇ
+• .ʙʟᴏᴄᴋ
+• .ᴜɴʙʟᴏᴄᴋ
+• .ʙᴄɢʀᴏᴜᴘ
+• .ʙᴄᴀʟʟ
+• .sᴇᴛᴘᴘʙᴏᴛ
+• .sᴇᴛᴇxɪꜰ
+• .ᴀɴᴛɪᴄᴀʟʟ
+• .sᴇᴛsᴛᴀᴛᴜs
+• .sᴇᴛɴᴀᴍᴇʙᴏᴛ
+• .sʟᴇᴇᴘ
+• .ᴀᴜᴛᴏᴛʏᴘɪɴɢ
+• .ᴀʟᴡᴀʏsᴏɴʟɪɴᴇ
+• .ᴀᴜᴛᴏʀᴇᴀᴅ
+`
+
+    if (typemenu === 'v1') {
+    gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./gss.jpg'),
+        caption: introText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: true,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, {
+        quoted: m
+    });
+} else if (typemenu === 'v2') {
+    gss.sendMessage(m.chat, {
+        text: introText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: true,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, {
+            quoted: m
+        });
+    } else if (typemenu === 'v3') {
+        gss.sendMessage(m.chat, {
+            video: fs.readFileSync('./gss.mp4'),
+            caption: introText,
+            sourceUrl: global.link,
+            gifPlayback: true
+        }, {
+            quoted: m
+        });
+    } else if (typemenu === 'v4') {
+        gss.relayMessage(m.chat, {
+            scheduledCallCreationMessage: {
+                callType: "AUDIO",
+                scheduledTimestampMs: 1200,
+                title: introText
+            }
+        }, {});
+    } else if (typemenu === 'v5') {
+        gss.relayMessage(m.chat, {
+    requestPaymentMessage: {
+        currencyCodeIso4217: 'INR', // Set to INR for Indian Rupees
+        amount1000: '9999999', // Adjust the amount to the desired value in paise (100 paise = 1 INR)
+        requestFrom: m.sender,
+        noteMessage: {
+            extendedTextMessage: {
+                text: introText,
+                sourceUrl: global.link,
+                contextInfo: {
+                    externalAdReply: {
+                        showAdAttribution: true
+                            }
+                        }
+                    }
+                }
+            }
+        }, {});
+    } 
+    break;
 }
-break;
-
 
 
 
@@ -2709,7 +3069,7 @@ case 'groupmenu': {
 ${cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
 │
 ╰──────✪`;
-    gss.sendPoll(m.chat, anu, ['Owner', 'Ping']);
+    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
 }
 break;
             case 'downloadmenu': case 'dlmenu': case 'downmenu': {
@@ -2719,7 +3079,7 @@ break;
 ${cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `│  ${randomSymbol} ${prefix}`+ v).join('\n')}
 │
 └───────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
+                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
             }
             break 
             case 'searchmenu': {
@@ -2729,7 +3089,7 @@ ${cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `│  ${randomSymbol}
 ${cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
 │
 └───────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
+                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
             }
             break
             
@@ -2741,7 +3101,7 @@ ${cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol
 ${cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
 │
 └───────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
+                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
             }
             break 
             case 'convertmenu': {
@@ -2751,7 +3111,7 @@ ${cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} $
 ${cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
 │
 └───────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
+                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
             }
             break 
             case 'mainmenu': {
@@ -2761,7 +3121,7 @@ ${cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} 
 ${cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
 │
 └───────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
+                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
             }
             break 
             case 'ownermenu': {
@@ -2771,7 +3131,7 @@ ${cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} 
 ${cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `│  ${randomSymbol} ${prefix}`+ v).join('\n')}
 │
 └───────✪`
-                gss.sendPoll(m.chat, anu, ['Owner','Ping'])
+                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
             }
             break
 case 'aimenu': {
@@ -2781,7 +3141,7 @@ case 'aimenu': {
 ${cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}` + v).join('\n')}
 │
 └───────✪`;
-    gss.sendPoll(m.chat, anu, ['Owner', 'Ping']);
+    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
 }
 break;
 
@@ -2792,7 +3152,7 @@ case 'bugmenu': {
 ${cmdBug.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}` + v).join('\n')}
 │
 └───────✪`;
-    gss.sendPoll(m.chat, anu, ['Owner', 'Ping']);
+    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
 }
 break;
 case 'toolmenu': {
@@ -2802,9 +3162,10 @@ case 'toolmenu': {
 ${cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}` + v).join('\n')}
 │
 └───────✪`;
-    gss.sendPoll(m.chat, anu, ['Owner', 'Ping']);
+    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
 }
 break;
+
 
             
             default:
