@@ -1,5 +1,6 @@
 
 require('./config')
+const config = require('./config.js');
 const { default: gssConnect, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto, getAggregateVotesInPollMessage } = require("@whiskeysockets/baileys")
 const pino = require('pino')
 const { Boom } = require('@hapi/boom')
@@ -83,7 +84,6 @@ async function startgss() {
 
     store.bind(gss.ev)
     
-    /*
 // auto reject call when user calls
 gss.ev.on("call", async (json) => {
     const botNumber = await gss.decodeJid(gss.user.id);
@@ -101,8 +101,9 @@ gss.ev.on("call", async (json) => {
             }
         }
     }
-}); 
-*/
+});
+
+
 
 
     gss.ev.on('messages.upsert', async chatUpdate => {
@@ -163,15 +164,15 @@ gss.ev.on("call", async (json) => {
        }
        let wm_fatih = { url : ppgc }
        if (ciko.announce == true) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup has been closed by admin, Now only admin can send messages !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup has been closed by admin, Now only admin can send messages !`, `Group Settings Change Message`, wm_fatih, [])
        } else if (ciko.announce == false) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup has been opened by admin, Now participants can send messages !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup has been opened by admin, Now participants can send messages !`, `Group Settings Change Message`, wm_fatih, [])
        } else if (ciko.restrict == true) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup info has been restricted, Now only admin can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup info has been restricted, Now only admin can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
        } else if (ciko.restrict == false) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup info has been opened, Now participants can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup info has been opened, Now participants can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
        } else {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup Subject telah diganti menjadi *${ciko.subject}*`, `Group Settings Change Message`, wm_fatih, [])
+       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup Subject telah diganti menjadi *${ciko.subject}*`, `Group Settings Change Message`, wm_fatih, [])
      }
     }
     } catch (err){
@@ -506,56 +507,41 @@ gss.ev.on("call", async (json) => {
      * @returns 
      */
     gss.copyNForward = async (jid, message, forceForward = false, options = {}) => {
-    let vtype;
+        let vtype
+		if (options.readViewOnce) {
+			message.message = message.message && message.message.ephemeralMessage && message.message.ephemeralMessage.message ? message.message.ephemeralMessage.message : (message.message || undefined)
+			vtype = Object.keys(message.message.viewOnceMessage.message)[0]
+			delete(message.message && message.message.ignore ? message.message.ignore : (message.message || undefined))
+			delete message.message.viewOnceMessage.message[vtype].viewOnce
+			message.message = {
+				...message.message.viewOnceMessage.message
+			}
+		}
 
-    if (options.readViewOnce) {
-        message.message = message.message && message.message.ephemeralMessage && message.message.ephemeralMessage.message
-            ? message.message.ephemeralMessage.message
-            : (message.message || undefined);
-
-        vtype = Object.keys(message.message.viewOnceMessage.message)[0];
-        delete (
-            message.message && message.message.ignore
-                ? message.message.ignore
-                : (message.message || undefined)
-        );
-        delete message.message.viewOnceMessage.message[vtype].viewOnce;
-        message.message = {
-            ...message.message.viewOnceMessage.message,
-        };
+        let mtype = Object.keys(message.message)[0]
+        let content = await generateForwardMessageContent(message, forceForward)
+        let ctype = Object.keys(content)[0]
+		let context = {}
+        if (mtype != "conversation") context = message.message[mtype].contextInfo
+        content[ctype].contextInfo = {
+            ...context,
+            ...content[ctype].contextInfo
+        }
+        const waMessage = await generateWAMessageFromContent(jid, content, options ? {
+            ...content[ctype],
+            ...options,
+            ...(options.contextInfo ? {
+                contextInfo: {
+                    ...content[ctype].contextInfo,
+                    ...options.contextInfo
+                }
+            } : {})
+        } : {})
+        await gss.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
+        return waMessage
     }
 
-    let mtype = Object.keys(message.message)[0];
-    let content = await generateForwardMessageContent(message, forceForward);
-    let ctype = Object.keys(content)[0];
-    let context = {};
-
-    if (mtype != "conversation") context = message.message[mtype].contextInfo;
-
-    content[ctype].contextInfo = {
-        ...context,
-        ...content[ctype].contextInfo,
-    };
-
-    const waMessage = await generateWAMessageFromContent(jid, content, options ? {
-        ...content[ctype],
-        ...options,
-        ...(options.contextInfo
-            ? {
-                  contextInfo: {
-                      ...content[ctype].contextInfo,
-                      ...options.contextInfo,
-                  },
-              }
-            : {}),
-    } : {});
-
-    await gss.relayMessage(jid, waMessage.message, { messageId: waMessage.key.id });
-
-    return waMessage;
-};
-
-gss.cMod = (jid, copy, text = '', sender = gss.user.id, options = {}) => {
+    gss.cMod = (jid, copy, text = '', sender = gss.user.id, options = {}) => {
         //let copy = message.toJSON()
 		let mtype = Object.keys(copy.message)[0]
 		let isEphemeral = mtype === 'ephemeralMessage'
