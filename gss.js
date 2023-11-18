@@ -58,8 +58,7 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         global.prefix = prefix
         const isCmd = body.startsWith(prefix)
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
-        var args = body.trim().split(/ +/).slice(1)
-        args = args.concat(['','','','','',''])
+        const args = body.trim().split(/ +/).slice(1)
 //prefix v2 
 const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
         const isAsu = body.startsWith(pric)
@@ -1253,7 +1252,7 @@ case 'togif': {
 }
 break;
 
-case 'tourl': {
+case 'tourl': case 'url': {
   m.reply(mess.wait);
   let { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader');
   let media = await gss.downloadAndSaveMediaMessage(qmsg);
@@ -2486,7 +2485,7 @@ function convertToFontStyle(text, style) {
 }
 
 // Assuming your original code is within a switch statements
-    case 'fontchange': 
+    case 'fontchange': case 'fancy':
         // Check if the user provided arguments for text and style
         if (args.length === 0) {
             const availableStylesPreview = availableStyles.map(style => {
