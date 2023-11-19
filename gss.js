@@ -1351,11 +1351,11 @@ case 'ytmp4':
 
     // Stylish caption with markdown formatting and thumbnail
     const stylishCaptionWithThumbnail = `
-    🌟 **Title:** _${result.title}_
-    👀 **Views:** _${result.views}_
-    ⏱️ **Duration:** _${result.duration} seconds_
-    💾 **Size:** _${result.size} bytes_
-    📺 **Upload Channel:** _${result.uploadChannel}_
+    🌟 *Title:* _${result.title}_
+    👀 *Views:* _${result.views}_
+    ⏱️ *Duration:* _${result.duration} seconds_
+    💾 *Size:* _${result.size} bytes_
+    📺 *Upload Channel:* _${result.uploadChannel}_
     🤖 Downloaded by *gss botwa*
     `;
 
