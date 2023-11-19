@@ -1345,29 +1345,28 @@ case 'ytmp4':
     const videoBuffer = await videoBufferReq.arrayBuffer();
     const mediaBuffer = Buffer.from(videoBuffer);
 
-    // Include additional details in the caption
-    // Existing caption
-// Existing caption
-const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
+    // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
+    const thumbnailBufferReq = await fetch(result.thumbnail);
+    const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
 
-// Stylish caption with markdown formatting and thumbnail
-const stylishCaptionWithThumbnail = `
-🌟 **Title:** _${result.title}_
-👀 **Views:** _${result.views}_
-⏱️ **Duration:** _${result.duration} seconds_
-💾 **Size:** _${result.size} bytes_
-📺 **Upload Channel:** _${result.uploadChannel}_
-🤖 Downloaded by *gss botwa*
-`;
+    // Stylish caption with markdown formatting and thumbnail
+    const stylishCaptionWithThumbnail = `
+    🌟 **Title:** _${result.title}_
+    👀 **Views:** _${result.views}_
+    ⏱️ **Duration:** _${result.duration} seconds_
+    💾 **Size:** _${result.size} bytes_
+    📺 **Upload Channel:** _${result.uploadChannel}_
+    🤖 Downloaded by *gss botwa*
+    `;
 
-// Send the video using gss.sendMessage with the modified stylish caption and thumbnail
-await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
-  } else if (result && result.error) {
+    // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
+    await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
+} else if (result && result.error) {
     return m.reply(`Error: ${result.error}`);
-  } else {
+} else {
     console.error('Invalid API response:', result);
     m.reply('Enter YouTube Video Link or Search Query!');
-  }
+}
 } else {
   console.error('Invalid Content-Type:', contentType);
   m.reply('Unexpected response format.');
