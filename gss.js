@@ -281,6 +281,8 @@ const reactionMessage = {
 }
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
+const onlygroup = process.env.ONLYGROUP || global.onlygroup;
+const onlypc = process.env.ONLYPC || global.onlypc;
 
 let TYPING_ENABLED = process.env.AUTO_TYPING === 'true';
 let AUTO_READ_ENABLED = process.env.AUTO_READ === 'true';
@@ -2119,6 +2121,24 @@ case 'setmenu': {
     if (!text) return m.reply('setmenu has 5 views');
 
     process.env.TYPEMENU = text; // Set the environment variable
+    m.reply(mess.success);
+}
+break;
+
+case 'onlygroup': {
+    if (!isCreator) return m.reply(mess.owner);
+    if (!text) return m.reply('onlygroup true/false');
+
+    process.env.ONLYGROUP = text; // Set the environment variable
+    m.reply(mess.success);
+}
+break;
+
+case 'onlypc': {
+    if (!isCreator) return m.reply(mess.owner);
+    if (!text) return m.reply('onlypc true/false');
+
+    process.env.ONLYPC = text; // Set the environment variable
     m.reply(mess.success);
 }
 break;
