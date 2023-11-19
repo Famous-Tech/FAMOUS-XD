@@ -1308,7 +1308,7 @@ break;
 case 'yta':
   try {
     if (!text) {
-      return m.reply('Enter YouTube Video Link or Search Query!');
+      return m.reply('Enter YouTube Link or Search Query!');
     }
 
     m.reply(mess.wait);
@@ -1323,7 +1323,7 @@ case 'yta':
     console.log('Content-Type:', contentType);
 
     if (req.status === 404) {
-      return m.reply('Video not found.');
+      return m.reply('Audio not found.');
     }
 
     if (contentType && contentType.includes('application/json')) {
@@ -1349,7 +1349,7 @@ case 'yta':
       m.reply('Unexpected response format.');
     }
   } catch (error) {
-    console.error('Error during ytv:', error);
+    console.error('Error during yta:', error);
     m.reply('An error occurred during the operation.');
   }
   break;
