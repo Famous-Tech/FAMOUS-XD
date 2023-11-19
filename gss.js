@@ -1346,10 +1346,21 @@ case 'ytmp4':
     const mediaBuffer = Buffer.from(videoBuffer);
 
     // Include additional details in the caption
-    const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
+    // Existing caption
+const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
 
-    // Send the video using gss.sendMessage with the modified caption
-    await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption }, { quoted: m });
+// Stylish caption with markdown formatting
+const stylishCaption = `
+🌟 **Title:** _${result.title}_
+👀 **Views:** _${result.views}_
+⏱️ **Duration:** _${result.duration} seconds_
+💾 **Size:** _${result.size} bytes_
+📺 **Upload Channel:** _${result.uploadChannel}_
+🤖 Downloaded by *gss botwa*
+`;
+
+// Send the video using gss.sendMessage with the modified stylish caption
+await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaption }, { quoted: m });
   } else if (result && result.error) {
     return m.reply(`Error: ${result.error}`);
   } else {
