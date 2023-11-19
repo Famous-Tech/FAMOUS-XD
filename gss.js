@@ -1331,51 +1331,67 @@ case 'ytmp4':
     }
 
     if (contentType && contentType.includes('application/json')) {
-  const result = await req.json().catch(async (error) => {
-    console.error('Error parsing JSON:', await req.text());
-    m.reply('Unexpected error occurred.');
-    throw error;
-  });
+      const result = await req.json().catch(async (error) => {
+        console.error('Error parsing JSON:', await req.text());
+        m.reply('Unexpected error occurred.');
+        throw error;
+      });
 
-  console.log('Full API Response:', result);
+      console.log('Full API Response:', result);
 
-  if (result && result.url) {
-    // Fetch the video content
-    const videoBufferReq = await fetch(result.url);
-    const videoBuffer = await videoBufferReq.arrayBuffer();
-    const mediaBuffer = Buffer.from(videoBuffer);
+      if (result && result.url) {
+        // Fetch the video content
+        const videoBufferReq = await fetch(result.url);
+        const videoBuffer = await videoBufferReq.arrayBuffer();
+        const mediaBuffer = Buffer.from(videoBuffer);
 
-    // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
-    const thumbnailBufferReq = await fetch(result.thumbnail);
-    const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
+        // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
+        const thumbnailBufferReq = await fetch(result.thumbnail);
+        const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
 
-    // Stylish caption with markdown formatting and thumbnail
-    const stylishCaptionWithThumbnail = `
-    🌟 *Title:* _${result.title}_
-    👀 *Views:* _${result.views}_
-    ⏱️ *Duration:* _${result.duration} seconds_
-    💾 *Size:* _${result.size} bytes_
-    📺 *Upload Channel:* _${result.uploadChannel}_
-    🤖 Downloaded by *gss botwa*
-    `;
+        // Format duration into hours, minutes, and seconds
+        const durationHours = Math.floor(result.duration / 3600);
+        const durationMinutes = Math.floor((result.duration % 3600) / 60);
+        const durationSeconds = result.duration % 60;
 
-    // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
-    await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
-} else if (result && result.error) {
-    return m.reply(`Error: ${result.error}`);
-} else {
-    console.error('Invalid API response:', result);
-    m.reply('Enter YouTube Video Link or Search Query!');
-}
-} else {
-  console.error('Invalid Content-Type:', contentType);
-  m.reply('Unexpected response format.');
-}
+        // Format size in human-readable format or show 'Unknown'
+        let size;
+        if (result && result.size) {
+          size = isNaN(result.size) ? 'Unknown' : formatBytes(result.size);
+        } else {
+          size = 'Unknown';
+        }
+
+        // Stylish caption with markdown formatting and thumbnail
+        const stylishCaptionWithThumbnail = `
+          🌟 *Title:* _${result.title}_
+          👀 *Views:* _${result.views}_
+          ⏱️ *Duration:* _${durationHours}h ${durationMinutes}m ${durationSeconds}s_
+          💾 *Size:* _${size}_
+          📅 *Upload Date:* _${result.uploadDate}_
+          📺 *YouTube URL:* [Link](${result.youtubeUrl})
+          📢 *Upload Channel:* _${result.uploadChannel}_
+          🤖 Downloaded by *gss botwa*
+        `;
+
+        // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
+        await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('Enter YouTube Video Link or Search Query!');
+      }
+    } else {
+      console.error('Invalid Content-Type:', contentType);
+      m.reply('Unexpected response format.');
+    }
   } catch (error) {
     console.error('Error during ytv:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
+
 
 
 
