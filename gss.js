@@ -1339,14 +1339,14 @@ case 'ytmp4':
 
       console.log('Full API Response:', result);
 
-      if (result && result.downloadURL) {
+      if (result && result.url) {
         try {
           // Fetch the video content
-          const videoBufferReq = await fetch(result.downloadURL);
+          const videoBufferReq = await fetch(result.url);
           const videoBuffer = await videoBufferReq.buffer(); // Use buffer() to directly get the buffer
 
           // Include additional details in the caption
-          const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*URL:* ${result.url}\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
+          const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
 
           // Send the video using gss.sendMessage with the modified caption
           await gss.sendMessage(
