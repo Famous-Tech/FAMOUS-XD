@@ -1357,12 +1357,10 @@ case 'ytmp4':
         const durationSeconds = result.duration % 60;
 
         // Format size in human-readable format or show 'Unknown'
-        let size;
-        if (result && result.size) {
-          size = isNaN(result.size) ? 'Unknown' : formatBytes(result.size);
-        } else {
-          size = 'Unknown';
-        }
+        const size = isNaN(result.size) ? 'Unknown' : formatBytes(result.size);
+
+        // Format upload date to be "Month Day, Year"
+        const uploadDate = new Date(result.uploadDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
         // Stylish caption with markdown formatting and thumbnail
         const stylishCaptionWithThumbnail = `
@@ -1370,7 +1368,7 @@ case 'ytmp4':
           👀 *Views:* _${result.views}_
           ⏱️ *Duration:* _${durationHours}h ${durationMinutes}m ${durationSeconds}s_
           💾 *Size:* _${size}_
-          📅 *Upload Date:* _${result.uploadDate}_
+          📅 *Upload Date:* _${uploadDate}_
           📺 *YouTube URL:* [Link](${result.youtubeUrl})
           📢 *Upload Channel:* _${result.uploadChannel}_
           🤖 Downloaded by *gss botwa*
@@ -1393,6 +1391,7 @@ case 'ytmp4':
     m.reply('Unexpected error occurred.');
   }
   break;
+
 
 
 
