@@ -1351,14 +1351,6 @@ case 'ytmp4':
         const thumbnailBufferReq = await fetch(result.thumbnail);
         const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
 
-        // Format duration into hours, minutes, and seconds
-        const durationHours = Math.floor(result.duration / 3600);
-        const durationMinutes = Math.floor((result.duration % 3600) / 60);
-        const durationSeconds = result.duration % 60;
-
-        // Format size in human-readable format or show 'Unknown'
-        const size = isNaN(result.size) ? 'Unknown' : formatBytes(result.size);
-
         // Format upload date to be "Month Day, Year"
         const uploadDate = new Date(result.uploadDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -1367,10 +1359,10 @@ case 'ytmp4':
           🌟 *Title:* _${result.title}_
           👀 *Views:* _${result.views}_
           ⏱️ *Duration:* _${durationHours}h ${durationMinutes}m ${durationSeconds}s_
-          💾 *Size:* _${size}_
           📅 *Upload Date:* _${uploadDate}_
-          📺 *YouTube URL:* [Link](${result.youtubeUrl})
+          📺 *YouTube URL:* ${result.youtubeUrl}
           📢 *Upload Channel:* _${result.uploadChannel}_
+          
           🤖 Downloaded by *gss botwa*
         `;
 
