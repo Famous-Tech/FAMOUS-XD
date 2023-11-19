@@ -1307,7 +1307,9 @@ break;
 
 case 'yta':
   try {
-    if (!text) throw 'Enter YouTube Audio Link or Search Query!';
+    if (!text) {
+      return m.reply('Enter YouTube Video Link or Search Query!');
+    }
 
     m.reply(mess.wait);
 
@@ -1321,12 +1323,13 @@ case 'yta':
     console.log('Content-Type:', contentType);
 
     if (req.status === 404) {
-      return m.reply('audio not found.');
+      return m.reply('Video not found.');
     }
 
     if (contentType && contentType.includes('application/json')) {
       const result = await req.json().catch(async (error) => {
         console.error('Error parsing JSON:', await req.text());
+        m.reply('An error occurred during the operation.');
         throw error;
       });
 
@@ -1339,17 +1342,18 @@ case 'yta':
         return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Audio Link or Search Query!');
+        m.reply('An error occurred during the operation.');
       }
     } else {
       console.error('Invalid Content-Type:', contentType);
       m.reply('Unexpected response format.');
     }
   } catch (error) {
-    console.error('Error during yta:', error);
-    m.reply('Enter YouTube Audio Link or Search Query!');
+    console.error('Error during ytv:', error);
+    m.reply('An error occurred during the operation.');
   }
   break;
+
 
 
 
