@@ -1307,7 +1307,7 @@ break;
 
 case 'yta':
   try {
-    if (!text) throw 'Enter YouTube Video Link or Search Query!';
+    if (!text) throw 'Enter YouTube Audio Link or Search Query!';
 
     m.reply(mess.wait);
 
@@ -1321,7 +1321,7 @@ case 'yta':
     console.log('Content-Type:', contentType);
 
     if (req.status === 404) {
-      return m.reply('Video not found.');
+      return m.reply('audio not found.');
     }
 
     if (contentType && contentType.includes('application/json')) {
@@ -1333,28 +1333,24 @@ case 'yta':
       console.log('Full API Response:', result);
 
       if (result && result.downloadURL) {
-        // Fetch the video content
-        const videoBufferReq = await fetch(result.downloadURL);
-        const videoBuffer = await videoBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(videoBuffer);
-
-        // Send the video using gss.sendMessage
-        await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
+        // Directly send the download URL as a reply
+        await gss.sendMessage(m.chat, result.downloadURL, { quoted: m });
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        m.reply('An error occurred during the operation.');
+        m.reply('Enter YouTube Audio Link or Search Query!');
       }
     } else {
       console.error('Invalid Content-Type:', contentType);
       m.reply('Unexpected response format.');
     }
   } catch (error) {
-    console.error('Error during ytv:', error);
-    m.reply('An error occurred during the operation.');
+    console.error('Error during yta:', error);
+    m.reply('Enter YouTube Audio Link or Search Query!');
   }
   break;
+
 
 
 case 'ytv':
@@ -1396,7 +1392,7 @@ case 'ytv':
         return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        m.reply('An error occurred during the operation.');
+        m.reply('Enter YouTube Video Link or Search Query!');
       }
     } else {
       console.error('Invalid Content-Type:', contentType);
@@ -1404,7 +1400,7 @@ case 'ytv':
     }
   } catch (error) {
     console.error('Error during ytv:', error);
-    m.reply('An error occurred during the operation.');
+    m.reply('Enter YouTube Video Link or Search Query!');
   }
   break;
 
