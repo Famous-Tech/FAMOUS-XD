@@ -1330,33 +1330,36 @@ case 'ytmp4':
       return m.reply('Video not found.');
     }
 
-    if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
-        throw error;
-      });
+if (contentType && contentType.includes('application/json')) {
+  const result = await req.json().catch(async (error) => {
+    console.error('Error parsing JSON:', await req.text());
+    m.reply('Unexpected error occurred.');
+    throw error;
+  });
 
-      console.log('Full API Response:', result);
+  console.log('Full API Response:', result);
 
-      if (result && result.downloadURL) {
-        // Fetch the video content
-        const videoBufferReq = await fetch(result.downloadURL);
-        const videoBuffer = await videoBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(videoBuffer);
+  if (result && result.downloadURL) {
+    // Fetch the video content
+    const videoBufferReq = await fetch(result.downloadURL);
+    const videoBuffer = await videoBufferReq.arrayBuffer();
+    const mediaBuffer = Buffer.from(videoBuffer);
 
-        // Send the video using gss.sendMessage
-        await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
-      }
-    } else {
-      console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
-    }
+    // Include additional details in the caption
+    const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*URL:* ${result.url}\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
+
+    // Send the video using gss.sendMessage with the modified caption
+    await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption }, { quoted: m });
+  } else if (result && result.error) {
+    return m.reply(`Error: ${result.error}`);
+  } else {
+    console.error('Invalid API response:', result);
+    m.reply('Enter YouTube Video Link or Search Query!');
+  }
+} else {
+  console.error('Invalid Content-Type:', contentType);
+  m.reply('Unexpected response format.');
+}
   } catch (error) {
     console.error('Error during ytv:', error);
     m.reply('Unexpected error occurred.');
