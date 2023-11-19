@@ -1338,11 +1338,11 @@ case 'yta': case 'song': case 'ytmp3':
       if (result && result.downloadURL) {
         // Fetch the audio content
         const audioBufferReq = await fetch(result.downloadURL);
-        const audioBuffer = await audioBufferReq.arrayBuffer();
+        const audioBuffer = await audioBufferReq.buffer();  // Use .buffer() to directly get the buffer
         const mediaBuffer = Buffer.from(audioBuffer);
 
-        // Send the audio using m.reply
-        await m.reply({ audio: mediaBuffer, mimetype: 'audio/mp3', caption: 'Downloaded by your bot' });
+        // Send the audio using gss.sendMessage
+        await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp3', caption: 'Downloaded by your bot' }, { quoted: m });
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
@@ -1358,6 +1358,7 @@ case 'yta': case 'song': case 'ytmp3':
     m.reply('An error occurred during the operation.');
   }
   break;
+
 
 
 
