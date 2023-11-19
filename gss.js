@@ -1306,48 +1306,14 @@ break;
 
 
 
-
-case "yta": {
+case 'ytv':
+case 'video':
+case 'ytmp4':
   try {
-    const url = m.text.trim();
-
-    if (!url) {
-      return m.reply("Enter YouTube link or search query.");
+    if (!text) {
+      m.reply('Enter YouTube Video Link or Search Query!');
+      return;
     }
-
-    await m.reply("wait");
-
-    const apiURL = `https://songdl-cnd3.onrender.com/download?query=${encodeURIComponent(url)}`;
-    
-    const response = await fetch(apiURL);
-
-    if (!response.ok) {
-      return m.reply('Error fetching data from the API.');
-    }
-
-    const result = await response.json();
-
-    if (!result || !result.downloadURL) {
-      return m.reply('Invalid API response.');
-    }
-
-    // Directly send the download URL as a reply
-    await gss.sendMessage(m.chat, { file: result.downloadURL, fileName: result.title + ".mp3", mimetype: "audio/mp3" });
-  } catch (error) {
-    console.error('Error during yta:', error);
-    m.reply('An error occurred during the operation.');
-  }
-}
-break;
-
-
-
-
-
-
-case 'ytv': case 'video': case 'ytmp4':
-  try {
-    if (!text) throw 'Enter YouTube Video Link or Search Query!';
 
     m.reply(mess.wait);
 
@@ -1367,6 +1333,7 @@ case 'ytv': case 'video': case 'ytmp4':
     if (contentType && contentType.includes('application/json')) {
       const result = await req.json().catch(async (error) => {
         console.error('Error parsing JSON:', await req.text());
+        m.reply('Unexpected error occurred.');
         throw error;
       });
 
@@ -1392,9 +1359,10 @@ case 'ytv': case 'video': case 'ytmp4':
     }
   } catch (error) {
     console.error('Error during ytv:', error);
-    m.reply('Enter YouTube Video Link or Search Query!');
+    m.reply('Unexpected error occurred.');
   }
   break;
+
 
 
 
