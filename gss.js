@@ -1331,49 +1331,35 @@ case 'ytmp4':
     }
 
     if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
-        throw error;
-      });
+  const result = await req.json().catch(async (error) => {
+    console.error('Error parsing JSON:', await req.text());
+    m.reply('Unexpected error occurred.');
+    throw error;
+  });
 
-      console.log('Full API Response:', result);
+  console.log('Full API Response:', result);
 
-      if (result && result.url) {
-        try {
-          // Fetch the video content
-          const videoBufferReq = await fetch(result.url);
+  if (result && result.url) {
+    // Fetch the video content
+    const videoBufferReq = await fetch(result.url);
+    const videoBuffer = await videoBufferReq.arrayBuffer();
+    const mediaBuffer = Buffer.from(videoBuffer);
 
-          if (videoBufferReq.ok) {
-            const videoBuffer = await videoBufferReq.arrayBuffer(); // Use arrayBuffer() to get the buffer
+    // Include additional details in the caption
+    const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
 
-            // Include additional details in the caption
-            const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
-
-            // Send the video using gss.sendMessage with the modified caption
-            await gss.sendMessage(
-              m.chat,
-              { video: videoBuffer, mimetype: 'video/mp4', filename: 'video.mp4', caption },
-              { quoted: m }
-            );
-          } else {
-            console.error('Error fetching video:', videoBufferReq.statusText);
-            m.reply('Error fetching the video.');
-          }
-        } catch (error) {
-          console.error('Error sending video:', error);
-          m.reply('Error sending the video.');
-        }
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
-      }
-    } else {
-      console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
-    }
+    // Send the video using gss.sendMessage with the modified caption
+    await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption }, { quoted: m });
+  } else if (result && result.error) {
+    return m.reply(`Error: ${result.error}`);
+  } else {
+    console.error('Invalid API response:', result);
+    m.reply('Enter YouTube Video Link or Search Query!');
+  }
+} else {
+  console.error('Invalid Content-Type:', contentType);
+  m.reply('Unexpected response format.');
+}
   } catch (error) {
     console.error('Error during ytv:', error);
     m.reply('Unexpected error occurred.');
