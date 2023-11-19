@@ -1356,8 +1356,8 @@ case 'ytmp4':
         const stylishCaptionWithThumbnail = `
           🌟 *Title:* _${result.title}_
           👀 *Views:* _${result.views}_
-          ⏱️ *Duration:* _${duration}_
-          📅 *Upload Date:* _${uploadDate}_
+          ⏱️ *Duration:* _${result.duration}_
+          📅 *Upload Date:* _${result.uploadDate}_
           📺 *YouTube URL:* ${result.youtubeUrl}
           📢 *Upload Channel:* _${result.uploadChannel}_
           
