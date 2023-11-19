@@ -1305,11 +1305,11 @@ gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 break;
 
 
+
+
 case 'yta': case 'song': case 'ytmp3':
   try {
-    if (!text) {
-      return m.reply('Enter YouTube Link or Search Query!');
-    }
+    if (!text) throw 'Enter YouTube Video Link or Search Query!';
 
     m.reply(mess.wait);
 
@@ -1329,46 +1329,34 @@ case 'yta': case 'song': case 'ytmp3':
     if (contentType && contentType.includes('application/json')) {
       const result = await req.json().catch(async (error) => {
         console.error('Error parsing JSON:', await req.text());
-        m.reply('An error occurred during the operation.');
         throw error;
       });
 
       console.log('Full API Response:', result);
 
       if (result && result.downloadURL) {
-    const audioBufferReq = await fetch(result.downloadURL);
+        // Fetch the video content
+        const videoBufferReq = await fetch(result.downloadURL);
+        const videoBuffer = await videoBufferReq.arrayBuffer();
+        const mediaBuffer = Buffer.from(videoBuffer);
 
-    if (audioBufferReq.ok) {
-        const audioBuffer = await audioBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(audioBuffer);
-
-        // Log the length of the audio buffer to ensure it's not empty
-        console.log('Audio Buffer Length:', audioBuffer.byteLength);
-
-        // Send the audio using the appropriate method
+        // Send the video using gss.sendMessage
         await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp3' }, { quoted: m });
-    } else {
-        console.error('Failed to fetch audio:', audioBufferReq.statusText);
-        m.reply('Failed to fetch audio from the provided URL.');
-    }
-} else if (result && result.error) {
-    return m.reply(`Error: ${result.error}`);
-} else {
-    console.error('Invalid API response:', result);
-    m.reply('An error occurred during the operation.');
-}
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('Enter YouTube Link or Search Query!');
+      }
     } else {
       console.error('Invalid Content-Type:', contentType);
       m.reply('Unexpected response format.');
     }
   } catch (error) {
-    console.error('Error during yta:', error);
-    m.reply('An error occurred during the operation.');
+    console.error('Error during ytv:', error);
+    m.reply('Enter YouTube Link or Search Query!');
   }
   break;
-
-
-
 
 
 
