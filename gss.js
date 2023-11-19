@@ -1340,22 +1340,32 @@ if (contentType && contentType.includes('application/json')) {
   console.log('Full API Response:', result);
 
   if (result && result.downloadURL) {
-    // Fetch the video content
-    const videoBufferReq = await fetch(result.downloadURL);
-    const videoBuffer = await videoBufferReq.arrayBuffer();
-    const mediaBuffer = Buffer.from(videoBuffer);
+    try {
+      // Fetch the video content
+      const videoBufferReq = await fetch(result.downloadURL);
+      const videoBuffer = await videoBufferReq.buffer(); // Use buffer() to directly get the buffer
 
-    // Include additional details in the caption
-    const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*URL:* ${result.url}\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
-
-    // Send the video using gss.sendMessage with the modified caption
-    await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption }, { quoted: m });
+      const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*URL:* ${result.url}\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
+      await gss.sendMessage(
+        m.chat,
+        { video: videoBuffer, mimetype: 'video/mp4', filename: 'video.mp4', caption },
+        { quoted: m }
+      );
+    } catch (error) {
+      console.error('Error sending video:', error);
+      m.reply('Error sending the video.');
+    }
   } else if (result && result.error) {
     return m.reply(`Error: ${result.error}`);
   } else {
     console.error('Invalid API response:', result);
     m.reply('Enter YouTube Video Link or Search Query!');
   }
+} else {
+  console.error('Invalid Content-Type:', contentType);
+  m.reply('Unexpected response format.');
+}
+
 } else {
   console.error('Invalid Content-Type:', contentType);
   m.reply('Unexpected response format.');
