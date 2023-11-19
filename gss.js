@@ -1356,7 +1356,6 @@ case 'ytmp4':
     ⏱️ *Duration:* _${result.duration} seconds_
     💾 *Size:* _${result.size} bytes_
     📺 *Upload Channel:* _${result.uploadChannel}_
-    🔗 *Link:* _${result.url}_
     🤖 Downloaded by *gss botwa*
     `;
 
