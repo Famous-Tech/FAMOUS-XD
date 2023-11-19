@@ -1305,60 +1305,44 @@ gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 break;
 
 
-case 'yta':
+case "yta": case 'song': case 'ytmp3': {
   try {
-    if (!text) {
-      return m.reply('Enter YouTube Link or Search Query!');
+    const url = m.text.trim();
+
+    if (!url) {
+      return m.reply("Enter YouTube link or search query.");
     }
 
-    m.reply(mess.wait);
+    await m.reply("wait");
 
-    const apiURL = `https://songdl-cnd3.onrender.com/download?query=${encodeURIComponent(text)}`;
+    const apiURL = `https://songdl-cnd3.onrender.com/download?query=${encodeURIComponent(url)}`;
+    
+    const response = await fetch(apiURL);
 
-    const req = await fetch(apiURL);
-
-    console.log('Response Status:', req.status);
-
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
-      return m.reply('Audio not found.');
+    if (!response.ok) {
+      return m.reply('Error fetching data from the API.');
     }
 
-    if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('An error occurred during the operation.');
-        throw error;
-      });
+    const result = await response.json();
 
-      console.log('Full API Response:', result);
-
-      if (result && result.downloadURL) {
-        // Directly send the download URL as a reply
-        await gss.sendMessage(m.chat, { audio: result.downloadURL, mimetype: 'audio/mp3', caption: 'Downloaded by your bot' }, { quoted: m });
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('An error occurred during the operation.');
-      }
-    } else {
-      console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
+    if (!result || !result.downloadURL) {
+      return m.reply('Invalid API response.');
     }
+
+    // Directly send the download URL as a reply
+    await m.reply(result.downloadURL, { fileName: result.title + ".mp3", mimetype: "audio/mpeg" });
   } catch (error) {
     console.error('Error during yta:', error);
     m.reply('An error occurred during the operation.');
   }
-  break;
+}
+break;
 
 
 
 
 
-case 'ytv':
+case 'ytv': case 'video': case 'ytmp4':
   try {
     if (!text) throw 'Enter YouTube Video Link or Search Query!';
 
