@@ -1305,7 +1305,7 @@ gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 break;
 
 
-case "yta": case 'song': case 'ytmp3': 
+case 'yta': case 'song': case 'ytmp3':
   try {
     if (!text) {
       return m.reply('Enter YouTube Link or Search Query!');
@@ -1336,8 +1336,13 @@ case "yta": case 'song': case 'ytmp3':
       console.log('Full API Response:', result);
 
       if (result && result.downloadURL) {
-        // Directly send the download URL as a reply
-        await m.reply({ audio: result.downloadURL, mimetype: 'audio/mp3', caption: 'Downloaded by your bot' });
+        // Fetch the audio content
+        const audioBufferReq = await fetch(result.downloadURL);
+        const audioBuffer = await audioBufferReq.arrayBuffer();
+        const mediaBuffer = Buffer.from(audioBuffer);
+
+        // Send the audio using m.reply
+        await m.reply({ audio: mediaBuffer, mimetype: 'audio/mp3', caption: 'Downloaded by your bot' });
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
@@ -1353,6 +1358,7 @@ case "yta": case 'song': case 'ytmp3':
     m.reply('An error occurred during the operation.');
   }
   break;
+
 
 
 
