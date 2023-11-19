@@ -1341,9 +1341,9 @@ case 'ytmp4':
 
       console.log('Full API Response:', result);
 
-      if (result && result.url) {
+      if (result && result.downloadUrl) {
         // Fetch the video content
-        const videoBufferReq = await fetch(result.url);
+        const videoBufferReq = await fetch(result.downloadUrl);
         const videoBuffer = await videoBufferReq.arrayBuffer();
         const mediaBuffer = Buffer.from(videoBuffer);
 
