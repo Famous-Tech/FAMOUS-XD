@@ -1337,18 +1337,26 @@ case 'yta': case 'song': case 'ytmp3':
 
       if (result && result.downloadURL) {
     const audioBufferReq = await fetch(result.downloadURL);
-    const audioBuffer = await audioBufferReq.arrayBuffer();
-    const mediaBuffer = Buffer.from(audioBuffer);
 
-    // Send the audio using the appropriate method (replace 'gss' with your actual sending method)
-    await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp3' }, { quoted: m });
+    if (audioBufferReq.ok) {
+        const audioBuffer = await audioBufferReq.arrayBuffer();
+        const mediaBuffer = Buffer.from(audioBuffer);
+
+        // Log the length of the audio buffer to ensure it's not empty
+        console.log('Audio Buffer Length:', audioBuffer.byteLength);
+
+        // Send the audio using the appropriate method
+        await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp3' }, { quoted: m });
+    } else {
+        console.error('Failed to fetch audio:', audioBufferReq.statusText);
+        m.reply('Failed to fetch audio from the provided URL.');
+    }
 } else if (result && result.error) {
     return m.reply(`Error: ${result.error}`);
 } else {
     console.error('Invalid API response:', result);
     m.reply('An error occurred during the operation.');
 }
-
     } else {
       console.error('Invalid Content-Type:', contentType);
       m.reply('Unexpected response format.');
