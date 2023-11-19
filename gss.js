@@ -1337,7 +1337,7 @@ case 'yta':
 
       if (result && result.downloadURL) {
         // Directly send the download URL as a reply
-        await gss.sendMessage(m.chat, result.downloadURL, { quoted: m });
+        await gss.sendMessage(m.chat, { audio: result.downloadURL, mimetype: 'audio/mp3', caption: 'Downloaded by your bot' }, { quoted: m });
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
@@ -1353,6 +1353,7 @@ case 'yta':
     m.reply('An error occurred during the operation.');
   }
   break;
+
 
 
 
