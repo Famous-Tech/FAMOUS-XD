@@ -1319,7 +1319,7 @@ case 'ytmp4':
 
     m.reply(mess.wait);
 
-    const apiURL = `https://ytdl-78w9.onrender.com/download?query=${encodeURIComponent(text)}`;
+    const apiURL = `https://ytdl-78w9.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
 
     const req = await fetch(apiURL);
 
