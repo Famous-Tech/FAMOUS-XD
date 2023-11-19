@@ -1332,7 +1332,7 @@ case "yta": {
     }
 
     // Directly send the download URL as a reply
-    await gss.sendMessage(m.chat, { file: result.downloadURL, fileName: result.title + ".mp3", mimetype: "audio/mpeg" });
+    await gss.sendMessage(m.chat, { file: result.downloadURL, fileName: result.title + ".mp3", mimetype: "audio/mp3" });
   } catch (error) {
     console.error('Error during yta:', error);
     m.reply('An error occurred during the operation.');
