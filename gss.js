@@ -1351,14 +1351,12 @@ case 'ytmp4':
         const thumbnailBufferReq = await fetch(result.thumbnail);
         const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
 
-        // Format upload date to be "Month Day, Year"
-        const uploadDate = new Date(result.uploadDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
         // Stylish caption with markdown formatting and thumbnail
         const stylishCaptionWithThumbnail = `
           🌟 *Title:* _${result.title}_
           👀 *Views:* _${result.views}_
-          ⏱️ *Duration:* _${durationHours}h ${durationMinutes}m ${durationSeconds}s_
+          ⏱️ *Duration:* _${duration}_
           📅 *Upload Date:* _${uploadDate}_
           📺 *YouTube URL:* ${result.youtubeUrl}
           📢 *Upload Channel:* _${result.uploadChannel}_
