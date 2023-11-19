@@ -1342,7 +1342,8 @@ case 'yta': case 'song': case 'ytmp3':
         const mediaBuffer = Buffer.from(audioBuffer);
 
         // Send the audio using gss.sendMessage
-        await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp3', caption: 'Downloaded by your bot' }, { quoted: m });
+        // Inside the 'yta' case
+await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp3' }, { quoted: m });
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
