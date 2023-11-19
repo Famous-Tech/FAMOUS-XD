@@ -1305,7 +1305,56 @@ gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 break;
 
 
+case 'yta':
+  try {
+    if (!text) throw 'Enter YouTube Video Link or Search Query!';
 
+    m.reply(mess.wait);
+
+    const apiURL = `https://songdl-cnd3.onrender.com/download?query=${encodeURIComponent(text)}`;
+
+    const req = await fetch(apiURL);
+
+    console.log('Response Status:', req.status);
+
+    const contentType = req.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+
+    if (req.status === 404) {
+      return m.reply('Video not found.');
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result = await req.json().catch(async (error) => {
+        console.error('Error parsing JSON:', await req.text());
+        throw error;
+      });
+
+      console.log('Full API Response:', result);
+
+      if (result && result.downloadURL) {
+        // Fetch the video content
+        const videoBufferReq = await fetch(result.downloadURL);
+        const videoBuffer = await videoBufferReq.arrayBuffer();
+        const mediaBuffer = Buffer.from(videoBuffer);
+
+        // Send the video using gss.sendMessage
+        await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('An error occurred during the operation.');
+      }
+    } else {
+      console.error('Invalid Content-Type:', contentType);
+      m.reply('Unexpected response format.');
+    }
+  } catch (error) {
+    console.error('Error during ytv:', error);
+    m.reply('An error occurred during the operation.');
+  }
+  break;
 
 
 case 'ytv':
