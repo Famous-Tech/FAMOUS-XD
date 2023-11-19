@@ -1343,17 +1343,23 @@ case 'ytmp4':
         try {
           // Fetch the video content
           const videoBufferReq = await fetch(result.url);
-          const videoBuffer = await videoBufferReq.buffer(); // Use buffer() to directly get the buffer
 
-          // Include additional details in the caption
-          const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
+          if (videoBufferReq.ok) {
+            const videoBuffer = await videoBufferReq.arrayBuffer(); // Use arrayBuffer() to get the buffer
 
-          // Send the video using gss.sendMessage with the modified caption
-          await gss.sendMessage(
-            m.chat,
-            { video: videoBuffer, mimetype: 'video/mp4', filename: 'video.mp4', caption },
-            { quoted: m }
-          );
+            // Include additional details in the caption
+            const caption = `*Title:* ${result.title}\n*Views:* ${result.views}\n*Duration:* ${result.duration} seconds\n*Size:* ${result.size} bytes\n*Upload Channel:* ${result.uploadChannel}\nDownloaded by gss botwa`;
+
+            // Send the video using gss.sendMessage with the modified caption
+            await gss.sendMessage(
+              m.chat,
+              { video: videoBuffer, mimetype: 'video/mp4', filename: 'video.mp4', caption },
+              { quoted: m }
+            );
+          } else {
+            console.error('Error fetching video:', videoBufferReq.statusText);
+            m.reply('Error fetching the video.');
+          }
         } catch (error) {
           console.error('Error sending video:', error);
           m.reply('Error sending the video.');
@@ -1373,6 +1379,7 @@ case 'ytmp4':
     m.reply('Unexpected error occurred.');
   }
   break;
+
 
 
 
