@@ -1307,56 +1307,39 @@ break;
 
 
 
-case 'yta': case 'song': case 'ytmp3':
+case "yta": {
   try {
-    if (!text) throw 'Enter YouTube Video Link or Search Query!';
+    const url = m.text.trim();
 
-    m.reply(mess.wait);
-
-    const apiURL = `https://songdl-cnd3.onrender.com/download?query=${encodeURIComponent(text)}`;
-
-    const req = await fetch(apiURL);
-
-    console.log('Response Status:', req.status);
-
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
-      return m.reply('Audio not found.');
+    if (!url) {
+      return m.reply("Enter YouTube link or search query.");
     }
 
-    if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        throw error;
-      });
+    await m.reply("wait");
 
-      console.log('Full API Response:', result);
+    const apiURL = `https://songdl-cnd3.onrender.com/download?query=${encodeURIComponent(url)}`;
+    
+    const response = await fetch(apiURL);
 
-      if (result && result.downloadURL) {
-        // Fetch the video content
-        const videoBufferReq = await fetch(result.downloadURL);
-        const videoBuffer = await videoBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(videoBuffer);
-
-        // Send the video using gss.sendMessage
-        await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp3' }, { quoted: m });
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Link or Search Query!');
-      }
-    } else {
-      console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
+    if (!response.ok) {
+      return m.reply('Error fetching data from the API.');
     }
+
+    const result = await response.json();
+
+    if (!result || !result.downloadURL) {
+      return m.reply('Invalid API response.');
+    }
+
+    // Directly send the download URL as a reply
+    await gss.sendMessage(m.chat, { file: result.downloadURL, fileName: result.title + ".mp3", mimetype: "audio/mpeg" });
   } catch (error) {
-    console.error('Error during ytv:', error);
-    m.reply('Enter YouTube Link or Search Query!');
+    console.error('Error during yta:', error);
+    m.reply('An error occurred during the operation.');
   }
-  break;
+}
+break;
+
 
 
 
