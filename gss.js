@@ -1338,7 +1338,7 @@ case 'yta': case 'song': case 'ytmp3':
       if (result && result.downloadURL) {
         // Fetch the audio content
         const audioBufferReq = await fetch(result.downloadURL);
-        const audioBuffer = await audioBufferReq.buffer();  // Use .buffer() to directly get the buffer
+        const audioBuffer = await audioBufferReq.arrayBuffer();
         const mediaBuffer = Buffer.from(audioBuffer);
 
         // Send the audio using gss.sendMessage
@@ -1358,6 +1358,7 @@ case 'yta': case 'song': case 'ytmp3':
     m.reply('An error occurred during the operation.');
   }
   break;
+
 
 
 
