@@ -1459,9 +1459,11 @@ case 'yts': {
       // Build the stylish reply list with search results
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
-        replyList.push(`🎵 *${i + 1}.* ${result.title}\n🔗 ${result.url}`);
+        replyList.push(`🎵 *${i + 1}.* *${result.title}*\n\n🔗 ${result.url}`);
       }
-      // Send the stylish reply list
+      // Add instructions for using getaudio and getvideo
+      replyList.push('\nReply to this message with the following commands to download:\n- For Audio: *getaudio <number>*\n- For Video: *getvideo <number>*');
+      // Send the stylish reply list with instructions
       await m.reply(replyList.join('\n\n'));
     } else {
       console.error('Invalid API response:', data);
@@ -1473,6 +1475,7 @@ case 'yts': {
   }
 }
 break;
+
 
 
 
@@ -1527,6 +1530,42 @@ case 'getvideo': {
 }
 break;
 
+
+case 'getaudio': case 'getmusic': case 'getsong': case 'getmp3': {
+  if (!text) throw `Example: ${prefix + command} 1`;
+  if (!m.quoted) return m.reply('Reply to a message');
+  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
+
+  try {
+    const ytaAPIURL = 'https://youtubedl-ll1h.onrender.com/downloadurl?query=';
+    const apiURL = `${ytaAPIURL}${encodeURIComponent(urls[text - 1])}`;
+    const response = await fetch(apiURL);
+    const data = await response.json();
+
+    console.log('Full API Response:', data);
+
+    if (data && data.downloadURL) {
+      // Fetch the audio content
+      const audioBufferReq = await fetch(data.downloadURL);
+      const audioBuffer = await audioBufferReq.arrayBuffer();
+      const mediaBuffer = Buffer.from(audioBuffer);
+
+      // Send the audio using gss.sendMessage without a caption
+      await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp4', fileName: `${data.title}.mp3` }, { quoted: m });
+    } else if (data && data.error) {
+      return m.reply(`Error: ${data.error}`);
+    } else {
+      console.error('Invalid API response:', data);
+      m.reply('Error retrieving audio details.');
+    }
+  } catch (error) {
+    console.error('Error during getaudio:', error);
+    m.reply('Unexpected error occurred.');
+  }
+}
+break;
 
 
 
