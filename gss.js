@@ -1308,7 +1308,7 @@ break;
 
 
 
-case '':
+case 'ytv':
 case 'video':
 case 'ytmp4':
   try {
