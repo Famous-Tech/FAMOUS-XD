@@ -1418,6 +1418,40 @@ break;
 
 
 
+case 'getvideo': {
+  if (!text) throw `Example : ${prefix + command} 1`;
+  if (!m.quoted) return m.reply('Reply to a message');
+  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
+
+  try {
+    const response = await fetch(`https://ytdl-78w9.onrender.com/downloadurl?query=${encodeURIComponent(urls[text - 1])}`);
+    const data = await response.json();
+
+    if (data.type === 'downloadAudio' && data.data && data.data.downloadUrl) {
+      const mediaBufferReq = await fetch(data.data.downloadUrl);
+      const mediaBuffer = await mediaBufferReq.arrayBuffer();
+      const mediaFile = Buffer.from(mediaBuffer);
+
+      // Stylish caption with details
+      const stylishCaption = `
+        ⭔ *Title:* ${data.data.title}
+        ⭔ *File Size:* ${util.formatBytes(mediaBuffer.length)}
+      `;
+
+      // Send the audio using gss.sendMessage with the modified stylish caption
+      await gss.sendMessage(m.chat, { audio: mediaFile, mimetype: 'audio/mp4', fileName: `${data.data.title}.mp3`, caption: stylishCaption }, { quoted: m });
+    } else {
+      console.error('Invalid API response:', data);
+      return m.reply('Error retrieving audio details.');
+    }
+  } catch (error) {
+    console.error('Error during getvideo:', error);
+    return m.reply('Unexpected error occurred.');
+  }
+}
+break;
 
 
 
