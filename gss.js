@@ -1307,87 +1307,6 @@ gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 break;
 
 
-case 'ytv':
-case 'video':
-case 'ytmp4':
-  try {
-    if (!text && !m.quoted) {
-      m.reply('Enter YouTube Video Link or Search Query or reply to a message with a number (1, 2, 3, etc.) to download!');
-      return;
-    }
-
-    m.reply(mess.wait);
-
-    let apiURL = `https://ytdl-78w9.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
-    if (m.quoted) {
-      const quotedText = m.quoted.text;
-      const selectedNumber = parseInt(quotedText);
-      if (!isNaN(selectedNumber) && selectedNumber > 0 && selectedNumber <= 10) {
-        apiURL = result.data[selectedNumber - 1].downloadUrl;
-      }
-    }
-
-    const req = await fetch(apiURL);
-
-    console.log('Response Status:', req.status);
-
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
-      return m.reply('Video not found.');
-    }
-
-    if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
-        throw error;
-      });
-
-      console.log('Full API Response:', result);
-
-      if (result && result.downloadUrl) {
-        // Fetch the video content
-        const videoBufferReq = await fetch(result.downloadUrl);
-        const videoBuffer = await videoBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(videoBuffer);
-
-        // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
-        const thumbnailBufferReq = await fetch(result.thumbnail);
-        const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
-
-        // Stylish caption with markdown formatting and thumbnail
-        const stylishCaptionWithThumbnail = `
-          🌟 *Title:* _${result.title}_
-          👀 *Views:* _${result.views}_
-          ⏱️ *Duration:* _${result.duration}_
-          📅 *Upload Date:* _${result.uploadDate}_
-          📺 *YouTube URL:* ${result.youtubeUrl}
-          📢 *Upload Channel:* _${result.uploadChannel}_
-          
-          🤖 Downloaded by *gss botwa*
-        `;
-
-        // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
-        await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
-      }
-    } else {
-      console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
-    }
-  } catch (error) {
-    console.error('Error during ytv:', error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-
-
 
 case 'ytv':
 case 'video':
@@ -1500,39 +1419,56 @@ break;
 
 
 case 'getvideo': {
-  if (!text) throw `Example : ${prefix + command} 1`;
+  if (!text) throw `Example: ${prefix + command} 1`;
   if (!m.quoted) return m.reply('Reply to a message');
   if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
   let urls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
 
   try {
-    const response = await fetch(`https://ytdl-78w9.onrender.com/downloadurl?query=${encodeURIComponent(urls[text - 1])}`);
+    const apiURL = `https://ytdl-78w9.onrender.com/downloadurl?query=${encodeURIComponent(urls[text - 1])}`;
+    const response = await fetch(apiURL);
     const data = await response.json();
 
-    if (data.type === 'downloadAudio' && data.data && data.data.downloadUrl) {
-      const mediaBufferReq = await fetch(data.data.downloadUrl);
-      const mediaBuffer = await mediaBufferReq.arrayBuffer();
-      const mediaFile = Buffer.from(mediaBuffer);
+    console.log('Full API Response:', data);
 
-      // Stylish caption with details
-      const stylishCaption = `
-        ⭔ *Title:* ${data.data.title}
-        ⭔ *File Size:* ${util.formatBytes(mediaBuffer.length)}
+    if (data && data.downloadUrl) {
+      // Fetch the video content
+      const videoBufferReq = await fetch(data.downloadUrl);
+      const videoBuffer = await videoBufferReq.arrayBuffer();
+      const mediaBuffer = Buffer.from(videoBuffer);
+
+      // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
+      const thumbnailBufferReq = await fetch(data.thumbnail);
+      const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
+
+      // Stylish caption with markdown formatting and thumbnail
+      const stylishCaptionWithThumbnail = `
+        🌟 *Title:* _${data.title}_
+        👀 *Views:* _${data.views}_
+        ⏱️ *Duration:* _${data.duration}_
+        📅 *Upload Date:* _${data.uploadDate}_
+        📺 *YouTube URL:* ${data.youtubeUrl}
+        📢 *Upload Channel:* _${data.uploadChannel}_
+        
+        🤖 Downloaded by *gss botwa*
       `;
 
-      // Send the audio using gss.sendMessage with the modified stylish caption
-      await gss.sendMessage(m.chat, { audio: mediaFile, mimetype: 'audio/mp4', fileName: `${data.data.title}.mp3`, caption: stylishCaption }, { quoted: m });
+      // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
+      await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
+    } else if (data && data.error) {
+      return m.reply(`Error: ${data.error}`);
     } else {
       console.error('Invalid API response:', data);
-      return m.reply('Error retrieving audio details.');
+      m.reply('Error retrieving video details.');
     }
   } catch (error) {
     console.error('Error during getvideo:', error);
-    return m.reply('Unexpected error occurred.');
+    m.reply('Unexpected error occurred.');
   }
 }
 break;
+
 
 
 
