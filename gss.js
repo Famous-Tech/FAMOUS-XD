@@ -1080,6 +1080,13 @@ case 'welcome':
 case 'left': {
     if (!groupAdmins && !isCreator) return m.reply(mess.admin);
     if (args.length < 1) return m.reply('enable/disable?');
+    
+    // Check if chats[m.from] is an object, if not, initialize it
+    if (typeof db.data.chats[m.from] !== 'object') db.data.chats[m.from] = {};
+
+    // Check if notification is an object, if not, initialize it
+    if (!('notification' in db.data.chats[m.from])) db.data.chats[m.from].notification = {};
+
     if (args[0] === 'enable') {
         db.data.chats[m.from].notification.status = true;
         m.reply(`${command} is enabled`);
@@ -1093,6 +1100,13 @@ case 'settextome':
 case 'setome': {
     if (!groupAdmins && !isCreator) return m.reply(mess.admin);
     if (args.length < 1) return m.reply('give me a welcome text');
+    
+    // Check if chats[m.from] is an object, if not, initialize it
+    if (typeof db.data.chats[m.from] !== 'object') db.data.chats[m.from] = {};
+
+    // Check if notification is an object, if not, initialize it
+    if (!('notification' in db.data.chats[m.from])) db.data.chats[m.from].notification = {};
+
     db.data.chats[m.from].notification.text_welcome = args[0];
     m.reply(mess.success);
 }
@@ -1101,10 +1115,18 @@ case 'settextleft':
 case 'setleft': {
     if (!groupAdmins && !isCreator) return m.reply(mess.admin);
     if (args.length < 1) return m.reply('give me a left text');
+    
+    // Check if chats[m.from] is an object, if not, initialize it
+    if (typeof db.data.chats[m.from] !== 'object') db.data.chats[m.from] = {};
+
+    // Check if notification is an object, if not, initialize it
+    if (!('notification' in db.data.chats[m.from])) db.data.chats[m.from].notification = {};
+
     db.data.chats[m.from].notification.text_left = args[0];
     m.reply(mess.success);
 }
 break;
+
 
 
             
