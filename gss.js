@@ -1398,12 +1398,12 @@ case 'yts': {
 
     if (data.type === 'search' && Array.isArray(data.data)) {
       let replyList = [];
-      // Build the reply list with search results
+      // Build the stylish reply list with search results
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
-        replyList.push(`${i + 1}. ${result.title}\n${result.url}`);
+        replyList.push(`🎵 *${i + 1}.* ${result.title}\n🔗 ${result.url}`);
       }
-      // Send the reply list
+      // Send the stylish reply list
       await m.reply(replyList.join('\n\n'));
     } else {
       console.error('Invalid API response:', data);
@@ -1415,6 +1415,7 @@ case 'yts': {
   }
 }
 break;
+
 
 
 
