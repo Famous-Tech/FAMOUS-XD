@@ -1383,60 +1383,37 @@ case 'ytmp4':
   break;
 
 
-case 'yts':
-case 'youtubesearch':
-case 'ytsearch': {
+case 'yts': {
+  if (!text) {
+    return m.reply('Enter Search Query!');
+  }
+
+  m.reply(mess.wait);
+
+  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
   try {
-    if (!text) {
-      return m.reply('Enter YouTube Video Link or Search Query!');
-    }
+    const response = await fetch(apiURL);
+    const data = await response.json();
 
-    m.reply(mess.wait);
+    if (data.type === 'search' && Array.isArray(data.data)) {
+      // Format the results with numbers from 1 to 10
+      const formattedResults = data.data.slice(0, 10).map((result, index) => `${index + 1}. ${result}`);
 
-    const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
-
-    const req = await fetch(apiURL);
-
-    console.log('Response Status:', req.status);
-
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
-      return m.reply('Video not found.');
-    }
-
-    if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        return m.reply('Unexpected error occurred.');
-      });
-
-      console.log('Full API Response:', result);
-
-      if (result && Array.isArray(result.data)) {
-        // Format the results with numbers from 1 to 10
-        const formattedResults = result.data.slice(0, 10).map((video, index) => `${index + 1}. ${video.title}\n${video.url}`);
-
-        // Send each result one by one
-        for (const formattedResult of formattedResults) {
-          await gss.sendMessage(m.chat, formattedResult, MessageType.text, { quoted: m });
-        }
-      } else {
-        console.error('Invalid API response:', result);
-        return m.reply('Video not found.');
+      // Send each result one by one
+      for (const formattedResult of formattedResults) {
+        await gss.sendMessage(m.chat, formattedResult, MessageType.text, { quoted: m });
       }
     } else {
-      console.error('Invalid Content-Type:', contentType);
-      return m.reply('Unexpected response format.');
+      console.error('Invalid API response:', data);
+      return m.reply('Error retrieving search results.');
     }
   } catch (error) {
-    console.error('Error during ytv:', error);
+    console.error('Error during yts:', error);
     return m.reply('Unexpected error occurred.');
   }
 }
 break;
-
 
 
 
