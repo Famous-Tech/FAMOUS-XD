@@ -2345,6 +2345,19 @@ case 'tiktoknowm':
   break;
 
 
+ case 'attp':
+                if (!q) return m.reply('Give Me Text')
+                m.reply(mess.wait)
+                gss.sendMessage(m.chat, {
+                    sticker: {
+                        url: `https://api.lolhuman.xyz/api/attp?apikey=haikalgans&text=${q}`
+                    }
+                }, {
+                    quoted: m
+                })
+            break
+
+
     case 'ai':
 case 'gpt':
 case 'chatgpt':
