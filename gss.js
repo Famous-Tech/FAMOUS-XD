@@ -1462,7 +1462,7 @@ case 'yts': {
       replyList.push(`🔍 *Search Results From ${text}* 🔍`);
 for (let i = 0; i < data.data.length; i++) {
   const result = data.data[i];
-  replyList.push(`\n${i + 1}. 🎦 *${result.title}*\n   🔗 ${i + 1}](${result.url})\n`);
+  replyList.push(`\n${i + 1}. 🎦 *${result.title}*\n   🔗 ${result.url}\n`);
 }
 
       
