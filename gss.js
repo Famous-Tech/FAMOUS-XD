@@ -1381,6 +1381,64 @@ case 'ytmp4':
     m.reply('Unexpected error occurred.');
   }
   break;
+  
+case 'yta': {
+  try {
+    if (!text) {
+      m.reply('Enter YouTube Video Link or Search Query!');
+      return;
+    }
+
+    m.reply(mess.wait);
+
+    const ytaAPIURL = 'https://youtubedl-ll1h.onrender.com/downloadurl?query=';
+    const apiURL = `${ytaAPIURL}${encodeURIComponent(text)}`;
+
+    const req = await fetch(apiURL);
+
+    console.log('Response Status:', req.status);
+
+    const contentType = req.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+
+    if (req.status === 404) {
+      return m.reply('Audio not found.');
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result = await req.json().catch(async (error) => {
+        console.error('Error parsing JSON:', await req.text());
+        m.reply('Unexpected error occurred.');
+        throw error;
+      });
+
+      console.log('Full API Response:', result);
+
+      if (result && result.downloadURL) {
+        // Fetch the audio content
+        const audioBufferReq = await fetch(result.downloadURL);
+        const audioBuffer = await audioBufferReq.arrayBuffer();
+        const mediaBuffer = Buffer.from(audioBuffer);
+
+        // Send the audio using gss.sendMessage without a caption
+        await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp4', fileName: `${result.title}.mp3` }, { quoted: m });
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('Enter YouTube Video Link or Search Query!');
+      }
+    } else {
+      console.error('Invalid Content-Type:', contentType);
+      m.reply('Unexpected response format.');
+    }
+  } catch (error) {
+    console.error('Error during yta:', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
+
 
 
 case 'yts': {
