@@ -1457,14 +1457,15 @@ case 'yts': {
     if (data.type === 'search' && Array.isArray(data.data)) {
       let replyList = [];
       // Build the stylish reply list with search results
+      replyList.push('<<≡≡[========☆========]≡≡>>\n\n🔍 *Search Results* 🔍');
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
-        replyList.push(`🎵 *${i + 1}.* *${result.title}*\n\n🔗 ${result.url}`);
+        replyList.push(`\n${i + 1}. 🎵 *${result.title}*\n   🔗 [Link to Video ${i + 1}]\n\n   <<≡≡[========☆========]≡≡>>`);
       }
       // Add instructions for using getaudio and getvideo
-      replyList.push('\nReply to this message with the following commands to download:\n- For Audio: *getaudio <number>*\n- For Video: *getvideo <number>*');
+      replyList.push('\n🔥 Reply with the following commands to download:\n   - 🎧 *getaudio <number>* for Audio\n   - 📹 *getvideo <number>* for Video\n\nEnjoy the vibes! 🎶✨');
       // Send the stylish reply list with instructions
-      await m.reply(replyList.join('\n\n'));
+      await m.reply(replyList.join('\n'));
     } else {
       console.error('Invalid API response:', data);
       return m.reply('Error retrieving search results.');
