@@ -1076,7 +1076,7 @@ case 'linkgroup': case 'linkgc': {
 }
 break;
 
-case 'ome':
+case 'welcome':
             case 'left': {
                if (!groupAdmins && !isCreator) return m.reply(mess.admin)
                if (args.length < 1) return m.reply('enable/disable?')
