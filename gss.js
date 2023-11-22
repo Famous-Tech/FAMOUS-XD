@@ -303,21 +303,28 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
                 limit: limitUser,
             }
     
-            let chats = db.data.chats[m.chat]
-            if (typeof chats !== 'object') db.data.chats[m.chat] = {}
-            if (chats) {
-                if (!('mute' in chats)) chats.mute = false
-                if (!('antilink' in chats)) chats.antilink = false
-                   if (!('notification' in chats)) chats.notification = {}
-            }
-            } else global.db.data.chats[m.chat] = {
-                mute: false,
-                antilink: false,
-                notification: {
-                     status: false,
-                     text_left: '',
-                     text_welcome:''
-            }
+            let chats = db.data.chats[m.chat];
+
+if (typeof chats !== 'object') {
+    db.data.chats[m.chat] = {};
+}
+
+if (chats) {
+    if (!('mute' in chats)) chats.mute = false;
+    if (!('antilink' in chats)) chats.antilink = false;
+    if (!('notification' in chats)) chats.notification = {};
+} else {
+    global.db.data.chats[m.chat] = {
+        mute: false,
+        antilink: false,
+        notification: {
+            status: false,
+            text_left: '',
+            text_welcome: ''
+        }
+    };
+}
+
 		
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
