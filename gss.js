@@ -1385,7 +1385,7 @@ case 'ytmp4':
 
 case 'yts': {
   if (!text) {
-    return m.reply('Enter Search Query!');
+    return m.reply('Enter YouTube Video Link or Search Query!');
   }
 
   m.reply(mess.wait);
@@ -1397,12 +1397,11 @@ case 'yts': {
     const data = await response.json();
 
     if (data.type === 'search' && Array.isArray(data.data)) {
-      // Format the results with numbers from 1 to 10
-      const formattedResults = data.data.slice(0, 10).map((result, index) => `${index + 1}. ${result}`);
-
       // Send each result one by one
-      for (const formattedResult of formattedResults) {
-        await gss.sendMessage(m.chat, formattedResult, { quoted: m });
+      for (let i = 0; i < data.data.length; i++) {
+        const result = data.data[i];
+        const message = `${i + 1}. ${result.title}\n${result.url}`;
+        await m.reply(message);
       }
     } else {
       console.error('Invalid API response:', data);
@@ -1414,6 +1413,7 @@ case 'yts': {
   }
 }
 break;
+
 
 
 
