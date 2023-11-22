@@ -1382,7 +1382,7 @@ case 'ytmp4':
   }
   break;
   
-case 'yta': {
+case 'yta': case 'song': case 'ytmp3': {
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
