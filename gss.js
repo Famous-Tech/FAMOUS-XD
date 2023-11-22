@@ -320,7 +320,7 @@ if (chats) {
         notification: {
             status: false,
             text_left: '',
-            text_ome: ''
+            text_welcome: ''
         }
     };
 }
@@ -429,7 +429,7 @@ if (db.data.chats[m.from] && db.data.chats[m.from].notification && db.data.chats
             for (let i of par) {
                 let ppuser = await gss.profilePictureUrl(i, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg');
                 if (anu.action == 'add') {
-                    await gss.sendMessage(m.chat, { text: db.data.group[m.from].notification.text_ome ? db.data.group[m.from].notification.text_ome : Styles(`ome To ${metadata.subject}`), contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`ome To ${metadata.subject} | ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
+                    await gss.sendMessage(m.chat, { text: db.data.group[m.from].notification.text_welcome ? db.data.group[m.from].notification.text_welcome : Styles(`welcome To ${metadata.subject}`), contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`welcome To ${metadata.subject} | ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
                 } else if (anu.action == 'remove') {
                     await gss.sendMessage(m.chat, { text: db.data.group[m.from].notification.text_left ? db.data.group[m.from].notification.text_left : Styles(`Goodbye ${gss.getName(i)}`), contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Goodbye ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
                 }
@@ -1081,10 +1081,10 @@ case 'welcome':
                if (!groupAdmins && !isCreator) return m.reply(mess.admin)
                if (args.length < 1) return m.reply('enable/disable?')
                if (args[0] === 'enable') {
-                  db.data.chats[from].notification.status = true
+                  db.data.chats[m.from].notification.status = true
                   m.reply(`${command} is enable`)
                } else if (args[0] === 'disable') {
-                  db.data.chats[from].notification.status = false
+                  db.data.chats[m.from].notification.status = false
                   m.reply(`${command} is disable`)
                }
             }
@@ -1092,16 +1092,16 @@ case 'welcome':
             case 'settextome':
             case 'setome':{
                if (!groupAdmins && !isCreator) return m.reply(mess.admin)
-               if (args.length < 1) return m.reply('masukkan textnya')
-               db.data.chats[from].notification.status.text_ome = args[0]
+               if (args.length < 1) return m.reply('give me a welcome text')
+               db.data.chats[m.from].notification.status.text_welcome = args[0]
                m.reply(mess.success)
             }
             break 
             case 'settextleft':
             case 'setleft':{
                if (!groupAdmins && !isCreator) return m.reply(mess.admin)
-               if (args.length < 1) return m.reply('masukkan textnya')
-               db.data.chats[from].notification.status.text_left = args[0]
+               if (args.length < 1) return m.reply('give me a left text')
+               db.data.chats[m.from].notification.status.text_left = args[0]
                m.reply(mess.success)
             }
             break 
