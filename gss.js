@@ -1383,6 +1383,59 @@ case 'ytmp4':
   break;
 
 
+case 'yts':
+case 'youtubesearch':
+case 'ytsearch': {
+  try {
+    if (!text) {
+      return m.reply('Enter YouTube Video Link or Search Query!');
+    }
+
+    m.reply(mess.wait);
+
+    const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
+    const req = await fetch(apiURL);
+
+    console.log('Response Status:', req.status);
+
+    const contentType = req.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+
+    if (req.status === 404) {
+      return m.reply('Video not found.');
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result = await req.json().catch(async (error) => {
+        console.error('Error parsing JSON:', await req.text());
+        return m.reply('Unexpected error occurred.');
+      });
+
+      console.log('Full API Response:', result);
+
+      if (result && Array.isArray(result.data)) {
+        // Format the results with numbers from 1 to 10
+        const formattedResults = result.data.slice(0, 10).map((video, index) => `${index + 1}. ${video.title}\n${video.url}`);
+
+        // Send each result one by one
+        for (const formattedResult of formattedResults) {
+          await gss.sendMessage(m.chat, formattedResult, MessageType.text, { quoted: m });
+        }
+      } else {
+        console.error('Invalid API response:', result);
+        return m.reply('Video not found.');
+      }
+    } else {
+      console.error('Invalid Content-Type:', contentType);
+      return m.reply('Unexpected response format.');
+    }
+  } catch (error) {
+    console.error('Error during ytv:', error);
+    return m.reply('Unexpected error occurred.');
+  }
+}
+break;
 
 
 
