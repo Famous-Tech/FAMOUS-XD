@@ -1077,34 +1077,35 @@ case 'linkgroup': case 'linkgc': {
 break;
 
 case 'welcome':
-            case 'left': {
-               if (!groupAdmins && !isCreator) return m.reply(mess.admin)
-               if (args.length < 1) return m.reply('enable/disable?')
-               if (args[0] === 'enable') {
-                  db.data.chats[m.from].notification.status = true
-                  m.reply(`${command} is enable`)
-               } else if (args[0] === 'disable') {
-                  db.data.chats[m.from].notification.status = false
-                  m.reply(`${command} is disable`)
-               }
-            }
-            break
-            case 'settextome':
-            case 'setome':{
-               if (!groupAdmins && !isCreator) return m.reply(mess.admin)
-               if (args.length < 1) return m.reply('give me a welcome text')
-               db.data.chats[m.from].notification.status.text_welcome = args[0]
-               m.reply(mess.success)
-            }
-            break 
-            case 'settextleft':
-            case 'setleft':{
-               if (!groupAdmins && !isCreator) return m.reply(mess.admin)
-               if (args.length < 1) return m.reply('give me a left text')
-               db.data.chats[m.from].notification.status.text_left = args[0]
-               m.reply(mess.success)
-            }
-            break 
+case 'left': {
+    if (!groupAdmins && !isCreator) return m.reply(mess.admin);
+    if (args.length < 1) return m.reply('enable/disable?');
+    if (args[0] === 'enable') {
+        db.data.chats[m.from].notification.status = true;
+        m.reply(`${command} is enabled`);
+    } else if (args[0] === 'disable') {
+        db.data.chats[m.from].notification.status = false;
+        m.reply(`${command} is disabled`);
+    }
+}
+break;
+case 'settextome':
+case 'setome': {
+    if (!groupAdmins && !isCreator) return m.reply(mess.admin);
+    if (args.length < 1) return m.reply('give me a welcome text');
+    db.data.chats[m.from].notification.text_welcome = args[0];
+    m.reply(mess.success);
+}
+break;
+case 'settextleft':
+case 'setleft': {
+    if (!groupAdmins && !isCreator) return m.reply(mess.admin);
+    if (args.length < 1) return m.reply('give me a left text');
+    db.data.chats[m.from].notification.text_left = args[0];
+    m.reply(mess.success);
+}
+break;
+
 
             
             case 'setnamabot': case 'setnamebot': {
