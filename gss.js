@@ -1456,14 +1456,15 @@ case 'yts': {
 
     if (data.type === 'search' && Array.isArray(data.data)) {
       let replyList = [];
+      
+      replyList.push('\n🔥 _Reply with the following commands to download:_\n   - 🎧 *getaudio <number>* _for Audio_\n   - 📹 *getvideo <number>* _for Video_\n\n_Enjoy the vibes!_ 🎶✨');
       // Build the stylish reply list with search results
       replyList.push('<<≡≡[========☆========]≡≡>>\n\n🔍 *Search Results* 🔍');
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
-        replyList.push(`\n${i + 1}. 🎵 *${result.title}*\n   🔗 [Link to Video ${i + 1}]\n\n   <<≡≡[========☆========]≡≡>>`);
+        replyList.push(`\n${i + 1}. 🎵 *${result.title}*\n   🔗 ${result.url} ${i + 1}]\n\n   <<≡≡[========☆========]≡≡>>`);
       }
-      // Add instructions for using getaudio and getvideo
-      replyList.push('\n🔥 Reply with the following commands to download:\n   - 🎧 *getaudio <number>* for Audio\n   - 📹 *getvideo <number>* for Video\n\nEnjoy the vibes! 🎶✨');
+      
       // Send the stylish reply list with instructions
       await m.reply(replyList.join('\n'));
     } else {
