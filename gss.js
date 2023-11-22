@@ -1459,11 +1459,12 @@ case 'yts': {
       
       replyList.push('\n🔥 _Reply with the following commands to download:_\n   - 🎧 *getaudio <number>* _for Audio_\n   - 📹 *getvideo <number>* _for Video_\n\n_Enjoy the vibes!_ 🎶✨');
       // Build the stylish reply list with search results
-      replyList.push('<<≡≡[========☆========]≡≡>>\n\n🔍 *Search Results* 🔍');
-      for (let i = 0; i < data.data.length; i++) {
-        const result = data.data[i];
-        replyList.push(`\n${i + 1}. 🎵 *${result.title}*\n   🔗 ${result.url} ${i + 1}]\n\n   <<≡≡[========☆========]≡≡>>`);
-      }
+      replyList.push(`🔍 *Search Results From ${text}* 🔍`);
+for (let i = 0; i < data.data.length; i++) {
+  const result = data.data[i];
+  replyList.push(`\n\n\n${i + 1}. 🎵 *${result.title}*\n\n\n   🔗 [Link to Video ${i + 1}](${result.url})\n\n\n  <<≡≡[========☆========]≡≡>>`);
+}
+
       
       // Send the stylish reply list with instructions
       await m.reply(replyList.join('\n'));
