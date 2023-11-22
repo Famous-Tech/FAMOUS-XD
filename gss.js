@@ -1308,7 +1308,7 @@ break;
 
 
 
-case 'ytv':
+case '':
 case 'video':
 case 'ytmp4':
   try {
@@ -1365,7 +1365,7 @@ case 'ytmp4':
         `;
 
         // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
-        await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
+        await gss.sendMessage(m.chat, { image: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
@@ -1377,7 +1377,7 @@ case 'ytmp4':
       m.reply('Unexpected response format.');
     }
   } catch (error) {
-    console.error('Error during ytv:', error);
+    console.error('Error during :', error);
     m.reply('Unexpected error occurred.');
   }
   break;
