@@ -1402,7 +1402,7 @@ case 'yts': {
 
       // Send each result one by one
       for (const formattedResult of formattedResults) {
-        await gss.sendMessage(m.chat, formattedResult, MessageType.text, { quoted: m });
+        await gss.sendMessage(m.chat, formattedResult, { quoted: m });
       }
     } else {
       console.error('Invalid API response:', data);
