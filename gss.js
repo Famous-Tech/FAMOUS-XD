@@ -308,9 +308,15 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
             if (chats) {
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
+                   if (!('notification' in chats)) chats.notification = {}
+            }
             } else global.db.data.chats[m.chat] = {
                 mute: false,
                 antilink: false,
+                notification: {
+                     status: false,
+                     text_left: '',
+                     text_welcome:''
             }
 		
 	    let setting = db.data.settings[botNumber]
@@ -347,6 +353,8 @@ if (!('autobio' in setting)) setting.autobio = false
             scheduled: true,
             timezone: "Asia/kolkata"
         })
+        
+        
 
 
 /*
@@ -404,6 +412,27 @@ if (AUTO_READ_ENABLED && command) {
   gss.readMessages([m.key]);
 }
 }
+
+      //welcome and left
+        if (db.data.chats[from].notification.status) {
+            gss.ev.on('group-participants.update', async (anu) => {
+               try {
+                  let metadata = await gss.groupMetadata(anu.id)
+                  let par = anu.participants
+                  for (let i of par) {
+                     let ppuser = await gss.profilePictureUrl(i, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg')
+                     if (anu.action == 'add') {
+                        await gss.sendMessage(m.chat, {text: db.data.group[from].notification.text_welcome ? db.data.group[from].notification.text_welcome : Styles(`Welcome To ${metadata.subject}`), contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Welcome To ${metadata.subject} | ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false }}})
+                     } else if (anu.action == 'remove') {
+                        await gss.sendMessage(m.chat, {text: db.data.group[from].notification.text_left ? db.data.group[from].notification.text_left : Styles(`Goodbye ${gss.getName(i)}`), contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Goodbye ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false }}})
+                     }
+                  }
+               } catch (err) {
+                  console.log(err)
+               }
+            })
+        }
+        
 
 	    
 	  // Anti Link
@@ -1038,6 +1067,36 @@ case 'linkgroup': case 'linkgc': {
   gss.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\nGroup Link: ${groupMetadata.subject}`, m, { detectLink: true });
 }
 break;
+
+case 'welcome':
+            case 'left': {
+               if (!groupAdmins && !isCreator) return m.reply(mess.admin)
+               if (args.length < 1) return m.reply('enable/disable?')
+               if (args[0] === 'enable') {
+                  db.data.chats[from].notification.status = true
+                  m.reply(`${command} is enable`)
+               } else if (args[0] === 'disable') {
+                  db.data.chats[from].notification.status = false
+                  m.reply(`${command} is disable`)
+               }
+            }
+            break
+            case 'settextwelcome':
+            case 'setwelcome':{
+               if (!groupAdmins && !isCreator) return m.reply(mess.admin)
+               if (args.length < 1) return m.reply('masukkan textnya')
+               db.data.chats[from].notification.status.text_welcome = args[0]
+               m.reply(mess.success)
+            }
+            break 
+            case 'settextleft':
+            case 'setleft':{
+               if (!groupAdmins && !isCreator) return m.reply(mess.admin)
+               if (args.length < 1) return m.reply('masukkan textnya')
+               db.data.chats[from].notification.status.text_left = args[0]
+               m.reply(mess.success)
+            }
+            break 
 
             
             case 'setnamabot': case 'setnamebot': {
