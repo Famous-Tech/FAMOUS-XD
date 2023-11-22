@@ -151,6 +151,8 @@ gss.ev.on("call", async (json) => {
 		}
     })
     
+    
+    /*
     // Group Update
     gss.ev.on('groups.update', async pea => {
     //console.log(pea)
@@ -214,6 +216,7 @@ gss.ev.on("call", async (json) => {
             console.log(err)
         }
     })
+	*/
 	
     // Setting
     gss.decodeJid = (jid) => {
