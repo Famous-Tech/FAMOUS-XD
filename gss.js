@@ -429,9 +429,11 @@ if (db.data.chats[m.from] && db.data.chats[m.from].notification && db.data.chats
             for (let i of par) {
                 let ppuser = await gss.profilePictureUrl(i, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg');
                 if (anu.action == 'add') {
-                    await gss.sendMessage(m.chat, { text: db.data.group[m.from].notification.text_welcome ? db.data.group[m.from].notification.text_welcome : Styles(`welcome To ${metadata.subject}`), contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`welcome To ${metadata.subject} | ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
+                    let welcomeText = db.data.chats[m.from].notification.text_welcome || Styles(`Welcome To ${metadata.subject}`);
+                    await gss.sendMessage(m.chat, { text: welcomeText, contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Welcome To ${metadata.subject} | ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
                 } else if (anu.action == 'remove') {
-                    await gss.sendMessage(m.chat, { text: db.data.group[m.from].notification.text_left ? db.data.group[m.from].notification.text_left : Styles(`Goodbye ${gss.getName(i)}`), contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Goodbye ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
+                    let leftText = db.data.chats[m.from].notification.text_left || Styles(`Goodbye ${gss.getName(i)}`);
+                    await gss.sendMessage(m.chat, { text: leftText, contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Goodbye ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
                 }
             }
         } catch (err) {
@@ -439,7 +441,6 @@ if (db.data.chats[m.from] && db.data.chats[m.from].notification && db.data.chats
         }
     });
 }
-
         
 
 	    
@@ -1096,7 +1097,7 @@ case 'left': {
     }
 }
 break;
-case 'settextome':
+case 'settexwelcome':
 case 'setome': {
     if (!groupAdmins && !isCreator) return m.reply(mess.admin);
     if (args.length < 1) return m.reply('give me a welcome text');
