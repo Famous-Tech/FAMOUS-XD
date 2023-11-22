@@ -2302,7 +2302,7 @@ case 'onlygroup': {
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('onlygroup true/false');
 
-    process.env.ONLYGROUP = text; // Set the environment variable
+    global.onlygroup = text === 'true'; // Update the global variable
     m.reply(mess.success);
 }
 break;
@@ -2311,7 +2311,7 @@ case 'onlypc': {
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('onlypc true/false');
 
-    process.env.ONLYPC = text; // Set the environment variable
+    global.onlypc = text === 'true'; // Update the global variable
     m.reply(mess.success);
 }
 break;
