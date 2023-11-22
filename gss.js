@@ -1397,12 +1397,14 @@ case 'yts': {
     const data = await response.json();
 
     if (data.type === 'search' && Array.isArray(data.data)) {
-      // Send each result one by one
+      let replyList = [];
+      // Build the reply list with search results
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
-        const message = `${i + 1}. ${result.title}\n${result.url}`;
-        await m.reply(message);
+        replyList.push(`${i + 1}. ${result.title}\n${result.url}`);
       }
+      // Send the reply list
+      await m.reply(replyList.join('\n\n'));
     } else {
       console.error('Invalid API response:', data);
       return m.reply('Error retrieving search results.');
