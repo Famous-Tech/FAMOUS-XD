@@ -1104,54 +1104,36 @@ case 'left': {
     }
 }
 break;
-case 'settextome':
-case 'setwelcome':
-  if (!groupAdmins && !isCreator) return m.reply(mess.admin);
-  if (args.length < 1) return m.reply('give me a welcome text');
+case 'settexwelcome':
+case 'setwelcome': {
+    if (!groupAdmins && !isCreator) return m.reply(mess.admin);
+    if (args.length < 1) return m.reply('give me a welcome text');
+    
+    // Check if chats[m.from] is an object, if not, initialize it
+    if (typeof db.data.chats[m.from] !== 'object') db.data.chats[m.from] = {};
 
-  // Define metadata here
-  let metadata;
-  try {
-    metadata = await gss.groupMetadata(m.chat);
-  } catch (error) {
-    console.error('Error fetching group metadata:', error);
-    return m.reply('Error fetching group metadata.');
-  }
+    // Check if notification is an object, if not, initialize it
+    if (!('notification' in db.data.chats[m.from])) db.data.chats[m.from].notification = {};
 
-  // Replace 'groupname' with ${metadata.subject} and 'username' with ${gss.getName(i)}
-  let welcomeText = args.join(' ')
-    .replace(/groupname/g, `${metadata.subject}`)
-    .replace(/username/g, `${gss.getName(i)}`);
-
-  db.data.chats[m.from].notification.text_welcome = welcomeText;
-  m.reply(mess.success);
-  break;
-
-
+    db.data.chats[m.from].notification.text_welcome = args[0];
+    m.reply(mess.success);
+}
+break;
 case 'settextleft':
-case 'setleft':
-  if (!groupAdmins && !isCreator) return m.reply(mess.admin);
-  if (args.length < 1) return m.reply('give me a left text');
+case 'setleft': {
+    if (!groupAdmins && !isCreator) return m.reply(mess.admin);
+    if (args.length < 1) return m.reply('give me a left text');
+    
+    // Check if chats[m.from] is an object, if not, initialize it
+    if (typeof db.data.chats[m.from] !== 'object') db.data.chats[m.from] = {};
 
-  // Define metadata here
-  let metadata;
-  try {
-    metadata = await gss.groupMetadata(m.chat);
-  } catch (error) {
-    console.error('Error fetching group metadata:', error);
-    return m.reply('Error fetching group metadata.');
-  }
+    // Check if notification is an object, if not, initialize it
+    if (!('notification' in db.data.chats[m.from])) db.data.chats[m.from].notification = {};
 
-  // Replace 'groupname' with ${metadata.subject} and 'username' with ${gss.getName(i)}
-  let leftText = args.join(' ')
-    .replace(/groupname/g, `${metadata.subject}`)
-    .replace(/username/g, `${gss.getName(i)}`);
-
-  db.data.chats[m.from].notification.text_left = leftText;
-  m.reply(mess.success);
-  break;
-
-
+    db.data.chats[m.from].notification.text_left = args[0];
+    m.reply(mess.success);
+}
+break;
 
 
 
