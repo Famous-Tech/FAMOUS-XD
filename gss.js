@@ -1109,6 +1109,15 @@ case 'setwelcome':
   if (!groupAdmins && !isCreator) return m.reply(mess.admin);
   if (args.length < 1) return m.reply('give me a welcome text');
 
+  // Define metadata here
+  let metadata;
+  try {
+    metadata = await gss.groupMetadata(m.chat);
+  } catch (error) {
+    console.error('Error fetching group metadata:', error);
+    return m.reply('Error fetching group metadata.');
+  }
+
   // Replace 'groupname' with ${metadata.subject} and 'username' with ${gss.getName(i)}
   let welcomeText = args.join(' ')
     .replace(/groupname/g, `${metadata.subject}`)
@@ -1118,9 +1127,20 @@ case 'setwelcome':
   m.reply(mess.success);
   break;
 
+
+case 'settextleft':
 case 'setleft':
   if (!groupAdmins && !isCreator) return m.reply(mess.admin);
   if (args.length < 1) return m.reply('give me a left text');
+
+  // Define metadata here
+  let metadata;
+  try {
+    metadata = await gss.groupMetadata(m.chat);
+  } catch (error) {
+    console.error('Error fetching group metadata:', error);
+    return m.reply('Error fetching group metadata.');
+  }
 
   // Replace 'groupname' with ${metadata.subject} and 'username' with ${gss.getName(i)}
   let leftText = args.join(' ')
@@ -1130,6 +1150,7 @@ case 'setleft':
   db.data.chats[m.from].notification.text_left = leftText;
   m.reply(mess.success);
   break;
+
 
 
 
