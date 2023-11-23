@@ -420,6 +420,12 @@ if (AUTO_READ_ENABLED && command) {
 }
 }
 
+// Example Styles function
+function Styles(text) {
+    // Implement your styling logic here (replace this with your actual styling logic)
+    return `*${text}*`; // Adding '*' for bold styling
+}
+
 // welcome and left
 if (db.data.chats[m.from] && db.data.chats[m.from].notification && db.data.chats[m.from].notification.status) {
     gss.ev.on('group-participants.update', async (anu) => {
@@ -429,11 +435,9 @@ if (db.data.chats[m.from] && db.data.chats[m.from].notification && db.data.chats
             for (let i of par) {
                 let ppuser = await gss.profilePictureUrl(i, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg');
                 if (anu.action == 'add') {
-                    let welcomeText = db.data.chats[m.from].notification.text_welcome || Styles(`Welcome To ${metadata.subject}`);
-                    await gss.sendMessage(m.chat, { text: welcomeText, contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Welcome To ${metadata.subject} | ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
+                    await gss.sendMessage(m.chat, { text: db.data.chats[m.from].notification.text_welcome ? Styles(db.data.chats[m.from].notification.text_welcome) : Styles(`Welcome to ${metadata.subject}`) });
                 } else if (anu.action == 'remove') {
-                    let leftText = db.data.chats[m.from].notification.text_left || Styles(`Goodbye ${gss.getName(i)}`);
-                    await gss.sendMessage(m.chat, { text: leftText, contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Goodbye ${gss.getName(i)}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
+                    await gss.sendMessage(m.chat, { text: db.data.chats[m.from].notification.text_left ? Styles(db.data.chats[m.from].notification.text_left) : Styles(`Goodbye ${gss.getName(i)}`) });
                 }
             }
         } catch (err) {
@@ -441,6 +445,7 @@ if (db.data.chats[m.from] && db.data.chats[m.from].notification && db.data.chats
         }
     });
 }
+
         
 
 	    
