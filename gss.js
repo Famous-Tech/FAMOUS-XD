@@ -1103,7 +1103,7 @@ case 'left': {
 }
 break;
 case 'settexwelcome':
-case 'setome': {
+case 'setwelcome': {
     if (!groupAdmins && !isCreator) return m.reply(mess.admin);
     if (args.length < 1) return m.reply('give me a welcome text');
     
