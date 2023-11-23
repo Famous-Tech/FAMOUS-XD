@@ -1440,30 +1440,38 @@ case 'ytmp4':
       console.log('Full API Response:', result);
 
       if (result && result.downloadUrl) {
-        // Fetch the video content
-        const videoBufferReq = await fetch(result.downloadUrl);
-        const videoBuffer = await videoBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(videoBuffer);
+        try {
+          // Download the video to a temporary file
+          const tempFilePath = path.join(__dirname, 'tempVideo.mp4');
+          const videoBufferReq = await fetch(result.downloadUrl);
+          const videoBuffer = await videoBufferReq.arrayBuffer();
+          await fs.writeFile(tempFilePath, Buffer.from(videoBuffer));
 
-        // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
-        const thumbnailBufferReq = await fetch(result.thumbnail);
-        const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
+          // Fetch the thumbnail content
+          const thumbnailBufferReq = await fetch(result.thumbnail);
+          const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
 
+          // Stylish caption with markdown formatting and thumbnail
+          const stylishCaptionWithThumbnail = `
+            🌟 *Title:* _${result.title}_
+            👀 *Views:* _${result.views}_
+            ⏱️ *Duration:* _${result.duration}_
+            📅 *Upload Date:* _${result.uploadDate}_
+            📺 *YouTube URL:* ${result.youtubeUrl}
+            📢 *Upload Channel:* _${result.uploadChannel}_
+            
+            🤖 Downloaded by *gss botwa*
+          `;
 
-        // Stylish caption with markdown formatting and thumbnail
-        const stylishCaptionWithThumbnail = `
-          🌟 *Title:* _${result.title}_
-          👀 *Views:* _${result.views}_
-          ⏱️ *Duration:* _${result.duration}_
-          📅 *Upload Date:* _${result.uploadDate}_
-          📺 *YouTube URL:* ${result.youtubeUrl}
-          📢 *Upload Channel:* _${result.uploadChannel}_
-          
-          🤖 Downloaded by *gss botwa*
-        `;
+          // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
+          await gss.sendMessage(m.chat, { video: tempFilePath, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
 
-        // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
-        await gss.sendMessage(m.chat, { image: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
+          // Remove the temporary file after sending
+          await fs.unlink(tempFilePath);
+        } catch (error) {
+          console.error('Error during file operations:', error);
+          m.reply('An error occurred while processing the video.');
+        }
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
@@ -1479,6 +1487,7 @@ case 'ytmp4':
     m.reply('Unexpected error occurred.');
   }
   break;
+
   
 case 'yta': case 'song': case 'ytmp3': {
   try {
