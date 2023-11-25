@@ -2129,6 +2129,50 @@ case 'mediafire': {
     break;
 }
 
+
+case 'toonce':
+            case 'toviewonce': {
+                if (!quoted) return m.reply(`Reply Image/Video`)
+                if (/image/.test(mime)) {
+                    anuan = await gss.downloadAndSaveMediaMessage(quoted)
+                    gss.sendMessage(m.chat, {
+                        image: {
+                            url: anuan
+                        },
+                        caption: mess.success,
+                        fileLength: "999",
+                        viewOnce: true
+                    }, {
+                        quoted: m
+                    })
+                } else if (/video/.test(mime)) {
+                    anuanuan = await gss.downloadAndSaveMediaMessage(quoted)
+                    gss.sendMessage(m.chat, {
+                        video: {
+                            url: anuanuan
+                        },
+                        caption: mess.success,
+                        fileLength: "99999999",
+                        viewOnce: true
+                    }, {
+                        quoted: m
+                    })
+                } else if (/audio/.test(mime)) {
+                   bebasap = await gss.downloadAndSaveMediaMessage(quoted)
+                   gss.sendMessage(m.chat, {
+                     audio: {
+                        url: bebasap
+                     },
+                     mimetype: 'audio/mpeg',
+                     ptt: false,
+                     viewOnce: true
+                   })
+                }
+            }
+            break
+
+
+
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
         throw ` Please send the link of a Facebook video\n\nEXAMPLE :\n *${prefix + command}* https://fb.watch/7B5KBCgdO3`;
