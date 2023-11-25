@@ -42,8 +42,8 @@ global.mess = {
     endLimit: 'ʏᴏᴜʀ ᴅᴀɪʟʏ ʟɪᴍɪᴛ ʜᴀs ᴇxᴘɪʀᴇᴅ, ᴛʜᴇ ʟɪᴍɪᴛ ᴡɪʟʟ ʙᴇ ʀᴇsᴇᴛ ᴇᴠᴇʀʏ 12 ʜᴏᴜʀs',
 };
 global.link = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp'
-global.typemenu = 'v1' // 'v1' => 'v6'
-global.onlygroup = true // onlygroup
+global.typemenu = 'v2' // 'v1' => 'v5'
+global.onlygroup = false // onlygroup
 global.onlypc = false
 global.limitawal = {
     premium: 'Infinity',
