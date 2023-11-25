@@ -219,6 +219,35 @@ gss.ev.on("call", async (json) => {
         console.log('Connected...', update)
     })
 
+async function setBio() {
+    const date = new Date();
+    const options = {
+        timeZone: 'Asia/Kolkata', // Set to India time zone
+        hour12: true,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+    const timeString = date.toLocaleTimeString('en-IN', options);
+    
+    // Calculate uptime in hours, minutes, and seconds (you'll need to adapt this part based on your actual uptime calculation)
+    const uptimeHours = Math.floor(process.uptime() / 3600);
+    const uptimeMinutes = Math.floor((process.uptime() % 3600) / 60);
+    const uptimeSeconds = Math.floor(process.uptime() % 60);
+
+    const status = `🗓 ${timeString} Auto Bio By Gss_Botwa\n`;
+    if (process.env.AUTO_ABOUT || 'true' === 'true')
+    await client.updateProfileStatus(status);
+    return "Done";
+    }
+
+await gss.sendMessage(owner + "@s.whatsapp.net", { text: `*ɢsᴅ ʙᴏᴛᴡᴀ sᴇᴄsᴇssғᴜʟʟʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴛᴏ sᴇʀᴠᴇʀ*`,
+});
+setInterval(setBio, 60000);
+
+}
+
+});
     gss.ev.on('creds.update', saveCreds)
 
     // Add Other
