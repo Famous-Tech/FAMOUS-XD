@@ -1203,7 +1203,7 @@ case 'bc': case 'broadcast': case 'bcall': {
   m.reply(`Sending Broadcast to ${anu.length} Chats\nEstimated Time ${anu.length * 1.5} seconds`);
   for (let yoi of anu) {
     await sleep(1500);
-    gss.sendText(yoi, txt);
+    gss.sendText(yoi, text);
   }
   m.reply('Broadcast Successful');
 }
