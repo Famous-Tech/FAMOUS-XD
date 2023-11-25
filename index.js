@@ -219,6 +219,9 @@ gss.ev.on("call", async (json) => {
         console.log('Connected...', update)
     })
 
+const moment = require('moment-timezone');
+
+
 async function setBio() {
     const date = new Date();
     const options = {
@@ -237,7 +240,7 @@ async function setBio() {
 
     const status = `🗓 ${timeString} Auto Bio By Gss_Botwa\n`;
     if (process.env.AUTO_ABOUT || 'true' === 'true')
-    await client.updateProfileStatus(status);
+    await gss.updateProfileStatus(status);
     return "Done";
     }
 
