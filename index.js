@@ -218,7 +218,7 @@ gss.ev.on("call", async (json) => {
         }
         console.log('Connected...', update)
     })
-
+/*
 const moment = require('moment-timezone');
 
 
@@ -251,6 +251,7 @@ setInterval(setBio, 60000);
 }
 
 });
+*/
     gss.ev.on('creds.update', saveCreds)
 
     // Add Other
