@@ -47,7 +47,6 @@ let PUBLIC_MODE = false; // added
 let ANTICALL_MODE = false; // added
 
 let akinator = global.db.data.game.akinator = []
- let limitUser = isPremium ? 1000 : 5
 
 let props;
 const reportedMessages = {};
