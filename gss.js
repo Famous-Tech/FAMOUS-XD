@@ -36,6 +36,16 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 // read database
+const {
+    addPremiumUser,
+    getPremiumExpired,
+    getPremiumPosition,
+    expiredPremiumCheck,
+    checkPremiumUser,
+    getAllPremiumUser,
+} = require('./lib/premiun');
+
+
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
  const isPremium = isCreator || checkPremiumUser(m.sender, premium);
@@ -96,6 +106,13 @@ const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
  
 // premium database
 if (!isPremium) user.premium = false
+} else global.db.data.users[sender] = {
+               title: `${isPremium ? 'Premium' : 'User'}`,
+               nick: gss.getName(sender),
+               premium: `${isPremium ? 'true' : 'false'}`,
+               limit: limitUser,
+               totalLimit: 0
+            }
 	
 let format = sizeFormatter({ 
      std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC' 
