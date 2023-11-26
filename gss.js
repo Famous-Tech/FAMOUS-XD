@@ -2131,11 +2131,18 @@ case 'mediafire': {
 
 
 case "rvo": {
-                if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
-                quoted.msg.viewOnce = false
-                await gss.sendMessage(m.from, { forward: quoted }, { quoted: m })
-            }
-            break
+    if (!quoted || !quoted.msg || !quoted.msg.viewOnce) {
+        return m.reply(`Reply view once with command ${prefix + command}`);
+    }
+
+    // Reset viewOnce flag
+    quoted.msg.viewOnce = false;
+
+    // Forward the view once message
+    await gss.sendMessage(m.from, { forward: quoted }, { quoted: m });
+}
+break;
+
 
 
 
