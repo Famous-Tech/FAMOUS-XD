@@ -2923,7 +2923,6 @@ case 'tempmail': case 'mail': {
 case 'infobot':
     tod = `
 ╭━🔥──━─◈─━🔥─━╮
-│ Hai ${pushname}
 │🔖Bot Name : ${botname}
 │🔖Owner Name: ${ownername}
 │🔖Owner Number : ${owner}
