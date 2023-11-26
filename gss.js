@@ -2887,6 +2887,52 @@ case 'runtime': case 'alive':
                     quoted: m
                 })
                 break
+                
+case 'addprem':
+                if (!isCreator) return m.reply(mess.owner)
+                if (args.length < 2)
+                    return m.reply(`Usage:\n*#addprem* @time tag\n*#addprem* time number\n\nExample: #addprem @tag 30d`);
+                if (m.mentionedJid.length !== 0) {
+                    for (let i = 0; i < m.mentionedJid.length; i++) {
+                        addPremiumUser(m.mentionedJid[0], args[1], premium);
+                    }
+                    m.reply("Success Premium")
+                } else {
+                    addPremiumUser(args[0] + "@s.whatsapp.net", args[1], premium);
+                    m.reply("Success Via Number")
+                }
+            break
+            case 'delprem':
+                if (!isCreator) return m.reply(mess.owner)
+                if (args.length < 1) return m.reply(`Usage :\n*#delprem* @tag\n*#delprem* number`);
+                if (m.mentionedJid.length !== 0) {
+                    for (let i = 0; i < m.mentionedJid.length; i++) {
+                        premium.splice(getPremiumPosition(m.mentionedJid[i], premium), 1);
+                        fs.writeFileSync("./src/data/role/premium.json", JSON.stringify(premium));
+                    }
+                    m.reply("Success Delete")
+                } else {
+                    premium.splice(getPremiumPosition(args[0] + "@s.whatsapp.net", premium), 1);
+                    fs.writeFileSync("./src/data/premium.json", JSON.stringify(premium));
+                    m.reply("Success Via Number")
+                }
+            break
+            case 'listprem': {
+                if (!isCreator) return m.reply(mess.owner)
+                let data = require("./src/data/premium.json")
+                let txt = `*------「 LIST PREMIUM 」------*\n\n`
+                for (let i of data) {
+                    txt += `Nomer : ${i.id}\n`
+                    txt += `Expired : ${i.expired} Second\n`
+                }
+                gss.sendMessage(m.chat, {
+                    text: txt,
+                    mentions: i
+                }, {
+                    quoted: m
+                })
+            }
+            break
           
           
 case 'tempmail':
