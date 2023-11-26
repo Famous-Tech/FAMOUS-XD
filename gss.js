@@ -2932,7 +2932,7 @@ case 'infobot':
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
 
-    await gss.sendMessage(m.from, { text: tod, jpegThumbnail: img }, { quoted: m });
+    await gss.sendMessage(m.chat, { text: tod, jpegThumbnail: img }, { quoted: m });
     break;
 
 
