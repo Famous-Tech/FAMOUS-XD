@@ -921,7 +921,7 @@ case 'sc':
 
  case 'setimgmenu':
             {
-                if (!isCreator) return m.reply(mess.owner)
+                if (!ireator) return m.reply(mess.owner)
                 let delb = await gss.downloadAndSaveMediaMessage(quoted)
                 await fsx.copy(delb, './gss.jpg')
                 fs.unlinkSync(delb)
@@ -2868,70 +2868,25 @@ function convertToFontStyle(text, style) {
         }
         break;
 
-case 'runtime':
-case 'alive': {
-  const reactionMessage = {
-            react: {
-                text: "🕐",
-                key: m.key
-            }
-        }
-        await gss.sendMessage(m.chat, reactionMessage);
-        const successReactionMessage = {
-            react: {
-                text: "👀", 
-                key: m.key
-            }
-        }
-        await gss.sendMessage(m.chat, successReactionMessage);
-  await m.reply(uptimeMessage);
-}
-break;
-
-case "sc":
-  case 'git':
-        case "script":
-        case "scbot":
-        case "repo":
-           //m.reply("https://github.com/sid238/Gss_Botwa");
-          let api = "https://api.github.com/repos/gssbotwa/Gssbotwa2";
-          axios.get(api).then(function (response) {
-            github = response.data;
-            let txt = `  *B O T  -  S C R I P T*\n\n`;
-            txt += `◦  *Name* : *${github.name}*\n`;
-            txt += `◦  *Visitor* : ${github.watchers_count}\n`;
-            txt += `◦  *Size* : ${(github.size / 1024).toFixed(2)} MB\n`;
-            txt += `◦  *Updated* : ${moment(github.updated_at).format(
-              "DD/MM/YY"
-            )}\n`;
-            txt += `◦  *Url* : ${github.html_url}\n\n`;
-            txt += `${github.forks_count} Forks · ${github.stargazers_count} Stars · ${github.open_issues_count} Issues\n\n`;
-            txt += "*Gss_Botwa*";
-            gss.relayMessage(
-              m.chat,
-              {
-                requestPaymentMessage: {
-                  currencyCodeIso4217: "INR",
-                  amount1000: "99999",
-                  requestFrom: "0@s.whatsapp.net",
-                  noteMessage: {
-                    extendedTextMessage: {
-                      text: txt,
-                      contextInfo: {
-                        mentionedJid: [m.sender],
+case 'runtime': case 'alive':
+                let pinga = ` ${uptimeMessage}`
+                gss.sendMessage(m.chat, {
+                    text: pinga,
+                    contextInfo: {
                         externalAdReply: {
-                          showAdAttribution: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              {}
-            );
-          });
-          break; 
-          
+                            showAdAttribution: true,
+                            title: 'RUNTIME',
+                            body: `FORGET DONATE`,
+                            thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
+                            sourceUrl: global.link,
+                            mediaType: 1,
+                            renderLargerThumbnail: true
+                        }
+                    }
+                }, {
+                    quoted: m
+                })
+                break
           
           
 case 'tempmail':
