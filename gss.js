@@ -2920,6 +2920,22 @@ case 'tempmail': case 'mail': {
   break;
 }
 
+case 'infobot':
+img =  fs.readFileSync('./gss.jpg')
+tod = `
+╭━🔥─BOT INFO─━─🔥━╮
+ |Hai ${pushname} 👋 ${tampilUcapan}
+│🔖Bot Name : ${botname}
+│🔖Owner Name: ${ownername}
+│🔖Owner Number : ${owner}
+│🔖Prefix :「 Multi Prefix 」
+│🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
+╰━━🔥─━─◈─━🔥─━╯`
+but = [
+{ buttonId: `${prefix}owner`, buttonText: { displayText: 'OWNERᏪ' }, type: 1 }
+]
+ sendButLocation(from, tod, faketeks, img, but) 
+break
 
 case 'checkmail': {
   if (!text) {
