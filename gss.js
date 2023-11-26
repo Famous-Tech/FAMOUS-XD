@@ -35,6 +35,16 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
+
+const {
+    addPremiumUser,
+    getPremiumExpired,
+    getPremiumPosition,
+    expiredPremiumCheck,
+    checkPremiumUser,
+    getAllPremiumUser,
+} = require('./lib/premiun');
+
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
