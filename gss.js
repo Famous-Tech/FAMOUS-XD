@@ -2880,7 +2880,7 @@ case 'runtime': case 'alive':
                             thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
                             sourceUrl: global.link,
                             mediaType: 1,
-                            renderLargerThumbnail: true
+                            renderLargerThumbnail: false
                         }
                     }
                 }, {
