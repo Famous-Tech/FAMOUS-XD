@@ -2921,7 +2921,7 @@ case 'tempmail': case 'mail': {
 }
 
 case 'infobot':
-    img = fs.readFileSync('./gss.jpg');
+    
     tod = `
 ╭━🔥──━─🔥━╮
  |Hai ${pushname}
@@ -2932,7 +2932,7 @@ case 'infobot':
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
 
-    await gss.sendMessage(m.chat, { text: tod, jpegThumbnail: img }, { quoted: m });
+    await m.reply(tod);
     break;
 
 
