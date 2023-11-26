@@ -2900,7 +2900,7 @@ case 'runtime': case 'alive':
 case 'addprem':
                 if (!isCreator) return m.reply(mess.owner)
                 if (args.length < 2)
-                    return m.reply(`Usage:\n*#addprem* @time tag\n*#addprem* time number\n\nExample: #addprem @tag 30d`);
+                    return m.reply(`Usage:\n*#addprem* @tag tag\n*#addprem* tag time\n\nExample: #addprem @tag 30d`);
                 if (m.mentionedJid.length !== 0) {
                     for (let i = 0; i < m.mentionedJid.length; i++) {
                         addPremiumUser(m.mentionedJid[0], args[1], premium);
@@ -2927,21 +2927,19 @@ case 'addprem':
                 }
             break
             case 'listprem': {
-                if (!isCreator) return m.reply(mess.owner)
-                let data = require("./src/data/premium.json")
-                let txt = `*------「 LIST PREMIUM 」------*\n\n`
-                for (let i of data) {
-                    txt += `Nomer : ${i.id}\n`
-                    txt += `Expired : ${i.expired} Second\n`
-                }
-                gss.sendMessage(m.chat, {
-                    text: txt,
-                    mentions: i
-                }, {
-                    quoted: m
-                })
-            }
-            break
+    if (!isCreator) return m.reply(mess.owner);
+    let data = require("./src/data/premium.json");
+    let txt = `*------「 LIST PREMIUM 」------*\n\n`;
+    
+    for (let premiumData of data) {
+        txt += `Nomer : ${premiumData.id}\n`;
+        txt += `Expired : ${premiumData.expired} Second\n\n`;
+    }
+
+    gss.sendMessage(m.chat, { text: txt }, { quoted: m });
+}
+break;
+
           
           
 case 'tempmail':
