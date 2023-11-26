@@ -60,7 +60,6 @@ let PUBLIC_MODE = false; // added
 let ANTICALL_MODE = false; // added
 
 let akinator = global.db.data.game.akinator = []
- let limitUser = isPremium ? 1000 : 5
 
 let props;
 const reportedMessages = {};
@@ -307,7 +306,7 @@ const reactionMessage = {
 async function useLimit(sender, amount) {
             db.data.users[sender].limit -= amount
             db.data.users[sender].totalLimit += amount
-            newReply(`Your limit has been used ${amount} out of ${db.data.users[sender].limit} limits`)
+            m.reply(`Your limit has been used ${amount} out of ${db.data.users[sender].limit} limits`)
         async function resetLimit() {
             let users = Object.keys(global.db.data.users)
             let Limitnya = isPremium ? limit.prem : limit.free
