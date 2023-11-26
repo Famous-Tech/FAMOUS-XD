@@ -92,10 +92,6 @@ const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
           const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
-// premium database
-if (!isPremium) user.premium = false
-const isPremium = isCreator || checkPremiumUser(m.sender, premium);
-  expiredPremiumCheck(gss, m, premium);
 	
 let format = sizeFormatter({ 
      std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC' 
