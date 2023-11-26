@@ -36,7 +36,21 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 // read database
+const {
+    addPremiumUser,
+    getPremiumExpired,
+    getPremiumPosition,
+    expiredPremiumCheck,
+    checkPremiumUser,
+    getAllPremiumUser,
+} = require('./lib/premiun');
+
+
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
+let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
+ const isPremium = isCreator || checkPremiumUser(m.sender, premium);
+  expiredPremiumCheck(gss, m, premium);
+   let limitUser = isPremium ? 1000 : 5
 
 // Initialize default values
 let AUTO_READ = false;
@@ -46,6 +60,7 @@ let PUBLIC_MODE = false; // added
 let ANTICALL_MODE = false; // added
 
 let akinator = global.db.data.game.akinator = []
+ let limitUser = isPremium ? 1000 : 5
 
 let props;
 const reportedMessages = {};
@@ -90,8 +105,17 @@ const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
           const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
- 
-	
+// premium database
+if (!isPremium) user.premium = false
+if (!('totalLimit' in user)) user.totalLimit = 0
+                if (!isNumber(user.limit)) user.limit = limitUser
+} else global.db.data.users[sender] = {
+               title: `${isPremium ? 'Premium' : 'User'}`,
+               nick: gss.getName(sender),
+               premium: `${isPremium ? 'true' : 'false'}`,
+               limit: limitUser,
+               totalLimit: 0
+            }
 	
 let format = sizeFormatter({ 
      std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC' 
@@ -279,6 +303,19 @@ const reactionMessage = {
    ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```' }
   `);
 }
+
+async function useLimit(sender, amount) {
+            db.data.users[sender].limit -= amount
+            db.data.users[sender].totalLimit += amount
+            newReply(`Your limit has been used ${amount} out of ${db.data.users[sender].limit} limits`)
+        async function resetLimit() {
+            let users = Object.keys(global.db.data.users)
+            let Limitnya = isPremium ? limit.prem : limit.free
+            for (let i of users) {
+               db.data.users[i].limit = Limitnya
+            }
+            gss.sendText('120363167338947238@g.us', { text: `Reset Limit`})
+
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
