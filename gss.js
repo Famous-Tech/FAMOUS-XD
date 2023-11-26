@@ -2923,7 +2923,7 @@ case 'tempmail': case 'mail': {
 case 'infobot':
     img = fs.readFileSync('./gss.jpg');
     tod = `
-╭━🔥─BOT INFO─━─🔥━╮
+╭━🔥──━─🔥━╮
  |Hai ${pushname}
 │🔖Bot Name : ${botname}
 │🔖Owner Name: ${ownername}
@@ -2932,7 +2932,7 @@ case 'infobot':
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
 
-    await gss.sendMessage(from, { text: tod, jpegThumbnail: img }, { quoted: m });
+    await gss.sendMessage(m.from, { text: tod, jpegThumbnail: img }, { quoted: m });
     break;
 
 
