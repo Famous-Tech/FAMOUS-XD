@@ -2921,17 +2921,15 @@ case 'tempmail': case 'mail': {
 }
 
 case 'infobot':
-    
     tod = `
-╭━🔥──━─🔥━╮
- |Hai ${pushname}
+╭━🔥──━─◈─━🔥─━╮
+│ Hai ${pushname}
 │🔖Bot Name : ${botname}
 │🔖Owner Name: ${ownername}
 │🔖Owner Number : ${owner}
 │🔖Prefix :「 Multi Prefix 」
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
-
     await m.reply(tod);
     break;
 
