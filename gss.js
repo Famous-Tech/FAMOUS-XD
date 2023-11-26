@@ -105,16 +105,23 @@ const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
  
  
 // premium database
-if (!isPremium) user.premium = false
-if (!('totalLimit' in user)) user.totalLimit = 0
-                if (!isNumber(user.limit)) user.limit = limitUser
-} else global.db.data.users[sender] = {
-               title: `${isPremium ? 'Premium' : 'User'}`,
-               nick: gss.getName(sender),
-               premium: `${isPremium ? 'true' : 'false'}`,
-               limit: limitUser,
-               totalLimit: 0
-            }
+if (db.data.users[sender]) {
+    const user = db.data.users[sender];
+    user.title = isPremium ? 'Premium' : 'User';
+    user.nick = gss.getName(sender);
+    user.premium = isPremium;
+    user.limit = isNumber(user.limit) ? user.limit : limitUser;
+    user.totalLimit = isNumber(user.totalLimit) ? user.totalLimit : 0;
+} else {
+    global.db.data.users[sender] = {
+        title: isPremium ? 'Premium' : 'User',
+        nick: gss.getName(sender),
+        premium: isPremium,
+        limit: limitUser,
+        totalLimit: 0
+    };
+}
+
 	
 let format = sizeFormatter({ 
      std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC' 
