@@ -2153,7 +2153,27 @@ case "rvo": {
 break;
 
 
-
+case 'buypremium':
+            case 'premiumuser': {
+                let teks = `Hi ${pushname}👋\n Want to Buy Premium? Just chat with the owner😉`
+                await gss.sendMessage(m.chat, {
+                    text: teks,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: false,
+                            title: 'BUY PREMIUM',
+                            body: `15k / MONTH`,
+                            thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
+                            sourceUrl: global.link,
+                            mediaType: 1,
+                            renderLargerThumbnail: false
+                        }
+                    }
+                }, {
+                    quoted: m
+                })
+            }
+            break
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
