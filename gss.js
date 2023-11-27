@@ -3251,7 +3251,7 @@ case 'allmenu': {
     
 *ʟɪᴍɪᴛ:* ${a.limit}
 *ʀᴏʟᴇ:* ${isPremium ? 'Premium' : 'Freemium'}
-*ᴛɪᴛʟᴇ:* ${a.title ? a.title : '-'}\N
+*ᴛɪᴛʟᴇ:* ${a.title ? a.title : '-'}\n
 
 *ᴛᴏᴛᴀʟᴜsᴇʀ:* ${Object.keys(global.db.data.users).length} ᴜsᴇʀs
 *ᴛᴏᴛᴀʟᴄʜᴀᴛ:* ${Object.keys(global.db.data.chats).length} ɢʀᴏᴜᴘ/ᴄʜᴀᴛ
