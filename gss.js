@@ -445,10 +445,10 @@ if (db.data.chats[m.from] && db.data.chats[m.from].notification && db.data.chats
                 let ppuser = await gss.profilePictureUrl(i, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg');
                 if (anu.action == 'add') {
                     let welcomeText = db.data.chats[m.from].notification.text_welcome || Styles(`Welcome To ${metadata.subject}`);
-                    await gss.sendMessage(m.chat, { text: welcomeText, contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Welcome To ${metadata.subject}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
+                    await gss.sendMessage(m.chat, { text: welcomeText, contextInfo: { externalAdReply: { showAdAttribution: false, title: Styles(`Welcome To ${metadata.subject}`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
                 } else if (anu.action == 'remove') {
                     let leftText = db.data.chats[m.from].notification.text_left || Styles(`Goodbye ${gss.getName(i)}`);
-                    await gss.sendMessage(m.chat, { text: leftText, contextInfo: { externalAdReply: { showAdAttribution: true, title: Styles(`Goodbye`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
+                    await gss.sendMessage(m.chat, { text: leftText, contextInfo: { externalAdReply: { showAdAttribution: false, title: Styles(`Goodbye`), body: '', thumbnailUrl: 'https://telegra.ph/file/4a38ee1a1214456282f78.jpg', sourceUrl: global.link, mediaType: 1, renderLargerThumbnail: false } } });
                 }
             }
         } catch (err) {
@@ -913,7 +913,7 @@ case 'sc':
                     text: uy,
                     contextInfo: {
                         externalAdReply: {
-                            showAdAttribution: true,
+                            showAdAttribution: false,
                             title: 'Script Free',
                             body: `SCRIPT BOT ${botname}`,
                             thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
@@ -2903,7 +2903,7 @@ case 'runtime': case 'alive':
                     text: pinga,
                     contextInfo: {
                         externalAdReply: {
-                            showAdAttribution: true,
+                            showAdAttribution: false,
                             title: 'RUNTIME',
                             body: `FORGET DONATE`,
                             thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
@@ -3399,7 +3399,7 @@ ${readmore}
         caption: introText,
         contextInfo: {
             externalAdReply: {
-                showAdAttribution: true,
+                showAdAttribution: false,
                 title: botname,
                 sourceUrl: global.link,
                 body: `Bot Created By ${global.owner}`
@@ -3413,7 +3413,7 @@ ${readmore}
         text: introText,
         contextInfo: {
             externalAdReply: {
-                showAdAttribution: true,
+                showAdAttribution: false,
                 title: botname,
                 sourceUrl: global.link,
                 body: `Bot Created By ${global.owner}`
@@ -3451,7 +3451,7 @@ ${readmore}
                 sourceUrl: global.link,
                 contextInfo: {
                     externalAdReply: {
-                        showAdAttribution: true
+                        showAdAttribution: false
                             }
                         }
                     }
