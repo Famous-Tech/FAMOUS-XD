@@ -888,16 +888,45 @@ case 'toqr': {
             }
             break
 
-case 'setppgroup': case 'setppgrup': case 'setppgc': {
-  if (!m.isGroup) throw mess.group;
-  if (!isAdmins) throw mess.admin;
-  if (!/image/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
-  if (/webp/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
-  let media = await gss.downloadAndSaveMediaMessage(qmsg);
-  await gss.updateProfilePicture(m.chat, { url: media }).catch((err) => fs.unlinkSync(media));
-  m.reply(mess.success);
-}
-break;
+case 'setppgroup':
+            case 'setppgrup':
+            case 'setppgc':
+                if (!m.isGroup) return newReply(mess.group)
+                if (!isAdmins) return newReply(mess.admin)
+                if (!isBotAdmins) return newReply(mess.botAdmin)
+                if (!quoted) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
+                if (!/image/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
+                if (/webp/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
+                var medis = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
+                if (args[0] == 'full') {
+                    var {
+                        img
+                    } = await generateProfilePicture(medis)
+                    await gss.query({
+                        tag: 'iq',
+                        attrs: {
+                            to: m.chat,
+                            type: 'set',
+                            xmlns: 'w:profile:picture'
+                        },
+                        content: [{
+                            tag: 'picture',
+                            attrs: {
+                                type: 'image'
+                            },
+                            content: img
+                        }]
+                    })
+                    fs.unlinkSync(medis)
+                    newReply(mess.done)
+                } else {
+                    var memeg = await gss.updateProfilePicture(m.chat, {
+                        url: medis
+                    })
+                    fs.unlinkSync(medis)
+                    newReply(mess.done)
+                }
+                break
 
 case 'sc':
             case 'script':
