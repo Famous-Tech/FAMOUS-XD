@@ -891,7 +891,28 @@ case 'setppfull': case 'setfullpp':
     m.reply(mess.success);
     break;
     
-    
+case 'toqr': {
+                if (!q) return m.reply(' Please include link or text!')
+                const QrCode = require('qrcode-reader')
+                const qrcode = require('qrcode')
+                let qyuer = await qrcode.toDataURL(q, {
+                    scale: 35
+                })
+                let data = new Buffer.from(qyuer.replace('data:image/png;base64,', ''), 'base64')
+                let buff = getRandom('.jpg')
+                await fs.writeFileSync('./' + buff, data)
+                let medi = fs.readFileSync('./' + buff)
+                await gss.sendMessage(from, {
+                    image: medi,
+                    caption: mess.success
+                }, {
+                    quoted: m
+                })
+                setTimeout(() => {
+                    fs.unlinkSync(buff)
+                }, 10000)
+            }
+            break
 
 case 'setppgroup': case 'setppgrup': case 'setppgc': {
   if (!m.isGroup) throw mess.group;
