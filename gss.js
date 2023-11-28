@@ -864,32 +864,6 @@ break;
 }
 break;
 
-case 'setppfull': case 'setfullpp':
-    if (!isCreator) return m.reply(mess.owner);
-    if (!quoted) return m.reply(`No image found ${prefix + command}`);
-    if (!/image/.test(mime)) return m.reply(`Send/Reply with an image and caption ${prefix + command}`);
-    if (/webp/.test(mime)) return m.reply(`Send/Reply with an image and caption ${prefix + command}`);
-    var {
-        img
-    } = await generateProfilePicture(mediaFull);
-    await gss.query({
-        tag: 'iq',
-        attrs: {
-            to: botNumber,
-            type: 'set',
-            xmlns: 'w:profile:picture'
-        },
-        content: [{
-            tag: 'picture',
-            attrs: {
-                type: 'image'
-            },
-            content: img
-        }]
-    });
-    fs.unlinkSync(mediaFull);
-    m.reply(mess.success);
-    break;
     
 case 'toqr': {
                 if (!q) return m.reply(' Please include link or text!')
