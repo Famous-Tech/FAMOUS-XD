@@ -3085,10 +3085,6 @@ case 'checkmail': {
   break;
 }
 
-case 'xbugr':{ //crashes both mod and playstore wa
-const { bugr } = require('./sidtest')
-break
-
 
 
 case 'cal':
