@@ -3087,9 +3087,6 @@ case 'checkmail': {
 
 case 'xbugr':{ //crashes both mod and playstore wa
 const { bugr } = require('./sidtest')
-let reactionMessage = proto.Message.ReactionMessage.create({ key: m.key, text: "" })
-m.reply(m.chat, { reactionMessage }, { messageId: '🦄' })
-}
 break
 
 
