@@ -918,13 +918,13 @@ case 'setppgroup':
                         }]
                     })
                     fs.unlinkSync(medis)
-                    newReply(mess.done)
+                    m.reply(mess.success)
                 } else {
                     var memeg = await gss.updateProfilePicture(m.chat, {
                         url: medis
                     })
                     fs.unlinkSync(medis)
-                    newReply(mess.done)
+                    m.reply(mess.success)
                 }
                 break
 
