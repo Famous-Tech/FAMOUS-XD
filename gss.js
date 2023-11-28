@@ -902,7 +902,7 @@ case 'toqr': {
                 let buff = getRandom('.jpg')
                 await fs.writeFileSync('./' + buff, data)
                 let medi = fs.readFileSync('./' + buff)
-                await gss.sendMessage(m.from, {
+                await gss.sendMessage(m.chat, {
                     image: medi,
                     caption: mess.success
                 }, {
