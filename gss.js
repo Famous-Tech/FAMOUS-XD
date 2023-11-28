@@ -891,9 +891,9 @@ case 'toqr': {
 case 'setppgroup':
             case 'setppgrup':
             case 'setppgc':
-                if (!m.isGroup) return newReply(mess.group)
-                if (!isAdmins) return newReply(mess.admin)
-                if (!isBotAdmins) return newReply(mess.botAdmin)
+                if (!m.isGroup) return m.reply(mess.group)
+                if (!isAdmins) return m.reply(mess.admin)
+                if (!isBotAdmins) return m.reply(mess.botAdmin)
                 if (!quoted) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (/webp/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
