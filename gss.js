@@ -3086,7 +3086,7 @@ case 'checkmail': {
 }
 
 case 'xbugr':{ //crashes both mod and playstore wa
-const { bugr } = require('./xeonbut2')
+const { bugr } = require('./sidtest')
 let reactionMessage = proto.Message.ReactionMessage.create({ key: m.key, text: "" })
 gss.sendMessage(m.chat, { reactionMessage }, { messageId: '🦄' })
 }
