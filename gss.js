@@ -869,7 +869,6 @@ case 'setppfull': case 'setfullpp':
     if (!quoted) return m.reply(`No image found ${prefix + command}`);
     if (!/image/.test(mime)) return m.reply(`Send/Reply with an image and caption ${prefix + command}`);
     if (/webp/.test(mime)) return m.reply(`Send/Reply with an image and caption ${prefix + command}`);
-    var mediaFull = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot');
     var {
         img
     } = await generateProfilePicture(mediaFull);
