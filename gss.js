@@ -1895,6 +1895,11 @@ case "xnxxdl": {
             const tempFolder = 'tmp'; // Specify your temporary folder
             const tempVideoPath = path.join(tempFolder, `xnxxtempvideo_${Date.now()}.mp4`);
 
+            // Ensure the temporary folder exists
+            if (!fs.existsSync(tempFolder)) {
+                fs.mkdirSync(tempFolder);
+            }
+
             // Download the video using axios
             const response = await axios({
                 method: 'get',
@@ -1940,6 +1945,7 @@ case "xnxxdl": {
     }
 }
 break;
+
 
 
 
