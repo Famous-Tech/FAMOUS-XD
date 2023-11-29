@@ -36,6 +36,9 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 
+const API_BASE_URL = 'https://api.xfarr.com/api/download/apk';
+const API_KEY = '8sXSeFyb7T';
+
 const {
     addPremiumUser,
     getPremiumExpired,
@@ -2099,6 +2102,48 @@ if (!text) {
 }
 break;
 
+
+case 'playstore':
+  if (!isCreator) throw mess.owner;
+  if (!args[0]) throw '*Please provide the app name to search on Play Store.*';
+
+  let playstoreQuery = args.join(' ');
+
+  try {
+    // Assuming your API requires the API key as a query parameter
+    const apiResponse = await fetch(`${API_BASE_URL}?apikey=${API_KEY}&appName=${encodeURIComponent(playstoreQuery)}`);
+    const apiResult = await apiResponse.json();
+
+    if (apiResult && apiResult.status === 200 && apiResult.result) {
+      const appDetails = apiResult.result;
+
+      let opt = {
+        contextInfo: {
+          externalAdReply: {
+            title: appDetails.name,
+            body: appDetails.name, // You might want to change this to provide more information
+            thumbnail: appDetails.icon,
+            sourceUrl: appDetails.website || appDetails.store.appearance.description, // Adjust based on your preference
+          },
+        },
+      };
+
+      let response =
+        `*🔍 Result:* ${appDetails.name}
+        *✍️ Developer:* ${appDetails.developer.name}
+        *💸 Size:* ${appDetails.size}
+        *📈 Rating:* ${appDetails.age.rating}
+        *⛓️ Link:* ${appDetails.website || appDetails.store.appearance.description}`; // Adjust based on your preference
+
+      m.reply(response, null, opt);
+    } else {
+      m.reply('*App not found on the API.*');
+    }
+  } catch (error) {
+    console.error(error);
+    m.reply('*Error fetching app details from the API.*');
+  }
+  break;
 
 
 case 'mediafire': {
