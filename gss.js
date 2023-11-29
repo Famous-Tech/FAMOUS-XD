@@ -1883,73 +1883,17 @@ case 'truecaller':
 
 
 case "xnxxdl": {
-    if (!text) return m.reply(`Enter Url`);
-
-    try {
-        const fg = require('api-dylux');
-        let xn = await fg.xnxxdl(text);
-
-        console.log('XNXX API Response:', xn);
-
-        if (xn && xn.title && xn.url_dl) {
-            const tempFolder = 'tmp'; // Specify your temporary folder
-            const tempVideoPath = path.join(tempFolder, `xnxxtempvideo_${Date.now()}.mp4`);
-
-            // Ensure the temporary folder exists
-            if (!fs.existsSync(tempFolder)) {
-                fs.mkdirSync(tempFolder);
-            }
-
-            // Download the video using axios
-            const response = await axios({
-                method: 'get',
-                url: xn.url_dl,
-                responseType: 'stream',
-            });
-
-            const writer = fs.createWriteStream(tempVideoPath);
-            response.data.pipe(writer);
-
-            // Wait for the download to finish
-            await new Promise((resolve, reject) => {
-                writer.on('finish', resolve);
-                writer.on('error', reject);
-            });
-
-            const caption = `≡  *XNXX DL*
-            
-▢ *📌Title*: ${xn.title || 'Not available'}
-▢ *⌚Duration*: ${xn.duration || 'Not available'}
-▢ *🎞️Quality*: ${xn.quality || 'Not available'}`;
-
-            const videoMessage = {
-                video: {
-                    file: fs.readFileSync(tempVideoPath),
-                    filename: 'xnxxtempvideo.mp4',
-                    caption: caption
-                }
-            };
-
-            // Send the video message
-            await gss.sendMessage(m.chat, videoMessage, { quoted: m });
-
-            // Delete the temporary video file after sending
-            fs.unlinkSync(tempVideoPath);
-        } else {
-            console.error('Unexpected response from the XNXX API:', xn);
-            m.reply('Error: Unexpected response from the XNXX API');
-        }
-    } catch (error) {
-        console.error('Error in xnxxdl:', error);
-        m.reply('Error: Something went wrong while fetching XNXX details');
-    }
+	if (!text) return m.reply(`Enter Url`)
+        if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`)
+        const fg = require('api-dylux')
+            let xn = await fg.xnxxdl(text)
+gss.sendMessage(m.chat, { caption: `≡  *XNXX DL*
+        
+▢ *📌Title*: ${xn.title}
+▢ *⌚Duration:* ${xn.duration}
+▢ *🎞️Quality:* ${xn.quality}`, video: {url: xn.files.high} }, { quoted: m })
 }
-break;
-
-
-
-
-
+break
 
 
 case 'xnxxsearch': {
