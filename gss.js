@@ -1881,7 +1881,6 @@ case 'truecaller':
 
 case "xnxxdl": {
     if (!text) return m.reply(`Enter Url`);
-    if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`);
     
     try {
         const fg = require('api-dylux');
