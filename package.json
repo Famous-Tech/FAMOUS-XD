@@ -42,6 +42,7 @@
     "g-i-s": "^2.1.6",
     "gm": "^1.25.0",
     "google-it": "^1.6.3",
+    "google-play-scraper": "^10.0.0",
     "google-tts-api": "^0.0.6",
     "googleapis": "^127.0.0",
     "got": "^11.8.3",
