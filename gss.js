@@ -1885,16 +1885,18 @@ case "xnxxdl": {
     
     try {
         const fg = require('api-dylux');
-        let res = await fg.xnxxdl(text);
+        let xn = await fg.xnxxdl(text);
 
-        if (res && res.result) {
+        console.log('XNXX API Response:', xn);
+
+        if (xn && xn.result) {
             gss.sendMessage(m.chat, {
                 caption: `≡  *XNXX DL*
         
-▢ *📌Title*: ${res.result.title || 'Not available'}
-▢ *⌚Duration:* ${res.result.duration || 'Not available'}
-▢ *🎞️Quality:* ${res.result.quality || 'Not available'}`,
-                video: { url: res.result.files.high }
+▢ *📌Title*: ${xn.result.title || 'Not available'}
+▢ *⌚Duration:* ${xn.result.duration || 'Not available'}
+▢ *🎞️Quality:* ${xn.result.quality || 'Not available'}`,
+                video: { url: xn.result.files.high }
             }, { quoted: m });
         } else {
             m.reply('Error: Unexpected response from the XNXX API');
@@ -1905,6 +1907,7 @@ case "xnxxdl": {
     }
 }
 break;
+
 
 case 'xnxxsearch': {
 	if (!text) return m.reply(`Enter Query`)
