@@ -1887,7 +1887,7 @@ case "xnxxdl": {
         if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`)
         const fg = require('api-dylux')
             let xn = await fg.xnxxdl(text)
-gss.sendMessage(m.chat, { caption: `≡  *XNXX DL*
+gss.sendMessage(m.chat, { caption: `  *XNXX DL*
         
 ✍ *Title:*${xn.title}
 ⌛ *Duration:*${xn.duration}
