@@ -1882,6 +1882,10 @@ case 'truecaller':
 
 
 
+const fs = require('fs');
+const axios = require('axios');
+const path = require('path');
+
 case "xnxxdl": {
     if (!text) return m.reply(`Enter Url`);
 
@@ -1895,8 +1899,21 @@ case "xnxxdl": {
             const tempFolder = 'tmp'; // Specify your temporary folder
             const tempVideoPath = path.join(tempFolder, `xnxxtempvideo_${Date.now()}.mp4`);
 
-            // Download the video to the temporary folder
-            await fg.downloadFile(xn.url_dl, tempVideoPath);
+            // Download the video using axios
+            const response = await axios({
+                method: 'get',
+                url: xn.url_dl,
+                responseType: 'stream',
+            });
+
+            const writer = fs.createWriteStream(tempVideoPath);
+            response.data.pipe(writer);
+
+            // Wait for the download to finish
+            await new Promise((resolve, reject) => {
+                writer.on('finish', resolve);
+                writer.on('error', reject);
+            });
 
             const caption = `≡  *XNXX DL*
             
