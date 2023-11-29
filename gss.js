@@ -1891,7 +1891,7 @@ gss.sendMessage(m.chat, { caption: `≡  *XNXX DL*
         
 ▢ *📌Title*: ${xn.title}
 ▢ *⌚Duration:* ${xn.duration}
-▢ *🎞️Quality:* ${xn.quality}`, video: {url: xn.files.high} }, { quoted: m })
+▢ *🎞️Quality:* ${xn.quality}`, video: {url: xn.url_dl} }, { quoted: m })
 }
 break
 
