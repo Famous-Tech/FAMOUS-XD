@@ -1889,9 +1889,9 @@ case "xnxxdl": {
             let xn = await fg.xnxxdl(text)
 gss.sendMessage(m.chat, { caption: `  *XNXX DL*
         
-✍ *Title:*${xn.title}
-⌛ *Duration:*${xn.duration}
-📽️ *Visual Quality:*${xn.quality}`, video: {url: xn.url_dl} }, { quoted: m })
+✍ *Title:* ${xn.title}
+⌛ *Duration:* ${xn.duration}
+📽 *Visual Quality:* ${xn.quality}`, video: {url: xn.url_dl} }, { quoted: m })
 }
 break
 
