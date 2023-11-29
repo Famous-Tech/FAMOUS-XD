@@ -1883,7 +1883,6 @@ case 'truecaller':
 
 case "xnxxdl": {
     if (!text) return m.reply(`Enter Url`);
-    if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`);
     
     try {
         const fg = require('api-dylux');
@@ -1891,43 +1890,18 @@ case "xnxxdl": {
 
         console.log('XNXX API Response:', xn);
 
-        if (xn && xn.result && xn.result.url_dl) {
-            const videoUrl = xn.result.url_dl;
-            const tempFilePath = path.join(__dirname, 'temp_video.mp4'); // Adjust the file path as needed
+        if (xn && xn.result) {
+const caption = `≡  *XNXX DL*
+        
+▢ *📌Title*: ${xn.result.title || 'Not available'}
+▢ *⌚Duration*: ${xn.result.duration || 'Not available'}
+▢ *🎞️Quality*: ${xn.result.quality || 'Not available'}`
 
-            try {
-                const response = await axios.get(videoUrl, { responseType: 'stream' });
-                const writer = fs.createWriteStream(tempFilePath);
+await gss.sendMessage(m.chat, { video: { url: xn.result.url_dl, caption: caption } }, { quoted: m });
 
-                response.data.pipe(writer);
-
-                writer.on('finish', async () => {
-                    // Video downloaded successfully, now send it
-                    try {
-                        const fileBuffer = fs.readFileSync(tempFilePath);
-                        gss.sendMessage(m.chat, {
-                            video: { data: fileBuffer, isStream: true }
-                        }, { quoted: m });
-                    } catch (fileError) {
-                        console.error('Error reading video file:', fileError);
-                        m.reply('Error: Something went wrong while reading the video file');
-                    } finally {
-                        // Clean up: Delete the temporary file after sending
-                        fs.unlinkSync(tempFilePath);
-                    }
-                });
-
-                writer.on('error', (err) => {
-                    console.error('Error writing video to file:', err);
-                    m.reply('Error: Something went wrong while downloading the video');
-                });
-            } catch (error) {
-                console.error('Error downloading video:', error);
-                m.reply('Error: Something went wrong while downloading the video');
-            }
-        } else {
-            m.reply('Error: Unexpected response from the XNXX API');
-        }
+} else {
+    m.reply('Error: Unexpected response from the XNXX API');
+}
     } catch (error) {
         console.error('Error in xnxxdl:', error);
         m.reply('Error: Something went wrong while fetching XNXX details');
