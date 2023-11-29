@@ -9,7 +9,6 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require('fs')
 const fsx = require('fs-extra')
 const util = require('util')
-const gplay = require('google-play-scraper');
 const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk')
@@ -2742,47 +2741,6 @@ if (!isCreator) throw mess.owner
     gss.sendPoll(m.chat, 'Select your preferences:', options);
   }, 2000);
   break;
-
-case 'playstore':
-  if (!args[0]) throw '*Please provide the app name to search on Play Store.*';
-
-  let playstoreQuery = args.join(' ');
-
-  try {
-    let playstoreResults = await gplay.search({ term: playstoreQuery, num: 1 });
-
-    if (playstoreResults && playstoreResults.length > 0) {
-      let firstResult = playstoreResults[0];
-      let appDetails = await gplay.app({ appId: firstResult.appId });
-
-      let opt = {
-        contextInfo: {
-          externalAdReply: {
-            title: appDetails.title,
-            body: appDetails.summary,
-            thumbnail: (await conn.getFile(appDetails.icon)).data,
-            sourceUrl: appDetails.url,
-          },
-        },
-      };
-
-      let response =
-        `*🔍 Result:* ${appDetails.title}
-        *✍️ Developer:* ${appDetails.developer}
-        *💸 Price:* ${appDetails.priceText}
-        *📈 Rating:* ${appDetails.scoreText}
-        *⛓️ Link:* ${appDetails.url}`;
-
-      m.reply(response, null, opt);
-    } else {
-      m.reply('*App not found on the Play Store.*');
-    }
-  } catch (error) {
-    console.error(error);
-    m.reply('*Error fetching app details from the Play Store.*');
-  }
-  break;
-
 
 
 const languages = require('./lib/languages'); // Import the language codes module
