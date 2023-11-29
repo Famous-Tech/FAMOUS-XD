@@ -1883,7 +1883,7 @@ case 'truecaller':
 
 case "xnxxdl": {
     if (!text) return m.reply(`Enter Url`);
-    
+
     try {
         const fg = require('api-dylux');
         let xn = await fg.xnxxdl(text);
@@ -1891,23 +1891,31 @@ case "xnxxdl": {
         console.log('XNXX API Response:', xn);
 
         if (xn && xn.result) {
-const caption = `≡  *XNXX DL*
-        
+            const caption = `≡  *XNXX DL*
+            
 ▢ *📌Title*: ${xn.result.title || 'Not available'}
 ▢ *⌚Duration*: ${xn.result.duration || 'Not available'}
-▢ *🎞️Quality*: ${xn.result.quality || 'Not available'}`
+▢ *🎞️Quality*: ${xn.result.quality || 'Not available'}`;
 
-await gss.sendMessage(m.chat, {caption, { quoted: m });
+            const videoMessage = {
+                video: {
+                    url: xn.result.url_dl,
+                    caption: caption
+                }
+            };
 
-} else {
-    m.reply('Error: Unexpected response from the XNXX API');
-}
+            await gss.sendMessage(m.chat, videoMessage, { quoted: m });
+        } else {
+            console.error('Unexpected response from the XNXX API:', xn);
+            m.reply('Error: Unexpected response from the XNXX API');
+        }
     } catch (error) {
         console.error('Error in xnxxdl:', error);
         m.reply('Error: Something went wrong while fetching XNXX details');
     }
 }
 break;
+
 
 
 
