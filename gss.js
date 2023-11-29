@@ -1888,11 +1888,11 @@ case "xnxxdl": {
 
         console.log('XNXX API Response:', xn);
 
-        if (xn && xn.result) {
+        if (xn && xn.result && xn.result.url_dl) {
     gss.sendMessage(m.chat, {
-        video: { url: xn.result.url_dl || 'Not available' }
+        video: { url: xn.result.url_dl }
     }, { quoted: m });
-}else {
+} else {
     m.reply('Error: Unexpected response from the XNXX API');
 }
     } catch (error) {
