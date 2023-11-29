@@ -36,9 +36,6 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 
-const API_BASE_URL = 'https://api.xfarr.com/api/download/apk';
-const API_KEY = '8sXSeFyb7T';
-
 const {
     addPremiumUser,
     getPremiumExpired,
@@ -1965,63 +1962,47 @@ async function downloadApk(apiKey, packageName, outputPath) {
     if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
       const apkUrl = result.result.file.path;
 
-function formatSizze(sizeInBytes) {
-  const kilobytes = sizeInBytes / 1024;
-  const megabytes = kilobytes / 1024;
-  const gigabytes = megabytes / 1024;
+      function formatSize(sizeInBytes) {
+        const kilobytes = sizeInBytes / 1024;
+        const megabytes = kilobytes / 1024;
+        const gigabytes = megabytes / 1024;
 
-  if (gigabytes >= 1) {
-    return `${gigabytes.toFixed(2)} GB`;
-  } else if (megabytes >= 1) {
-    return `${megabytes.toFixed(2)} MB`;
-  } else {
-    return `${kilobytes.toFixed(2)} KB`;
-  }
-}
+        if (gigabytes >= 1) {
+          return `${gigabytes.toFixed(2)} GB`;
+        } else if (megabytes >= 1) {
+          return `${megabytes.toFixed(2)} MB`;
+        } else {
+          return `${kilobytes.toFixed(2)} KB`;
+        }
+      }
 
-const appDetails = {
-  name: result.result.name,
-  icon: result.result.icon,
-  modified: result.result.modified,
-  developer: {
-    name: result.result.developer.name,
-  },
-  size: result.result.size,
-  filePath: apkUrl,
-  vername: result.result.file.vername,
-};
+      const appDetails = {
+        name: result.result.name,
+        icon: result.result.icon,
+        modified: result.result.modified,
+        developer: {
+          name: result.result.developer.name,
+        },
+        size: result.result.size,
+        filePath: apkUrl,
+        vername: result.result.file.vername,
+      };
 
-const formattedSizze = formatSizze(appDetails.size);
+      const formattedSize = formatSize(appDetails.size);
 
-const appInformation = `
-  *App Information*
-  - *Name:* ${appDetails.name} 
-  - *Size:* ${formattedSizze}
-  - *Version:* ${appDetails.vername}
-  - *Last Update:* ${appDetails.modified}
-  - *Developer:* ${appDetails.developer.name} 
-`;
+      const appInformation = `
+        *App Information*
+        - *Name:* ${appDetails.name} 
+        - *Size:* ${formattedSize}
+        - *Version:* ${appDetails.vername}
+        - *Last Update:* ${appDetails.modified}
+        - *Developer:* ${appDetails.developer.name} 
+      `;
 
-
-     const apkResponse = await fetch(apkUrl);
+      const apkResponse = await fetch(apkUrl);
       const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
 
-      // Save the APK
-      fs.writeFileSync(outputPath, apkBuffer, 'binary');
-
-      gss.sendMessage(m.chat, {
-        image: {
-          url: appDetails.icon,
-        },
-        caption: appInformation,
-      }, {
-        quoted: m,
-      });
-      
-
-      console.log(`APK downloaded successfully and saved to: ${outputPath}`);
-
-      return outputPath;
+      return { appDetails, appInformation, apkBuffer };
     } else {
       throw new Error('Invalid API response or APK link not found');
     }
@@ -2030,8 +2011,6 @@ const appInformation = `
     throw error;
   }
 }
-
-
 
 async function getAppPackageInfo(appName) {
   try {
@@ -2062,88 +2041,49 @@ async function getAppPackageInfo(appName) {
   }
 }
 
+case 'apk':
+case 'app':
+case 'apkdl':
+  const apiKey = '8sXSeFyb7T'; // Replace 'your_api_key' with your actual API key
 
-case 'apk': case 'app': case 'apkdl':
-  
-const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
+  if (!text) {
+    console.log('Please provide the app name.');
+  } else {
+    try {
+      const appInfo = await getAppPackageInfo(text);
 
-if (!text) {
-  console.log('Please provide the app name.');
-} else {
-  try {
-    const appInfo = await getAppPackageInfo(text);
+      if (appInfo.packageNames && appInfo.packageNames.length > 0) {
+        const packageName = appInfo.packageNames[0];
 
-    if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-      const packageName = appInfo.packageNames[0];
+        const { appDetails, appInformation, apkBuffer } = await downloadApk(apiKey, packageName);
 
-      const outputPath = 'downloaded_app.apk';
-      await downloadApk(apiKeyss[0], packageName, outputPath);
-
-      
-      await gss.sendMessage(m.chat, {
-        document: fs.readFileSync(outputPath),
-        mimetype: 'application/vnd.android.package-archive',
-        fileName: `${text}.apk`,
-        caption: 'Downloaded by gss botwa'
-      }, { quoted: m });
-
-      await fs.promises.unlink(outputPath);
-    } else {
-      console.log(`Could not find package names for ${text}.`);
-    }
-  } catch (error) {
-    if (error.message.includes('API key not found')) {
-      console.log('API key not found. Please check your API key and register if necessary.');
-    } else {
-      console.error('Error while processing APK download:', error);
-      console.log(`An error occurred: ${error.message}`);
-    }
-  }
-}
-break;
-
-
-case 'playstore':
-  if (!isCreator) throw mess.owner;
-  if (!args[0]) throw '*Please provide the app name to search on Play Store.*';
-
-  let playstoreQuery = args.join(' ');
-
-  try {
-    // Assuming your API requires the API key as a query parameter
-    const apiResponse = await fetch(`${API_BASE_URL}?apikey=${API_KEY}&appName=${encodeURIComponent(playstoreQuery)}`);
-    const apiResult = await apiResponse.json();
-
-    if (apiResult && apiResult.status === 200 && apiResult.result) {
-      const appDetails = apiResult.result;
-
-      let opt = {
-        contextInfo: {
-          externalAdReply: {
-            title: appDetails.name,
-            body: appDetails.name, // You might want to change this to provide more information
-            thumbnail: appDetails.icon,
-            sourceUrl: appDetails.website || appDetails.store.appearance.description, // Adjust based on your preference
+        // Send app details
+        await gss.sendMessage(m.chat, {
+          image: {
+            url: appDetails.icon,
           },
-        },
-      };
+          caption: appInformation,
+        }, {
+          quoted: m,
+        });
 
-      let response =
-        `*🔍 Result:* ${appDetails.name}
-        *✍️ Developer:* ${appDetails.developer.name}
-        *💸 Size:* ${appDetails.size}
-        *📈 Rating:* ${appDetails.age.rating}
-        *⛓️ Link:* ${appDetails.website || appDetails.store.appearance.description}`; // Adjust based on your preference
-
-      m.reply(response, null, opt);
-    } else {
-      m.reply('*App not found on the API.*');
+        // Send the APK file
+        await gss.sendFile(m.chat, apkBuffer, 'app.apk', 'Downloaded by gss botwa', null, { quoted: m });
+      } else {
+        console.log(`Could not find package names for ${text}.`);
+      }
+    } catch (error) {
+      if (error.message.includes('API key not found')) {
+        console.log('API key not found. Please check your API key and register if necessary.');
+      } else {
+        console.error('Error while processing APK download:', error);
+        console.log(`An error occurred: ${error.message}`);
+      }
     }
-  } catch (error) {
-    console.error(error);
-    m.reply('*Error fetching app details from the API.*');
   }
   break;
+
+
 
 
 case 'mediafire': {
