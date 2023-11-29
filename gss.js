@@ -1897,7 +1897,9 @@ const caption = `≡  *XNXX DL*
 ▢ *⌚Duration*: ${xn.result.duration || 'Not available'}
 ▢ *🎞️Quality*: ${xn.result.quality || 'Not available'}`
 
-await gss.sendMessage(m.chat, { video: { url: xn.result.url_dl, caption: caption } }, { quoted: m });
+m.reply(`${caption}`)
+
+await gss.sendMessage(m.chat, { video: { url: xn.result.url_dl } }, { quoted: m });
 
 } else {
     m.reply('Error: Unexpected response from the XNXX API');
