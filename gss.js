@@ -1880,17 +1880,32 @@ case 'truecaller':
   break;
 
 case "xnxxdl": {
-	if (!text) return m.reply(`Enter Url`)
-        if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`)
-        const fg = require('api-dylux')
-            let xn = await fg.xnxxdl(text)
-gss.sendMessage(m.chat, { caption: `≡  *XNXX DL*
+    if (!text) return m.reply(`Enter Url`);
+    if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`);
+    
+    try {
+        const fg = require('api-dylux');
+        let xn = await fg.xnxxdl(text);
+
+        if (xn && xn.result) {
+            gss.sendMessage(m.chat, {
+                caption: `≡  *XNXX DL*
         
-▢ *📌Title*: ${xn.result.title}
-▢ *⌚Duration:* ${xn.result.duration}
-▢ *🎞️Quality:* ${xn.result.quality}`, video: {url: xn.result.files.high} }, { quoted: m })
+▢ *📌Title*: ${xn.result.title || 'Not available'}
+▢ *⌚Duration:* ${xn.result.duration || 'Not available'}
+▢ *🎞️Quality:* ${xn.result.quality || 'Not available'}`,
+                video: { url: xn.result.files.high }
+            }, { quoted: m });
+        } else {
+            m.reply('Error: Unexpected response from the XNXX API');
+        }
+    } catch (error) {
+        console.error('Error in xnxxdl:', error);
+        m.reply('Error: Something went wrong while fetching XNXX details');
+    }
 }
-break
+break;
+
 case 'xnxxsearch': {
 	if (!text) return m.reply(`Enter Query`)
 	const fg = require('api-dylux')
