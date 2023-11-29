@@ -9,6 +9,7 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require('fs')
 const fsx = require('fs-extra')
 const util = require('util')
+const gplay = require('google-play-scraper');
 const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk')
