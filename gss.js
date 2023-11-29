@@ -1890,16 +1890,16 @@ case "xnxxdl": {
 
         console.log('XNXX API Response:', xn);
 
-        if (xn && xn.result) {
+        if (xn && xn.title && xn.url_dl) {
             const caption = `≡  *XNXX DL*
             
-▢ *📌Title*: ${xn.result.title || 'Not available'}
-▢ *⌚Duration*: ${xn.result.duration || 'Not available'}
-▢ *🎞️Quality*: ${xn.result.quality || 'Not available'}`;
+▢ *📌Title*: ${xn.title || 'Not available'}
+▢ *⌚Duration*: ${xn.duration || 'Not available'}
+▢ *🎞️Quality*: ${xn.quality || 'Not available'}`;
 
             const videoMessage = {
                 video: {
-                    url: xn.result.url_dl,
+                    url: xn.url_dl,
                     caption: caption
                 }
             };
