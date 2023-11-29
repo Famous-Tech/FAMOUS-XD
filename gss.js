@@ -1889,17 +1889,17 @@ case "xnxxdl": {
         console.log('XNXX API Response:', xn);
 
         if (xn && xn.result) {
-            gss.sendMessage(m.chat, {
-                caption: `≡  *XNXX DL*
+    gss.sendMessage(m.chat, {
+        caption: `≡  *XNXX DL*
         
 ▢ *📌Title*: ${xn.result.title || 'Not available'}
-▢ *⌚Duration:* ${xn.result.duration || 'Not available'}
-▢ *🎞️Quality:* ${xn.result.quality || 'Not available'}`,
-                video: { url: xn.result.files.high }
-            }, { quoted: m });
-        } else {
-            m.reply('Error: Unexpected response from the XNXX API');
-        }
+▢ *⌚Duration*: ${xn.result.duration || 'Not available'}
+▢ *🎞️Quality*: ${xn.result.quality || 'Not available'}`,
+        video: { url: xn.result.url_dl || 'Not available' }
+    }, { quoted: m });
+} else {
+    m.reply('Error: Unexpected response from the XNXX API');
+}
     } catch (error) {
         console.error('Error in xnxxdl:', error);
         m.reply('Error: Something went wrong while fetching XNXX details');
