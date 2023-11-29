@@ -1881,6 +1881,7 @@ case 'truecaller':
 
 case "xnxxdl": {
     if (!text) return m.reply(`Enter Url`);
+    if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`);
     
     try {
         const fg = require('api-dylux');
@@ -1889,18 +1890,40 @@ case "xnxxdl": {
         console.log('XNXX API Response:', xn);
 
         if (xn && xn.result && xn.result.url_dl) {
-    gss.sendMessage(m.chat, {
-        video: { url: xn.result.url_dl }
-    }, { quoted: m });
-} else {
-    m.reply('Error: Unexpected response from the XNXX API');
-}
+            const videoUrl = xn.result.url_dl;
+            const tempFilePath = path.join(__dirname, 'temp_video.mp4'); // Adjust the file path as needed
+
+            try {
+                const response = await axios.get(videoUrl, { responseType: 'stream' });
+                const writer = fs.createWriteStream(tempFilePath);
+
+                response.data.pipe(writer);
+
+                writer.on('finish', () => {
+                    // Video downloaded successfully, now send it
+                    gss.sendMessage(m.chat, {
+                        video: { url: tempFilePath }
+                    }, { quoted: m });
+                });
+
+                writer.on('error', (err) => {
+                    console.error('Error writing video to file:', err);
+                    m.reply('Error: Something went wrong while downloading the video');
+                });
+            } catch (error) {
+                console.error('Error downloading video:', error);
+                m.reply('Error: Something went wrong while downloading the video');
+            }
+        } else {
+            m.reply('Error: Unexpected response from the XNXX API');
+        }
     } catch (error) {
         console.error('Error in xnxxdl:', error);
         m.reply('Error: Something went wrong while fetching XNXX details');
     }
 }
 break;
+
 
 
 case 'xnxxsearch': {
