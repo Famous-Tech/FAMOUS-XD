@@ -1879,7 +1879,26 @@ case 'truecaller':
   }
   break;
 
-
+case "xnxxdl": {
+	if (!text) return m.reply(`Enter Url`)
+        if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`)
+        const fg = require('api-dylux')
+            let xn = await fg.xnxxdl(text)
+gss.sendMessage(m.chat, { caption: `≡  *XNXX DL*
+        
+▢ *📌Title*: ${xn.result.title}
+▢ *⌚Duration:* ${xn.result.duration}
+▢ *🎞️Quality:* ${xn.result.quality}`, video: {url: xn.result.files.high} }, { quoted: m })
+}
+break
+case 'xnxxsearch': {
+	if (!text) return m.reply(`Enter Query`)
+	const fg = require('api-dylux')
+	let res = await fg.xnxxSearch(text)
+            let ff = res.result.map((v, i) => `${i + 1}┃ *Title* : ${v.title}\n*Link:* ${v.link}\n`).join('\n') 
+              if (res.status) m.reply(ff)
+              }
+              break
 
 case 'qc':
     try {
