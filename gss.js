@@ -1879,6 +1879,8 @@ case 'truecaller':
   }
   break;
 
+
+
 case "xnxxdl": {
     if (!text) return m.reply(`Enter Url`);
     if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`);
@@ -1899,11 +1901,20 @@ case "xnxxdl": {
 
                 response.data.pipe(writer);
 
-                writer.on('finish', () => {
+                writer.on('finish', async () => {
                     // Video downloaded successfully, now send it
-                    gss.sendMessage(m.chat, {
-                        video: { url: tempFilePath }
-                    }, { quoted: m });
+                    try {
+                        const fileBuffer = fs.readFileSync(tempFilePath);
+                        gss.sendMessage(m.chat, {
+                            video: { data: fileBuffer, isStream: true }
+                        }, { quoted: m });
+                    } catch (fileError) {
+                        console.error('Error reading video file:', fileError);
+                        m.reply('Error: Something went wrong while reading the video file');
+                    } finally {
+                        // Clean up: Delete the temporary file after sending
+                        fs.unlinkSync(tempFilePath);
+                    }
                 });
 
                 writer.on('error', (err) => {
@@ -1923,6 +1934,7 @@ case "xnxxdl": {
     }
 }
 break;
+
 
 
 
