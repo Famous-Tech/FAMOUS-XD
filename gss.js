@@ -1879,7 +1879,21 @@ case 'truecaller':
   }
   break;
 
-
+case "spotify":{
+if (!text) return m.reply(`Where is the link?`)
+        const Spotify = require('./lib/spotify')
+        const spotify = new Spotify(text)
+        const info = await spotify.getInfo()
+        if ((info).error) return m.reply(`The link you provided is not spotify link`)
+        const { name, artists, album_name, release_date, cover_url } = info
+        const details = ` *Title:* ${name || ''}\n *Artists:* ${(artists || []).join(
+            ','
+        )}\n *Album:* ${album_name}\n *Release Date:* ${release_date || ''}`
+       const response = await gss.sendMessage(m.chat, { image: { url: cover_url }, caption: details }, { quoted: m })
+        const bufferpotify = await spotify.download()
+        await gss.sendMessage(m.chat, { audio: bufferpotify }, { quoted: response })
+        }
+break
 
 
 case "xnxxdl": {
