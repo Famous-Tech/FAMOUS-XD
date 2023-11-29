@@ -1881,6 +1881,7 @@ case 'truecaller':
 
 
 
+
 case "xnxxdl": {
     if (!text) return m.reply(`Enter Url`);
 
@@ -1891,6 +1892,12 @@ case "xnxxdl": {
         console.log('XNXX API Response:', xn);
 
         if (xn && xn.title && xn.url_dl) {
+            const tempFolder = 'tmp'; // Specify your temporary folder
+            const tempVideoPath = path.join(tempFolder, `xnxxtempvideo_${Date.now()}.mp4`);
+
+            // Download the video to the temporary folder
+            await fg.downloadFile(xn.url_dl, tempVideoPath);
+
             const caption = `≡  *XNXX DL*
             
 ▢ *📌Title*: ${xn.title || 'Not available'}
@@ -1899,12 +1906,17 @@ case "xnxxdl": {
 
             const videoMessage = {
                 video: {
-                    url: xn.url_dl,
+                    file: fs.readFileSync(tempVideoPath),
+                    filename: 'xnxxtempvideo.mp4',
                     caption: caption
                 }
             };
 
+            // Send the video message
             await gss.sendMessage(m.chat, videoMessage, { quoted: m });
+
+            // Delete the temporary video file after sending
+            fs.unlinkSync(tempVideoPath);
         } else {
             console.error('Unexpected response from the XNXX API:', xn);
             m.reply('Error: Unexpected response from the XNXX API');
@@ -1915,6 +1927,7 @@ case "xnxxdl": {
     }
 }
 break;
+
 
 
 
