@@ -1890,14 +1890,9 @@ case "xnxxdl": {
 
         if (xn && xn.result) {
     gss.sendMessage(m.chat, {
-        caption: `≡  *XNXX DL*
-        
-▢ *📌Title*: ${xn.result.title || 'Not available'}
-▢ *⌚Duration*: ${xn.result.duration || 'Not available'}
-▢ *🎞️Quality*: ${xn.result.quality || 'Not available'}`,
         video: { url: xn.result.url_dl || 'Not available' }
     }, { quoted: m });
-} else {
+}else {
     m.reply('Error: Unexpected response from the XNXX API');
 }
     } catch (error) {
