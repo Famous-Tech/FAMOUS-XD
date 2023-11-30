@@ -1431,32 +1431,32 @@ case 'ytmp4':
       console.log('Full API Response:', result);
 
       if (result && result.downloadUrl) {
-        // Fetch the video content
-        const videoBufferReq = await fetch(result.downloadUrl);
-        const videoBuffer = await videoBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(videoBuffer);
+// Fetch the video content
+const videoBufferReq = await fetch(result.downloadUrl);
+const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+const videoBuffer = Buffer.from(videoArrayBuffer);
 
-        // Save the video to a temporary file
-        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
-        fs.writeFileSync(`./${randomName}`, videoBuffer);
+// Save the video to a temporary file
+const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
+fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-        // Stylish caption with markdown formatting
-        const stylishCaption = `
-          🌟 *Title:* _${result.title}_
-          👀 *Views:* _${result.views}_
-          ⏱️ *Duration:* _${result.duration}_
-          📅 *Upload Date:* _${result.uploadDate}_
-          📺 *YouTube URL:* ${result.youtubeUrl}
-          📢 *Upload Channel:* _${result.uploadChannel}_
-          
-          🤖 Downloaded by *gss botwa*
-        `;
+// Stylish caption with markdown formatting
+const stylishCaption = `
+  🌟 *Title:* _${result.title}_
+  👀 *Views:* _${result.views}_
+  ⏱️ *Duration:* _${result.duration}_
+  📅 *Upload Date:* _${result.uploadDate}_
+  📺 *YouTube URL:* ${result.youtubeUrl}
+  📢 *Upload Channel:* _${result.uploadChannel}_
+  
+  🤖 Downloaded by *gss botwa*
+`;
 
-        // Send the video using gss.sendMessage with the modified stylish caption and saved video
-        await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), caption: stylishCaption }, { quoted: m });
+// Send the video using gss.sendMessage with the modified stylish caption and saved video
+await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), caption: stylishCaption }, { quoted: m });
 
-        // Delete the temporary file
-        fs.unlinkSync(`./${randomName}`);
+// Delete the temporary file
+fs.unlinkSync(`./${randomName}`);
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
