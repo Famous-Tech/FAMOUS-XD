@@ -531,9 +531,76 @@ setInterval(setBio, 60000);
      * @param {*} options 
      * @returns 
      */
-  
+gss.cMod = (jid, copy, text = '', sender = gßs.user.id, options = {}) => {
+//let copy = message.toJSON()
+let mtype = Object.keys(copy.message)[0]
+let isEphemeral = mtype === 'ephemeralMessage'
+if (isEphemeral) {
+mtype = Object.keys(copy.message.ephemeralMessage.message)[0]}
+let msg = isEphemeral ? copy.message.ephemeralMessage.message : copy.message
+let content = msg[mtype]
+if (typeof content === 'string') msg[mtype] = text || content
+else if (content.caption) content.caption = text || content.caption
+else if (content.text) content.text = text || content.text
+if (typeof content !== 'string') msg[mtype] = {
+...content,
+...options}
+if (copy.key.participant) sender = copy.key.participant = sender || copy.key.participant
+else if (copy.key.participant) sender = copy.key.participant = sender || copy.key.participant
+if (copy.key.remoteJid.includes('@s.whatsapp.net')) sender = sender || copy.key.remoteJid
+else if (copy.key.remoteJid.includes('@broadcast')) sender = sender || copy.key.remoteJid
+copy.key.remoteJid = jid
+copy.key.fromMe = sender === gss.user.id
+return proto.WebMessageInfo.fromObject(copy)}
+gss.sendFile = async(jid, PATH, fileName, quoted = {}, options = {}) => {
+let types = await gss.getFile(PATH, true)
+let { filename, size, ext, mime, data } = types
+let type = '', mimetype = mime, pathFile = filename
+if (options.asDocument) type = 'document'
+if (options.asSticker || /webp/.test(mime)) {
+let { writeExif } = require('./lib/sticker.js')
+let media = { mimetype: mime, data }
+pathFile = await writeExif(media, { packname: global.packname, author: global.author, categories: options.categories ? options.categories : [] })
+await fs.promises.unlink(filename)
+type = 'sticker'
+mimetype = 'image/webp'}
+else if (/image/.test(mime)) type = 'image'
+else if (/video/.test(mime)) type = 'video'
+else if (/audio/.test(mime)) type = 'audio'
+else type = 'document'
+await gss.sendMessage(jid, { [type]: { url: pathFile }, mimetype, fileName, ...options }, { quoted, ...options })
+return fs.promises.unlink(pathFile)}
+gss.parseMention = async(text) => {
+return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net')}
+     
+gss.copyNForward = async (jid, message, forceForward = false, options = {}) => {
+let vtype
+if (options.readViewOnce) {
+message.message = message.message && message.message.ephemeralMessage && message.message.ephemeralMessage.message ? message.message.ephemeralMessage.message : (message.message || undefined)
+vtype = Object.keys(message.message.viewOnceMessage.message)[0]
+delete(message.message && message.message.ignore ? message.message.ignore : (message.message || undefined))
+delete message.message.viewOnceMessage.message[vtype].viewOnce
+message.message = {
+...message.message.viewOnceMessage.message}}
+let mtype = Object.keys(message.message)[0]
+let content = await generateForwardMessageContent(message, forceForward)
+let ctype = Object.keys(content)[0]
+let context = {}
+if (mtype != "conversation") context = message.message[mtype].contextInfo
+content[ctype].contextInfo = {
+...context,
+...content[ctype].contextInfo}
+const waMessage = await generateWAMessageFromContent(jid, content, options ? {
+...content[ctype],
+...options,
+...(options.contextInfo ? {
+contextInfo: {
+...content[ctype].contextInfo,
+...options.contextInfo}} : {})} : {})
+await gss.relayMessage(jid, waMessage.message, { messageId:  waMessage.key.id })
+return waMessage}
 
-    gss.cMod = (jid, copy, text = '', sender = gss.user.id, options = {}) => {
+  /*  gss.cMod = (jid, copy, text = '', sender = gss.user.id, options = {}) => {
         //let copy = message.toJSON()
 		let mtype = Object.keys(copy.message)[0]
 		let isEphemeral = mtype === 'ephemeralMessage'
@@ -558,7 +625,7 @@ setInterval(setBio, 60000);
 
         return proto.WebMessageInfo.fromObject(copy)
     }
-
+*/
 
     /**
      * 
