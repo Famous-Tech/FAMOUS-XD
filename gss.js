@@ -1241,13 +1241,23 @@ break;
 
 
 
-            case 'delete': case 'del': {
-if (!m.quoted) return m.reply('Reply to the message!');
-if (!isCreator) throw mess.owner;
-  let { chat, fromMe, id} = m.quoted;
-  gss.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } });
-}
-break;
+            case 'deleteall':
+case 'delall':
+case 'delete':
+case 'del': 
+  if (!isCreator) return m.reply('Yᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ᴏᴡɴᴇʀ')
+    
+        if (!m.quoted) return m.reply('Pʟᴇᴀsᴇ ᴍᴇɴᴛɪᴏɴ ᴀ ᴍᴇssᴀɢᴇ');
+        let { chat, id } = m.quoted;
+
+        const key = {
+            remoteJid: m.chat,
+            id: m.quoted.id,
+            participant: m.quoted.sender
+        };
+
+        await gss.sendMessage(m.chat, { delete: key });
+    break;
 
 case 'bcgc': case 'bcgroup': {
   if (!isCreator) throw mess.owner;
