@@ -1436,13 +1436,12 @@ case 'ytmp4':
         const videoBuffer = await videoBufferReq.arrayBuffer();
         const mediaBuffer = Buffer.from(videoBuffer);
 
-        // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
-        const thumbnailBufferReq = await fetch(result.thumbnail);
-        const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
+        // Save the video to a temporary file
+        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
+        fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-
-        // Stylish caption with markdown formatting and thumbnail
-        const stylishCaptionWithThumbnail = `
+        // Stylish caption with markdown formatting
+        const stylishCaption = `
           🌟 *Title:* _${result.title}_
           👀 *Views:* _${result.views}_
           ⏱️ *Duration:* _${result.duration}_
@@ -1453,8 +1452,11 @@ case 'ytmp4':
           🤖 Downloaded by *gss botwa*
         `;
 
-        // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
-        await gss.sendMessage(m.chat, { image: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
+        // Send the video using gss.sendMessage with the modified stylish caption and saved video
+        await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), caption: stylishCaption }, { quoted: m });
+
+        // Delete the temporary file
+        fs.unlinkSync(`./${randomName}`);
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
@@ -1470,6 +1472,7 @@ case 'ytmp4':
     m.reply('Unexpected error occurred.');
   }
   break;
+
   
 case 'yta': case 'song': case 'ytmp3': {
   try {
@@ -2144,8 +2147,8 @@ case 'mediafire': {
 
 
 case "rvo": {
-                if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
-                quoted.msg.viewOnce = false
+                if (!quoted.msg.viewOnceMessage) return m.reply(`Reply view once with command ${prefix + command}`)
+                quoted.msg.viewOnceMessage = false
                 await gss.sendMessage(m.from, { forward: quoted }, { quoted: m })
             }
             break
