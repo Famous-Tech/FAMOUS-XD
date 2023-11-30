@@ -3356,7 +3356,7 @@ case 'menuall':
 case 'allmenu': {
 
     let a = db.data.users[m.sender];
-    let introText = `Hello ${pushname}!👋 I'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*, your WhatsApp assistant*
+    let introText = `Hello ${pushname}!👋 I'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*
     
 ┏────▷ *sᴏᴍᴇ ɪɴғᴏ 4 ʏᴏᴜ* ◁⊰
 │ 
