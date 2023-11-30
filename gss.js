@@ -1044,71 +1044,96 @@ break;
 }
 break;
 
-case 'group': case 'grup': {
+case 'group':
+case 'grup': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
-  if (args[0].toLowerCase() === 'close') {
-    await gss.groupSettingUpdate(m.chat, 'announcement').then((res) => m.reply(`Group Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
-  } else if (args[0].toLowerCase() === 'open') {
-    await gss.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`Group Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
-  } else {
+  if (!args || args.length < 1) {
     gss.sendPoll(m.chat, "Choose Group Setting:", [`${prefix}group close`, `${prefix}group open`]);
+  } else {
+    const groupSetting = args[0].toLowerCase();
+    if (groupSetting === 'close') {
+      await gss.groupSettingUpdate(m.chat, 'announcement').then((res) => m.reply(`Group Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
+    } else if (groupSetting === 'open') {
+      await gss.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`Group Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
+    } else {
+      gss.sendPoll(m.chat, "Choose Group Setting:", [`${prefix}group close`, `${prefix}group open`]);
+    }
   }
 }
 break;
+
 
 
 case 'editinfo': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
-  if (args[0].toLowerCase() === 'open') {
-    await gss.groupSettingUpdate(m.chat, 'unlocked').then((res) => m.reply(`Group Edit Info Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
-  } else if (args[0].toLowerCase() === 'close') {
-    await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Group Edit Info Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
-  } else {
+  if (!args || args.length < 1) {
     gss.sendPoll(m.chat, "Choose Edit Info Setting:", [`${prefix}editinfo open`, `${prefix}editinfo close`]);
+  } else {
+    const editInfoSetting = args[0].toLowerCase();
+    if (editInfoSetting === 'open') {
+      await gss.groupSettingUpdate(m.chat, 'unlocked').then((res) => m.reply(`Group Edit Info Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
+    } else if (editInfoSetting === 'close') {
+      await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Group Edit Info Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
+    } else {
+      gss.sendPoll(m.chat, "Choose Edit Info Setting:", [`${prefix}editinfo open`, `${prefix}editinfo close`]);
+    }
   }
 }
 break;
+
 
 
             case 'antilink': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
-  if (args[0].toLowerCase() === "on") {
-    if (db.data.chats[m.chat].antilink) return m.reply(`Antilink Already Active`);
-    db.data.chats[m.chat].antilink = true;
-    m.reply(`Antilink Activated!`);
-  } else if (args[0].toLowerCase() === "off") {
-    if (!db.data.chats[m.chat].antilink) return m.reply(`Antilink Already Inactive`);
-    db.data.chats[m.chat].antilink = false;
-    m.reply(`Antilink Deactivated!`);
-  } else {
+  if (!args || args.length < 1) {
     gss.sendPoll(m.chat, "Choose Antilink Setting:", [`${prefix}antilink on`, `${prefix}antilink off`]);
+  } else {
+    const antilinkSetting = args[0].toLowerCase();
+    if (antilinkSetting === "on") {
+      if (db.data.chats[m.chat]?.antilink) return m.reply(`Antilink Already Active`);
+      db.data.chats[m.chat].antilink = true;
+      m.reply(`Antilink Activated!`);
+    } else if (antilinkSetting === "off") {
+      if (!db.data.chats[m.chat]?.antilink) return m.reply(`Antilink Already Inactive`);
+      db.data.chats[m.chat].antilink = false;
+      m.reply(`Antilink Deactivated!`);
+    } else {
+      gss.sendPoll(m.chat, "Choose Antilink Setting:", [`${prefix}antilink on`, `${prefix}antilink off`]);
+    }
   }
 }
 break;
+
 
 case 'mute': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
-  if (args[0].toLowerCase() === "on") {
-    if (db.data.chats[m.chat].mute) return m.reply(`${gss.user.name} is already muted in this group`);
-    db.data.chats[m.chat].mute = true;
-    m.reply(`${gss.user.name} has been muted in this group!`);
-  } else if (args[0].toLowerCase() === "off") {
-    if (!db.data.chats[m.chat].mute) return m.reply(`${gss.user.name} is already unmuted in this group`);
-    db.data.chats[m.chat].mute = false;
-    m.reply(`${gss.user.name} has been unmuted in this group!`);
-  } else {
+  if (!args || args.length < 1) {
     gss.sendPoll(m.chat, "Choose Mute Setting:", [`${prefix}mute on`, `${prefix}mute off`]);
+  } else {
+    const muteSetting = args[0].toLowerCase();
+    if (muteSetting === "on") {
+      if (db.data.chats[m.chat]?.mute) return m.reply(`${gss.user.name} is already muted in this group`);
+      db.data.chats[m.chat].mute = true;
+      m.reply(`${gss.user.name} has been muted in this group!`);
+    } else if (muteSetting === "off") {
+      if (!db.data.chats[m.chat]?.mute) return m.reply(`${gss.user.name} is already unmuted in this group`);
+      db.data.chats[m.chat].mute = false;
+      m.reply(`${gss.user.name} has been unmuted in this group!`);
+    } else {
+      gss.sendPoll(m.chat, "Choose Mute Setting:", [`${prefix}mute on`, `${prefix}mute off`]);
+    }
   }
 }
 break;
+
 
 
 case 'linkgroup': case 'linkgc': {
