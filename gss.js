@@ -1533,7 +1533,7 @@ case 'yta': case 'song': case 'ytmp3': {
 
     m.reply(mess.wait);
 
-    const ytaAPIURL = 'https://youtubedl-ll1h.onrender.com/downloadurl?query=';
+    const ytaAPIURL = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
     const apiURL = `${ytaAPIURL}${encodeURIComponent(text)}`;
 
     const req = await fetch(apiURL);
@@ -1632,7 +1632,7 @@ case 'getvideo': {
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
 
   try {
-    const apiURL = `https://ytdl-78w9.onrender.com/downloadurl?query=${encodeURIComponent(urls[text - 1])}`;
+    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(urls[text - 1])}`;
     const response = await fetch(apiURL);
     const data = await response.json();
 
@@ -1684,7 +1684,7 @@ case 'getaudio': case 'getmusic': case 'getsong': case 'getmp3': {
   if (!urls) throw `Maybe the message you replied to does not contain ytsearch results`;
 
   try {
-    const ytaAPIURL = 'https://youtubedl-ll1h.onrender.com/downloadurl?query=';
+    const ytaAPIURL = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
     const apiURL = `${ytaAPIURL}${encodeURIComponent(urls[text - 1])}`;
     const response = await fetch(apiURL);
     const data = await response.json();
