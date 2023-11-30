@@ -41,7 +41,7 @@ global.mess = {
     wait: 'Loading...',
     endLimit: 'ʏᴏᴜʀ ᴅᴀɪʟʏ ʟɪᴍɪᴛ ʜᴀs ᴇxᴘɪʀᴇᴅ, ᴛʜᴇ ʟɪᴍɪᴛ ᴡɪʟʟ ʙᴇ ʀᴇsᴇᴛ ᴇᴠᴇʀʏ 12 ʜᴏᴜʀs',
 };
-global.link = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp'
+global.link = 'https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w'
 global.typemenu = 'v2' // 'v1' => 'v5'
 global.onlygroup = false // onlygroup
 global.onlypc = false
