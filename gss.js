@@ -866,7 +866,7 @@ case 'setppgroup':
                 if (!quoted) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (/webp/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
-                var medis = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
+                var medis = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot.jpg')
                 if (args[0] == 'full') {
                     var {
                         img
