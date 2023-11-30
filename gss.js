@@ -1561,14 +1561,20 @@ case 'yts': {
       replyList.push('\n🔥 _Reply with the following commands to download:_\n   - 🎧 *getaudio <number>* _for Audio_\n   - 📹 *getvideo <number>* _for Video_\n\n_Enjoy the vibes!_ 🎶✨\n\n');
       // Build the stylish reply list with search results
       replyList.push(`🔍 *Search Results From ${text}* 🔍`);
-for (let i = 0; i < data.data.length; i++) {
-  const result = data.data[i];
-  replyList.push(`\n${i + 1}. 🎦 *${result.title}*\n   🔗 ${result.url}\n`);
-}
+      for (let i = 0; i < data.data.length; i++) {
+        const result = data.data[i];
+        replyList.push(`\n${i + 1}. 🎦 *${result.title}*\n   🔗 ${result.url}\n`);
+      }
 
-      
-      // Send the stylish reply list with instructions
-      await m.reply(replyList.join('\n'));
+      // Save the search results to a text file
+      const fileName = `yts_results_${Date.now()}.txt`;
+      fs.writeFileSync(fileName, replyList.join('\n'));
+
+      // Send the text file
+      await gss.sendMessage(m.chat, { document: fs.readFileSync(fileName), mimetype: 'text/plain', fileName: fileName }, { quoted: m });
+
+      // Delete the temporary text file
+      fs.unlinkSync(fileName);
     } else {
       console.error('Invalid API response:', data);
       return m.reply('Error retrieving search results.');
@@ -1579,6 +1585,7 @@ for (let i = 0; i < data.data.length; i++) {
   }
 }
 break;
+
 
 
 
