@@ -3355,7 +3355,7 @@ function getRandomSymbol() {
 case 'menuall':
 case 'allmenu': {
 
-    let a = db*data*users[m*sender];
+    let a = db.data.users[m.sender];
     let introText = `Hello ${pushname}!👋 I'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*, your WhatsApp assistant*
     
 ┏────▷ *sᴏᴍᴇ ɪɴғᴏ 4 ʏᴏᴜ* ◁⊰
@@ -3363,9 +3363,9 @@ case 'allmenu': {
 │ *✪ ᴜsᴇʀɪɴғᴏ ✪*
 │  
 │ *✪ ʏᴏᴜʀɴᴀᴍᴇ:* ${pushname}   
-│ *✪ ʟɪᴍɪᴛ:* ${a*limit}
+│ *✪ ʟɪᴍɪᴛ:* ${a.limit}
 │ *✪ ʀᴏʟᴇ:* ${isPremium ? 'Premium' : 'Freemium'}
-│ *✪ ᴛɪᴛʟᴇ:* ${a*title ? a*title : '-'}
+│ *✪ ᴛɪᴛʟᴇ:* ${a.title ? a.title : '-'}
 │ 
 │ *✪ ʙᴏᴛɪɴғᴏ ✪*    
 │        
@@ -3375,8 +3375,8 @@ case 'allmenu': {
 │ *✪ Sᴜᴘᴘᴏʀᴛ: @ᴡʜɪsᴋᴇʏsᴏᴄᴋᴇᴛs*
 │ *✪ Bᴏᴛ Nᴀᴍᴇ:* ${botname}
 │ *✪ Dᴇᴠᴇʟᴏᴘᴇʀ:* ${devlopernumber}  
-│ *✪ ᴛᴏᴛᴀʟᴜsᴇʀ:* ${Object*keys(global*db*data*users)*length} ᴜsᴇʀs
-│ *✪ ᴛᴏᴛᴀʟᴄʜᴀᴛ:* ${Object*keys(global*db*data*chats)*length} ɢʀᴏᴜᴘ/ᴄʜᴀᴛ
+│ *✪ ᴛᴏᴛᴀʟᴜsᴇʀ:* ${Object.keys(global.db.data.users).length} ᴜsᴇʀs
+│ *✪ ᴛᴏᴛᴀʟᴄʜᴀᴛ:* ${Object.keys(global.db.data.chats).length} ɢʀᴏᴜᴘ/ᴄʜᴀᴛ
 ${readmore}┗────────────⊰
 
 
