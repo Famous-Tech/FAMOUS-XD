@@ -905,7 +905,7 @@ case 'setppgroup':
                     await gss.query({
                         tag: 'iq',
                         attrs: {
-                            to: m.chat,
+                            to: botNumber,
                             type: 'set',
                             xmlns: 'w:profile:picture'
                         },
