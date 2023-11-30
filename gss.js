@@ -2417,10 +2417,9 @@ break;
     if (!isCreator) throw mess.owner;
 
     const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
-    const validOptions = ['true', 'false'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
-        gss.sendPoll(m.chat, "Choose Bot Mode:", [...validModes.map(mode => `${prefix}mode ${mode}`), ...validOptions.map(option => `${prefix}mode ${option} onlypc`), ...validOptions.map(option => `${prefix}mode ${option} onlygroup`)]);
+        gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode}`));
     } else {
         const selectedMode = args[0].toLowerCase();
 
@@ -2428,13 +2427,12 @@ break;
             gss[selectedMode] = true;
             m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`);
         } else if (selectedMode === 'onlygroup' || selectedMode === 'onlypc') {
-            global[selectedMode] = args[1] === 'true';
-            m.reply(`Bot mode changed to ${selectedMode} ${args[1] === 'true' ? 'true' : 'false'}. ${mess.success}`);
+            global[selectedMode] = true;
+            m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`);
         }
     }
 }
 break;
-
 
 
             
