@@ -1474,7 +1474,9 @@ fs.unlinkSync(`./${randomName}`);
   break;
 
   
-case 'yta': case 'song': case 'ytmp3': {
+case 'yta':
+case 'song':
+case 'ytmp3':
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
@@ -1509,11 +1511,18 @@ case 'yta': case 'song': case 'ytmp3': {
       if (result && result.downloadURL) {
         // Fetch the audio content
         const audioBufferReq = await fetch(result.downloadURL);
-        const audioBuffer = await audioBufferReq.arrayBuffer();
-        const mediaBuffer = Buffer.from(audioBuffer);
+        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+        const audioBuffer = Buffer.from(audioArrayBuffer);
 
-        // Send the audio using gss.sendMessage without a caption
-        await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp4', fileName: `${result.title}.mp3` }, { quoted: m });
+        // Save the audio to a temporary file
+        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp3`;
+        fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+        // Send the audio using gss.sendMessage with the saved audio and filename
+        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.title}.mp3` }, { quoted: m });
+
+        // Delete the temporary file
+        fs.unlinkSync(`./${randomName}`);
       } else if (result && result.error) {
         return m.reply(`Error: ${result.error}`);
       } else {
@@ -1529,7 +1538,7 @@ case 'yta': case 'song': case 'ytmp3': {
     m.reply('Unexpected error occurred.');
   }
   break;
-}
+
 
 
 
