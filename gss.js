@@ -819,19 +819,15 @@ case 'setdesc': case 'setdesk': {
 }
 break;
 
-           case "setpp": case "setprofile": case "seticon": {
-                const media = await gss.downloadAndSaveMediaMessage(quoted)
-                if (m.isOwner && !m.isGroup) {
-                    if (/full/i.test(m.text)) await gss.setProfilePicture(gss?.user?.id, media, "full")
-                    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(gss.decodeJid(gss?.user?.id))
-                    else await gss.setProfilePicture(gss?.user?.id, media, "normal")
-                } else if (m.isGroup && m.isAdmin && m.isBotAdmin) {
-                    if (/full/i.test(m.text)) await gss.setProfilePicture(m.from, media, "full")
-                    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(m.from)
-                    else await gss.setProfilePicture(m.from, media, "normal")
-                }
-            }
-            break
+          case 'setppbot': {
+  if (!isCreator) throw mess.owner;
+  if (!/image/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
+  if (/webp/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
+  let media = await gss.downloadAndSaveMediaMessage(qmsg);
+  await gss.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media));
+  m.reply(mess.success);
+}
+break;
 
     
 case 'toqr': {
@@ -866,7 +862,7 @@ case 'setppgroup':
                 if (!quoted) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (/webp/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
-                var medis = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot.jpg')
+                var medis = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
                 if (args[0] == 'full') {
                     var {
                         img
