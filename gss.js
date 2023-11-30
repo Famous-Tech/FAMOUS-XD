@@ -1583,7 +1583,7 @@ break;
 
 
 
-case 'getvideo': {
+case 'getvideo':
   if (!text) throw `Example: ${prefix + command} 1`;
   if (!m.quoted) return m.reply('Reply to a message');
   if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
@@ -1600,15 +1600,15 @@ case 'getvideo': {
     if (data && data.downloadUrl) {
       // Fetch the video content
       const videoBufferReq = await fetch(data.downloadUrl);
-      const videoBuffer = await videoBufferReq.arrayBuffer();
-      const mediaBuffer = Buffer.from(videoBuffer);
+      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+      const videoBuffer = Buffer.from(videoArrayBuffer);
 
-      // Fetch the thumbnail content (assuming the API provides a 'thumbnail' property)
-      const thumbnailBufferReq = await fetch(data.thumbnail);
-      const thumbnailBuffer = await thumbnailBufferReq.arrayBuffer();
+      // Save the video to a temporary file
+      const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-      // Stylish caption with markdown formatting and thumbnail
-      const stylishCaptionWithThumbnail = `
+      // Stylish caption with markdown formatting
+      const stylishCaption = `
         🌟 *Title:* _${data.title}_
         👀 *Views:* _${data.views}_
         ⏱️ *Duration:* _${data.duration}_
@@ -1619,8 +1619,11 @@ case 'getvideo': {
         🤖 Downloaded by *gss botwa*
       `;
 
-      // Send the video using gss.sendMessage with the modified stylish caption and thumbnail
-      await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: stylishCaptionWithThumbnail, thumbnail: thumbnailBuffer }, { quoted: m });
+      // Send the video using gss.sendMessage with the saved video and caption (no thumbnail)
+      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: stylishCaption }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
     } else if (data && data.error) {
       return m.reply(`Error: ${data.error}`);
     } else {
@@ -1631,11 +1634,13 @@ case 'getvideo': {
     console.error('Error during getvideo:', error);
     m.reply('Unexpected error occurred.');
   }
-}
-break;
+  break;
 
 
-case 'getaudio': case 'getmusic': case 'getsong': case 'getmp3': {
+case 'getaudio':
+case 'getmusic':
+case 'getsong':
+case 'getmp3':
   if (!text) throw `Example: ${prefix + command} 1`;
   if (!m.quoted) return m.reply('Reply to a message');
   if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
@@ -1653,11 +1658,18 @@ case 'getaudio': case 'getmusic': case 'getsong': case 'getmp3': {
     if (data && data.downloadURL) {
       // Fetch the audio content
       const audioBufferReq = await fetch(data.downloadURL);
-      const audioBuffer = await audioBufferReq.arrayBuffer();
-      const mediaBuffer = Buffer.from(audioBuffer);
+      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+      const audioBuffer = Buffer.from(audioArrayBuffer);
 
-      // Send the audio using gss.sendMessage without a caption
-      await gss.sendMessage(m.chat, { audio: mediaBuffer, mimetype: 'audio/mp4', fileName: `${data.title}.mp3` }, { quoted: m });
+      // Save the audio to a temporary file
+      const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
+      fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+      // Send the audio using gss.sendMessage with the saved audio and filename
+      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${data.title}.mp3` }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
     } else if (data && data.error) {
       return m.reply(`Error: ${data.error}`);
     } else {
@@ -1668,8 +1680,7 @@ case 'getaudio': case 'getmusic': case 'getsong': case 'getmp3': {
     console.error('Error during getaudio:', error);
     m.reply('Unexpected error occurred.');
   }
-}
-break;
+  break;
 
 
 
