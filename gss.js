@@ -2412,21 +2412,19 @@ break;
 	    }
 	    break
 	    
-
-
-
 	    
-		      case 'mode':
-                if (!isCreator) return m.reply(mess.owner)
-                if (args.length < 1) return m.reply(`Example ${prefix + command} public/self`)
-                if (q == 'public') {
-                    gss.public = true
-                    m.reply(mess.success)
-                } else if (q == 'self') {
-                    gss.public = false
-                    m.reply(mess.success)
-                }
-            break
+		      case 'mode': {
+    if (!isCreator) return m.reply(mess.owner);
+    if (args.length < 1) {
+        gss.sendPoll(m.chat, "Choose Bot Mode:", [`${prefix}mode public`, `${prefix}mode self`]);
+    } else {
+        const q = args[0].toLowerCase();
+        gss.public = (q === 'public');
+        m.reply(`Bot mode changed to ${gss.public ? 'public' : 'self'}. ${mess.success}`);
+    }
+}
+break;
+
             
             case 'ping': {
   const reactionMessage = {
