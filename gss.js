@@ -1461,7 +1461,7 @@ case 'ytmp4':
 
     m.reply(mess.wait);
 
-    const apiURL = `https://ytdl-78w9.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
+    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
 
     const req = await fetch(apiURL);
 
