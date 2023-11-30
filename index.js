@@ -241,10 +241,7 @@ async function setBio() {
     return "Done";
 }
 
-await gss.sendMessage(owner + "@s.whatsapp.net", { text: `*ɢsᴅ ʙᴏᴛᴡᴀ sᴇᴄsᴇssғᴜʟʟʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴛᴏ sᴇʀᴠᴇʀ*` });
-
 setInterval(setBio, 60000);
-
 
     gss.ev.on('creds.update', saveCreds)
 
