@@ -2414,16 +2414,26 @@ break;
 	    
 	    
 		      case 'mode': {
-    if (!isCreator) return m.reply(mess.owner);
-    if (args.length < 1) {
-        gss.sendPoll(m.chat, "Choose Bot Mode:", [`${prefix}mode public`, `${prefix}mode self`]);
+    if (!isCreator) throw mess.owner;
+
+    const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
+
+    if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
+        gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode}`));
     } else {
-        const q = args[0].toLowerCase();
-        gss.public = (q === 'public');
-        m.reply(`Bot mode changed to ${gss.public ? 'public' : 'self'}. ${mess.success}`);
+        const selectedMode = args[0].toLowerCase();
+
+        if (selectedMode === 'public' || selectedMode === 'self') {
+            gss[selectedMode] = true;
+            m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`);
+        } else if (selectedMode === 'onlygroup' || selectedMode === 'onlypc') {
+            global[selectedMode] = true;
+            m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`);
+        }
     }
 }
 break;
+
 
             
             case 'ping': {
