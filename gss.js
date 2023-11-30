@@ -931,7 +931,7 @@ case 'setppgroup':
 case 'sc':
             case 'script':
             case 'scriptbot':
-                uy = `https://github.com/sid238/Gssbotwa2`
+                uy = `https://github.com/gssbotwa/Gssbotwa2`
                 gss.sendMessage(m.chat, {
                     text: uy,
                     contextInfo: {
