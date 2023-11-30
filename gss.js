@@ -2598,7 +2598,7 @@ case 'getvideodoc':
   if (!urlls) throw `Maybe the message you replied to does not contain ytsearch results`;
 
   try {
-    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(urls[text - 1])}`;
+    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(urlls[text - 1])}`;
     const response = await fetch(apiURL);
     const data = await response.json();
 
