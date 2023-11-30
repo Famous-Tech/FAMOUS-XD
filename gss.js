@@ -1049,43 +1049,45 @@ case 'group': case 'grup': {
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
   if (args[0].toLowerCase() === 'close') {
-    await gss.groupSettingUpdate(m.chat, 'announcement').then((res) => m.reply(`Successfully Closed the Group`)).catch((err) => m.reply(jsonformat(err)));
+    await gss.groupSettingUpdate(m.chat, 'announcement').then((res) => m.reply(`Group Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
   } else if (args[0].toLowerCase() === 'open') {
-    await gss.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`Successfully Opened the Group`)).catch((err) => m.reply(jsonformat(err)));
+    await gss.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`Group Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Open`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Close`]);
+    gss.sendPoll(m.chat, "Choose Group Setting:", [`${prefix}group close`, `${prefix}group open`]);
   }
 }
 break;
+
 
 case 'editinfo': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
   if (args[0].toLowerCase() === 'open') {
-    await gss.groupSettingUpdate(m.chat, 'unlocked').then((res) => m.reply(`Successfully Opened Group Edit Info`)).catch((err) => m.reply(jsonformat(err)));
+    await gss.groupSettingUpdate(m.chat, 'unlocked').then((res) => m.reply(`Group Edit Info Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
   } else if (args[0].toLowerCase() === 'close') {
-    await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Successfully Closed Group Edit Info`)).catch((err) => m.reply(jsonformat(err)));
+    await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Group Edit Info Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Open`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Close`]);
+    gss.sendPoll(m.chat, "Choose Edit Info Setting:", [`${prefix}editinfo open`, `${prefix}editinfo close`]);
   }
 }
 break;
+
 
             case 'antilink': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
   if (args[0].toLowerCase() === "on") {
-    if (db.data.chats[m.chat].antilink) return m.reply(`Already Active Before`);
+    if (db.data.chats[m.chat].antilink) return m.reply(`Antilink Already Active`);
     db.data.chats[m.chat].antilink = true;
-    m.reply(`Antilink Active!`);
+    m.reply(`Antilink Activated!`);
   } else if (args[0].toLowerCase() === "off") {
-    if (!db.data.chats[m.chat].antilink) return m.reply(`Already Inactive Before`);
+    if (!db.data.chats[m.chat].antilink) return m.reply(`Antilink Already Inactive`);
     db.data.chats[m.chat].antilink = false;
     m.reply(`Antilink Deactivated!`);
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} On`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
+    gss.sendPoll(m.chat, "Choose Antilink Setting:", [`${prefix}antilink on`, `${prefix}antilink off`]);
   }
 }
 break;
@@ -1095,18 +1097,19 @@ case 'mute': {
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
   if (args[0].toLowerCase() === "on") {
-    if (db.data.chats[m.chat].mute) return m.reply(`Already Active Before`);
+    if (db.data.chats[m.chat].mute) return m.reply(`${gss.user.name} is already muted in this group`);
     db.data.chats[m.chat].mute = true;
     m.reply(`${gss.user.name} has been muted in this group!`);
   } else if (args[0].toLowerCase() === "off") {
-    if (!db.data.chats[m.chat].mute) return m.reply(`Already Inactive Before`);
+    if (!db.data.chats[m.chat].mute) return m.reply(`${gss.user.name} is already unmuted in this group`);
     db.data.chats[m.chat].mute = false;
     m.reply(`${gss.user.name} has been unmuted in this group!`);
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} On`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
+    gss.sendPoll(m.chat, "Choose Mute Setting:", [`${prefix}mute on`, `${prefix}mute off`]);
   }
 }
 break;
+
 
 case 'linkgroup': case 'linkgc': {
   if (!m.isGroup) throw mess.group;
@@ -1120,7 +1123,7 @@ case 'welcome':
 case 'left': {
     if (!groupAdmins && !isCreator) return m.reply(mess.admin);
     if (args.length < 1) return m.reply('enable/disable?');
-    
+
     // Check if chats[m.from] is an object, if not, initialize it
     if (typeof db.data.chats[m.from] !== 'object') db.data.chats[m.from] = {};
 
@@ -1133,9 +1136,12 @@ case 'left': {
     } else if (args[0] === 'disable') {
         db.data.chats[m.from].notification.status = false;
         m.reply(`${command} is disabled`);
+    } else {
+        gss.sendPoll(m.chat, "Choose Notification Setting:", [`${prefix}${command} enable`, `${prefix}${command} disable`]);
     }
 }
 break;
+
 case 'settexwelcome':
 case 'setwelcome': {
     if (!groupAdmins && !isCreator) return m.reply(mess.admin);
@@ -1198,10 +1204,11 @@ case 'anticall': {
         db.data.settings[botNumber].anticall = false;
         m.reply(`AntiCall Deactivated!`);
     } else {
-        gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} On`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} Off`]);
+        gss.sendPoll(m.chat, "Choose AntiCall Setting:", [`${prefix}anticall off`, `${prefix}anticall on`]);
     }
 }
 break;
+
 
 
             case 'delete': case 'del': {
@@ -2404,18 +2411,18 @@ break;
 
 
 	    
-		     case 'public': {
-                if (!isCreator) throw mess.owner
-                gss.public = true
-                m.reply('mode changed in to public. now all user use me!')
-            }
+		      case 'mode':
+                if (!isCreator) return m.reply(mess.owner)
+                if (args.length < 1) return m.reply(`Example ${prefix + command} public/self`)
+                if (q == 'public') {
+                    gss.public = true
+                    m.reply(mess.success)
+                } else if (q == 'self') {
+                    gss.public = false
+                    m.reply(mess.success)
+                }
             break
-            case 'self': {
-                if (!isCreator) throw mess.owner
-                gss.public = false
-                m.reply('mode changed in to private. now only owner can use me!')
-            }
-            break
+            
             case 'ping': {
   const reactionMessage = {
             react: {
@@ -2733,7 +2740,7 @@ if (!isCreator) throw mess.owner
 case 'gcsetting':
 if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
 if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-    const options = ['.group close', '.group open', '.revoke', '.mute', '.leave', '.editinfo', '.tagall','.antilink', '.linkgc'];
+    const options = ['.group', '.group', '.revoke', '.mute', '.leave', '.editinfo', '.tagall','.antilink', '.linkgc'];
     gss.sendPoll(m.chat, 'Select your preferences:', options);
     break;
 
@@ -2748,16 +2755,11 @@ if (!isCreator) throw mess.owner
   // Delay for 2 seconds
   setTimeout(() => {
     const options = [
-      '.Autoread on',
-      '.Autoread off',
-      '.Alwaysonline on',
-      '.Alwaysonline off',
-      '.Autotyping on',
-      '.Autotyping off',
-      '.Public',
-      '.self',
-      '.Anticall on',
-      '.Anticall off',
+      '.Autoread',
+      '.Alwaysonline',
+      '.Autotyping',
+      '.mode',
+      '.Anticall',
     ];
 
     gss.sendPoll(m.chat, 'Select your preferences:', options);
