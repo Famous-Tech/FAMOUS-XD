@@ -2768,7 +2768,7 @@ case 'onlypc': {
 break;
 
 case 'tiktok':
-  case 'tt':
+case 'tt':
 case 'tiktoknowm':
   try {
     if (!text) throw 'Enter Query Link!';
@@ -2783,9 +2783,17 @@ case 'tiktoknowm':
       const videoUrl = anu.result;
 
       const response = await axios.get(videoUrl, { responseType: 'arraybuffer' });
-      const mediaBuffer = Buffer.from(response.data);
+      const videoBuffer = Buffer.from(response.data);
 
-      await gss.sendMessage(m.chat, { video: mediaBuffer, mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
+      // Save the video to a temporary file
+      const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+      // Send the video using gss.sendMessage with the saved video
+      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
     } else {
       m.reply('Error: Unable to fetch TikTok video. Check the console logs for more details.');
     }
@@ -2794,6 +2802,44 @@ case 'tiktoknowm':
     m.reply('An error occurred while processing your request.');
   }
   break;
+
+//tik tok video in document
+case 'tiktokdoc':
+case 'ttdoc':
+case 'tiktoknowmdoc':
+  try {
+    if (!text) throw 'Enter Query Link!';
+
+    m.reply(mess.wait);
+
+    let anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok2?apikey=haikalgans&url=${encodeURIComponent(text)}`);
+
+    console.log('TikTok API Response:', anu);
+
+    if (anu.status === 200 && anu.message === 'success' && anu.result) {
+      const videoUrl = anu.result;
+
+      const response = await axios.get(videoUrl, { responseType: 'arraybuffer' });
+      const videoBuffer = Buffer.from(response.data);
+
+      // Save the video to a temporary file
+      const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+      // Send the video as a document using gss.sendMessage with the saved video
+      await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', fileName: 'tiktok_video.mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } else {
+      m.reply('Error: Unable to fetch TikTok video. Check the console logs for more details.');
+    }
+  } catch (error) {
+    console.error(error);
+    m.reply('An error occurred while processing your request.');
+  }
+  break;
+
 
 
  case 'attp':
