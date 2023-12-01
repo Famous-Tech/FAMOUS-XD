@@ -123,30 +123,31 @@ gss.ev.on("call", async (json) => {
         }
     })
     
-// Listen for poll updates
+// Define the getMessage function
+async function getMessage(remoteJid, id) {
+    if (store) {
+        const msg = await store.loadMessage(remoteJid, id);
+        return msg?.message;
+    }
+    return {
+        conversation: "Hai im gss botwa"
+    };
+}
+
+// Modify the usage of getMessage in your existing code
 gss.ev.on('messages.update', async chatUpdate => {
     for (const { key, update } of chatUpdate) {
         if (update.pollUpdates && key.fromMe) {
-            const pollCreation = await getMessage(key);
-
+            const pollCreation = await getMessage(key.remoteJid, key.id);
             if (pollCreation) {
                 const pollUpdate = await getAggregateVotesInPollMessage({
                     message: pollCreation,
                     pollUpdates: update.pollUpdates,
                 });
-
-                // Check if the poll has any votes
-                if (pollUpdate.length > 0) {
-                    // Identify the command based on the poll results
-                    const command = determineCommand(pollUpdate);
-
-                    // Handle audio and video responses
-                    if (command === 'audio') {
-                        handleAudioResponse(chatUpdate);
-                    } else if (command === 'video') {
-                        handleVideoResponse(chatUpdate);
-                    }
-                }
+                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
+                if (toCmd == undefined) return;
+                var prefCmd = prefix + toCmd;
+                gss.appenTextMessage(prefCmd, chatUpdate);
             }
         }
     }
