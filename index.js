@@ -123,59 +123,33 @@ gss.ev.on("call", async (json) => {
         }
     })
     
-// Define the getMessage function
-async function getMessage(remoteJid, id) {
-    if (store) {
-        const msg = await store.loadMessage(remoteJid, id);
-        return msg?.message;
-    }
-    return {
-        conversation: "Hai im gss botwa"
-    };
-}
-
-// Modify the usage of getMessage in your existing code
-gss.ev.on('messages.update', async chatUpdate => {
-    for (const { key, update } of chatUpdate) {
-        if (update.pollUpdates && key.fromMe) {
-            const pollCreation = await getMessage(key.remoteJid, key.id);
-            if (pollCreation) {
-                const pollUpdate = await getAggregateVotesInPollMessage({
-                    message: pollCreation,
-                    pollUpdates: update.pollUpdates,
-                });
-                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
-                if (toCmd == undefined) return;
-                var prefCmd = prefix + toCmd;
-                gss.appenTextMessage(prefCmd, chatUpdate);
-            }
+ // respon cmd pollMessage
+    async function getMessage(key){
+        if (store) {
+            const msg = await store.loadMessage(key.remoteJid, key.id)
+            return msg?.message
+        }
+        return {
+            conversation: "Hai im gss botwa"
         }
     }
-});
-
-// Function to determine the majority vote command
-function determineCommand(pollUpdate) {
-    const audioVotes = pollUpdate.filter(vote => vote.option === '.audio').length;
-    const videoVotes = pollUpdate.filter(vote => vote.option === '.video').length;
-
-    if (audioVotes > videoVotes) {
-        return 'audio';
-    } else {
-        return 'video';
-    }
-}
-
-// Function to handle audio response
-function handleAudioResponse(chatUpdate) {
-    // Your logic to send audio response
-    console.log('Audio response triggered');
-}
-
-// Function to handle video response
-function handleVideoResponse(chatUpdate) {
-    // Your logic to send video response
-    console.log('Video response triggered');
-}
+    gss.ev.on('messages.update', async chatUpdate => {
+        for(const { key, update } of chatUpdate) {
+			if(update.pollUpdates && key.fromMe) {
+				const pollCreation = await getMessage(key)
+				if(pollCreation) {
+				    const pollUpdate = await getAggregateVotesInPollMessage({
+							message: pollCreation,
+							pollUpdates: update.pollUpdates,
+						})
+	                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name
+	                if (toCmd == undefined) return
+                    var prefCmd = prefix+toCmd
+	                gss.appenTextMessage(prefCmd, chatUpdate)
+				}
+			}
+		}
+    })
     
     // Group Update
     gss.ev.on('groups.update', async pea => {
