@@ -620,7 +620,7 @@ during ${clockString(new Date - user.afkTime)}`)
         const cmdBug = ["bug","report"]
         const cmdAi = ["ai","gpt","dalle","bard","remini"]
         const cmdTool = ["tempmail","checkmail","info","trt","tts"]
-        const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke","poll"]
+        const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke",""]
  const cmdDown = ["facebook","apk","mediafire","gdrive","insta","pinterestdl","ytmp3","ytmp4","gitclone"]
  const cmdSearch = ["play","yts","imdb","google","gimage","pinterest","wallpaper","wikimedia","ytsearch","ringtone","weather","lyrics"]
         const cmdFun = ["delttt","tictactoe"]
@@ -1710,6 +1710,28 @@ for (let i = 0; i < data.data.length; i++) {
   }
 }
 break;
+
+// Function to get aggregate votes in a poll message
+async function getAggregateVotesInPollMessage({ message, pollUpdates }) {
+    const totalVotes = {};
+
+    for (const update of pollUpdates) {
+        const pollMessage = await getMessage(message.key.remoteJid, update.id);
+
+        for (const vote of pollMessage.pollMessageVoters) {
+            if (!totalVotes[vote.option]) {
+                totalVotes[vote.option] = [];
+            }
+
+            totalVotes[vote.option].push(vote.voter);
+        }
+    }
+
+    return Object.keys(totalVotes).map(option => ({
+        option,
+        voters: totalVotes[option],
+    }));
+}
 
 
 case 'play2': {
