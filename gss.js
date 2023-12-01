@@ -3636,10 +3636,15 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
                 break
                 
             
-            case 'menu': case 'help': case 'list': case 'listmenu': {
-                gss.sendPoll(m.chat, "List Menu",['.Allmenu','.Groupmenu','.Downloadmenu','.Searchmenu','.Funmenu','.Toolmenu','.Convertmenu','.aimenu','.Mainmenu','.Ownermenu'])
-            }
-            break
+            case 'menu':
+case 'help':
+case 'list':
+case 'listmenu':
+{
+    gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
+}
+break;
+
           // Assuming you have a getRandomSymbol function to generate a random symbol
 function getRandomSymbol() {
     const symbols = ['◉', '★', '◎', '✯','✯','✰','◬','✵','✦']; // Add more symbols as needed
