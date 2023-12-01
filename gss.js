@@ -1665,7 +1665,7 @@ case 'getvideodoc':
 
       // Send the video as a document with the correct title filename
       const videoFileBuffer = fs.readFileSync(`./${randomName}`);
-      await gss.sendMessage(m.chat, { document: videoFileBuffer, mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4`, caption: ' ' }, { quoted: m });
+      await gss.sendMessage(m.chat, { document: videoFileBuffer, mimetype: 'video/mp4', fileName: `${titleAsFilename}.mp4`, caption: 'downloaded by gss botwa ' }, { quoted: m });
 
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
