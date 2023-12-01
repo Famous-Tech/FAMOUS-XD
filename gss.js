@@ -1635,6 +1635,49 @@ case 'getvideo':
     m.reply('Unexpected error occurred.');
   }
   break;
+  
+case 'getvideodoc':
+  if (!text) throw `Example: ${prefix + command} 1`;
+  if (!m.quoted) return m.reply('Reply to a message');
+  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  let urlls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  if (!urlls) throw `Maybe the message you replied to does not contain ytsearch results`;
+
+  try {
+    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(urlls[text - 1])}`;
+    const response = await fetch(apiURL);
+    const data = await response.json();
+
+    console.log('Full API Response:', data);
+
+    if (data && data.downloadUrl) {
+      // Fetch the video content
+      const videoBufferReq = await fetch(data.downloadUrl);
+      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+      const videoBuffer = Buffer.from(videoArrayBuffer);
+
+      // Save the video to a temporary file
+      const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+
+await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${data.title}.mp4` }, { quoted: m });
+
+
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } else if (data && data.error) {
+      return m.reply(`Error: ${data.error}`);
+    } else {
+      console.error('Invalid API response:', data);
+      m.reply('Error retrieving video details.');
+    }
+  } catch (error) {
+    console.error('Error during getvideo:', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
 
 
 case 'getaudio':
@@ -2588,61 +2631,6 @@ case 'chatgpt':
         console.error(error);
       }
       break;
-
-    
-case 'getvideodoc':
-  if (!text) throw `Example: ${prefix + command} 1`;
-  if (!m.quoted) return m.reply('Reply to a message');
-  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
-  let urlls = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
-  if (!urlls) throw `Maybe the message you replied to does not contain ytsearch results`;
-
-  try {
-    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(urlls[text - 1])}`;
-    const response = await fetch(apiURL);
-    const data = await response.json();
-
-    console.log('Full API Response:', data);
-
-    if (data && data.downloadUrl) {
-      // Fetch the video content
-      const videoBufferReq = await fetch(data.downloadUrl);
-      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-      const videoBuffer = Buffer.from(videoArrayBuffer);
-
-      // Save the video to a temporary file
-      const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
-      fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-      // Stylish caption with markdown formatting
-      const stylishCaption = `
-        🌟 *Title:* _${data.title}_
-        👀 *Views:* _${data.views}_
-        ⏱️ *Duration:* _${data.duration}_
-        📅 *Upload Date:* _${data.uploadDate}_
-        📺 *YouTube URL:* ${data.youtubeUrl}
-        📢 *Upload Channel:* _${data.uploadChannel}_
-        
-        🤖 Downloaded by *gss botwa*
-      `;
-
-      // Send the video as a document with the saved video and caption
-await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: 'video.mp4', caption: stylishCaption }, { quoted: m });
-
-
-      // Delete the temporary file
-      fs.unlinkSync(`./${randomName}`);
-    } else if (data && data.error) {
-      return m.reply(`Error: ${data.error}`);
-    } else {
-      console.error('Invalid API response:', data);
-      m.reply('Error retrieving video details.');
-    }
-  } catch (error) {
-    console.error('Error during getvideo:', error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
 
 
 
