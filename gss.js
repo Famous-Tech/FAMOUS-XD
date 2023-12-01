@@ -1660,17 +1660,12 @@ case 'getvideodoc':
       const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
       fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-      console.log('Video saved as:', randomName);
-
       const titleAsFilename = data.title.replace(/[/\\?%*:|"<>]/g, ''); // Remove invalid characters
       console.log('Title as Filename:', titleAsFilename);
 
-      // Read the video content again with the correct title filename
-      const videoFileBuffer = fs.readFileSync(`./${randomName}`);
-      console.log('Video Buffer Read:', videoFileBuffer);
-
       // Send the video as a document with the correct title filename
-      await gss.sendMessage(m.chat, { document: videoFileBuffer, mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4` }, { quoted: m });
+      const videoFileBuffer = fs.readFileSync(`./${randomName}`);
+      await gss.sendMessage(m.chat, { document: videoFileBuffer, mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4`, caption: ' ' }, { quoted: m });
 
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
@@ -1684,7 +1679,7 @@ case 'getvideodoc':
     console.error('Error during getvideo:', error);
     m.reply('Unexpected error occurred.');
 }
-  break;
+break
 
 
 case 'getaudio':
