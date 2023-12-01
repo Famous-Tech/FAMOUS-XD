@@ -1733,6 +1733,27 @@ case 'play2': {
 
             // Send a poll with options 'audio' and 'video'
             gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['audio', 'video']);
+
+            // Set up an event listener for poll updates
+            gss.ev.on('messages.update', async (chatUpdate) => {
+                const pollUpdate = await getAggregateVotesInPollMessage({
+                    message: topResult,
+                    pollUpdates: chatUpdate[0].update.pollUpdates,
+                });
+
+                const selectedOption = determineSelectedOption(pollUpdate);
+
+                if (selectedOption === 'audio') {
+                    // Handle audio response
+                    const audioURL = await getAudioURL(topResult); // Replace with your logic
+                    handleAudioResponse(audioURL);
+                } else if (selectedOption === 'video') {
+                    // Handle video response
+                    const videoURL = await getVideoURL(topResult); // Replace with your logic
+                    handleVideoResponse(videoURL);
+                }
+            });
+
         } else {
             console.error('Invalid API response:', data);
             return m.reply('Error retrieving search results.');
@@ -1741,22 +1762,8 @@ case 'play2': {
         console.error('Error during yts:', error);
         return m.reply('Unexpected error occurred.');
     }
-
-    // Handle the poll response
-    const response = text.toLowerCase();
-    const videoURL = /* URL based on your logic */
-    
-    if (response === 'audio') {
-        // Handle audio download and send
-        // Example: await handleAudioDownloadAndSend(videoURL, m);
-        m.reply('You voted for audio!');
-    } else if (response === 'video') {
-        // Handle video download and send
-        // Example: await handleVideoDownloadAndSend(videoURL, m);
-        m.reply('You voted for video!');
-    }
-    break;
 }
+break;
 
 
 
