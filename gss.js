@@ -1744,7 +1744,7 @@ case 'play2': {
 
     // Handle the poll response
     const response = text.toLowerCase();
-    const videoURL = /* URL based on your logic */;
+    const videoURL = /* URL based on your logic */
     
     if (response === 'audio') {
         // Handle audio download and send
