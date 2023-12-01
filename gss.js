@@ -1712,7 +1712,6 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
-// Your play command
 case 'play2': {
     if (!text) {
         return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1734,7 +1733,6 @@ case 'play2': {
 
             // Send a poll with options 'audio' and 'video'
             gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['audio', 'video']);
-
         } else {
             console.error('Invalid API response:', data);
             return m.reply('Error retrieving search results.');
@@ -1743,8 +1741,23 @@ case 'play2': {
         console.error('Error during yts:', error);
         return m.reply('Unexpected error occurred.');
     }
+
+    // Handle the poll response
+    const response = text.toLowerCase();
+    const videoURL = /* URL based on your logic */;
+    
+    if (response === 'audio') {
+        // Handle audio download and send
+        // Example: await handleAudioDownloadAndSend(videoURL, m);
+        m.reply('You voted for audio!');
+    } else if (response === 'video') {
+        // Handle video download and send
+        // Example: await handleVideoDownloadAndSend(videoURL, m);
+        m.reply('You voted for video!');
+    }
+    break;
 }
-break;
+
 
 
 
