@@ -1585,7 +1585,7 @@ case 'ytmp4doc':
         fs.writeFileSync(`./${randomName}`, videoBuffer);
 
         // Send the video using gss.sendMessage with the saved video as a document
-        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${result.title}.mp4`, caption: ' downloaded by gss botwa' }, { quoted: m });
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', fileName: `${result.title}.mp4`, caption: ' downloaded by gss botwa' }, { quoted: m });
 
         // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
