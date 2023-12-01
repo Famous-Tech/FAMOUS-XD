@@ -1661,7 +1661,11 @@ case 'getvideodoc':
       fs.writeFileSync(`./${randomName}`, videoBuffer);
 
 
-await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${data.title}.mp4` }, { quoted: m });
+
+const titleAsFilename = data.title.replace(/[/\\?%*:|"<>]/g, ''); // Remove invalid characters
+
+await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4` }, { quoted: m });
+
 
 
 
