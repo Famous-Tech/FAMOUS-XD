@@ -1542,6 +1542,136 @@ case 'ytmp3':
 
 
 
+case 'ytvdoc':
+case 'videodoc':
+case 'ytmp4doc':
+  try {
+    if (!text) {
+      m.reply('Enter YouTube Video Link or Search Query!');
+      return;
+    }
+
+    m.reply(mess.wait);
+
+    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
+    const req = await fetch(apiURL);
+
+    console.log('Response Status:', req.status);
+
+    const contentType = req.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+
+    if (req.status === 404) {
+      return m.reply('Video not found.');
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result = await req.json().catch(async (error) => {
+        console.error('Error parsing JSON:', await req.text());
+        m.reply('Unexpected error occurred.');
+        throw error;
+      });
+
+      console.log('Full API Response:', result);
+
+      if (result && result.downloadUrl) {
+        // Fetch the video content
+        const videoBufferReq = await fetch(result.downloadUrl);
+        const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+        const videoBuffer = Buffer.from(videoArrayBuffer);
+
+        // Save the video to a temporary file
+        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
+        fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+        // Send the video using gss.sendMessage with the saved video as a document
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${result.title}.mp4`, caption: ' downloaded by gss botwa' }, { quoted: m });
+
+        // Delete the temporary file
+        fs.unlinkSync(`./${randomName}`);
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('Enter YouTube Video Link or Search Query!');
+      }
+    } else {
+      console.error('Invalid Content-Type:', contentType);
+      m.reply('Unexpected response format.');
+    }
+  } catch (error) {
+    console.error('Error during :', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+
+
+case 'ytadoc':
+case 'songsoc':
+case 'ytmp3doc':
+  try {
+    if (!text) {
+      m.reply('Enter YouTube Video Link or Search Query!');
+      return;
+    }
+
+    m.reply(mess.wait);
+
+    const ytaAPIURL = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
+    const apiURL = `${ytaAPIURL}${encodeURIComponent(text)}`;
+    const req = await fetch(apiURL);
+
+    console.log('Response Status:', req.status);
+
+    const contentType = req.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+
+    if (req.status === 404) {
+      return m.reply('Audio not found.');
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result = await req.json().catch(async (error) => {
+        console.error('Error parsing JSON:', await req.text());
+        m.reply('Unexpected error occurred.');
+        throw error;
+      });
+
+      console.log('Full API Response:', result);
+
+      if (result && result.downloadURL) {
+        // Fetch the audio content
+        const audioBufferReq = await fetch(result.downloadURL);
+        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+        const audioBuffer = Buffer.from(audioArrayBuffer);
+
+        // Save the audio to a temporary file
+        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp3`;
+        fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+        // Send the audio using gss.sendMessage with the saved audio as a document
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', fileName: `${result.title}.mp3`, caption: ' downloaded by gss botwa' }, { quoted: m });
+
+        // Delete the temporary file
+        fs.unlinkSync(`./${randomName}`);
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('Enter YouTube Video Link or Search Query!');
+      }
+    } else {
+      console.error('Invalid Content-Type:', contentType);
+      m.reply('Unexpected response format.');
+    }
+  } catch (error) {
+    console.error('Error during yta:', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+
+
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
