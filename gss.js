@@ -1712,6 +1712,51 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
+case 'play2': {
+  if (!text) {
+    return m.reply('Enter YouTube Video Link or Search Query!');
+  }
+
+  m.reply(mess.wait);
+
+  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
+  try {
+    const response = await fetch(apiURL);
+    const data = await response.json();
+
+    if (data.type === 'search' && Array.isArray(data.data) && data.data.length > 0) {
+      const topResult = data.data[0];
+
+      // Extract relevant information
+      const { title, views, duration, uploadDate, url } = topResult;
+
+      // Define audio and video endpoints
+      const audioEndpoint = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
+      const videoEndpoint = 'https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=';
+
+      // Create audio and video URLs
+      const audioURL = audioEndpoint + encodeURIComponent(url);
+      const videoURL = videoEndpoint + encodeURIComponent(url);
+
+      // Save the audio and video to temporary files (you may use the appropriate methods for saving files)
+      // ...
+
+      // Send a poll with options including title, views, duration, and upload date
+      gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [`.audio ${audioURL}`, `.video ${videoURL}`]);
+
+    } else {
+      console.error('Invalid API response:', data);
+      return m.reply('Error retrieving search results.');
+    }
+  } catch (error) {
+    console.error('Error during yts:', error);
+    return m.reply('Unexpected error occurred.');
+  }
+}
+break;
+
+
 case 'play': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
