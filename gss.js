@@ -2771,7 +2771,7 @@ case 'tiktok':
 case 'tt':
 case 'tiktoknowm':
   try {
-    if (!text) throw 'Enter Query Link!';
+    if (!text) m.reply ('Enter Query Link!');
 
     m.reply(mess.wait);
 
@@ -2808,7 +2808,7 @@ case 'tiktokdoc':
 case 'ttdoc':
 case 'tiktoknowmdoc':
   try {
-    if (!text) throw 'Enter Query Link!';
+    if (!text) m.reply('Enter Query Link!');
 
     m.reply(mess.wait);
 
