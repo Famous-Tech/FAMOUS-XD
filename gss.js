@@ -1734,12 +1734,12 @@ case 'play2':
 
       // Create buttons for audio and video options
       const buttons = [
-        { text: 'Audio', id: `.audio ${url}` },
-        { text: 'Video', id: `.video ${url}` }
+        { buttonId: `.audio ${url}`, buttonText: 'Audio' },
+        { buttonId: `.video ${url}`, buttonText: 'Video' }
       ];
 
       // Send buttons with video details
-      await gss.sendButtons(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, buttons);
+      await gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, buttons);
 
     } else {
       console.error('Invalid API response:', data);
