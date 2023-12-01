@@ -1477,6 +1477,7 @@ fs.unlinkSync(`./${randomName}`);
 case 'yta':
 case 'song':
 case 'ytmp3':
+  case 'audio':
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
@@ -1731,7 +1732,7 @@ case 'play': {
       const { title, views, duration, uploadDate, url } = topResult;
 
       // Send a poll with options including title, views, duration, and upload date
-      gss.sendPoll(m.chat, `Select the action for the video:\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [`.getaudio ${url}`, `.getaudiodoc ${url}`, `.getvideo ${url}`, `.getvideodoc ${url}`]);
+      gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [`.audio ${url}`, `.ytmp3doc ${url}`, `.video ${url}`, `.ytmp4doc ${url}`]);
 
     } else {
       console.error('Invalid API response:', data);
