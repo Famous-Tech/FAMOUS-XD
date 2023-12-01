@@ -1711,7 +1711,7 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
-case 'play': {
+case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
@@ -1728,10 +1728,10 @@ case 'play': {
       const topResult = data.data[0];
 
       // Extract relevant information
-      const { title, views, duration, uploadDate } = topResult;
+      const { title, views, duration, uploadDate, url } = topResult;
 
       // Send a poll with options including title, views, duration, and upload date
-      gss.sendPoll(m.chat, `Select the action for the video:\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['getaudio', 'getvideo']);
+      gss.sendPoll(m.chat, `Select the action for the video:\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [`.getaudio ${url}`, `.getaudiodoc ${url}`, `.getvideo ${url}`, `.getvideodoc ${url}`]);
 
     } else {
       console.error('Invalid API response:', data);
@@ -1743,6 +1743,7 @@ case 'play': {
   }
 }
 break;
+
 
 
 case 'getvideo':
