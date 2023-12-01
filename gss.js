@@ -1727,6 +1727,54 @@ case 'getmp3':
   }
   break;
 
+case 'getaudiodoc':
+case 'getmusicdoc':
+case 'getsongdoc':
+case 'getmp3doc':
+  if (!text) throw `Example: ${prefix + command} 1`;
+  if (!m.quoted) return m.reply('Reply to a message');
+  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  let urlss = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  if (!urlss) throw `Maybe the message you replied to does not contain ytsearch results`;
+
+  try {
+    const ytaAPIURL = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
+    const apiURL = `${ytaAPIURL}${encodeURIComponent(urlss[text - 1])}`;
+    const response = await fetch(apiURL);
+    const data = await response.json();
+
+    console.log('Full API Response:', data);
+
+    if (data && data.downloadURL) {
+      // Fetch the audio content
+      const audioBufferReq = await fetch(data.downloadURL);
+      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+      const audioBuffer = Buffer.from(audioArrayBuffer);
+
+      // Save the audio to a temporary file
+      const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
+      fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+      const titleAsFilename = data.title.replace(/[/\\?%*:|"<>]/g, ''); // Remove invalid characters
+      console.log('Title as Filename:', titleAsFilename);
+
+      // Send the audio as an MP3 document with the correct title filename
+      const audioFileBuffer = fs.readFileSync(`./${randomName}`);
+      await gss.sendMessage(m.chat, { document: audioFileBuffer, mimetype: 'audio/mp3', fileName: `${titleAsFilename}.mp3`, caption: 'downloaded by gss botwa' }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } else if (data && data.error) {
+      return m.reply(`Error: ${data.error}`);
+    } else {
+      console.error('Invalid API response:', data);
+      m.reply('Error retrieving audio details.');
+    }
+  } catch (error) {
+    console.error('Error during getaudio:', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
 
 
 
