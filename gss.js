@@ -1739,11 +1739,11 @@ case 'play2': {
       const audioURL = audioEndpoint + encodeURIComponent(url);
       const videoURL = videoEndpoint + encodeURIComponent(url);
 
-      // Save the audio and video to temporary files (you may use the appropriate methods for saving files)
-      // ...
-
       // Send a poll with options including title, views, duration, and upload date
-      gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [`.audio ${audioURL}`, `.video ${videoURL}`]);
+      gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [
+        { button: `.audio ${audioURL}`, data: 'audio' },
+        { button: `.video ${videoURL}`, data: 'video' },
+      ]);
 
     } else {
       console.error('Invalid API response:', data);
@@ -1755,6 +1755,7 @@ case 'play2': {
   }
 }
 break;
+
 
 
 case 'play': {
