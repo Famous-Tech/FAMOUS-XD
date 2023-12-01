@@ -1712,9 +1712,10 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
-case 'play2': {
+case 'play2':
   if (!text) {
-    return m.reply('Enter YouTube Video Link or Search Query!');
+    m.reply('Enter YouTube Video Link or Search Query!');
+    return;
   }
 
   m.reply(mess.wait);
@@ -1731,19 +1732,14 @@ case 'play2': {
       // Extract relevant information
       const { title, views, duration, uploadDate, url } = topResult;
 
-      // Define audio and video endpoints
-      const audioEndpoint = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
-      const videoEndpoint = 'https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=';
+      // Create buttons for audio and video options
+      const buttons = [
+        { text: 'Audio', id: `.audio ${url}` },
+        { text: 'Video', id: `.video ${url}` }
+      ];
 
-      // Create audio and video URLs
-      const audioURL = audioEndpoint + encodeURIComponent(url);
-      const videoURL = videoEndpoint + encodeURIComponent(url);
-
-      // Send a poll with options including title, views, duration, and upload date
-      gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [
-        { button: `.audio ${audioURL}`, data: 'audio' },
-        { button: `.video ${videoURL}`, data: 'video' },
-      ]);
+      // Send buttons with video details
+      await gss.sendButtons(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, buttons);
 
     } else {
       console.error('Invalid API response:', data);
@@ -1753,8 +1749,8 @@ case 'play2': {
     console.error('Error during yts:', error);
     return m.reply('Unexpected error occurred.');
   }
-}
-break;
+  break;
+
 
 
 
