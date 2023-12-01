@@ -918,7 +918,7 @@ case 'sc':
 
  case 'setimgmenu':
             {
-                if (!ireator) return m.reply(mess.owner)
+                if (!iCreator) return m.reply(mess.owner)
                 let delb = await gss.downloadAndSaveMediaMessage(quoted)
                 await fsx.copy(delb, './gss.jpg')
                 fs.unlinkSync(delb)
