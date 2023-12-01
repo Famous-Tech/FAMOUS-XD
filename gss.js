@@ -1712,6 +1712,33 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
+case 'play2':{
+  if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
+ 
+  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+  const topResult = data.data[0];
+  const { title, url } = topResult;
+  
+  gss.sendPoll(m.chat, `Tujhe ka need he ?\n${title}`,
+    [`${command.charAt(0).toUpperCase() + command.slice(1)} Audio ${url}`,
+    `${command.charAt(0).toUpperCase() + command.slice(1)} Video ${url}`]);
+ 
+  if (args[0].toLowerCase() === 'audio') {
+    //Add Logic to Download Auduo
+    const yturl = args[1]
+    m.reply(`Ye URL ko tera Auduo Downloader API me pass kar ${yturl}`)
+
+  } else if (args[0].toLowerCase() === 'video') {
+    //Add Logic To Download Video
+    const yturl = args[1]
+    m.reply(`Ye URL ko tera Video Downloader API me pass kar ${yturl}`)
+
+  } else {
+    
+  }
+}
+break;
+
 case 'play': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
