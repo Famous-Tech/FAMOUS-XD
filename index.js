@@ -123,33 +123,58 @@ gss.ev.on("call", async (json) => {
         }
     })
     
-    // respon cmd pollMessage
-    async function getMessage(key){
-        if (store) {
-            const msg = await store.loadMessage(key.remoteJid, key.id)
-            return msg?.message
-        }
-        return {
-            conversation: "Hai im gss botwa"
+// Listen for poll updates
+gss.ev.on('messages.update', async chatUpdate => {
+    for (const { key, update } of chatUpdate) {
+        if (update.pollUpdates && key.fromMe) {
+            const pollCreation = await getMessage(key);
+
+            if (pollCreation) {
+                const pollUpdate = await getAggregateVotesInPollMessage({
+                    message: pollCreation,
+                    pollUpdates: update.pollUpdates,
+                });
+
+                // Check if the poll has any votes
+                if (pollUpdate.length > 0) {
+                    // Identify the command based on the poll results
+                    const command = determineCommand(pollUpdate);
+
+                    // Handle audio and video responses
+                    if (command === 'audio') {
+                        handleAudioResponse(chatUpdate);
+                    } else if (command === 'video') {
+                        handleVideoResponse(chatUpdate);
+                    }
+                }
+            }
         }
     }
-    gss.ev.on('messages.update', async chatUpdate => {
-        for(const { key, update } of chatUpdate) {
-			if(update.pollUpdates && key.fromMe) {
-				const pollCreation = await getMessage(key)
-				if(pollCreation) {
-				    const pollUpdate = await getAggregateVotesInPollMessage({
-							message: pollCreation,
-							pollUpdates: update.pollUpdates,
-						})
-	                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name
-	                if (toCmd == undefined) return
-                    var prefCmd = prefix+toCmd
-	                gss.appenTextMessage(prefCmd, chatUpdate)
-				}
-			}
-		}
-    })
+});
+
+// Function to determine the majority vote command
+function determineCommand(pollUpdate) {
+    const audioVotes = pollUpdate.filter(vote => vote.option === '.audio').length;
+    const videoVotes = pollUpdate.filter(vote => vote.option === '.video').length;
+
+    if (audioVotes > videoVotes) {
+        return 'audio';
+    } else {
+        return 'video';
+    }
+}
+
+// Function to handle audio response
+function handleAudioResponse(chatUpdate) {
+    // Your logic to send audio response
+    console.log('Audio response triggered');
+}
+
+// Function to handle video response
+function handleVideoResponse(chatUpdate) {
+    // Your logic to send video response
+    console.log('Video response triggered');
+}
     
     // Group Update
     gss.ev.on('groups.update', async pea => {
