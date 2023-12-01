@@ -1660,14 +1660,12 @@ case 'getvideodoc':
       const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
       fs.writeFileSync(`./${randomName}`, videoBuffer);
 
+      console.log('Video saved as:', randomName); // Add this line to check if the video is saved successfully
 
+      const titleAsFilename = data.title.replace(/[/\\?%*:|"<>]/g, ''); // Remove invalid characters
+      console.log('Title as Filename:', titleAsFilename); // Add this line to check the title used as the filename
 
-const titleAsFilename = data.title.replace(/[/\\?%*:|"<>]/g, ''); // Remove invalid characters
-
-await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4` }, { quoted: m });
-
-
-
+      await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4` }, { quoted: m });
 
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
@@ -1677,10 +1675,10 @@ await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mi
       console.error('Invalid API response:', data);
       m.reply('Error retrieving video details.');
     }
-  } catch (error) {
+} catch (error) {
     console.error('Error during getvideo:', error);
     m.reply('Unexpected error occurred.');
-  }
+}
   break;
 
 
