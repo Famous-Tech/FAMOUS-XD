@@ -1711,7 +1711,7 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
-case 'yts': {
+case 'play': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
