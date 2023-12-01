@@ -1734,12 +1734,12 @@ case 'getmp3doc':
   if (!text) throw `Example: ${prefix + command} 1`;
   if (!m.quoted) return m.reply('Reply to a message');
   if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
-  let urlss = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
-  if (!urlss) throw `Maybe the message you replied to does not contain ytsearch results`;
+  let urllss = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
+  if (!urllss) throw `Maybe the message you replied to does not contain ytsearch results`;
 
   try {
     const ytaAPIURL = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
-    const apiURL = `${ytaAPIURL}${encodeURIComponent(urlss[text - 1])}`;
+    const apiURL = `${ytaAPIURL}${encodeURIComponent(urllss[text - 1])}`;
     const response = await fetch(apiURL);
     const data = await response.json();
 
