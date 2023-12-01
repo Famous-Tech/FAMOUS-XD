@@ -1711,6 +1711,38 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
+case 'play': {
+  if (!text) {
+    return m.reply('Enter YouTube Video Link or Search Query!');
+  }
+
+  m.reply(mess.wait);
+
+  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
+  try {
+    const response = await fetch(apiURL);
+    const data = await response.json();
+
+    if (data.type === 'search' && Array.isArray(data.data) && data.data.length > 0) {
+      const topResult = data.data[0];
+
+      // Extract relevant information
+      const { title, views, duration, uploadDate } = topResult;
+
+      // Send a poll with options including title, views, duration, and upload date
+      gss.sendPoll(m.chat, `Select the action for the video:\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['getaudio', 'getvideo']);
+
+    } else {
+      console.error('Invalid API response:', data);
+      return m.reply('Error retrieving search results.');
+    }
+  } catch (error) {
+    console.error('Error during yts:', error);
+    return m.reply('Unexpected error occurred.');
+  }
+}
+break;
 
 
 case 'getvideo':
