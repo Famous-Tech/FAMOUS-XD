@@ -1711,6 +1711,17 @@ for (let i = 0; i < data.data.length; i++) {
 }
 break;
 
+// Define the getMessage function
+async function getMessage(remoteJid, id) {
+    if (store) {
+        const msg = await store.loadMessage(remoteJid, id);
+        return msg?.message;
+    }
+    return {
+        conversation: "Hai im gss botwa"
+    };
+}
+
 // Function to get aggregate votes in a poll message
 async function getAggregateVotesInPollMessage({ message, pollUpdates }) {
     const totalVotes = {};
@@ -1733,7 +1744,26 @@ async function getAggregateVotesInPollMessage({ message, pollUpdates }) {
     }));
 }
 
+// Modify the usage of getMessage in your existing code
+gss.ev.on('messages.update', async chatUpdate => {
+    for (const { key, update } of chatUpdate) {
+        if (update.pollUpdates && key.fromMe) {
+            const pollCreation = await getMessage(key.remoteJid, key.id);
+            if (pollCreation) {
+                const pollUpdate = await getAggregateVotesInPollMessage({
+                    message: pollCreation,
+                    pollUpdates: update.pollUpdates,
+                });
+                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
+                if (toCmd == undefined) return;
+                var prefCmd = prefix + toCmd;
+                gss.appendTextMessage(prefCmd, chatUpdate);
+            }
+        }
+    }
+});
 
+// Your existing case 'play2' code with the correction
 case 'play2': {
     if (!text) {
         return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1756,26 +1786,6 @@ case 'play2': {
             // Send a poll with options 'audio' and 'video'
             gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['audio', 'video']);
 
-            // Set up an event listener for poll updates
-            gss.ev.on('messages.update', async (chatUpdate) => {
-                const pollUpdate = await getAggregateVotesInPollMessage({
-                    message: topResult,
-                    pollUpdates: chatUpdate[0].update.pollUpdates,
-                });
-
-                const selectedOption = determineSelectedOption(pollUpdate);
-
-                if (selectedOption === 'audio') {
-                    // Handle audio response
-                    const audioURL = await getAudioURL(topResult); // Replace with your logic
-                    handleAudioResponse(audioURL);
-                } else if (selectedOption === 'video') {
-                    // Handle video response
-                    const videoURL = await getVideoURL(topResult); // Replace with your logic
-                    handleVideoResponse(videoURL);
-                }
-            });
-
         } else {
             console.error('Invalid API response:', data);
             return m.reply('Error retrieving search results.');
@@ -1786,6 +1796,7 @@ case 'play2': {
     }
 }
 break;
+
 
 
 
