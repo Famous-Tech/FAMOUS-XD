@@ -1739,7 +1739,7 @@ case 'play2':
       ];
 
       // Send buttons with video details
-      await gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, buttons);
+      await gss.sendMessage(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, buttons);
 
     } else {
       console.error('Invalid API response:', data);
