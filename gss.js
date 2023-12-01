@@ -1712,44 +1712,40 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
-case 'play2':
-  if (!text) {
-    m.reply('Enter YouTube Video Link or Search Query!');
-    return;
-  }
-
-  m.reply(mess.wait);
-
-  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
-
-  try {
-    const response = await fetch(apiURL);
-    const data = await response.json();
-
-    if (data.type === 'search' && Array.isArray(data.data) && data.data.length > 0) {
-      const topResult = data.data[0];
-
-      // Extract relevant information
-      const { title, views, duration, uploadDate, url } = topResult;
-
-      // Create buttons for audio and video options
-      const buttons = [
-        { buttonId: `.audio ${url}`, buttonText: 'Audio' },
-        { buttonId: `.video ${url}`, buttonText: 'Video' }
-      ];
-
-      // Send buttons with video details
-      await gss.sendMessage(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, buttons);
-
-    } else {
-      console.error('Invalid API response:', data);
-      return m.reply('Error retrieving search results.');
+// Your play command
+case 'play2': {
+    if (!text) {
+        return m.reply('Enter YouTube Video Link or Search Query!');
     }
-  } catch (error) {
-    console.error('Error during yts:', error);
-    return m.reply('Unexpected error occurred.');
-  }
-  break;
+
+    m.reply(mess.wait);
+
+    const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
+    try {
+        const response = await fetch(apiURL);
+        const data = await response.json();
+
+        if (data.type === 'search' && Array.isArray(data.data) && data.data.length > 0) {
+            const topResult = data.data[0];
+
+            // Extract relevant information
+            const { title, views, duration, uploadDate, url } = topResult;
+
+            // Send a poll with options 'audio' and 'video'
+            gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['.audio', '.video']);
+
+        } else {
+            console.error('Invalid API response:', data);
+            return m.reply('Error retrieving search results.');
+        }
+    } catch (error) {
+        console.error('Error during yts:', error);
+        return m.reply('Unexpected error occurred.');
+    }
+}
+break;
+
 
 
 
