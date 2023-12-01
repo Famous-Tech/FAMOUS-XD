@@ -1733,7 +1733,7 @@ case 'play2': {
             const { title, views, duration, uploadDate, url } = topResult;
 
             // Send a poll with options 'audio' and 'video'
-            gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['.audio', '.video']);
+            gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, ['audio', 'video']);
 
         } else {
             console.error('Invalid API response:', data);
