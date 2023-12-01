@@ -1712,30 +1712,41 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
-case 'play2':{
+case 'play2': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
- 
+
   const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
+  // Fetch data from the API
+  const response = await fetch(apiURL);
+  const data = await response.json();
+
+  if (!data || !data.data || data.data.length === 0) {
+    return m.reply('No search results found.');
+  }
+
   const topResult = data.data[0];
   const { title, url } = topResult;
-  
-  gss.sendPoll(m.chat, `Tujhe ka need he ?\n${title}`,
-    [`${command.charAt(0).toUpperCase() + command.slice(1)} Audio`,
-    `${command.charAt(0).toUpperCase() + command.slice(1)} Video`]);
- 
+
+  gss.sendPoll(m.chat, `Tujhe ka need he ?\n${title}`, [
+    `${command.charAt(0).toUpperCase() + command.slice(1)} Audio`,
+    `${command.charAt(0).toUpperCase() + command.slice(1)} Video`
+  ]);
+
   if (args[0].toLowerCase() === 'audio') {
-    //Add Logic to Download Auduo
-    m.reply(`Ye URL ko tera Auduo Downloader API me pass kar ${url}`)
+    // Add Logic to Download Audio
+    m.reply(`Ye URL ko tera Auduo Downloader API me pass kar ${url}`);
 
   } else if (args[0].toLowerCase() === 'video') {
-    //Add Logic To Download Video
-    m.reply(`Ye URL ko tera Video Downloader API me pass kar ${url}`)
+    // Add Logic To Download Video
+    m.reply(`Ye URL ko tera Video Downloader API me pass kar ${url}`);
 
   } else {
-    
+    // Handle other cases if needed
   }
 }
 break;
+
 
 case 'play': {
   if (!text) {
