@@ -1660,12 +1660,17 @@ case 'getvideodoc':
       const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
       fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-      console.log('Video saved as:', randomName); // Add this line to check if the video is saved successfully
+      console.log('Video saved as:', randomName);
 
       const titleAsFilename = data.title.replace(/[/\\?%*:|"<>]/g, ''); // Remove invalid characters
-      console.log('Title as Filename:', titleAsFilename); // Add this line to check the title used as the filename
+      console.log('Title as Filename:', titleAsFilename);
 
-      await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4` }, { quoted: m });
+      // Read the video content again with the correct title filename
+      const videoFileBuffer = fs.readFileSync(`./${randomName}`);
+      console.log('Video Buffer Read:', videoFileBuffer);
+
+      // Send the video as a document with the correct title filename
+      await gss.sendMessage(m.chat, { document: videoFileBuffer, mimetype: 'video/mp4', filename: `${titleAsFilename}.mp4` }, { quoted: m });
 
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
