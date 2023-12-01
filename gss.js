@@ -2795,7 +2795,7 @@ case 'tiktoknowm':
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
     } else {
-      m.reply('Error: Unable to fetch TikTok video. Check the console logs for more details.');
+      console.log ('Error: Unable to fetch TikTok video. Check the console logs for more details.');
     }
   } catch (error) {
     console.error(error);
@@ -2832,7 +2832,7 @@ case 'tiktoknowmdoc':
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
     } else {
-      m.reply('Error: Unable to fetch TikTok video. Check the console logs for more details.');
+      console.log ('Error: Unable to fetch TikTok video. Check the console logs for more details.');
     }
   } catch (error) {
     console.error(error);
