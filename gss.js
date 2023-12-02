@@ -1716,7 +1716,6 @@ break;
 
 
 
-
 case 'play2': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
@@ -1733,22 +1732,28 @@ case 'play2': {
   const searchResults = data.data;
   videoSearchResults[m.chat] = searchResults;
 
-  const topResult = searchResults[0];
-  const { title, url } = topResult;
+  if (searchResults.length === 1) {
+    // If there's only one result, directly proceed to download and send
+    const { url } = searchResults[0];
 
-  gss.sendPoll(m.chat, `Tujhe kis chahiye?\n${title}`, [
-    `.getvideo2 1`,
-    `.Video`
-  ]);
-
-  if (args[0].toLowerCase() === 'audio') {
-    // Add Logic to Download Audio
-    m.reply(`Ye URL ko tera Auduo Downloader API me pass kar ${url}`);
-  } else if (args[0].toLowerCase() === 'video') {
-    // Add Logic To Download Video
-    m.reply(`Ye URL ko tera Video Downloader API me pass kar ${url}`);
+    if (args[0].toLowerCase() === 'audio') {
+      // Add Logic to Download Audio
+      m.reply(`Ye URL ko tera Auduo Downloader API me pass kar ${url}`);
+    } else if (args[0].toLowerCase() === 'video') {
+      // Add Logic To Download Video
+      m.reply(`Ye URL ko tera Video Downloader API me pass kar ${url}`);
+    } else {
+      // Handle other cases if needed
+    }
   } else {
-    // Handle other cases if needed
+    // If there are multiple results, send a poll for the user to choose
+    const topResult = searchResults[0];
+    const { title } = topResult;
+
+    gss.sendPoll(m.chat, `Tujhe kis chahiye?\n${title}`, [
+      `.getvideo2`,
+      `${command.charAt(0).toUpperCase() + command.slice(1)} Video`
+    ]);
   }
 }
 break;
@@ -1756,25 +1761,63 @@ break;
 
 
 case 'getvideo2':
-  if (!args[0]) return m.reply('Enter the number of the video you want to download.');
-
   const searchResults = videoSearchResults[m.chat];
 
   if (!searchResults || searchResults.length === 0) {
     return m.reply('No search results found.');
   }
 
-  const selectedIndex = parseInt(args[0]) - 1;
+  // If there's only one result, directly proceed to download and send
+  if (searchResults.length === 1) {
+    const { url } = searchResults[0];
 
-  if (selectedIndex < 0 || selectedIndex >= searchResults.length) {
-    return m.reply('Invalid video index.');
+    // Now you can proceed to download and send the video using the url
+    try {
+      const downloadResponse = await axios.get(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+      const videoBuffer = Buffer.from(downloadResponse.data, 'binary');
+
+      // Save the video to a temporary file
+      const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+      // Stylish caption with markdown formatting
+      const stylishCaption = `
+        🌟 *Title:* _${searchResults[0].title}_
+        👀 *Views:* _${searchResults[0].views}_
+        ⏱️ *Duration:* _${searchResults[0].duration}_
+        📅 *Upload Date:* _${searchResults[0].uploadDate}_
+        📺 *YouTube URL:* ${searchResults[0].url}
+        📢 *Upload Channel:* _${searchResults[0].uploadChannel}_
+        
+        🤖 Downloaded by *gss botwa*
+      `;
+
+      // Send the video using gss.sendMessage with the saved video and caption (no thumbnail)
+      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: stylishCaption }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } catch (error) {
+      console.error('Error during getvideo2:', error);
+      m.reply('Unexpected error occurred.');
+    }
+  } else if (args[0]) {
+    // If user provided a choice (index), proceed with that choice
+    const selectedIndex = parseInt(args[0]) - 1;
+
+    if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
+      const selectedVideo = searchResults[selectedIndex];
+
+      // Now you can proceed to download and send the video using the selectedVideo.url
+      // Add your download and send logic here
+    } else {
+      return m.reply('Invalid video index.');
+    }
+  } else {
+    return m.reply('Enter the number of the video you want to download.');
   }
-
-  const selectedVideo = searchResults[selectedIndex];
-  const selectedVideoUrl = selectedVideo.url;
-
-
   break;
+
 
 
 
