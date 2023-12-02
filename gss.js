@@ -1714,6 +1714,48 @@ for (let i = 0; i < data.data.length; i++) {
 }
 break;
 
+case 'yts2': {
+  if (!text) {
+    return m.reply('Enter YouTube Video Link or Search Query!');
+  }
+
+  m.reply(mess.wait);
+
+  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
+  try {
+    const response = await fetch(apiURL);
+    const data = await response.json();
+
+    if (data.type === 'search' && Array.isArray(data.data)) {
+      let replyList = [];
+      let pollOptions = [];
+
+      replyList.push('\n🔥 _Reply with the following commands to download:_\n   - 🎧 *getaudio <number>* _for Audio_\n   - 📹 *getvideo <number>* _for Video_\n\n_Enjoy the vibes!_ 🎶✨\n\n');
+      replyList.push(`🔍 *Search Results From ${text}* 🔍`);
+
+      // Build the stylish reply list with search results and poll options
+      for (let i = 0; i < data.data.length; i++) {
+        const result = data.data[i];
+        replyList.push(`\n${i + 1}. 🎦 *${result.title}*\n   🔗 ${result.url}\n`);
+        pollOptions.push(result.title); // Add title to poll options
+      }
+
+      // Send the stylish reply list with instructions
+      await m.reply(replyList.join('\n'));
+
+      // Create a poll with only titles as options
+      await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions);
+    } else {
+      console.error('Invalid API response:', data);
+      return m.reply('Error retrieving search results.');
+    }
+  } catch (error) {
+    console.error('Error during yts:', error);
+    return m.reply('Unexpected error occurred.');
+  }
+}
+break;
 
 
 
