@@ -1737,7 +1737,7 @@ case 'yts2': {
         const result = data.data[i];
         const optionNumber = i + 1;
 
-        pollOptions.push(`.‎ ‎  ${optionNumber}. ${result.title}`); // Add "dl" before title in poll options
+        pollOptions.push(`.play2 ${optionNumber}. ${result.title}`); // Add "dl" before title in poll options
 
         // Save video details (including URL) to the Map
         videoSearchResults.set(optionNumber, {
@@ -1764,7 +1764,7 @@ break;
 
 
 
-case '‎ ‎ ': {
+case 'play2': {
   if (!text) {
     return m.reply('Enter the number of the video you want to play!');
   }
