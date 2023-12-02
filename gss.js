@@ -1932,7 +1932,7 @@ case 'yts': {
         }
 
         // Update pollOptions accordingly (use optionIndex and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${subOption} ${result.title}`);
         optionIndex += 1;
       }
 
@@ -2012,6 +2012,8 @@ case '𝐩𝐥𝐚𝐲': {
   break;
 }
 
+
+
 // Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
   const selectedUrlDetails = videoSearchResults.get('selectedUrl');
@@ -2020,11 +2022,11 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     return m.reply('No video details found. Please use the yts command to search and select a video.');
   }
 
-  const { url, subOption } = selectedUrlDetails;
-  const uniqueKey = `url_${url}_${subOption}`;
+  const { subOption } = selectedUrlDetails;
+  const uniqueKey = `yts_${subOption}`;
 
   try {
-    const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+    const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedUrlDetails.url)}`);
     const result = await downloadResponse.json();
 
     if (result && result.downloadUrl) {
@@ -2066,11 +2068,11 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     return m.reply('No video details found. Please use the yts command to search and select a video.');
   }
 
-  const { url, subOption } = selectedUrlDetails;
-  const uniqueKey = `url_${url}_${subOption}`;
+  const { subOption } = selectedUrlDetails;
+  const uniqueKey = `yts_${subOption}`;
 
   try {
-    const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+    const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedUrlDetails.url)}`);
     const result = await downloadResponse.json();
 
     if (result && result.downloadURL) {
@@ -2102,6 +2104,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
