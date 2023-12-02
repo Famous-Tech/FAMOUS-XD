@@ -3684,7 +3684,7 @@ case 'apk2': {
         caption: info
       };
 
-      gss.sendMessage(m.from, apkMessage, { quoted: m });
+      gss.sendMessage(m.chat, apkMessage, { quoted: m });
 
       fs.unlink(filePath, (err) => {
         if (err) {
