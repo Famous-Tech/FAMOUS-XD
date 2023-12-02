@@ -1908,13 +1908,25 @@ case '𝐩𝐥𝐚𝐲': {
   const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
 
   // Store the selected URL and details for later use
-  videoSearchResults.set('selectedUrl', {
+  const uniqueKey = `play_${selectedVideo.url}`;
+  const existingResults = videoSearchResults.get(uniqueKey) || [];
+
+  // Add the new video details with the updated sub-option number
+  existingResults.push({
+    subOption,
     title: selectedVideo.title,
     url: selectedVideo.url,
     uploadDate: selectedVideo.uploadDate,
     views: selectedVideo.views,
     duration: selectedVideo.duration
   });
+
+  // Save only the last 10 results
+  if (existingResults.length > 10) {
+    existingResults.shift(); // Remove the oldest result
+  }
+
+  videoSearchResults.set(uniqueKey, existingResults);
 
   // Fetch details using the selectedUrl
   const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
