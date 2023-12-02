@@ -3697,6 +3697,8 @@ case 'apk2': {
       fs.unlink(filePath);
       return m.reply('*Apk not Found, Sorry*');
     });
+
+  break;
 }
 
 
