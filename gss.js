@@ -1809,15 +1809,15 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
   // If there's only one result, directly proceed to download and send
   if (searchResults.length === 1) {
-    const { title } = searchResults[0];
+    const { url } = searchResults[0];
 
     try {
-      const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(title)}`);
+      const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
       const result = await downloadResponse.json();
 
-      if (result && result.title) {
+      if (result && result.downloadUrl) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.title);
+        const audioBufferReq = await fetch(result.downloadUrl);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
@@ -1831,14 +1831,16 @@ case '𝗔𝗨𝗗𝗜𝗢': {
         // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
       } else if (result && result.error) {
+        console.error('API response error:', result);
         return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        m.reply('Unexpected error occurred.');
+        console.log('API response details:', JSON.stringify(result, null, 2)); // Add this line to log the response details
+        m.reply('Unexpected error occurred. Please check the logs for more details.');
       }
     } catch (error) {
       console.error(`Error during 𝗔𝗨𝗗𝗜𝗢:`, error);
-      m.reply('Unexpected error occurred.');
+      m.reply('Unexpected error occurred. Please check the logs for more details.');
     }
   } else {
     return m.reply('Invalid audio index.');
@@ -1846,6 +1848,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
   break;
 }
+
 
 
 
