@@ -1742,7 +1742,7 @@ const formattedUploadDate = new Date(uploadDate).toLocaleDateString('en-US', { y
 // Use poll to present the options to the user with additional information
 gss.sendPoll(
   m.chat,
-  `Choose an option for "${title}":\nDuration: ${duration} | Size: ${size} | Views: ${views} | Upload Date: ${formattedUploadDate}`,
+  `Choose an option for\n\n "${title}":\nDuration: ${duration}\n Views: ${views}\n Upload Date: ${formattedUploadDate}`,
   [
     `.𝗩𝗜𝗗𝗘𝗢`,
     `.𝗔𝗨𝗗𝗜𝗢`
@@ -1778,7 +1778,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
         fs.writeFileSync(`./${randomName}`, videoBuffer);
 
         // Create a stylish caption
-        const infoCaption = ` 🌟 *Title:* _${result.title}_ 👀 *Views:* _${result.views}_ ⏱️ *Duration:* _${result.duration}_ 📅 *Upload Date:* _${result.uploadDate}_ 📺 *YouTube URL:* ${result.youtubeUrl} 📢 *Upload Channel:* _${result.uploadChannel}_ 🤖 Downloaded by *gss botwa*`;
+        const infoCaption = ` 🌟 *Title:* _${result.title}_\n 👀 *Views:* _${result.views}_\n ⏱️ *Duration:* _${result.duration}_\n 📅 *Upload Date:* _${result.uploadDate}_\n 📺 *YouTube URL:* ${result.youtubeUrl}\n 📢 *Upload Channel:* _${result.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
 
         // Send the video with the stylish caption
         await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: infoCaption }, { quoted: m });
