@@ -1774,20 +1774,19 @@ case 'play2': {
 
   const selectedUrl = titleUrlMap[selectedOption];
 
-  // Now you can use the selectedUrl to fetch details or perform any other operation
-  // Example: Fetching details using the selectedUrl
-
+  // Fetch details using the selectedUrl
   const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedUrl)}`;
   
   try {
     const detailsResponse = await fetch(apiDetailsURL);
     const detailsData = await detailsResponse.json();
 
-    if (detailsData && detailsData.type === 'video') {
+    // Check if data is available and it's an array
+    if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
       const videoDetails = detailsData.data[0];
 
       // Example: Send the video details
-      await m.reply(`Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nURL: ${videoDetails.url}`);
+      await m.reply(`Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}`);
     } else {
       console.error('Invalid API response:', detailsData);
       return m.reply('Error retrieving video details.');
