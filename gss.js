@@ -1811,6 +1811,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1877,16 +1878,19 @@ case '𝐩𝐥𝐚𝐲': {
     return m.reply('Enter the number of the video you want to play!');
   }
 
-  const selectedOption = parseInt(text.split('.')[0]); // Extract the main option number
-  const subOption = parseInt(text.split('.')[1]); // Extract the sub-option number
+  const selectedOption = parseFloat(text); // Extract the option number with sub-option
 
   // Check if the selected option is a valid number
-  if (!selectedOption || selectedOption < 1 || !subOption) {
+  if (!selectedOption || selectedOption < 1) {
     return m.reply('Invalid option. Please enter a valid number.');
   }
 
+  // Extract the main option number and sub-option number
+  const mainOption = Math.floor(selectedOption);
+  const subOption = parseFloat((selectedOption - mainOption).toFixed(1));
+
   // Find the unique key for the selected option
-  const selectedKey = Array.from(videoSearchResults.keys())[selectedOption - 1];
+  const selectedKey = Array.from(videoSearchResults.keys())[mainOption - 1];
 
   // Check if the selected key exists in the Map
   if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
@@ -1915,8 +1919,12 @@ case '𝐩𝐥𝐚𝐲': {
     if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
       const videoDetails = detailsData.data[0];
 
-      // Send the video details within the poll options
-      await gss.sendPoll(m.chat, `Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}`, ['.𝐯𝐢𝐝𝐞𝐨', '.𝐚𝐮𝐝𝐢𝐨']);
+      // Send the video details within the poll options with the URL option number
+      await gss.sendPoll(
+        m.chat,
+        `Video Details (URL Option ${selectedOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
+        [`.𝐯𝐢𝐝𝐞𝐨 ${selectedOption.toFixed(1)}`, `.𝐚𝐮𝐝𝐢𝐨 ${selectedOption.toFixed(1)}`]
+      );
     } else {
       console.error('Invalid API response:', detailsData);
       return m.reply('Error retrieving video details.');
