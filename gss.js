@@ -3640,7 +3640,7 @@ case 'emojimix': {
 }
 break;
 
-case 'apk': {
+case 'apk2': {
   if (!text) throw `I need an apk name for download`;
 
   const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
