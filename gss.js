@@ -1815,9 +1815,9 @@ case '𝗔𝗨𝗗𝗜𝗢': {
       const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
       const result = await downloadResponse.json();
 
-      if (result && result.downloadUrl) {
+      if (result && result.downloadURL) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.downloadUrl);
+        const audioBufferReq = await fetch(result.downloadURL);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
