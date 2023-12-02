@@ -26,6 +26,7 @@
     "@hapi/boom": "^10.0.1",
     "@whiskeysockets/baileys": "^6.2.1",
     "api-dylux": "^1.6.5",
+    "aptoide-scraper": "^1.0.1",
     "archiver": "^6.0.1",
     "awesome-phonenumber": "^2.64.0",
     "axios": "^0.24.0",
