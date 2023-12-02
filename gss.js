@@ -19,6 +19,8 @@ const fg = require('api-dylux');
 const cheerio = require('cheerio');
 const os = require('os')
 const googleTTS = require("google-tts-api");
+const search = require('aptoide-scraper').search;
+const download = require('aptoide-scraper').download;
 const moment = require('moment-timezone')
 const { JSDOM } = require('jsdom')
 const { pipeline } = require('stream');
@@ -3640,6 +3642,8 @@ case 'emojimix': {
 }
 break;
 
+
+
 case 'apk2': {
   if (!text) throw `I need an apk name for download`;
 
@@ -3647,17 +3651,14 @@ case 'apk2': {
   const randomName = getRandomName(".apk");
   const filePath = `./${randomName}`;
 
-  const search = require('aptoide-scraper');
-  const download = require('aptoide-scraper');
-
   let searchResults = await search(text);
 
-  if (!searchResults.length) return reply("App not found!");
+  if (!searchResults.length) return m.reply("App not found!");
 
   const data = await download(searchResults[0].id);
   const apkSize = parseInt(data.size);
 
-  if (apkSize > 100) return reply(`File size exceeds the limit!`);
+  if (apkSize > 100) return m.reply(`File size exceeds the limit!`);
 
   const url = data.dllink;
 
@@ -3683,7 +3684,7 @@ case 'apk2': {
         caption: info
       };
 
-      gss.sendMessage(from, apkMessage, { quoted: m });
+      gss.sendMessage(m.from, apkMessage, { quoted: m });
 
       fs.unlink(filePath, (err) => {
         if (err) {
@@ -3694,9 +3695,10 @@ case 'apk2': {
       });
     }).catch(error => {
       fs.unlink(filePath);
-      return reply('*Apk not Found, Sorry*');
+      return m.reply('*Apk not Found, Sorry*');
     });
 }
+
 
 
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
