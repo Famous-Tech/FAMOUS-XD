@@ -1736,13 +1736,11 @@ const { url, title, duration, size, views, uploadDate } = topResult;
 // Save the search results in the map for future reference
 videoSearchResults.set(m.chat, [{ url, title, duration, size, views, uploadDate }]);
 
-// Format the upload date to a more readable form if needed
-const formattedUploadDate = new Date(uploadDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-// Use poll to present the options to the user with additional information
+
 gss.sendPoll(
   m.chat,
-  `Choose an option for\n\n "${title}":\nDuration: ${duration}\n Views: ${views}\n Upload Date: ${formattedUploadDate}`,
+  `Choose an option for\n\n "${title}":\nDuration: ${duration}\n Views: ${views}\n Upload Date: ${uploadDate}`,
   [
     `.𝗩𝗜𝗗𝗘𝗢`,
     `.𝗔𝗨𝗗𝗜𝗢`
