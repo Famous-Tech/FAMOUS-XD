@@ -1882,63 +1882,73 @@ case 'yts': {
 
 
 
-// Inside the '𝐩𝐥𝐚𝐲' case:
-case '𝐩𝐥𝐚𝐲': {
+// Inside the 'yts' case:
+case 'yts': {
   if (!text) {
-    return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
+    return m.reply('Enter YouTube Video Link or Search Query!');
   }
 
-  // Extract the option and sub-option numbers
-  const [option, subOption] = text.split('.').map(parseFloat);
-
-  // Check if the entered option and sub-option numbers are valid
-  if (!option || !subOption || option < 1 || subOption < 1) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
-  }
-
-  // Find the selected video details based on the option and sub-option numbers
-  const selectedKey = Array.from(videoSearchResults.keys())[option - 1];
-
-  // Check if the selected key exists in the Map
-  if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
-  }
-
-  const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
-
-  // Store the selected URL and details for later use
-  const uniqueKey = `play_${selectedVideo.url}`;
-
-  // Set the 'selectedUrl' key to the unique key
-  videoSearchResults.set('selectedUrl', { url: selectedVideo.url, subOption });
-
-  // Fetch details using the selectedUrl
-  const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
+  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
 
   try {
-    const detailsResponse = await fetch(apiDetailsURL);
-    const detailsData = await detailsResponse.json();
+    const response = await fetch(apiURL);
+    const data = await response.json();
 
-    // Check if data is available and it's an array
-    if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
-      const videoDetails = detailsData.data[0];
+    if (data.type === 'search' && Array.isArray(data.data)) {
+      let pollOptions = [];
+      let optionIndex = 1;
 
-      // Send the video details within the poll options with the URL option number
-      await gss.sendPoll(
-        m.chat,
-        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
-        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
-      );
+      // Iterate through the search results
+      for (const result of data.data) {
+        const uniqueKey = `yts_${optionIndex}`;
+
+        // Check if the key already exists in the Map
+        if (videoSearchResults.has(uniqueKey)) {
+          // Key exists, find the next available sub-option number
+          let subOption = 1;
+          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
+            subOption += 1;
+          }
+
+          // Add the new video details with the updated sub-option number
+          videoSearchResults.get(uniqueKey).push({
+            subOption,
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
+          });
+        } else {
+          // Key doesn't exist, create a new array with the current video details
+          videoSearchResults.set(uniqueKey, [{
+            subOption: 1,
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
+          }]);
+        }
+
+        // Update pollOptions accordingly (use optionIndex and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
+        optionIndex += 1;
+      }
+
+      // Send the poll with titles as options
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
     } else {
-      console.error('Invalid API response:', detailsData);
-      return m.reply('Error retrieving video details.');
+      console.error('Invalid API response:', data);
+      return m.reply('Error retrieving search results.');
     }
   } catch (error) {
-    console.error('Error fetching video details:', error);
-    return m.reply('Unexpected error occurred while fetching video details.');
+    console.error('Error during yts:', error);
+    return m.reply('Unexpected error occurred.');
   }
   break;
 }
+
 
 
 // Inside the '𝐩𝐥𝐚𝐲' case:
