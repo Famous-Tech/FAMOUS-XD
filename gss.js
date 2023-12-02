@@ -1954,7 +1954,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     return m.reply('No video details found. Please use the yts command to search and select a video.');
   }
 
-  const { url } = selectedUrlDetails;
+  const { url, subOption } = selectedUrlDetails;
   const uniqueKey = `url_${url}`;
 
   try {
@@ -1968,7 +1968,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
       const videoBuffer = Buffer.from(videoArrayBuffer);
 
       // Save the video to a temporary file
-      const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
+      const randomName = `temp_video_${subOption}.mp4`;
       fs.writeFileSync(`./${randomName}`, videoBuffer);
 
       // Create a stylish caption
@@ -2000,7 +2000,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     return m.reply('No video details found. Please use the yts command to search and select a video.');
   }
 
-  const { url } = selectedUrlDetails;
+  const { url, subOption } = selectedUrlDetails;
   const uniqueKey = `url_${url}`;
 
   try {
@@ -2014,7 +2014,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
       const audioBuffer = Buffer.from(audioArrayBuffer);
 
       // Save the audio to a temporary file
-      const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
+      const randomName = `temp_audio_${subOption}.mp3`;
       fs.writeFileSync(`./${randomName}`, audioBuffer);
 
       // Send the audio with the stylish caption
