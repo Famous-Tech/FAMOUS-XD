@@ -64,7 +64,6 @@ let props;
 const reportedMessages = {};
 const videoSearchResults = new Map();
 let titleUrlMap = {}; 
-let ytsResultCounter = 1;
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -1812,6 +1811,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 
 
 
+
 // Inside the 'yts' case:
 case 'yts': {
   if (!text) {
@@ -1830,25 +1830,46 @@ case 'yts': {
       // Build the poll options with video titles and save title-url mapping to the Map
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
-        const optionNumber = ytsResultCounter + (i / 10); // Incrementing in increments of 0.1
+        const optionNumber = i + 1;
 
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionNumber.toFixed(1)} - ${result.title}`); // Add "dl" before title in poll options
+        // Generate a unique key based on the video URL
+        const uniqueKey = `yts_${optionNumber}`;
 
-        // Save video details (including URL) to the Map with a unique key
-        videoSearchResults.set(optionNumber.toFixed(1), {
-          title: result.title,
-          url: result.url,
-          uploadDate: result.uploadDate,
-          views: result.views,
-          duration: result.duration
-        });
+        // Check if the key already exists in the Map
+        if (videoSearchResults.has(uniqueKey)) {
+          // Key exists, find the next available sub-option number
+          let subOption = 1;
+          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
+            subOption += 1;
+          }
+
+          // Add the new video details with the updated sub-option number
+          videoSearchResults.get(uniqueKey).push({
+            subOption,
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
+          });
+        } else {
+          // Key doesn't exist, create a new array with the current video details
+          videoSearchResults.set(uniqueKey, [{
+            subOption: 1,
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
+          }]);
+        }
+
+        // Update pollOptions accordingly (use optionNumber and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionNumber}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
       }
 
-      // Increment the counter for the next set of results
-      ytsResultCounter += 1;
-
       // Send the poll with titles as options
-      await gss.sendPoll(m.chat, 'Choose a video to play:', [...pollOptions]);
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
     } else {
       console.error('Invalid API response:', data);
       return m.reply('Error retrieving search results.');
@@ -1860,7 +1881,9 @@ case 'yts': {
   break;
 }
 
-// Inside the 'play' case:
+
+
+// Inside the '𝐩𝐥𝐚𝐲' case:
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
@@ -1875,14 +1898,20 @@ case '𝐩𝐥𝐚𝐲': {
   }
 
   // Find the selected video details based on the option and sub-option numbers
-  const selectedKey = option.toFixed(1);
+  const selectedKey = Array.from(videoSearchResults.keys())[option - 1];
 
   // Check if the selected key exists in the Map
-  if (!videoSearchResults.has(selectedKey) || subOption > 1) {
+  if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
     return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  const selectedVideo = videoSearchResults.get(selectedKey);
+  const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
+
+  // Store the selected URL and details for later use
+  const uniqueKey = `play_${selectedVideo.url}`;
+
+  // Set the 'selectedUrl' key to the unique key
+  videoSearchResults.set('selectedUrl', uniqueKey);
 
   // Fetch details using the selectedUrl
   const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
@@ -1898,8 +1927,8 @@ case '𝐩𝐥𝐚𝐲': {
       // Send the video details within the poll options with the URL option number
       await gss.sendPoll(
         m.chat,
-        `Video Details (Option ${option.toFixed(1)}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
-        [`.𝐯𝐢𝐝𝐞𝐨 ${option.toFixed(1)}`, `.𝐚𝐮𝐝𝐢𝐨 ${option.toFixed(1)}`]
+        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
+        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
       );
     } else {
       console.error('Invalid API response:', detailsData);
@@ -1911,7 +1940,6 @@ case '𝐩𝐥𝐚𝐲': {
   }
   break;
 }
-
 
 
 
