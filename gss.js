@@ -1716,6 +1716,7 @@ break;
 
 
 
+
 case 'play2': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
@@ -1735,9 +1736,10 @@ case 'play2': {
   // Save the search results in the map for future reference
   videoSearchResults.set(m.chat, [{ url, title: topResult.title }]);
 
-  // Use poll to present the option to the user
-  gss.sendPoll(m.chat, `Tujhe ka need he ?\n${topResult.title}`, [
-    `.getvideo2`,`.getvideo2`
+  // Use poll to present the options to the user
+  gss.sendPoll(m.chat, `Choose an option:\n${topResult.title}`, [
+    `.getvideo2`,
+    `.getaudio2`
   ]);
 
   break;
@@ -1756,7 +1758,7 @@ case 'getvideo2': {
 
     // Now you can proceed to download and send the video using the url
     try {
-      const downloadResponse = await axios.get(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+      const downloadResponse = await axios.get(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`, { responseType: 'arraybuffer' });
       const videoBuffer = Buffer.from(downloadResponse.data, 'binary');
 
       // Save the video to a temporary file
@@ -1786,6 +1788,7 @@ case 'getvideo2': {
 
   break;
 }
+
 
 
 
