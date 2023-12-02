@@ -1731,16 +1731,23 @@ case 'play2': {
   }
 
   const topResult = data.data[0];
-  const { url } = topResult;
+const { url, title, duration, size, views, uploadDate } = topResult;
 
-  // Save the search results in the map for future reference
-  videoSearchResults.set(m.chat, [{ url, title: topResult.title }]);
+// Save the search results in the map for future reference
+videoSearchResults.set(m.chat, [{ url, title, duration, size, views, uploadDate }]);
 
-  // Use poll to present the options to the user
-  gss.sendPoll(m.chat, `Choose an option:\n${topResult.title}`, [
+// Format the upload date to a more readable form if needed
+const formattedUploadDate = new Date(uploadDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+// Use poll to present the options to the user with additional information
+gss.sendPoll(
+  m.chat,
+  `Choose an option for "${title}":\nDuration: ${duration} | Size: ${size} | Views: ${views} | Upload Date: ${formattedUploadDate}`,
+  [
     `.getvideo2`,
     `.getaudio2`
-  ]);
+  ]
+);
 
   break;
 }
