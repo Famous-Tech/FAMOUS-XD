@@ -3656,17 +3656,48 @@ case 'apk2': {
   if (!searchResults.length) return m.reply("App not found!");
 
   const data = await download(searchResults[0].id);
-  const apkSize = parseInt(data.size);
 
-  if (apkSize > 100) return m.reply(`File size exceeds the limit!`);
+  // No need to check file size, proceed with download
 
   const url = data.dllink;
+  const iconUrl = data.icon;
 
   let info = `*App Name :* ${data.name}\n`;
   info += `*App id        :* ${data.package}\n`;
   info += `*Last Update       :* ${data.lastup}\n`;
   info += `*App Size     :* ${data.size}\n`;
 
+  // Download icon
+  const iconPath = `./${getRandomName(".png")}`;
+  await axios.get(iconUrl, { responseType: 'stream' })
+    .then(response => {
+      const writer = fs.createWriteStream(iconPath);
+      response.data.pipe(writer);
+
+      return new Promise((resolve, reject) => {
+        writer.on('finish', resolve);
+        writer.on('error', reject);
+      });
+    });
+
+  const iconMessage = {
+    image: fs.readFileSync(iconPath),
+    caption: info
+  };
+
+  // Send icon with info
+  await gss.sendMessage(m.chat, iconMessage, { quoted: m });
+
+  // Delete temporary icon file
+  fs.unlink(iconPath, (err) => {
+    if (err) {
+      console.error('Error deleting icon file:', err);
+    } else {
+      console.log('Icon file deleted successfully');
+    }
+  });
+
+  // Download and send APK
   axios.get(url, { responseType: 'stream' })
     .then(response => {
       const writer = fs.createWriteStream(filePath);
@@ -3680,17 +3711,17 @@ case 'apk2': {
       const apkMessage = {
         document: fs.readFileSync(filePath),
         mimetype: 'application/vnd.android.package-archive',
-        fileName: `${data.name}.apk`,
-        caption: info
+        fileName: `${data.name}.apk`
       };
 
       gss.sendMessage(m.chat, apkMessage, { quoted: m });
 
+      // Delete temporary APK file
       fs.unlink(filePath, (err) => {
         if (err) {
-          console.error('Error deleting file:', err);
+          console.error('Error deleting APK file:', err);
         } else {
-          console.log('File deleted successfully');
+          console.log('APK file deleted successfully');
         }
       });
     }).catch(error => {
@@ -3700,6 +3731,7 @@ case 'apk2': {
 
   break;
 }
+
 
 
 
