@@ -2067,6 +2067,7 @@ case 'instagram':
     break;
 }
 
+
 //for insta video in document
 case 'igdldoc':
 case 'instadoc':
@@ -3638,6 +3639,65 @@ case 'emojimix': {
   }
 }
 break;
+
+case 'apk': {
+  if (!text) throw `I need an apk name for download`;
+
+  const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
+  const randomName = getRandomName(".apk");
+  const filePath = `./${randomName}`;
+
+  const search = require('aptoide-scraper');
+  const download = require('aptoide-scraper');
+
+  let searchResults = await search(text);
+
+  if (!searchResults.length) return reply("App not found!");
+
+  const data = await download(searchResults[0].id);
+  const apkSize = parseInt(data.size);
+
+  if (apkSize > 100) return reply(`File size exceeds the limit!`);
+
+  const url = data.dllink;
+
+  let info = `*App Name :* ${data.name}\n`;
+  info += `*App id        :* ${data.package}\n`;
+  info += `*Last Update       :* ${data.lastup}\n`;
+  info += `*App Size     :* ${data.size}\n`;
+
+  axios.get(url, { responseType: 'stream' })
+    .then(response => {
+      const writer = fs.createWriteStream(filePath);
+      response.data.pipe(writer);
+
+      return new Promise((resolve, reject) => {
+        writer.on('finish', resolve);
+        writer.on('error', reject);
+      });
+    }).then(() => {
+      const apkMessage = {
+        document: fs.readFileSync(filePath),
+        mimetype: 'application/vnd.android.package-archive',
+        fileName: `${data.name}.apk`,
+        caption: info
+      };
+
+      gss.sendMessage(from, apkMessage, { quoted: m });
+
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error('Error deleting file:', err);
+        } else {
+          console.log('File deleted successfully');
+        }
+      });
+    }).catch(error => {
+      fs.unlink(filePath);
+      return reply('*Apk not Found, Sorry*');
+    });
+}
+
 
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
                 try {
