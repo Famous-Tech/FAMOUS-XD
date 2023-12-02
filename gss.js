@@ -1715,6 +1715,8 @@ for (let i = 0; i < data.data.length; i++) {
 }
 break;
 
+
+
 case 'yts2': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1729,9 +1731,6 @@ case 'yts2': {
     if (data.type === 'search' && Array.isArray(data.data)) {
       let pollOptions = [];
 
-      // Map to store title-url associations
-      let titleUrlMap = {};
-
       // Build the poll options with video titles and save title-url mapping
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
@@ -1740,9 +1739,6 @@ case 'yts2': {
         pollOptions.push(`${optionNumber}. ${result.title}`); // Add title to poll options
         titleUrlMap[optionNumber] = result.url; // Save title-url mapping
       }
-
-      // Save the title-url mapping to use later
-      // You can store titleUrlMap in a file, database, or any persistent storage
 
       // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions);
@@ -1757,7 +1753,7 @@ case 'yts2': {
 }
 break;
 
-
+// ...
 
 case 'play2': {
   if (!text) {
@@ -1771,6 +1767,10 @@ case 'play2': {
 
   const selectedOption = parseInt(text);
 
+  // Check if the selected option is a valid number
+  if (!selectedOption || selectedOption < 1 || selectedOption > Object.keys(titleUrlMap).length) {
+    return m.reply('Invalid option. Please enter a valid number between 1 and ' + Object.keys(titleUrlMap).length + '.');
+  }
 
   const selectedUrl = titleUrlMap[selectedOption];
 
@@ -1798,6 +1798,7 @@ case 'play2': {
   }
 }
 break;
+
 
 
 case 'play': {
