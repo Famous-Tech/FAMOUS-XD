@@ -1731,7 +1731,7 @@ case 'play2': {
   const { title, url } = topResult;
 
   gss.sendPoll(m.chat, `Tujhe ka need he ?\n${title}`, [
-    `${command.charAt(0).toUpperCase() + command.slice(1)} Audio`,
+    `.getvideo2`,
     `${command.charAt(0).toUpperCase() + command.slice(1)} Video`
   ]);
 
