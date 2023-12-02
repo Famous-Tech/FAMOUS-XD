@@ -1841,8 +1841,8 @@ gss.sendPoll(
   m.chat,
   `Choose an option for\n\n "${title}":\nDuration: ${duration}\n Views: ${views}\n Upload Date: ${uploadDate}`,
   [
-    `.𝗩𝗜𝗗𝗘𝗢`,
-    `.𝗔𝗨𝗗𝗜𝗢`
+    `.𝗩𝗜𝗗𝗘𝗢2`,
+    `.𝗔𝗨𝗗𝗜𝗢2`
   ]
 );
 
@@ -1898,6 +1898,96 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 
   break;
 }
+
+// '𝗩𝗜𝗗𝗘𝗢' Command
+case '𝗩𝗜𝗗𝗘𝗢2': {
+  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
+
+  if (!selectedUrlDetails) {
+    return m.reply('No video details found. Please use the yts2 command to search and select a video.');
+  }
+
+  const { url } = selectedUrlDetails;
+
+  try {
+    const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+    const result = await downloadResponse.json();
+
+    if (result && result.downloadUrl) {
+      // Fetch the video content
+      const videoBufferReq = await fetch(result.downloadUrl);
+      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+      const videoBuffer = Buffer.from(videoArrayBuffer);
+
+      // Save the video to a temporary file
+      const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+      // Create a stylish caption
+      const infoCaption = ` 🌟 *Title:* _${result.title}_\n 👀 *Views:* _${result.views}_\n ⏱️ *Duration:* _${result.duration}_\n 📅 *Upload Date:* _${result.uploadDate}_\n 📺 *YouTube URL:* ${result.youtubeUrl}\n 📢 *Upload Channel:* _${result.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
+
+      // Send the video with the stylish caption
+      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: infoCaption }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } else if (result && result.error) {
+      return m.reply(`Error: ${result.error}`);
+    } else {
+      console.error('Invalid API response:', result);
+      m.reply('Unexpected error occurred.');
+    }
+  } catch (error) {
+    console.error(`Error during 𝗩𝗜𝗗𝗘𝗢:`, error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
+
+// '𝗔𝗨𝗗𝗜𝗢' Command
+case '𝗔𝗨𝗗𝗜𝗢2': {
+  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
+
+  if (!selectedUrlDetails) {
+    return m.reply('No video details found. Please use the yts2 command to search and select a video.');
+  }
+
+  const { url } = selectedUrlDetails;
+
+  try {
+    const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+    const result = await downloadResponse.json();
+
+    if (result && result.downloadURL) {
+      // Fetch the audio content
+      const audioBufferReq = await fetch(result.downloadURL);
+      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+      const audioBuffer = Buffer.from(audioArrayBuffer);
+
+      // Save the audio to a temporary file
+      const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
+      fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.title}.mp3` }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } else if (result && result.error) {
+      console.error('API response error:', result);
+      return m.reply(`Error: ${result.error}`);
+    } else {
+      console.error('Invalid API response:', result);
+      console.log('API response details:', JSON.stringify(result, null, 2)); // Add this line to log the response details
+      m.reply('Unexpected error occurred. Please check the logs for more details.');
+    }
+  } catch (error) {
+    console.error(`Error during 𝗔𝗨𝗗𝗜𝗢:`, error);
+    m.reply('Unexpected error occurred. Please check the logs for more details.');
+  }
+  break;
+}
+
+
 
 case '𝗔𝗨𝗗𝗜𝗢': {
   const searchResults = videoSearchResults.get(m.chat);
