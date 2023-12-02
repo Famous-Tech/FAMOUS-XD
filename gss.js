@@ -1744,15 +1744,15 @@ gss.sendPoll(
   m.chat,
   `Choose an option for "${title}":\nDuration: ${duration} | Size: ${size} | Views: ${views} | Upload Date: ${formattedUploadDate}`,
   [
-    `.getvideo2`,
-    `.getaudio2`
+    `.𝗩𝗜𝗗𝗘𝗢`,
+    `.𝗔𝗨𝗗𝗜𝗢`
   ]
 );
 
   break;
 }
 
-case 'getvideo2': {
+case '𝗩𝗜𝗗𝗘𝗢': {
   const searchResults = videoSearchResults.get(m.chat);
 
   if (!searchResults || searchResults.length === 0) {
@@ -1792,7 +1792,7 @@ case 'getvideo2': {
         m.reply('Unexpected error occurred.');
       }
     } catch (error) {
-      console.error(`Error during getvideo2:`, error);
+      console.error(`Error during 𝗩𝗜𝗗𝗘𝗢:`, error);
       m.reply('Unexpected error occurred.');
     }
   } else {
