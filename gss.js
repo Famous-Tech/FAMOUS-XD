@@ -1833,7 +1833,7 @@ case 'yts': {
         const optionNumber = i + 1;
 
         // Generate a unique key based on the video URL
-        const uniqueKey = `url_${result.url}`;
+        const uniqueKey = `yts_${optionNumber}`;
 
         // Check if the key already exists in the Map
         if (videoSearchResults.has(uniqueKey)) {
@@ -1880,6 +1880,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 // Inside the 'play' case:
