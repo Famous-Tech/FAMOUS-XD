@@ -62,7 +62,7 @@ let akinator = global.db.data.game.akinator = []
 
 let props;
 const reportedMessages = {};
-const videoSearchResults = {};
+const videoSearchResults = new Map();
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -1716,6 +1716,9 @@ break;
 
 
 
+
+
+
 case 'play2': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
@@ -1729,39 +1732,22 @@ case 'play2': {
     return m.reply('No search results found.');
   }
 
-  const searchResults = data.data;
-  videoSearchResults[m.chat] = searchResults;
+  const topResult = data.data[0];
+  const { url } = topResult;
 
-  if (searchResults.length === 1) {
-    // If there's only one result, directly proceed to download and send
-    const { url } = searchResults[0];
+  // Save the search results in the map for future reference
+  videoSearchResults.set(m.chat, [{ url }]);
 
-    if (args[0].toLowerCase() === 'audio') {
-      // Add Logic to Download Audio
-      m.reply(`Ye URL ko tera Auduo Downloader API me pass kar ${url}`);
-    } else if (args[0].toLowerCase() === 'video') {
-      // Add Logic To Download Video
-      m.reply(`Ye URL ko tera Video Downloader API me pass kar ${url}`);
-    } else {
-      // Handle other cases if needed
-    }
-  } else {
-    // If there are multiple results, send a poll for the user to choose
-    const topResult = searchResults[0];
-    const { title } = topResult;
+  // Use poll to present the option to the user
+  gss.sendPoll(m.chat, `Tujhe ka need he ?\n${topResult.title}`, [
+    `.getvideo2`
+  ]);
 
-    gss.sendPoll(m.chat, `Tujhe kis chahiye?\n${title}`, [
-      `.getvideo2`,
-      `${command.charAt(0).toUpperCase() + command.slice(1)} Video`
-    ]);
-  }
+  break;
 }
-break;
 
-
-
-case 'getvideo2':
-  const searchResults = videoSearchResults[m.chat];
+case 'getvideo2': {
+  const searchResults = videoSearchResults.get(m.chat);
 
   if (!searchResults || searchResults.length === 0) {
     return m.reply('No search results found.');
@@ -1801,22 +1787,13 @@ case 'getvideo2':
       console.error('Error during getvideo2:', error);
       m.reply('Unexpected error occurred.');
     }
-  } else if (args[0]) {
-    // If user provided a choice (index), proceed with that choice
-    const selectedIndex = parseInt(args[0]) - 1;
-
-    if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
-      const selectedVideo = searchResults[selectedIndex];
-
-      // Now you can proceed to download and send the video using the selectedVideo.url
-      // Add your download and send logic here
-    } else {
-      return m.reply('Invalid video index.');
-    }
   } else {
-    return m.reply('Enter the number of the video you want to download.');
+    return m.reply('Invalid video index.');
   }
+
   break;
+}
+
 
 
 
