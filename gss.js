@@ -1882,37 +1882,29 @@ case 'yts': {
 }
 
 
-// Inside the '𝐩𝐥𝐚𝐲' case:
+// Inside the 'play' case:
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
-    return m.reply('Enter the number of the video you want to play!');
+    return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
   }
 
-  const selectedOption = parseFloat(text); // Extract the option number with sub-option
+  // Extract the option and sub-option numbers
+  const [option, subOption] = text.split('.').map(parseFloat);
 
-  // Check if the selected option is a valid number
-  if (!selectedOption || selectedOption < 1) {
-    return m.reply('Invalid option. Please enter a valid number.');
+  // Check if the entered option and sub-option numbers are valid
+  if (!option || !subOption || option < 1 || subOption < 1) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  // Extract the main option number and sub-option number
-  const mainOption = Math.floor(selectedOption);
-  const subOption = parseFloat((selectedOption - mainOption).toFixed(1));
-
-  // Find the unique key for the selected option
-  const selectedKey = Array.from(videoSearchResults.keys())[mainOption - 1];
+  // Find the selected video details based on the option and sub-option numbers
+  const selectedKey = Array.from(videoSearchResults.keys())[option - 1];
 
   // Check if the selected key exists in the Map
   if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
-    return m.reply('Invalid option. Please enter a valid number.');
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
   const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
-
-  // Check if selectedVideo is valid
-  if (!selectedVideo || !selectedVideo.title || !selectedVideo.url) {
-    return m.reply('Invalid video details. Please try again.');
-  }
 
   // Store the selected URL and details for later use
   videoSearchResults.set('selectedUrl', {
@@ -1934,16 +1926,11 @@ case '𝐩𝐥𝐚𝐲': {
     if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
       const videoDetails = detailsData.data[0];
 
-      // Check if videoDetails is valid
-      if (!videoDetails || !videoDetails.title) {
-        return m.reply('Invalid video details. Please try again.');
-      }
-
       // Send the video details within the poll options with the URL option number
       await gss.sendPoll(
         m.chat,
-        `Video Details (URL Option ${selectedOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
-        [`.𝐯𝐢𝐝𝐞𝐨 ${selectedOption.toFixed(1)}`, `.𝐚𝐮𝐝𝐢𝐨 ${selectedOption.toFixed(1)}`]
+        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
+        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
       );
     } else {
       console.error('Invalid API response:', detailsData);
@@ -1955,6 +1942,7 @@ case '𝐩𝐥𝐚𝐲': {
   }
   break;
 }
+
 
 
 // Inside the '𝐯𝐢𝐝𝐞𝐨' case:
