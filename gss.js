@@ -1770,13 +1770,11 @@ case 'getvideo2': {
         const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
         fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-        // Get additional video information
-        const infoCaption = `
-          🌟 *Title:* _${searchResults[0].title}_
-          📺 *YouTube URL:* ${searchResults[0].url}
-        `;
+        // Create a stylish caption
+        const infoCaption = ` 🌟 *Title:* _${result.title}_ 👀 *Views:* _${result.views}_ ⏱️ *Duration:* _${result.duration}_ 📅 *Upload Date:* _${result.uploadDate}_ 📺 *YouTube URL:* ${result.youtubeUrl} 📢 *Upload Channel:* _${result.uploadChannel}_ 🤖 Downloaded by *gss botwa*`;
 
-        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: infoCaption }, { quoted: m });
+        // Send the video with the stylish caption
+        await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: infoCaption }, { quoted: m });
 
         // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
@@ -1796,6 +1794,7 @@ case 'getvideo2': {
 
   break;
 }
+
 
 
 case 'play': {
