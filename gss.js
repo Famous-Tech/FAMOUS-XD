@@ -1716,9 +1716,6 @@ break;
 
 
 
-
-
-
 case 'play2': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
@@ -1736,11 +1733,11 @@ case 'play2': {
   const { url } = topResult;
 
   // Save the search results in the map for future reference
-  videoSearchResults.set(m.chat, [{ url }]);
+  videoSearchResults.set(m.chat, [{ url, title: topResult.title }]);
 
   // Use poll to present the option to the user
   gss.sendPoll(m.chat, `Tujhe ka need he ?\n${topResult.title}`, [
-    `.getvideo2`
+    `.getvideo2`,`.getvideo2`
   ]);
 
   break;
@@ -1769,11 +1766,7 @@ case 'getvideo2': {
       // Stylish caption with markdown formatting
       const stylishCaption = `
         🌟 *Title:* _${searchResults[0].title}_
-        👀 *Views:* _${searchResults[0].views}_
-        ⏱️ *Duration:* _${searchResults[0].duration}_
-        📅 *Upload Date:* _${searchResults[0].uploadDate}_
         📺 *YouTube URL:* ${searchResults[0].url}
-        📢 *Upload Channel:* _${searchResults[0].uploadChannel}_
         
         🤖 Downloaded by *gss botwa*
       `;
