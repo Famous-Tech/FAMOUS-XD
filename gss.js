@@ -1799,7 +1799,7 @@ case '‎ ‎ ': {
       const videoDetails = detailsData.data[0];
 
       // Send the video details within the poll options
-      await gss.sendPoll(m.chat, `Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}`, ['𝗔𝗨𝗗𝗜𝗢', '𝗩𝗜𝗗𝗘𝗢']);
+      await gss.sendPoll(m.chat, `Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}`, ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢']);
     } else {
       console.error('Invalid API response:', detailsData);
       return m.reply('Error retrieving video details.');
