@@ -1839,8 +1839,7 @@ case 'getvideo':
   break;
   
 case 'getvideo2':
-  if (!m.quoted) return m.reply('Reply to a message');
-  if (!m.quoted.isBaileys) throw `Can Only Reply to Bot's Message`;
+  if (!m.quoted) throw `Reply to a message with a YouTube URL`;
 
   let urlMatches = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
 
@@ -1895,6 +1894,7 @@ case 'getvideo2':
     m.reply('Unexpected error occurred.');
   }
   break;
+
 
   
 case 'getvideodoc':
