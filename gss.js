@@ -1741,8 +1741,6 @@ case 'yts2': {
         pollOptions.push(result.title); // Add title to poll options
       }
 
-      // Send the stylish reply list with instructions
-      await m.reply(replyList.join('\n'));
 
       // Create a poll with only titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions);
@@ -1757,6 +1755,50 @@ case 'yts2': {
 }
 break;
 
+
+case 'play': {
+  if (!text) {
+    return m.reply('Enter the number of the video you want to play!');
+  }
+
+  // Check if titleUrlMap is available
+  if (!titleUrlMap) {
+    return m.reply('Error: Video details not available.');
+  }
+
+  const selectedOption = parseInt(text);
+
+  // Check if the selected option is a valid number
+  if (!selectedOption || selectedOption < 1 || selectedOption > Object.keys(titleUrlMap).length) {
+    return m.reply('Invalid option. Please enter a valid number.');
+  }
+
+  const selectedUrl = titleUrlMap[selectedOption];
+
+  // Now you can use the selectedUrl to fetch details or perform any other operation
+  // Example: Fetching details using the selectedUrl
+
+  const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedUrl)}`;
+  
+  try {
+    const detailsResponse = await fetch(apiDetailsURL);
+    const detailsData = await detailsResponse.json();
+
+    if (detailsData && detailsData.type === 'video') {
+      const videoDetails = detailsData.data[0];
+
+      // Example: Send the video details
+      await m.reply(`Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nURL: ${videoDetails.url}`);
+    } else {
+      console.error('Invalid API response:', detailsData);
+      return m.reply('Error retrieving video details.');
+    }
+  } catch (error) {
+    console.error('Error fetching video details:', error);
+    return m.reply('Unexpected error occurred while fetching video details.');
+  }
+}
+break;
 
 
 case 'play': {
