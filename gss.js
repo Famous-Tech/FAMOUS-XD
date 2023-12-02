@@ -1714,6 +1714,11 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
+// At the beginning of your script, initialize an object to store search results
+const videoSearchResults = {};
+
+// ...
+
 case 'play2': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
@@ -1727,27 +1732,52 @@ case 'play2': {
     return m.reply('No search results found.');
   }
 
-  const topResult = data.data[0];
+  const searchResults = data.data;
+  videoSearchResults[m.chat] = searchResults;
+
+  const topResult = searchResults[0];
   const { title, url } = topResult;
 
-  gss.sendPoll(m.chat, `Tujhe ka need he ?\n${title}`, [
-    `.getvideo2`,
-    `${command.charAt(0).toUpperCase() + command.slice(1)} Video`
+  gss.sendPoll(m.chat, `Tujhe kis chahiye?\n${title}`, [
+    `.getvideo2 1`,
+    `.Video`
   ]);
 
   if (args[0].toLowerCase() === 'audio') {
     // Add Logic to Download Audio
     m.reply(`Ye URL ko tera Auduo Downloader API me pass kar ${url}`);
-
   } else if (args[0].toLowerCase() === 'video') {
     // Add Logic To Download Video
     m.reply(`Ye URL ko tera Video Downloader API me pass kar ${url}`);
-
   } else {
     // Handle other cases if needed
   }
 }
 break;
+
+
+
+case 'getvideo2':
+  if (!args[0]) return m.reply('Enter the number of the video you want to download.');
+
+  const searchResults = videoSearchResults[m.chat];
+
+  if (!searchResults || searchResults.length === 0) {
+    return m.reply('No search results found.');
+  }
+
+  const selectedIndex = parseInt(args[0]) - 1;
+
+  if (selectedIndex < 0 || selectedIndex >= searchResults.length) {
+    return m.reply('Invalid video index.');
+  }
+
+  const selectedVideo = searchResults[selectedIndex];
+  const selectedVideoUrl = selectedVideo.url;
+
+
+  break;
+
 
 
 case 'play': {
@@ -1823,63 +1853,6 @@ case 'getvideo':
 
       // Send the video using gss.sendMessage with the saved video and caption (no thumbnail)
       await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: stylishCaption }, { quoted: m });
-
-      // Delete the temporary file
-      fs.unlinkSync(`./${randomName}`);
-    } else if (data && data.error) {
-      return m.reply(`Error: ${data.error}`);
-    } else {
-      console.error('Invalid API response:', data);
-      m.reply('Error retrieving video details.');
-    }
-  } catch (error) {
-    console.error('Error during getvideo:', error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-  
-case 'getvideo2':
-  if (!m.quoted) throw `Reply to a message with a YouTube URL`;
-
-  let urlMatches = quoted.text.match(new RegExp(/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed|shorts)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/, 'gi'));
-
-  if (!urlMatches || urlMatches.length === 0) {
-    throw `No YouTube URLs found in the replied message.`;
-  }
-
-  let url = urlMatches[0];
-
-  try {
-    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`;
-    const response = await fetch(apiURL);
-    const data = await response.json();
-
-    console.log('Full API Response:', data);
-
-    if (data && data.downloadUrl) {
-      // Fetch the video content
-      const videoBufferReq = await fetch(data.downloadUrl);
-      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-      const videoBuffer = Buffer.from(videoArrayBuffer);
-
-      // Save the video to a temporary file
-      const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
-      fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-      // Stylish caption with markdown formatting
-      const stylishCaption = `
-        🌟 *Title:* _${data.title}_
-        👀 *Views:* _${data.views}_
-        ⏱️ *Duration:* _${data.duration}_
-        📅 *Upload Date:* _${data.uploadDate}_
-        📺 *YouTube URL:* ${data.youtubeUrl}
-        📢 *Upload Channel:* _${data.uploadChannel}_
-        
-        🤖 Downloaded by *gss botwa*
-      `;
-
-      // Send the video using gss.sendMessage with the saved video and caption (no thumbnail)
-      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: stylishCaption });
 
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
