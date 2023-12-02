@@ -1825,9 +1825,8 @@ case '𝗔𝗨𝗗𝗜𝗢': {
         const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
         fs.writeFileSync(`./${randomName}`, audioBuffer);
 
-
-        // Send the audio with the stylish caption
-        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', }, { quoted: m });
+        // Send the audio without a caption
+        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3' }, { quoted: m });
 
         // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
@@ -1847,6 +1846,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
   break;
 }
+
 
 
 
