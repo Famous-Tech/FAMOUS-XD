@@ -1717,9 +1717,7 @@ break;
 
 
 
-const videoSearchResults = new Map(); // Declare the Map to store video search results
 
-// ...
 
 case 'yts2': {
   if (!text) {
