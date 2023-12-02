@@ -1899,6 +1899,11 @@ case '𝐩𝐥𝐚𝐲': {
 
   const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
 
+  // Check if selectedVideo is valid
+  if (!selectedVideo || !selectedVideo.title || !selectedVideo.url) {
+    return m.reply('Invalid video details. Please try again.');
+  }
+
   // Store the selected URL and details for later use
   videoSearchResults.set('selectedUrl', {
     title: selectedVideo.title,
@@ -1919,6 +1924,11 @@ case '𝐩𝐥𝐚𝐲': {
     if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
       const videoDetails = detailsData.data[0];
 
+      // Check if videoDetails is valid
+      if (!videoDetails || !videoDetails.title) {
+        return m.reply('Invalid video details. Please try again.');
+      }
+
       // Send the video details within the poll options with the URL option number
       await gss.sendPoll(
         m.chat,
@@ -1935,6 +1945,7 @@ case '𝐩𝐥𝐚𝐲': {
   }
   break;
 }
+
 
 // Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
