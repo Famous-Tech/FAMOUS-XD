@@ -1911,7 +1911,7 @@ case '𝐩𝐥𝐚𝐲': {
   const uniqueKey = `play_${selectedVideo.url}`;
 
   // Set the 'selectedUrl' key to the unique key
-  videoSearchResults.set('selectedUrl', uniqueKey);
+  videoSearchResults.set('selectedUrl', { url: selectedVideo.url, subOption });
 
   // Fetch details using the selectedUrl
   const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
@@ -1942,7 +1942,66 @@ case '𝐩𝐥𝐚𝐲': {
 }
 
 
+// Inside the '𝐩𝐥𝐚𝐲' case:
+case '𝐩𝐥𝐚𝐲': {
+  if (!text) {
+    return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
+  }
 
+  // Extract the option and sub-option numbers
+  const [option, subOption] = text.split('.').map(parseFloat);
+
+  // Check if the entered option and sub-option numbers are valid
+  if (!option || !subOption || option < 1 || subOption < 1) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  }
+
+  // Find the selected video details based on the option and sub-option numbers
+  const selectedKey = Array.from(videoSearchResults.keys())[option - 1];
+
+  // Check if the selected key exists in the Map
+  if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  }
+
+  const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
+
+  // Store the selected URL and details for later use
+  const uniqueKey = `play_${selectedVideo.url}`;
+
+  // Set the 'selectedUrl' key to the unique key
+  videoSearchResults.set('selectedUrl', {
+    url: selectedVideo.url,
+    subOption
+  });
+
+  // Fetch details using the selectedUrl
+  const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
+
+  try {
+    const detailsResponse = await fetch(apiDetailsURL);
+    const detailsData = await detailsResponse.json();
+
+    // Check if data is available and it's an array
+    if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
+      const videoDetails = detailsData.data[0];
+
+      // Send the video details within the poll options with the URL option number
+      await gss.sendPoll(
+        m.chat,
+        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
+        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
+      );
+    } else {
+      console.error('Invalid API response:', detailsData);
+      return m.reply('Error retrieving video details.');
+    }
+  } catch (error) {
+    console.error('Error fetching video details:', error);
+    return m.reply('Unexpected error occurred while fetching video details.');
+  }
+  break;
+}
 
 // Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
@@ -2034,6 +2093,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 async function instaDownload(apiKeys, url) {
