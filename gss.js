@@ -62,6 +62,7 @@ let akinator = global.db.data.game.akinator = []
 
 let props;
 const reportedMessages = {};
+const videoSearchResults = {};
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -1714,10 +1715,7 @@ for (let i = 0; i < data.data.length; i++) {
 break;
 
 
-// At the beginning of your script, initialize an object to store search results
-const videoSearchResults = {};
 
-// ...
 
 case 'play2': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
