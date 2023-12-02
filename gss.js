@@ -1757,29 +1757,35 @@ case 'getvideo2': {
     const { url } = searchResults[0];
 
     try {
-      const downloadResponse = await axios.get(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}&type=video`, { responseType: 'stream' });
+      const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+      const result = await downloadResponse.json();
 
-      const writer = fs.createWriteStream(`./temp_video_${Math.floor(Math.random() * 10000)}.mp4`);
-      downloadResponse.data.pipe(writer);
+      if (result && result.downloadUrl) {
+        // Fetch the video content
+        const videoBufferReq = await fetch(result.downloadUrl);
+        const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+        const videoBuffer = Buffer.from(videoArrayBuffer);
 
-      await new Promise((resolve, reject) => {
-        writer.on('finish', resolve);
-        writer.on('error', reject);
-      });
+        // Save the video to a temporary file
+        const randomName = `temp_video_${Math.floor(Math.random() * 10000)}.mp4`;
+        fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-      // Stylish caption with markdown formatting
-      const stylishCaption = `
-        🌟 *Title:* _${searchResults[0].title}_
-        📺 *YouTube URL:* ${searchResults[0].url}
-        
-        🤖 Downloaded by *gss botwa*
-      `;
+        // Get additional video information
+        const infoCaption = `
+          🌟 *Title:* _${searchResults[0].title}_
+          📺 *YouTube URL:* ${searchResults[0].url}
+        `;
 
-      // Send the video using gss.sendMessage with the saved video and caption (no thumbnail)
-      await gss.sendMessage(m.chat, { document: fs.readFileSync(`./temp_video_${Math.floor(Math.random() * 10000)}.mp4`), mimetype: 'video/mp4', caption: stylishCaption }, { quoted: m });
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: infoCaption }, { quoted: m });
 
-      // Delete the temporary files
-      fs.unlinkSync(`./temp_video_${Math.floor(Math.random() * 10000)}.mp4`);
+        // Delete the temporary file
+        fs.unlinkSync(`./${randomName}`);
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('Unexpected error occurred.');
+      }
     } catch (error) {
       console.error(`Error during getvideo2:`, error);
       m.reply('Unexpected error occurred.');
@@ -1790,11 +1796,6 @@ case 'getvideo2': {
 
   break;
 }
-
-
-
-
-
 
 
 case 'play': {
