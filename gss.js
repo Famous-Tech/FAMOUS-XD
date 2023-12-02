@@ -1809,6 +1809,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 }
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1828,16 +1829,29 @@ case 'yts': {
         const result = data.data[i];
         const optionNumber = i + 1;
 
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionNumber}. ${result.title}`); // Add "dl" before title in poll options
+        // Check if the option number already exists in the Map
+        if (videoSearchResults.has(optionNumber)) {
+          // Option number exists, add the new video details to the array
+          videoSearchResults.get(optionNumber).push({
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
+          });
+        } else {
+          // Option number doesn't exist, create a new array with the current video details
+          videoSearchResults.set(optionNumber, [{
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
+          }]);
+        }
 
-        // Save video details (including URL) to the Map
-        videoSearchResults.set(optionNumber, {
-          title: result.title,
-          url: result.url,
-          uploadDate: result.uploadDate,
-          views: result.views,
-          duration: result.duration
-        });
+        // Update pollOptions accordingly (use optionNumber and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionNumber}.${videoSearchResults.get(optionNumber).length} ${result.title}`);
       }
 
       // Send the poll with titles as options
@@ -1847,27 +1861,26 @@ case 'yts': {
       return m.reply('Error retrieving search results.');
     }
   } catch (error) {
-    console.error('Error during yts2:', error);
+    console.error('Error during yts:', error);
     return m.reply('Unexpected error occurred.');
   }
 }
 break;
-
-
 
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the number of the video you want to play!');
   }
 
-  const selectedOption = parseInt(text);
+  const selectedOption = parseInt(text.split('.')[0]); // Extract the main option number
+  const subOption = parseInt(text.split('.')[1]); // Extract the sub-option number
 
   // Check if the selected option is a valid number
-  if (!selectedOption || selectedOption < 1 || !videoSearchResults.has(selectedOption)) {
+  if (!selectedOption || selectedOption < 1 || !videoSearchResults.has(selectedOption) || !subOption) {
     return m.reply('Invalid option. Please enter a valid number.');
   }
 
-  const selectedVideo = videoSearchResults.get(selectedOption);
+  const selectedVideo = videoSearchResults.get(selectedOption)[subOption - 1];
 
   // Store the selected URL and details for later use
   videoSearchResults.set('selectedUrl', {
@@ -1880,7 +1893,7 @@ case '𝐩𝐥𝐚𝐲': {
 
   // Fetch details using the selectedUrl
   const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
-  
+
   try {
     const detailsResponse = await fetch(apiDetailsURL);
     const detailsData = await detailsResponse.json();
@@ -1901,6 +1914,7 @@ case '𝐩𝐥𝐚𝐲': {
   }
 }
 break;
+
 
 
 case '𝐯𝐢𝐝𝐞𝐨': {
