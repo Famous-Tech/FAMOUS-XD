@@ -1812,7 +1812,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
     const { url } = searchResults[0];
 
     try {
-      const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+      const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
       const result = await downloadResponse.json();
 
       if (result && result.downloadUrl) {
