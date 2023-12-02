@@ -63,6 +63,7 @@ let akinator = global.db.data.game.akinator = []
 let props;
 const reportedMessages = {};
 const videoSearchResults = new Map();
+let titleUrlMap = {}; 
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
