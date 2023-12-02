@@ -1771,10 +1771,6 @@ case 'play2': {
 
   const selectedOption = parseInt(text);
 
-  // Check if the selected option is a valid number
-  if (!selectedOption || selectedOption < 1 || selectedOption > Object.keys(titleUrlMap).length) {
-    return m.reply('Invalid option. Please enter a valid number.');
-  }
 
   const selectedUrl = titleUrlMap[selectedOption];
 
