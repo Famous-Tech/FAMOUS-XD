@@ -2012,7 +2012,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   }
 
   const { url, subOption } = selectedUrlDetails;
-  const uniqueKey = `url_${url}`;
+  const uniqueKey = `url_${url}_${subOption}`;
 
   try {
     const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
@@ -2058,7 +2058,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
 
   const { url, subOption } = selectedUrlDetails;
-  const uniqueKey = `url_${url}`;
+  const uniqueKey = `url_${url}_${subOption}`;
 
   try {
     const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
@@ -2093,6 +2093,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
