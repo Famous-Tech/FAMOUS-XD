@@ -1717,7 +1717,7 @@ break;
 
 
 
-case 'play2': {
+case 'play': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
   const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
@@ -1800,40 +1800,55 @@ case '𝗩𝗜𝗗𝗘𝗢': {
   break;
 }
 
+case '𝗔𝗨𝗗𝗜𝗢': {
+  const searchResults = videoSearchResults.get(m.chat);
 
-
-case 'play': {
-  if (!text) {
-    return m.reply('Enter YouTube Video Link or Search Query!');
+  if (!searchResults || searchResults.length === 0) {
+    return m.reply('No search results found.');
   }
 
-  m.reply(mess.wait);
+  // If there's only one result, directly proceed to download and send
+  if (searchResults.length === 1) {
+    const { url } = searchResults[0];
 
-  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+    try {
+      const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+      const result = await downloadResponse.json();
 
-  try {
-    const response = await fetch(apiURL);
-    const data = await response.json();
+      if (result && result.downloadUrl) {
+        // Fetch the audio content
+        const audioBufferReq = await fetch(result.downloadUrl);
+        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+        const audioBuffer = Buffer.from(audioArrayBuffer);
 
-    if (data.type === 'search' && Array.isArray(data.data) && data.data.length > 0) {
-      const topResult = data.data[0];
+        // Save the audio to a temporary file
+        const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
+        fs.writeFileSync(`./${randomName}`, audioBuffer);
 
-      // Extract relevant information
-      const { title, views, duration, uploadDate, url } = topResult;
+        // Create a stylish caption
+        const infoCaption = ` 🌟 *Title:* _${result.title}_\n ⏱️ *Duration:* _${result.duration}_\n 📅 *Upload Date:* _${result.uploadDate}_\n 📺 *YouTube URL:* ${result.youtubeUrl}\n 📢 *Upload Channel:* _${result.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
 
-      // Send a poll with options including title, views, duration, and upload date
-      gss.sendPoll(m.chat, `Select the action for the video:\n\n${title}\nViews: ${views}\nDuration: ${duration}\nUpload Date: ${uploadDate}`, [`.audio ${url}`, `.video ${url}`]);
+        // Send the audio with the stylish caption
+        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', caption: infoCaption }, { quoted: m });
 
-    } else {
-      console.error('Invalid API response:', data);
-      return m.reply('Error retrieving search results.');
+        // Delete the temporary file
+        fs.unlinkSync(`./${randomName}`);
+      } else if (result && result.error) {
+        return m.reply(`Error: ${result.error}`);
+      } else {
+        console.error('Invalid API response:', result);
+        m.reply('Unexpected error occurred.');
+      }
+    } catch (error) {
+      console.error(`Error during 𝗔𝗨𝗗𝗜𝗢:`, error);
+      m.reply('Unexpected error occurred.');
     }
-  } catch (error) {
-    console.error('Error during yts:', error);
-    return m.reply('Unexpected error occurred.');
+  } else {
+    return m.reply('Invalid audio index.');
   }
+
+  break;
 }
-break;
 
 
 
