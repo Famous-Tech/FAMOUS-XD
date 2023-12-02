@@ -1883,7 +1883,7 @@ case 'yts': {
 
 
 
-// Inside the 'play' case:
+// Inside the '𝐩𝐥𝐚𝐲' case:
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
@@ -1909,24 +1909,9 @@ case '𝐩𝐥𝐚𝐲': {
 
   // Store the selected URL and details for later use
   const uniqueKey = `play_${selectedVideo.url}`;
-  const existingResults = videoSearchResults.get(uniqueKey) || [];
 
-  // Add the new video details with the updated sub-option number
-  existingResults.push({
-    subOption,
-    title: selectedVideo.title,
-    url: selectedVideo.url,
-    uploadDate: selectedVideo.uploadDate,
-    views: selectedVideo.views,
-    duration: selectedVideo.duration
-  });
-
-  // Save only the last 10 results
-  if (existingResults.length > 10) {
-    existingResults.shift(); // Remove the oldest result
-  }
-
-  videoSearchResults.set(uniqueKey, existingResults);
+  // Set the 'selectedUrl' key to the unique key
+  videoSearchResults.set('selectedUrl', uniqueKey);
 
   // Fetch details using the selectedUrl
   const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
@@ -1955,6 +1940,7 @@ case '𝐩𝐥𝐚𝐲': {
   }
   break;
 }
+
 
 
 
