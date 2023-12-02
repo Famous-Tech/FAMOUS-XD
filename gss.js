@@ -1718,7 +1718,6 @@ break;
 
 
 
-
 case 'yts2': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1750,8 +1749,8 @@ case 'yts2': {
         });
       }
 
-      // Send the poll with titles as options and options for audio and video
-      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions, 'Audio', 'Cancel']);
+      // Send the poll with titles as options
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
     } else {
       console.error('Invalid API response:', data);
       return m.reply('Error retrieving search results.');
@@ -1799,8 +1798,8 @@ case 'play2': {
     if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
       const videoDetails = detailsData.data[0];
 
-      // Example: Send the video details
-      await m.reply(`Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}`);
+      // Send the video details within the poll options
+      await gss.sendPoll(m.chat, `Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}`, ['𝗔𝗨𝗗𝗜𝗢', '𝗩𝗜𝗗𝗘𝗢']);
     } else {
       console.error('Invalid API response:', detailsData);
       return m.reply('Error retrieving video details.');
