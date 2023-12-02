@@ -1809,15 +1809,15 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
   // If there's only one result, directly proceed to download and send
   if (searchResults.length === 1) {
-    const { url } = searchResults[0];
+    const { title } = searchResults[0];
 
     try {
-      const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+      const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(title)}`);
       const result = await downloadResponse.json();
 
-      if (result && result.downloadUrl) {
+      if (result && result.title) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.downloadUrl);
+        const audioBufferReq = await fetch(result.title);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
