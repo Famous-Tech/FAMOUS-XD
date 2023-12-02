@@ -1753,30 +1753,28 @@ case 'yts2': {
 }
 break;
 
-// ...
-
 case 'play2': {
   if (!text) {
     return m.reply('Enter the number of the video you want to play!');
   }
 
-  // Check if titleUrlMap is available
-  if (!titleUrlMap) {
+  // Check if urlIndex is available
+  if (!urlIndex) {
     return m.reply('Error: Video details not available.');
   }
 
   const selectedOption = parseInt(text);
 
   // Check if the selected option is a valid number
-  if (!selectedOption || selectedOption < 1 || selectedOption > Object.keys(titleUrlMap).length) {
-    return m.reply('Invalid option. Please enter a valid number between 1 and ' + Object.keys(titleUrlMap).length + '.');
+  if (!selectedOption || selectedOption < 1 || selectedOption > Object.keys(urlIndex).length) {
+    return m.reply('Invalid option. Please enter a valid number between 1 and ' + Object.keys(urlIndex).length + '.');
   }
 
-  const selectedUrl = titleUrlMap[selectedOption];
+  const selectedUrl = urlIndex[selectedOption];
 
   // Fetch details using the selectedUrl
   const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedUrl)}`;
-  
+
   try {
     const detailsResponse = await fetch(apiDetailsURL);
     const detailsData = await detailsResponse.json();
@@ -1785,8 +1783,14 @@ case 'play2': {
     if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
       const videoDetails = detailsData.data[0];
 
-      // Example: Send the video details
-      await m.reply(`Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}`);
+      // Build options for the poll
+      const pollOptions = [
+        '🔊 Audio',
+        '📹 Video',
+      ];
+
+      // Example: Send the video details along with the poll
+      await m.sendPoll(m.chat, `Video Details:\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\n\nSelect an option:`, pollOptions);
     } else {
       console.error('Invalid API response:', detailsData);
       return m.reply('Error retrieving video details.');
@@ -1797,6 +1801,8 @@ case 'play2': {
   }
 }
 break;
+
+
 
 
 
