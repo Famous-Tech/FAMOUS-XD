@@ -1826,14 +1826,11 @@ case 'yts': {
 
     if (data.type === 'search' && Array.isArray(data.data)) {
       let pollOptions = [];
+      let optionIndex = 1;
 
-      // Build the poll options with video titles and save title-url mapping to the Map
-      for (let i = 0; i < data.data.length; i++) {
-        const result = data.data[i];
-        const optionNumber = i + 1;
-
-        // Generate a unique key based on the video URL
-        const uniqueKey = `yts_${optionNumber}`;
+      // Iterate through the search results
+      for (const result of data.data) {
+        const uniqueKey = `yts_${optionIndex}`;
 
         // Check if the key already exists in the Map
         if (videoSearchResults.has(uniqueKey)) {
@@ -1864,8 +1861,9 @@ case 'yts': {
           }]);
         }
 
-        // Update pollOptions accordingly (use optionNumber and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionNumber}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
+        // Update pollOptions accordingly (use optionIndex and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
+        optionIndex += 1;
       }
 
       // Send the poll with titles as options
@@ -1880,6 +1878,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
