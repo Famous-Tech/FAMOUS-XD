@@ -1812,6 +1812,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 
 
 
+// Inside the 'yts' case:
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1836,8 +1837,15 @@ case 'yts': {
 
         // Check if the key already exists in the Map
         if (videoSearchResults.has(uniqueKey)) {
-          // Key exists, add the new video details to the array
+          // Key exists, find the next available sub-option number
+          let subOption = 1;
+          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
+            subOption += 1;
+          }
+
+          // Add the new video details with the updated sub-option number
           videoSearchResults.get(uniqueKey).push({
+            subOption,
             title: result.title,
             url: result.url,
             uploadDate: result.uploadDate,
@@ -1847,6 +1855,7 @@ case 'yts': {
         } else {
           // Key doesn't exist, create a new array with the current video details
           videoSearchResults.set(uniqueKey, [{
+            subOption: 1,
             title: result.title,
             url: result.url,
             uploadDate: result.uploadDate,
@@ -1871,6 +1880,7 @@ case 'yts': {
   }
   break;
 }
+
 
 // Inside the '𝐩𝐥𝐚𝐲' case:
 case '𝐩𝐥𝐚𝐲': {
