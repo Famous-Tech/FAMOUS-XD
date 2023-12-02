@@ -1719,8 +1719,6 @@ case 'yts2': {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
 
-  m.reply(mess.wait);
-
   const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
 
   try {
@@ -1728,21 +1726,24 @@ case 'yts2': {
     const data = await response.json();
 
     if (data.type === 'search' && Array.isArray(data.data)) {
-      let replyList = [];
       let pollOptions = [];
 
-      replyList.push('\n🔥 _Reply with the following commands to download:_\n   - 🎧 *getaudio <number>* _for Audio_\n   - 📹 *getvideo <number>* _for Video_\n\n_Enjoy the vibes!_ 🎶✨\n\n');
-      replyList.push(`🔍 *Search Results From ${text}* 🔍`);
+      // Map to store title-url associations
+      let titleUrlMap = {};
 
-      // Build the stylish reply list with search results and poll options
+      // Build the poll options with video titles and save title-url mapping
       for (let i = 0; i < data.data.length; i++) {
         const result = data.data[i];
-        replyList.push(`\n${i + 1}. 🎦 *${result.title}*\n   🔗 ${result.url}\n`);
-        pollOptions.push(result.title); // Add title to poll options
+        const optionNumber = i + 1;
+
+        pollOptions.push(`${optionNumber}. ${result.title}`); // Add title to poll options
+        titleUrlMap[optionNumber] = result.url; // Save title-url mapping
       }
 
+      // Save the title-url mapping to use later
+      // You can store titleUrlMap in a file, database, or any persistent storage
 
-      // Create a poll with only titles as options
+      // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions);
     } else {
       console.error('Invalid API response:', data);
@@ -1756,7 +1757,8 @@ case 'yts2': {
 break;
 
 
-case 'play': {
+
+case 'play2': {
   if (!text) {
     return m.reply('Enter the number of the video you want to play!');
   }
