@@ -1810,6 +1810,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1829,10 +1830,13 @@ case 'yts': {
         const result = data.data[i];
         const optionNumber = i + 1;
 
-        // Check if the option number already exists in the Map
-        if (videoSearchResults.has(optionNumber)) {
-          // Option number exists, add the new video details to the array
-          videoSearchResults.get(optionNumber).push({
+        // Generate a unique key based on the video URL
+        const uniqueKey = `url_${result.url}`;
+
+        // Check if the key already exists in the Map
+        if (videoSearchResults.has(uniqueKey)) {
+          // Key exists, add the new video details to the array
+          videoSearchResults.get(uniqueKey).push({
             title: result.title,
             url: result.url,
             uploadDate: result.uploadDate,
@@ -1840,8 +1844,8 @@ case 'yts': {
             duration: result.duration
           });
         } else {
-          // Option number doesn't exist, create a new array with the current video details
-          videoSearchResults.set(optionNumber, [{
+          // Key doesn't exist, create a new array with the current video details
+          videoSearchResults.set(uniqueKey, [{
             title: result.title,
             url: result.url,
             uploadDate: result.uploadDate,
@@ -1851,7 +1855,7 @@ case 'yts': {
         }
 
         // Update pollOptions accordingly (use optionNumber and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionNumber}.${videoSearchResults.get(optionNumber).length} ${result.title}`);
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionNumber}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
       }
 
       // Send the poll with titles as options
@@ -1864,9 +1868,10 @@ case 'yts': {
     console.error('Error during yts:', error);
     return m.reply('Unexpected error occurred.');
   }
+  break;
 }
-break;
 
+// Inside the '𝐩𝐥𝐚𝐲' case:
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the number of the video you want to play!');
@@ -1876,11 +1881,19 @@ case '𝐩𝐥𝐚𝐲': {
   const subOption = parseInt(text.split('.')[1]); // Extract the sub-option number
 
   // Check if the selected option is a valid number
-  if (!selectedOption || selectedOption < 1 || !videoSearchResults.has(selectedOption) || !subOption) {
+  if (!selectedOption || selectedOption < 1 || !subOption) {
     return m.reply('Invalid option. Please enter a valid number.');
   }
 
-  const selectedVideo = videoSearchResults.get(selectedOption)[subOption - 1];
+  // Find the unique key for the selected option
+  const selectedKey = Array.from(videoSearchResults.keys())[selectedOption - 1];
+
+  // Check if the selected key exists in the Map
+  if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
+    return m.reply('Invalid option. Please enter a valid number.');
+  }
+
+  const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
 
   // Store the selected URL and details for later use
   videoSearchResults.set('selectedUrl', {
@@ -1912,19 +1925,19 @@ case '𝐩𝐥𝐚𝐲': {
     console.error('Error fetching video details:', error);
     return m.reply('Unexpected error occurred while fetching video details.');
   }
+  break;
 }
-break;
 
-
-
+// Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
   const selectedUrlDetails = videoSearchResults.get('selectedUrl');
 
   if (!selectedUrlDetails) {
-    return m.reply('No video details found. Please use the yts2 command to search and select a video.');
+    return m.reply('No video details found. Please use the yts command to search and select a video.');
   }
 
   const { url } = selectedUrlDetails;
+  const uniqueKey = `url_${url}`;
 
   try {
     const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
@@ -1955,21 +1968,22 @@ case '𝐯𝐢𝐝𝐞𝐨': {
       m.reply('Unexpected error occurred.');
     }
   } catch (error) {
-    console.error(`Error during 𝗩𝗜𝗗𝗘𝗢:`, error);
+    console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
 }
 
-
+// Inside the '𝐚𝐮𝐝𝐢𝐨' case:
 case '𝐚𝐮𝐝𝐢𝐨': {
   const selectedUrlDetails = videoSearchResults.get('selectedUrl');
 
   if (!selectedUrlDetails) {
-    return m.reply('No video details found. Please use the yts2 command to search and select a video.');
+    return m.reply('No video details found. Please use the yts command to search and select a video.');
   }
 
   const { url } = selectedUrlDetails;
+  const uniqueKey = `url_${url}`;
 
   try {
     const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
@@ -1985,6 +1999,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
       const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
       fs.writeFileSync(`./${randomName}`, audioBuffer);
 
+      // Send the audio with the stylish caption
       await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.title}.mp3` }, { quoted: m });
 
       // Delete the temporary file
@@ -1998,8 +2013,8 @@ case '𝐚𝐮𝐝𝐢𝐨': {
       m.reply('Unexpected error occurred. Please check the logs for more details.');
     }
   } catch (error) {
-    console.error(`Error during 𝗔𝗨𝗗𝗜𝗢:`, error);
-    m.reply('Unexpected error occurred. Please check the logs for more details.');
+    console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
+    m.reply('Unexpected error occurred.');
   }
   break;
 }
