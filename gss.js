@@ -2016,17 +2016,29 @@ case '𝐩𝐥𝐚𝐲': {
 
 // Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
-  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
-
-  if (!selectedUrlDetails) {
-    return m.reply('No video details found. Please use the yts command to search and select a video.');
+  if (!text) {
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
   }
 
-  const { subOption } = selectedUrlDetails;
+  const subOption = parseFloat(text);
+
+  // Check if the entered sub-option number is valid
+  if (!subOption || subOption < 1) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  }
+
+  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
+
+  if (!selectedUrlDetails || subOption > selectedUrlDetails.length) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  }
+
+  const selectedVideo = selectedUrlDetails[subOption - 1];
+
   const uniqueKey = `yts_${subOption}`;
 
   try {
-    const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedUrlDetails.url)}`);
+    const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
     const result = await downloadResponse.json();
 
     if (result && result.downloadUrl) {
@@ -2062,17 +2074,29 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
 // Inside the '𝐚𝐮𝐝𝐢𝐨' case:
 case '𝐚𝐮𝐝𝐢𝐨': {
-  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
-
-  if (!selectedUrlDetails) {
-    return m.reply('No video details found. Please use the yts command to search and select a video.');
+  if (!text) {
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
   }
 
-  const { subOption } = selectedUrlDetails;
-  const uniqueKey = `yts_${subOption}`;
+  const subOption = parseFloat(text);
+
+  // Check if the entered sub-option number is valid
+  if (!subOption || subOption < 1) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  }
+
+  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
+
+  if (!selectedUrlDetails || subOption > selectedUrlDetails.length) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  }
+
+  const selectedVideo = selectedUrlDetails[subOption - 1];
+
+  const uniqueKey = `play_${subOption}`;
 
   try {
-    const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedUrlDetails.url)}`);
+    const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
     const result = await downloadResponse.json();
 
     if (result && result.downloadURL) {
@@ -2104,6 +2128,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
