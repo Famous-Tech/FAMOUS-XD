@@ -2014,108 +2014,136 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
-// Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
-    return m.reply('Enter the option and sub-option number of the media you want to play! (e.g., 1.1)');
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
   }
 
-  // Extract the option and sub-option numbers
-  const [option, subOption] = text.split('.').map(parseFloat);
+  const subOption = parseFloat(text);
 
-  // Check if the entered option and sub-option numbers are valid
-  if (!option || !subOption || option < 1 || subOption < 1) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  // Check if the entered sub-option number is valid
+  if (!subOption || subOption < 1) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
   }
 
   const selectedUrlDetails = videoSearchResults.get('selectedUrl');
 
-  // Check if selectedUrlDetails is defined and has the expected structure
-  if (!selectedUrlDetails || !Array.isArray(selectedUrlDetails[option - 1]) || subOption > selectedUrlDetails[option - 1].length) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  if (!selectedUrlDetails || subOption > selectedUrlDetails.length) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
   }
 
-  const selectedVideo = selectedUrlDetails[option - 1][subOption - 1];
+  const selectedVideo = selectedUrlDetails[subOption - 1];
+
   const uniqueKey = `yts_${subOption}`;
 
   try {
-    const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
-    const detailsResponse = await fetch(apiDetailsURL);
-    const detailsData = await detailsResponse.json();
+    // The following logic fetches details for the selected audio (you may need to adapt this part)
+    const audioDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
+    const audioResult = await audioDetailsResponse.json();
 
-    // Check if data is available and it's an array
-    if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
-      const videoDetails = detailsData.data[0];
+    if (audioResult && audioResult.downloadUrl) {
+      // Fetch the audio content
+      const audioBufferReq = await fetch(audioResult.downloadUrl);
 
-      // Send the video details within the poll options with the URL option number
-      await gss.sendPoll(
-        m.chat,
-        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
-        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
-      );
+      if (!audioBufferReq.ok) {
+        console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
+        return m.reply('Error fetching audio content.');
+      }
+
+      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+      const audioBuffer = Buffer.from(audioArrayBuffer);
+
+      // Save the audio to a temporary file
+      const randomName = `temp_audio_${subOption}.mp3`;
+      fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+      // Create a stylish caption for audio
+      const audioInfoCaption = ` 🌟 *Title:* _${audioResult.title}_\n 👀 *Views:* _${audioResult.views}_\n ⏱️ *Duration:* _${audioResult.duration}_\n 📅 *Upload Date:* _${audioResult.uploadDate}_\n 📢 *Upload Channel:* _${audioResult.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
+
+      // Send the audio with the stylish caption
+      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.title}.mp3`, caption: audioInfoCaption }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } else if (audioResult && audioResult.error) {
+      return m.reply(`Error: ${audioResult.error}`);
     } else {
-      console.error('Invalid API response:', detailsData);
-      return m.reply('Error retrieving video details.');
+      console.error('Invalid API response:', audioResult);
+      m.reply('Unexpected error occurred.');
     }
   } catch (error) {
-    console.error('Error fetching video details:', error);
-    return m.reply('Unexpected error occurred while fetching video details.');
+    console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
+    m.reply('Unexpected error occurred.');
   }
   break;
 }
 
 
-
-// Inside the '𝐚𝐮𝐝𝐢𝐨' case:
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
-    return m.reply('Enter the option and sub-option number of the media you want to play! (e.g., 1.1)');
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
   }
 
-  // Extract the option and sub-option numbers
-  const [option, subOption] = text.split('.').map(parseFloat);
+  const subOption = parseFloat(text);
 
-  // Check if the entered option and sub-option numbers are valid
-  if (!option || !subOption || option < 1 || subOption < 1) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  // Check if the entered sub-option number is valid
+  if (!subOption || subOption < 1) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
   }
 
   const selectedUrlDetails = videoSearchResults.get('selectedUrl');
 
-  // Check if selectedUrlDetails is defined and has the expected structure
-  if (!selectedUrlDetails || !Array.isArray(selectedUrlDetails[option - 1]) || subOption > selectedUrlDetails[option - 1].length) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  if (!selectedUrlDetails || subOption > selectedUrlDetails.length) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
   }
 
-  const selectedAudio = selectedUrlDetails[option - 1][subOption - 1];
+  const selectedVideo = selectedUrlDetails[subOption - 1];
+
   const uniqueKey = `play_${subOption}`;
 
   try {
-    const audioApiDetailsURL = `https://audio-api.example.com/details?search=${encodeURIComponent(selectedAudio.url)}`;
-    const audioDetailsResponse = await fetch(audioApiDetailsURL);
-    const audioDetailsData = await audioDetailsResponse.json();
+    // The following logic fetches details for the selected video (you may need to adapt this part)
+    const videoDetailsResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
+    const videoResult = await videoDetailsResponse.json();
 
-    // Check if data is available and it's an array
-    if (audioDetailsData && Array.isArray(audioDetailsData.data) && audioDetailsData.data.length > 0) {
-      const audioDetails = audioDetailsData.data[0];
+    if (videoResult && videoResult.downloadURL) {
+      // Fetch the video content
+      const videoBufferReq = await fetch(videoResult.downloadURL);
 
-      // Send the audio details within the poll options with the URL option number
-      await gss.sendPoll(
-        m.chat,
-        `Audio Details (Option ${option}.${subOption}):\nTitle: ${audioDetails.title}\nArtist: ${audioDetails.artist}\nDuration: ${audioDetails.duration}\nRelease Date: ${audioDetails.releaseDate}\nURL: ${selectedAudio.url}`,
-        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
-      );
+      if (!videoBufferReq.ok) {
+        console.error('Failed to fetch video content. Status:', videoBufferReq.status);
+        return m.reply('Error fetching video content.');
+      }
+
+      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+      const videoBuffer = Buffer.from(videoArrayBuffer);
+
+      // Save the video to a temporary file
+      const randomName = `temp_video_${subOption}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+      // Create a stylish caption for video
+      const videoInfoCaption = ` 🌟 *Title:* _${videoResult.title}_\n 👀 *Views:* _${videoResult.views}_\n ⏱️ *Duration:* _${videoResult.duration}_\n 📅 *Upload Date:* _${videoResult.uploadDate}_\n 📺 *YouTube URL:* ${videoResult.youtubeUrl}\n 📢 *Upload Channel:* _${videoResult.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
+
+      // Send the video with the stylish caption
+      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoInfoCaption }, { quoted: m });
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    } else if (videoResult && videoResult.error) {
+      console.error('API response error:', videoResult);
+      return m.reply(`Error: ${videoResult.error}`);
     } else {
-      console.error('Invalid API response:', audioDetailsData);
-      return m.reply('Error retrieving audio details.');
+      console.error('Invalid API response:', videoResult);
+      console.log('API response details:', JSON.stringify(videoResult, null, 2)); // Add this line to log the response details
+      m.reply('Unexpected error occurred. Please check the logs for more details.');
     }
   } catch (error) {
-    console.error('Error fetching audio details:', error);
-    return m.reply('Unexpected error occurred while fetching audio details.');
+    console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
+    m.reply('Unexpected error occurred.');
   }
   break;
 }
-
 
 
 
