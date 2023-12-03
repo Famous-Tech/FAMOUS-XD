@@ -2045,10 +2045,10 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
   try {
     const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const videoResult = await videoDetailsResponse.json();
+    const result = await videoDetailsResponse.json();
 
-    if (videoResult && videoResult.downloadURL) {
-      const videoBufferReq = await fetch(videoResult.downloadURL);
+    if (result && result.downloadURL) {
+      const videoBufferReq = await fetch(result.downloadURL);
 
       if (!videoBufferReq.ok) {
         console.error('Failed to fetch video content. Status:', videoBufferReq.status);
