@@ -2046,39 +2046,38 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   const uniqueKey = `yts_${subOption}`;
 
   try {
-    // The following logic fetches details for the selected audio (you may need to adapt this part)
-    const audioDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const audioResult = await audioDetailsResponse.json();
+    // The following logic fetches details for the selected video (you may need to adapt this part)
+    const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
+    const videoResult = await videoDetailsResponse.json();
 
-    if (audioResult && audioResult.downloadUrl) {
-      // Fetch the audio content
-      const audioBufferReq = await fetch(audioResult.downloadUrl);
+    if (videoResult && videoResult.downloadURL) {
+      // Fetch the video content
+      const videoBufferReq = await fetch(videoResult.downloadURL);
 
-      if (!audioBufferReq.ok) {
-        console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
-        return m.reply('Error fetching audio content.');
+      if (!videoBufferReq.ok) {
+        console.error('Failed to fetch video content. Status:', videoBufferReq.status);
+        return m.reply('Error fetching video content.');
       }
 
-      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-      const audioBuffer = Buffer.from(audioArrayBuffer);
+      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+      const videoBuffer = Buffer.from(videoArrayBuffer);
 
-      // Save the audio to a temporary file
-      const randomName = `temp_audio_${subOption}.mp3`;
-      fs.writeFileSync(`./${randomName}`, audioBuffer);
+      // Save the video to a temporary file
+      const randomName = `temp_video_${subOption}.mp4`;
+      fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-      // Create a stylish caption for audio
-      const audioInfoCaption = ` 🌟 *Title:* _${audioResult.title}_\n 👀 *Views:* _${audioResult.views}_\n ⏱️ *Duration:* _${audioResult.duration}_\n 📅 *Upload Date:* _${audioResult.uploadDate}_\n 📢 *Upload Channel:* _${audioResult.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
-
-      // Send the audio with the stylish caption
-      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.title}.mp3`, caption: audioInfoCaption }, { quoted: m });
+      // Send the video without caption
+      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4' }, { quoted: m });
 
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
-    } else if (audioResult && audioResult.error) {
-      return m.reply(`Error: ${audioResult.error}`);
+    } else if (videoResult && videoResult.error) {
+      console.error('API response error:', videoResult);
+      return m.reply(`Error: ${videoResult.error}`);
     } else {
-      console.error('Invalid API response:', audioResult);
-      m.reply('Unexpected error occurred.');
+      console.error('Invalid API response:', videoResult);
+      console.log('API response details:', JSON.stringify(videoResult, null, 2)); // Add this line to log the response details
+      m.reply('Unexpected error occurred. Please check the logs for more details.');
     }
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
@@ -2086,6 +2085,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   }
   break;
 }
+
 
 
 
@@ -2112,41 +2112,37 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   const uniqueKey = `play_${subOption}`;
 
   try {
-    // The following logic fetches details for the selected video (you may need to adapt this part)
-    const videoDetailsResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const videoResult = await videoDetailsResponse.json();
+    // The following logic fetches details for the selected audio (you may need to adapt this part)
+    const audioDetailsResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
+    const audioResult = await audioDetailsResponse.json();
 
-    if (videoResult && videoResult.downloadURL) {
-      // Fetch the video content
-      const videoBufferReq = await fetch(videoResult.downloadURL);
+    if (audioResult && audioResult.downloadURL) {
+      // Fetch the audio content
+      const audioBufferReq = await fetch(audioResult.downloadURL);
 
-      if (!videoBufferReq.ok) {
-        console.error('Failed to fetch video content. Status:', videoBufferReq.status);
-        return m.reply('Error fetching video content.');
+      if (!audioBufferReq.ok) {
+        console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
+        return m.reply('Error fetching audio content.');
       }
 
-      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-      const videoBuffer = Buffer.from(videoArrayBuffer);
+      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+      const audioBuffer = Buffer.from(audioArrayBuffer);
 
-      // Save the video to a temporary file
-      const randomName = `temp_video_${subOption}.mp4`;
-      fs.writeFileSync(`./${randomName}`, videoBuffer);
+      // Save the audio to a temporary file
+      const randomName = `temp_audio_${subOption}.mp3`;
+      fs.writeFileSync(`./${randomName}`, audioBuffer);
 
-      // Create a stylish caption for video
-      const videoInfoCaption = ` 🌟 *Title:* _${videoResult.title}_\n 👀 *Views:* _${videoResult.views}_\n ⏱️ *Duration:* _${videoResult.duration}_\n 📅 *Upload Date:* _${videoResult.uploadDate}_\n 📺 *YouTube URL:* ${videoResult.youtubeUrl}\n 📢 *Upload Channel:* _${videoResult.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
-
-      // Send the video with the stylish caption
-      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoInfoCaption }, { quoted: m });
+      // Send the audio without caption
+      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.title}.mp3` }, { quoted: m });
 
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
-    } else if (videoResult && videoResult.error) {
-      console.error('API response error:', videoResult);
-      return m.reply(`Error: ${videoResult.error}`);
+    } else if (audioResult && audioResult.error) {
+      console.error('API response error:', audioResult);
+      return m.reply(`Error: ${audioResult.error}`);
     } else {
-      console.error('Invalid API response:', videoResult);
-      console.log('API response details:', JSON.stringify(videoResult, null, 2)); // Add this line to log the response details
-      m.reply('Unexpected error occurred. Please check the logs for more details.');
+      console.error('Invalid API response:', audioResult);
+      m.reply('Unexpected error occurred.');
     }
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
@@ -2154,6 +2150,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
