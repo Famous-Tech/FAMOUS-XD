@@ -1976,6 +1976,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   const uniqueKey = `yts_${videoSubOption}`;
 
   try {
+    // Fetch details using the selectedVideo.url directly
     const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
     const videoResult = await videoDetailsResponse.json();
 
@@ -2012,9 +2013,6 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   }
   break;
 }
-
-
-
 
 
 
