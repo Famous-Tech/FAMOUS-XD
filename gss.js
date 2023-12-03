@@ -1984,13 +1984,13 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
     console.log('Video details API response:', JSON.stringify(videoResult, null, 2));
 
-    if (!videoResult || !videoResult.downloadURL) {
+    if (!videoResult || !videoResult.downloadUrl) {
       console.error('Error: Download URL not available in the API response.');
       return m.reply('Error: Download URL not available in the API response.');
     }
 
     // Fetch the video content
-    const videoBufferReq = await fetch(videoResult.downloadURL);
+    const videoBufferReq = await fetch(videoResult.downloadUrl);
 
     if (!videoBufferReq.ok) {
       console.error('Failed to fetch video content. Status:', videoBufferReq.status);
