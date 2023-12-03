@@ -2030,7 +2030,8 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
   const selectedUrlDetails = videoSearchResults.get('selectedUrl');
 
-  if (!selectedUrlDetails || option > selectedUrlDetails.length || subOption > selectedUrlDetails[option - 1].length) {
+  // Check if selectedUrlDetails is defined and has the expected structure
+  if (!selectedUrlDetails || !Array.isArray(selectedUrlDetails[option - 1]) || subOption > selectedUrlDetails[option - 1].length) {
     return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
@@ -2064,6 +2065,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 }
 
 
+
 // Inside the '𝐚𝐮𝐝𝐢𝐨' case:
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
@@ -2080,7 +2082,8 @@ case '𝐚𝐮𝐝𝐢𝐨': {
 
   const selectedUrlDetails = videoSearchResults.get('selectedUrl');
 
-  if (!selectedUrlDetails || option > selectedUrlDetails.length || subOption > selectedUrlDetails[option - 1].length) {
+  // Check if selectedUrlDetails is defined and has the expected structure
+  if (!selectedUrlDetails || !Array.isArray(selectedUrlDetails[option - 1]) || subOption > selectedUrlDetails[option - 1].length) {
     return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
@@ -2112,6 +2115,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
