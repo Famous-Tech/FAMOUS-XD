@@ -1882,75 +1882,6 @@ case 'yts': {
 
 
 
-// Inside the 'yts' case:
-case 'yts': {
-  if (!text) {
-    return m.reply('Enter YouTube Video Link or Search Query!');
-  }
-
-  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
-
-  try {
-    const response = await fetch(apiURL);
-    const data = await response.json();
-
-    if (data.type === 'search' && Array.isArray(data.data)) {
-      let pollOptions = [];
-      let optionIndex = 1;
-
-      // Iterate through the search results
-      for (const result of data.data) {
-        const uniqueKey = `yts_${optionIndex}`;
-
-        // Check if the key already exists in the Map
-        if (videoSearchResults.has(uniqueKey)) {
-          // Key exists, find the next available sub-option number
-          let subOption = 1;
-          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
-            subOption += 1;
-          }
-
-          // Add the new video details with the updated sub-option number
-          videoSearchResults.get(uniqueKey).push({
-            subOption,
-            title: result.title,
-            url: result.url,
-            uploadDate: result.uploadDate,
-            views: result.views,
-            duration: result.duration
-          });
-        } else {
-          // Key doesn't exist, create a new array with the current video details
-          videoSearchResults.set(uniqueKey, [{
-            subOption: 1,
-            title: result.title,
-            url: result.url,
-            uploadDate: result.uploadDate,
-            views: result.views,
-            duration: result.duration
-          }]);
-        }
-
-        // Update pollOptions accordingly (use optionIndex and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${subOption} ${result.title}`);
-        optionIndex += 1;
-      }
-
-      // Send the poll with titles as options
-      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
-    } else {
-      console.error('Invalid API response:', data);
-      return m.reply('Error retrieving search results.');
-    }
-  } catch (error) {
-    console.error('Error during yts:', error);
-    return m.reply('Unexpected error occurred.');
-  }
-  break;
-}
-
-
-
 // Inside the '𝐩𝐥𝐚𝐲' case:
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
@@ -2014,6 +1945,7 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
+// Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
     return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
@@ -2045,10 +1977,10 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
   try {
     const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const result = await videoDetailsResponse.json();
+    const videoResult = await videoDetailsResponse.json();
 
-    if (result && result.downloadURL) {
-      const videoBufferReq = await fetch(result.downloadURL);
+    if (videoResult && videoResult.downloadURL) {
+      const videoBufferReq = await fetch(videoResult.downloadURL);
 
       if (!videoBufferReq.ok) {
         console.error('Failed to fetch video content. Status:', videoBufferReq.status);
@@ -2061,8 +1993,10 @@ case '𝐯𝐢𝐝𝐞𝐨': {
       const randomName = `temp_video_${videoSubOption}.mp4`;
       fs.writeFileSync(`./${randomName}`, videoBuffer);
 
+      // Send the video without caption
       await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4' }, { quoted: m });
 
+      // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
     } else if (videoResult && videoResult.error) {
       console.error('API response error:', videoResult);
@@ -2078,6 +2012,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   }
   break;
 }
+
 
 
 
