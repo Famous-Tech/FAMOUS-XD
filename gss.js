@@ -1984,36 +1984,33 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
     console.log('Video details API response:', JSON.stringify(videoResult, null, 2));
 
-    if (videoResult && videoResult.downloadURL) {
-      const videoBufferReq = await fetch(videoResult.downloadURL);
-
-      if (!videoBufferReq.ok) {
-        console.error('Failed to fetch video content. Status:', videoBufferReq.status);
-        return m.reply('Error fetching video content.');
-      }
-
-      const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-      const videoBuffer = Buffer.from(videoArrayBuffer);
-
-      const randomName = `temp_video_${videoSubOption}.mp4`;
-      fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-      // Send the video without caption
-      await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4' }, { quoted: m });
-
-      // Delete the temporary file
-      fs.unlinkSync(`./${randomName}`);
-    } else if (videoResult && videoResult.error) {
-      console.error('API response error:', videoResult.error);
-      return m.reply(`Error: ${videoResult.error}`);
-    } else {
-      console.error('Invalid API response:', videoResult);
-      console.log('API response details:', JSON.stringify(videoResult, null, 2));
-      m.reply('Unexpected error occurred. Please check the logs for more details.');
+    if (!videoResult || !videoResult.downloadURL) {
+      console.error('Error: Download URL not available in the API response.');
+      return m.reply('Error: Download URL not available in the API response.');
     }
+
+    // Fetch the video content
+    const videoBufferReq = await fetch(videoResult.downloadURL);
+
+    if (!videoBufferReq.ok) {
+      console.error('Failed to fetch video content. Status:', videoBufferReq.status);
+      return m.reply('Error fetching video content.');
+    }
+
+    const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+    const videoBuffer = Buffer.from(videoArrayBuffer);
+
+    const randomName = `temp_video_${videoSubOption}.mp4`;
+    fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+    // Send the video without caption
+    await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4' }, { quoted: m });
+
+    // Delete the temporary file
+    fs.unlinkSync(`./${randomName}`);
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
-    m.reply('Unexpected error occurred.');
+    m.reply('Unexpected error occurred. Please check the logs for more details.');
   }
   break;
 }
