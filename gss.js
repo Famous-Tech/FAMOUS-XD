@@ -2016,45 +2016,38 @@ case '𝐩𝐥𝐚𝐲': {
 
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
-    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
   }
 
-  const subOption = parseFloat(text);
+  const [videoOption, videoSubOption] = text.split('.').map(parseFloat);
 
-  // Check if the entered sub-option number is valid
-  if (!subOption || subOption < 1) {
-    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  // Check if the entered option and sub-option numbers are valid
+  if (!videoOption || !videoSubOption || videoOption < 1 || videoSubOption < 1) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
+  const selectedKey = Array.from(videoSearchResults.keys())[videoOption - 1];
 
-  if (!selectedUrlDetails || subOption > selectedUrlDetails.length) {
-    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  // Check if the selected key exists in the Map
+  if (!videoSearchResults.has(selectedKey) || videoSubOption > videoSearchResults.get(selectedKey).length) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  // Check if the selected sub-option is within bounds
-  if (subOption > selectedUrlDetails.length) {
-    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
-  }
+  const selectedVideo = videoSearchResults.get(selectedKey)[videoSubOption - 1];
 
-  const selectedVideo = selectedUrlDetails[subOption - 1];
-
-  console.log('Selected Video:', selectedVideo); // Log the selected video details
-
+  // Check if the selectedVideo object is defined and has a 'url' property
   if (!selectedVideo || !selectedVideo.url) {
     console.error('Error: Video details not available for the selected sub-option.');
     return m.reply('Error: Video details not available for the selected sub-option.');
   }
 
-  const uniqueKey = `play_${subOption}`;
+  const uniqueKey = `yts_${videoSubOption}`;
 
   try {
-    // The following logic fetches details for the selected video (you may need to adapt this part)
     const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
     const videoResult = await videoDetailsResponse.json();
 
     if (videoResult && videoResult.downloadURL) {
-      // Fetch the video content
       const videoBufferReq = await fetch(videoResult.downloadURL);
 
       if (!videoBufferReq.ok) {
@@ -2065,21 +2058,18 @@ case '𝐯𝐢𝐝𝐞𝐨': {
       const videoArrayBuffer = await videoBufferReq.arrayBuffer();
       const videoBuffer = Buffer.from(videoArrayBuffer);
 
-      // Save the video to a temporary file
-      const randomName = `temp_video_${subOption}.mp4`;
+      const randomName = `temp_video_${videoSubOption}.mp4`;
       fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-      // Send the video without caption
       await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4' }, { quoted: m });
 
-      // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
     } else if (videoResult && videoResult.error) {
       console.error('API response error:', videoResult);
       return m.reply(`Error: ${videoResult.error}`);
     } else {
       console.error('Invalid API response:', videoResult);
-      console.log('API response details:', JSON.stringify(videoResult, null, 2)); // Add this line to log the response details
+      console.log('API response details:', JSON.stringify(videoResult, null, 2));
       m.reply('Unexpected error occurred. Please check the logs for more details.');
     }
   } catch (error) {
@@ -2093,30 +2083,27 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
 
 
+
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
-    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
   }
 
-  const subOption = parseFloat(text);
+  const [audioOption, audioSubOption] = text.split('.').map(parseFloat);
 
-  // Check if the entered sub-option number is valid
-  if (!subOption || subOption < 1) {
-    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  // Check if the entered option and sub-option numbers are valid
+  if (!audioOption || !audioSubOption || audioOption < 1 || audioSubOption < 1) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  const selectedUrlDetails = videoSearchResults.get('selectedUrl');
+  const selectedKey = Array.from(videoSearchResults.keys())[audioOption - 1];
 
-  if (!selectedUrlDetails || subOption > selectedUrlDetails.length) {
-    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  // Check if the selected key exists in the Map
+  if (!videoSearchResults.has(selectedKey) || audioSubOption > videoSearchResults.get(selectedKey).length) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  // Check if the selected sub-option is within bounds
-  if (subOption > selectedUrlDetails.length) {
-    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
-  }
-
-  const selectedVideo = selectedUrlDetails[subOption - 1];
+  const selectedVideo = videoSearchResults.get(selectedKey)[audioSubOption - 1];
 
   // Check if the selectedVideo object is defined and has a 'url' property
   if (!selectedVideo || !selectedVideo.url) {
@@ -2124,15 +2111,13 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     return m.reply('Error: Video details not available for the selected sub-option.');
   }
 
-  const uniqueKey = `play_${subOption}`;
+  const uniqueKey = `play_${audioSubOption}`;
 
   try {
-    // The following logic fetches details for the selected audio (you may need to adapt this part)
     const audioDetailsResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
     const audioResult = await audioDetailsResponse.json();
 
     if (audioResult && audioResult.downloadURL) {
-      // Fetch the audio content
       const audioBufferReq = await fetch(audioResult.downloadURL);
 
       if (!audioBufferReq.ok) {
@@ -2143,14 +2128,11 @@ case '𝐚𝐮𝐝𝐢𝐨': {
       const audioArrayBuffer = await audioBufferReq.arrayBuffer();
       const audioBuffer = Buffer.from(audioArrayBuffer);
 
-      // Save the audio to a temporary file
-      const randomName = `temp_audio_${subOption}.mp3`;
+      const randomName = `temp_audio_${audioSubOption}.mp3`;
       fs.writeFileSync(`./${randomName}`, audioBuffer);
 
-      // Send the audio without caption
       await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.title}.mp3` }, { quoted: m });
 
-      // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
     } else if (audioResult && audioResult.error) {
       console.error('API response error:', audioResult);
@@ -2165,11 +2147,6 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
-
-
-
-
-
 
 
 
