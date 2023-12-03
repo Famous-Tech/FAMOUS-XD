@@ -2032,7 +2032,16 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
   }
 
+  // Check if the selected sub-option is within bounds
+  if (subOption > selectedUrlDetails.length) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  }
+
   const selectedVideo = selectedUrlDetails[subOption - 1];
+
+  if (!selectedVideo || !selectedVideo.url) {
+    return m.reply('Error: Video details not available for the selected sub-option.');
+  }
 
   const uniqueKey = `yts_${subOption}`;
 
@@ -2077,6 +2086,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   }
   break;
 }
+
 
 
 case '𝐚𝐮𝐝𝐢𝐨': {
