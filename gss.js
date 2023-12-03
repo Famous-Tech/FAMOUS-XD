@@ -2003,8 +2003,11 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     const randomName = `temp_video_${videoSubOption}.mp4`;
     fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-    // Send the video without caption
-    await gss.sendVideo(m.chat, `./${randomName}`, '', m);
+    // Create a stylish caption with video details
+    const videoDetailsCaption = ` 🌟 *Title:* _${videoResult.title}_\n 👀 *Views:* _${videoResult.views}_\n ⏱️ *Duration:* _${videoResult.duration}_\n 📅 *Upload Date:* _${videoResult.uploadDate}_\n 📺 *YouTube URL:* ${videoResult.youtubeUrl}\n 📢 *Upload Channel:* _${videoResult.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
+
+    // Send the video with the stylish caption
+    await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
 
     // Delete the temporary file
     fs.unlinkSync(`./${randomName}`);
@@ -2014,6 +2017,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   }
   break;
 }
+
 
 
 
