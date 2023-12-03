@@ -1976,9 +1976,13 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   const uniqueKey = `yts_${videoSubOption}`;
 
   try {
+    console.log('Fetching video details for URL:', selectedVideo.url);
+
     // Fetch details using the selectedVideo.url directly
     const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
     const videoResult = await videoDetailsResponse.json();
+
+    console.log('Video details API response:', JSON.stringify(videoResult, null, 2));
 
     if (videoResult && videoResult.downloadURL) {
       const videoBufferReq = await fetch(videoResult.downloadURL);
@@ -2000,7 +2004,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
       // Delete the temporary file
       fs.unlinkSync(`./${randomName}`);
     } else if (videoResult && videoResult.error) {
-      console.error('API response error:', videoResult);
+      console.error('API response error:', videoResult.error);
       return m.reply(`Error: ${videoResult.error}`);
     } else {
       console.error('Invalid API response:', videoResult);
@@ -2013,6 +2017,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   }
   break;
 }
+
 
 
 
