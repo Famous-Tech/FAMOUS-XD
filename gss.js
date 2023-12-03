@@ -2004,16 +2004,17 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     fs.writeFileSync(`./${randomName}`, videoBuffer);
 
     // Send the video without caption
-    await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4' }, { quoted: m });
+    await gss.sendVideo(m.chat, `./${randomName}`, '', m);
 
     // Delete the temporary file
     fs.unlinkSync(`./${randomName}`);
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
-    m.reply('Unexpected error occurred. Please check the logs for more details.');
+    m.reply('Unexpected error occurred.');
   }
   break;
 }
+
 
 
 
