@@ -1725,9 +1725,9 @@ case '𝗩𝗜𝗗𝗘𝗢': {
       const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
       const result = await downloadResponse.json();
 
-      if (result && result.downloadUrl) {
+      if (result && result.downloadURL) {
         // Fetch the video content
-        const videoBufferReq = await fetch(result.downloadUrl);
+        const videoBufferReq = await fetch(result.downloadURL);
         const videoArrayBuffer = await videoBufferReq.arrayBuffer();
         const videoBuffer = Buffer.from(videoArrayBuffer);
 
