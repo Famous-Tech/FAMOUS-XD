@@ -2039,11 +2039,14 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
   const selectedVideo = selectedUrlDetails[subOption - 1];
 
+  console.log('Selected Video:', selectedVideo); // Log the selected video details
+
   if (!selectedVideo || !selectedVideo.url) {
+    console.error('Error: Video details not available for the selected sub-option.');
     return m.reply('Error: Video details not available for the selected sub-option.');
   }
 
-  const uniqueKey = `yts_${subOption}`;
+  const uniqueKey = `play_${subOption}`;
 
   try {
     // The following logic fetches details for the selected video (you may need to adapt this part)
@@ -2089,6 +2092,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
 
 
+
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
     return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
@@ -2107,7 +2111,18 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
   }
 
+  // Check if the selected sub-option is within bounds
+  if (subOption > selectedUrlDetails.length) {
+    return m.reply('Invalid sub-option number. Please enter a valid sub-option.');
+  }
+
   const selectedVideo = selectedUrlDetails[subOption - 1];
+
+  // Check if the selectedVideo object is defined and has a 'url' property
+  if (!selectedVideo || !selectedVideo.url) {
+    console.error('Error: Video details not available for the selected sub-option.');
+    return m.reply('Error: Video details not available for the selected sub-option.');
+  }
 
   const uniqueKey = `play_${subOption}`;
 
@@ -2150,6 +2165,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
