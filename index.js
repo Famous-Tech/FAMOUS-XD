@@ -302,7 +302,7 @@ gss.ev.on("call", async (json) => {
         // Add your custom message when the connection is open
         console.log('Connected...', update);
         gss.sendMessage('917050906659@s.whatsapp.net', {
-            text: `*hi bro! 🫡*\n\n_gss botwa v2 bot has successfully connected to the server_\n\n*`
+            text: `*hi bro! 🫡*\n_gss botwa v2 bot has successfully connected to the server_`
         });
     }
 });
