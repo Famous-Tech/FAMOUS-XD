@@ -18,7 +18,7 @@ const path = require('path')
 const fg = require('api-dylux');
 const cheerio = require('cheerio');
 const os = require('os')
-const googleTTS = require("google-tts-api");
+const googleTTS = require('google-tts-api');
 const search = require('aptoide-scraper').search;
 const download = require('aptoide-scraper').download;
 const moment = require('moment-timezone')
@@ -3317,14 +3317,13 @@ if (!isCreator) throw mess.owner
   break;
 
 
+
 const languages = require('./lib/languages'); // Import the language codes module
 
 // Function to validate language code
 function isValidLanguageCode(code) {
     return (code);
 }
-
-
 
 // Command handler for 'say', 'tts', and 'gtts'
 case 'say':
@@ -3350,7 +3349,7 @@ case 'gtts': {
     });
 
     // Send the audio message
-    return gss.sendMessage(m.chat, {
+    return client.sendMessage(m.chat, {
         audio: {
             url: audioUrl,
         },
