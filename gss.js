@@ -371,40 +371,6 @@ if (!('autobio' in setting)) setting.autobio = false
         
 
 
-/*
-// Define a function to format the time in 12-hour format
-function formatTime(date) {
-    let formattedTime = moment(date).tz('Asia/Kolkata').format('hh:mm A');
-    return formattedTime;
-}
-
-// Define a function to format the date in Indian timezone
-function formatIndianDate(date) {
-    let formattedDate = moment(date).tz('Asia/Kolkata').format('dddd, D MMMM, YYYY');
-    return formattedDate;
-}
-
-// Define a function to update the bio
-async function updateBio() {
-    try {
-        let now = new Date();
-
-        // Get Indian date and time
-        let formattedIndianTime = formatTime(now);
-        let formattedIndianDate = formatIndianDate(now);
-
-        // Assuming gss.updateProfileStatus is working correctly
-        await gss.updateProfileStatus(` ${botname} 
-| Indian Time: ${formattedIndianTime}\n
-| Indian Date: ${formattedIndianDate}`);
-    } catch (error) {
-        console.error('Error updating bio:', error);
-    }
-}
-
-// Schedule auto-update every 60 seconds for testing purposes
-setInterval(updateBio, 60000);
-*/
 
 if (isCommand) {
             
@@ -419,6 +385,12 @@ if (!isCreator && global.onlypc && m.isGroup) {
 if (TYPING_ENABLED && command) {
   // Execute code when REACODING is enabled
   gss.sendPresenceUpdate('composing');
+}
+
+// 212 auto block using cmd
+if (m.sender.startsWith('212') && global.autoblok212 === true) {
+    // Update the block status
+    gss.updateBlockStatus(m.sender, 'block');
 }
 
 if (AUTO_READ_ENABLED && command) {
