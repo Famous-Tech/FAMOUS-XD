@@ -266,21 +266,47 @@ gss.ev.on("call", async (json) => {
     gss.serializeM = (m) => smsg(gss, m, store)
 
     gss.ev.on('connection.update', async (update) => {
-        const { connection, lastDisconnect } = update	    
-        if (connection === 'close') {
-        let reason = new Boom(lastDisconnect?.error)?.output.statusCode
-            if (reason === DisconnectReason.badSession) { console.log(`Bad Session File, Please Delete Session and Scan Again`); gss.logout(); }
-            else if (reason === DisconnectReason.connectionClosed) { console.log("Connection closed, reconnecting...."); startgss(); }
-            else if (reason === DisconnectReason.connectionLost) { console.log("Connection Lost from Server, reconnecting..."); startgss(); }
-            else if (reason === DisconnectReason.connectionReplaced) { console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First"); gss.logout(); }
-            else if (reason === DisconnectReason.loggedOut) { console.log(`Device Logged Out, Please Scan Again And Run.`); gss.logout(); }
-            else if (reason === DisconnectReason.restartRequired) { console.log("Restart Required, Restarting..."); startgss(); }
-            else if (reason === DisconnectReason.timedOut) { console.log("Connection TimedOut, Reconnecting..."); startgss(); }
-            else if (reason === DisconnectReason.Multidevicemismatch) { console.log("Multi device mismatch, please scan again"); gss.logout(); }
-            else gss.end(`Unknown DisconnectReason: ${reason}|${connection}`)
+    const { connection, lastDisconnect } = update;
+
+    if (connection === 'close') {
+        let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
+
+        if (reason === DisconnectReason.badSession) {
+            console.log(`Bad Session File, Please Delete Session and Scan Again`);
+            gss.logout();
+        } else if (reason === DisconnectReason.connectionClosed) {
+            console.log("Connection closed, reconnecting....");
+            startgss();
+        } else if (reason === DisconnectReason.connectionLost) {
+            console.log("Connection Lost from Server, reconnecting...");
+            startgss();
+        } else if (reason === DisconnectReason.connectionReplaced) {
+            console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First");
+            gss.logout();
+        } else if (reason === DisconnectReason.loggedOut) {
+            console.log(`Device Logged Out, Please Scan Again And Run.`);
+            gss.logout();
+        } else if (reason === DisconnectReason.restartRequired) {
+            console.log("Restart Required, Restarting...");
+            startgss();
+        } else if (reason === DisconnectReason.timedOut) {
+            console.log("Connection TimedOut, Reconnecting...");
+            startgss();
+        } else if (reason === DisconnectReason.Multidevicemismatch) {
+            console.log("Multi device mismatch, please scan again");
+            gss.logout();
+        } else {
+            gss.end(`Unknown DisconnectReason: ${reason}|${connection}`);
         }
-        console.log('Connected...', update)
-    })
+    } else if (connection === "open") {
+        // Add your custom message when the connection is open
+        console.log('Connected...', update);
+        gss.sendMessage('919142294671@s.whatsapp.net', {
+            text: `*test`
+        });
+    }
+});
+
 
 const moment = require('moment-timezone');
 
