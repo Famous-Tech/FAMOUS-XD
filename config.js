@@ -42,12 +42,13 @@ global.mess = {
     endLimit: 'ʏᴏᴜʀ ᴅᴀɪʟʏ ʟɪᴍɪᴛ ʜᴀs ᴇxᴘɪʀᴇᴅ, ᴛʜᴇ ʟɪᴍɪᴛ ᴡɪʟʟ ʙᴇ ʀᴇsᴇᴛ ᴇᴠᴇʀʏ 12 ʜᴏᴜʀs',
 };
 global.link = 'https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w'
-global.typemenu = 'v2' // 'v1' => 'v5'
+global.autoblok212 = true
+global.typemenu = 'v1' // 'v1' => 'v5'
 global.onlygroup = false // onlygroup
 global.onlypc = false
 global.limitawal = {
     premium: 'Infinity',
-    free: 100
+    free: 10
 };
 
 // Add anticall option
