@@ -388,7 +388,7 @@ if (TYPING_ENABLED && command) {
 }
 
 // 212 auto block using cmd
-if (m.sender.startsWith('212') && global.autoblok212 === true) {
+if (m.sender.startsWith('91') && global.autoblok212 === true) {
     // Update the block status
     gss.updateBlockStatus(m.sender, 'block');
 }
