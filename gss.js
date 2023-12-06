@@ -3531,6 +3531,49 @@ function convertToFontStyle(text, style) {
             }
         }
         break;
+        
+case 'antibot':
+        if (m.args[0] == "on" || m.args[0] == "1") {
+            if (db.chats[m.chat].antibot == true) return m.reply("Sudah active");
+            db.chats[m.chat].antibot = true;
+            m.reply("Mode anti link telah active");
+        } else if (m.args[0] == "off" || m.args[0] == "0") {
+            if (db.chats[m.chat].antibot == false) return m.reply("Sudah non active");
+            db.chats[m.chat].antibot = false;
+            m.reply("Mode anti link telah non active");
+        } else {
+            m.reply("\`\`\`「 MODE ANTI BOTZ 」\`\`\`\n\n0. off\n1. on");
+        }
+        break; 
+        
+case 'antidelete':
+        if (m.args[0] == "on" || m.args[0] == "1") {
+            if (db.chats[m.chat].antidelete == true) return m.reply("Sudah active");
+            db.chats[m.chat].antidelete = true;
+            m.reply("Mode anti delete telah active");
+        } else if (m.args[0] == "off" || m.args[0] == "0") {
+            if (db.chats[m.chat].antidelete == false) return m.reply("Sudah non active");
+            db.chats[m.chat].antidelete = false;
+            m.reply("Mode anti delete telah non active");
+        } else {
+            m.reply("\`\`\`「 MODE ANTI DELETE 」\`\`\`\n\n0. off\n1. on");
+        }
+        break;
+        
+case 'antiviewonce':
+        if (m.args[0] == "on" || m.args[0] == "1") {
+            if (db.chats[m.chat].antiviewonce == true) return m.reply("Sudah active");
+            db.chats[m.chat].antiviewonce = true;
+            m.reply("Mode anti view once telah active");
+        } else if (m.args[0] == "off" || m.args[0] == "0") {
+            if (db.chats[m.chat].antiviewonce == false) return m.reply("Sudah non active");
+            db.chats[m.chat].antiviewonce = false;
+            m.reply("Mode anti view once telah non active");
+        } else {
+            m.reply("\`\`\`「 MODE ANTI VIEW ONCE 」\`\`\`\n\n0. off\n1. on");
+        }
+        break;
+        
 
 case 'runtime': case 'alive':
                 let pinga = ` ${uptimeMessage}`
