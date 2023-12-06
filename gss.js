@@ -3533,53 +3533,79 @@ function convertToFontStyle(text, style) {
         break;
         
 
-    case 'antibot':
-        if (m.args && (m.args[0] == "on" || m.args[0] == "1")) {
-            if (db.chats[m.chat] && db.chats[m.chat].antibot == true) return m.reply("Sudah active");
-            if (!db.chats[m.chat]) db.chats[m.chat] = {};
-            db.chats[m.chat].antibot = true;
-            m.reply("Mode anti link telah active");
-        } else if (m.args && (m.args[0] == "off" || m.args[0] == "0")) {
-            if (db.chats[m.chat] && db.chats[m.chat].antibot == false) return m.reply("Sudah non active");
-            if (!db.chats[m.chat]) db.chats[m.chat] = {};
-            db.chats[m.chat].antibot = false;
-            m.reply("Mode anti link telah non active");
-        } else {
-            m.reply("\`\`\`「 MODE ANTI BOTZ 」\`\`\`\n\n0. off\n1. on");
-        }
-        break;
 
-    case 'antidelete':
-        if (m.args && (m.args[0] == "on" || m.args[0] == "1")) {
-            if (db.chats[m.chat] && db.chats[m.chat].antidelete == true) return m.reply("Sudah active");
-            if (!db.chats[m.chat]) db.chats[m.chat] = {};
-            db.chats[m.chat].antidelete = true;
-            m.reply("Mode anti delete telah active");
-        } else if (m.args && (m.args[0] == "off" || m.args[0] == "0")) {
-            if (db.chats[m.chat] && db.chats[m.chat].antidelete == false) return m.reply("Sudah non active");
-            if (!db.chats[m.chat]) db.chats[m.chat] = {};
-            db.chats[m.chat].antidelete = false;
-            m.reply("Mode anti delete telah non active");
-        } else {
-            m.reply("\`\`\`「 MODE ANTI DELETE 」\`\`\`\n\n0. off\n1. on");
-        }
-        break;
+    case 'antibot': {
+        if (!m.isGroup) throw mess.group;
+        if (!isBotAdmins) throw mess.botAdmin;
+        if (!isAdmins) throw mess.admin;
 
-    case 'antiviewonce':
-        if (m.args && (m.args[0] == "on" || m.args[0] == "1")) {
-            if (db.chats[m.chat] && db.chats[m.chat].antiviewonce == true) return m.reply("Sudah active");
-            if (!db.chats[m.chat]) db.chats[m.chat] = {};
-            db.chats[m.chat].antiviewonce = true;
-            m.reply("Mode anti view once telah active");
-        } else if (m.args && (m.args[0] == "off" || m.args[0] == "0")) {
-            if (db.chats[m.chat] && db.chats[m.chat].antiviewonce == false) return m.reply("Sudah non active");
-            if (!db.chats[m.chat]) db.chats[m.chat] = {};
-            db.chats[m.chat].antiviewonce = false;
-            m.reply("Mode anti view once telah non active");
+        if (!args || args.length < 1) {
+            gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
         } else {
-            m.reply("\`\`\`「 MODE ANTI VIEW ONCE 」\`\`\`\n\n0. off\n1. on");
+            const antibotSetting = args[0].toLowerCase();
+            if (antibotSetting === "on") {
+                if (db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Active`);
+                db.data.chats[m.chat].antibot = true;
+                m.reply(`Antibot Activated!`);
+            } else if (antibotSetting === "off") {
+                if (!db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Inactive`);
+                db.data.chats[m.chat].antibot = false;
+                m.reply(`Antibot Deactivated!`);
+            } else {
+                gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
+            }
         }
         break;
+    }
+
+    case 'antidelete': {
+        if (!m.isGroup) throw mess.group;
+        if (!isBotAdmins) throw mess.botAdmin;
+        if (!isAdmins) throw mess.admin;
+
+        if (!args || args.length < 1) {
+            gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
+        } else {
+            const antideleteSetting = args[0].toLowerCase();
+            if (antideleteSetting === "on") {
+                if (db.data.chats[m.chat]?.antidelete) return m.reply(`Antidelete Already Active`);
+                db.data.chats[m.chat].antidelete = true;
+                m.reply(`Antidelete Activated!`);
+            } else if (antideleteSetting === "off") {
+                if (!db.data.chats[m.chat]?.antidelete) return m.reply(`Antidelete Already Inactive`);
+                db.data.chats[m.chat].antidelete = false;
+                m.reply(`Antidelete Deactivated!`);
+            } else {
+                gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
+            }
+        }
+        break;
+    }
+
+    case 'antiviewonce': {
+        if (!m.isGroup) throw mess.group;
+        if (!isBotAdmins) throw mess.botAdmin;
+        if (!isAdmins) throw mess.admin;
+
+        if (!args || args.length < 1) {
+            gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
+        } else {
+            const antiviewonceSetting = args[0].toLowerCase();
+            if (antiviewonceSetting === "on") {
+                if (db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Active`);
+                db.data.chats[m.chat].antiviewonce = true;
+                m.reply(`Antiviewonce Activated!`);
+            } else if (antiviewonceSetting === "off") {
+                if (!db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Inactive`);
+                db.data.chats[m.chat].antiviewonce = false;
+                m.reply(`Antiviewonce Deactivated!`);
+            } else {
+                gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
+            }
+        }
+        break;
+    }
+
 
         
 
