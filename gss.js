@@ -3538,7 +3538,7 @@ function convertToFontStyle(text, style) {
         break;
         
 
-
+/*
     case 'antibot':
 
         if (!db.data) db.data = {}; // Initialize if not exists
@@ -3611,7 +3611,7 @@ function convertToFontStyle(text, style) {
         }
         break;
 
-
+*/
 
         
 
