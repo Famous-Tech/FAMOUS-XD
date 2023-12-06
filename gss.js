@@ -368,9 +368,6 @@ if (!('autobio' in setting)) setting.autobio = false
             timezone: "Asia/kolkata"
         })
         
-if (db.chats[m.chat].antidelete) db.chats[m.chat].antidelete = true
-                if (db.chats[m.chat].antiviewonce) db.chats[m.chat].antiviewonce = true
-                if (db.chats[m.chat].antibot) db.chats[m.chat].antibot = true
         
         
         //ANTI BOTZ
