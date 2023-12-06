@@ -3539,10 +3539,13 @@ function convertToFontStyle(text, style) {
         
 
 
-    case 'antibot': {
+    case 'antibot':
         if (!m.isGroup) throw mess.group;
         if (!isBotAdmins) throw mess.botAdmin;
         if (!isAdmins) throw mess.admin;
+
+        if (!db.data.chats) db.data.chats = {}; // Initialize if not exists
+        if (!db.data.chats[m.chat]) db.data.chats[m.chat] = {}; // Initialize if not exists
 
         if (!args || args.length < 1) {
             gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
@@ -3561,10 +3564,14 @@ function convertToFontStyle(text, style) {
             }
         }
         break;
-    }
 
-    case 'antidelete': {
+    case 'antidelete':
+        if (!m.isGroup) throw mess.group;
+        if (!isBotAdmins) throw mess.botAdmin;
         if (!isAdmins) throw mess.admin;
+
+        if (!db.data.chats) db.data.chats = {}; // Initialize if not exists
+        if (!db.data.chats[m.chat]) db.data.chats[m.chat] = {}; // Initialize if not exists
 
         if (!args || args.length < 1) {
             gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
@@ -3583,10 +3590,14 @@ function convertToFontStyle(text, style) {
             }
         }
         break;
-    }
 
-    case 'antiviewonce': {
+    case 'antiviewonce':
+        if (!m.isGroup) throw mess.group;
+        if (!isBotAdmins) throw mess.botAdmin;
         if (!isAdmins) throw mess.admin;
+
+        if (!db.data.chats) db.data.chats = {}; // Initialize if not exists
+        if (!db.data.chats[m.chat]) db.data.chats[m.chat] = {}; // Initialize if not exists
 
         if (!args || args.length < 1) {
             gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
@@ -3605,7 +3616,7 @@ function convertToFontStyle(text, style) {
             }
         }
         break;
-    }
+
 
 
         
