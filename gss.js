@@ -368,6 +368,11 @@ if (!('autobio' in setting)) setting.autobio = false
             timezone: "Asia/kolkata"
         })
         
+if (db.chats[m.chat].antidelete) db.chats[m.chat].antidelete = false
+                if (db.chats[m.chat].antiviewonce) db.chats[m.chat].antiviewonce = false
+                if (db.chats[m.chat].antibot) db.chats[m.chat].antibot = false
+        
+        
         //ANTI BOTZ
         
 if (m.isAntiBotz && isBotGroupAdmins) {
@@ -3559,8 +3564,6 @@ function convertToFontStyle(text, style) {
     }
 
     case 'antidelete': {
-        if (!m.isGroup) throw mess.group;
-        if (!isBotAdmins) throw mess.botAdmin;
         if (!isAdmins) throw mess.admin;
 
         if (!args || args.length < 1) {
@@ -3583,8 +3586,6 @@ function convertToFontStyle(text, style) {
     }
 
     case 'antiviewonce': {
-        if (!m.isGroup) throw mess.group;
-        if (!isBotAdmins) throw mess.botAdmin;
         if (!isAdmins) throw mess.admin;
 
         if (!args || args.length < 1) {
