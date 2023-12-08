@@ -384,7 +384,7 @@ if (m.isAntiBotz && isBotGroupAdmins) {
 
 // Anti Delete
 if (m.isAntiDelete && Object.keys(db.message).includes(m.sender) && m.type == "protocolMessage") {
-    if (Object.keys(db.message).includes(m.sender) && db.message[m.sender].key.id == m.message[m.type].key.id) {
+    if (Object.keys(db.message).includes(m.sender) && db.message[m.sender].key.id == m.message.messageID) {
         if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
             let message = db.message[m.sender].message
             let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1]
@@ -401,7 +401,7 @@ if (m.isAntiDelete && Object.keys(db.message).includes(m.sender) && m.type == "p
 }
 
 // Anti View Once
-if (m.isAntiViewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
+if (m.message.viewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
     if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
         const media = await gss.downloadMediaMessage(m)
         let teks = "\`\`\`「  PESAN SEKALI TERBUKA TERDETEKSI  」\`\`\`\n\n"
