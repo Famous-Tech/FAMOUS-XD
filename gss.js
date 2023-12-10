@@ -8,6 +8,7 @@ const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 const fsx = require('fs-extra')
+const ytSearch = require('yt-search');
 const util = require('util')
 const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
@@ -1784,74 +1785,32 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 
 
 
+case 'yts':
+    {
+        const searchText = args.join(' '); // Combine all arguments to form the search query
 
-
-// Inside the 'yts' case:
-case 'yts': {
-  if (!text) {
-    return m.reply('Enter YouTube Video Link or Search Query!');
-  }
-
-  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
-
-  try {
-    const response = await fetch(apiURL);
-    const data = await response.json();
-
-    if (data.type === 'search' && Array.isArray(data.data)) {
-      let pollOptions = [];
-      let optionIndex = 1;
-
-      // Iterate through the search results
-      for (const result of data.data) {
-        const uniqueKey = `yts_${optionIndex}`;
-
-        // Check if the key already exists in the Map
-        if (videoSearchResults.has(uniqueKey)) {
-          // Key exists, find the next available sub-option number
-          let subOption = 1;
-          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
-            subOption += 1;
-          }
-
-          // Add the new video details with the updated sub-option number
-          videoSearchResults.get(uniqueKey).push({
-            subOption,
-            title: result.title,
-            url: result.url,
-            uploadDate: result.uploadDate,
-            views: result.views,
-            duration: result.duration
-          });
-        } else {
-          // Key doesn't exist, create a new array with the current video details
-          videoSearchResults.set(uniqueKey, [{
-            subOption: 1,
-            title: result.title,
-            url: result.url,
-            uploadDate: result.uploadDate,
-            views: result.views,
-            duration: result.duration
-          }]);
+        if (!searchText) {
+            // Handle the case where no search query is provided
+            gss.sendMessage(m.chat, 'Please provide a search query for YouTube.', { quoted: m });
+            return;
         }
 
-        // Update pollOptions accordingly (use optionIndex and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
-        optionIndex += 1;
-      }
+        try {
+            // Perform YouTube search
+            const searchResults = await ytSearch(searchText);
 
-      // Send the poll with titles as options
-      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
-    } else {
-      console.error('Invalid API response:', data);
-      return m.reply('Error retrieving search results.');
+            // Extracting only titles from the top 5 search results and prepending "Play"
+            const topTitles = searchResults.videos.slice(0, 5).map(result => `Play ${result.title}`);
+
+            // Sending a poll with the titles
+            gss.sendPoll(m.chat, `Top 5 Results for "${searchText}"`, topTitles, { quoted: m });
+        } catch (error) {
+            console.error(error);
+            gss.sendMessage(m.chat, 'An error occurred while searching on YouTube.', { quoted: m });
+        }
     }
-  } catch (error) {
-    console.error('Error during yts:', error);
-    return m.reply('Unexpected error occurred.');
-  }
-  break;
-}
+    break;
+
 
 
 
