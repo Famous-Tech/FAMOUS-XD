@@ -1852,11 +1852,6 @@ case 'yts': {
 
 
 
-
-
-
-
-// Inside the '𝐩𝐥𝐚𝐲' case:
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
@@ -1880,42 +1875,27 @@ case '𝐩𝐥𝐚𝐲': {
 
   const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
 
-  // Store the selected URL and details for later use
-  const uniqueKey = `play_${selectedVideo.url}`;
+  // Fetch details using the yt-search library
+  const detailsResult = await ytSearch(selectedVideo.url);
 
-  // Set the 'selectedUrl' key to the unique key
-  videoSearchResults.set('selectedUrl', {
-    url: selectedVideo.url,
-    subOption
-  });
+  // Check if details are available
+  if (detailsResult && detailsResult.videos && detailsResult.videos.length > 0) {
+    const videoDetails = detailsResult.videos[0];
 
-  // Fetch details using the selectedUrl
-  const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
-
-  try {
-    const detailsResponse = await fetch(apiDetailsURL);
-    const detailsData = await detailsResponse.json();
-
-    // Check if data is available and it's an array
-    if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
-      const videoDetails = detailsData.data[0];
-
-      // Send the video details within the poll options with the URL option number
-      await gss.sendPoll(
-        m.chat,
-        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
-        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
-      );
-    } else {
-      console.error('Invalid API response:', detailsData);
-      return m.reply('Error retrieving video details.');
-    }
-  } catch (error) {
-    console.error('Error fetching video details:', error);
-    return m.reply('Unexpected error occurred while fetching video details.');
+    // Send the video details within the poll options with the URL option number
+    await gss.sendPoll(
+      m.chat,
+      `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.ago}\nURL: ${selectedVideo.url}`,
+      [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
+    );
+  } else {
+    console.error('Invalid details result:', detailsResult);
+    return m.reply('Error retrieving video details.');
   }
+
   break;
 }
+
 
 
 
