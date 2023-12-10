@@ -1798,8 +1798,9 @@ case 'yts': {
       let pollOptions = [];
       let optionIndex = 1;
 
-      // Iterate through the search results
-      for (const video of result.videos) {
+      // Iterate through the top 5 search results
+      for (let i = 0; i < Math.min(result.videos.length, 5); i++) {
+        const video = result.videos[i];
         const uniqueKey = `yts_${optionIndex}`;
 
         // Check if the key already exists in the Map
@@ -1848,6 +1849,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
