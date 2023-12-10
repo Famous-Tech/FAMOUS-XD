@@ -76,7 +76,7 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         const args = body.trim().split(/ +/).slice(1)
 //prefix v2 for poll response
 const isCmdpoll = body.startsWith(prefix)
-const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+const isCommand = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
 //prefix v3
 const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
         const isAsu = body.startsWith(pric)
