@@ -74,10 +74,8 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         const isCmd = body.startsWith(prefix)
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
-//prefix v2 for poll response
-const isCmdpoll = body.startsWith(prefix)
-const isCommand = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
-//prefix v3
+
+//prefix v2
 const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
         const isAsu = body.startsWith(pric)
         const isCommand = isAsu ? body.replace(pric, '').trim().split(/ +/).shift().toLowerCase() : ""
@@ -608,7 +606,7 @@ during ${clockString(new Date - user.afkTime)}`)
         const cmdOwner = ["react","chat","join","leave","block","unblock","bcgroup","bcall","setppbot","setexif","anticall","setstatus","setnamebot","sleep","autotyping","alwaysonline","autoread"]
         const allCmd = [...cmdGrup,...cmdDown,...cmdAi,...cmdTool,...cmdBug,...cmdSearch,...cmdFun,...cmdConv,...cmdMain,...cmdOwner]
 	    
-        switch(command) {
+        switch(isCommand) {
 	    case 'afk': {
                 let user = global.db.data.users[m.sender]
                 user.afkTime = + new Date
