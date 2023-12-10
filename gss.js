@@ -69,11 +69,12 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
         var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
         var budy = (typeof m.text == 'string' ? m.text : '')
-        var prefix = prefa ? /^[&.©^]/gi.test(body) ? body.match(/^[.©^]/gi)[0] : "" : prefa ?? global.prefix
+        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
         global.prefix = prefix
         const isCmd = body.startsWith(prefix)
-        const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
-        const args = body.trim().split(/ +/).slice(1)
+        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+        var args = body.trim().split(/ +/).slice(1)
+        args = args.concat(['','','','','',''])
 
 //prefix v2
 const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
@@ -597,7 +598,7 @@ during ${clockString(new Date - user.afkTime)}`)
         const cmdBug = ["bug","report"]
         const cmdAi = ["ai","gpt","dalle","bard","remini"]
         const cmdTool = ["tempmail","checkmail","info","trt","tts"]
-        const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke",""]
+        const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke"]
  const cmdDown = ["facebook","apk","mediafire","gdrive","insta","pinterestdl","ytmp3","ytmp4","gitclone"]
  const cmdSearch = ["play","yts","imdb","google","gimage","pinterest","wallpaper","wikimedia","ytsearch","ringtone","weather","lyrics"]
         const cmdFun = ["delttt","tictactoe"]
