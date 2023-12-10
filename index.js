@@ -123,33 +123,39 @@ gss.ev.on("call", async (json) => {
         }
     })
     
- // respon cmd pollMessage
-    async function getMessage(key){
-        if (store) {
-            const msg = await store.loadMessage(key.remoteJid, key.id)
-            return msg?.message
-        }
-        return {
-            conversation: "Hai im gss botwa"
+// respon cmd pollMessage
+async function getMessage(key) {
+    if (store) {
+        const msg = await store.loadMessage(key.remoteJid, key.id);
+        return msg?.message;
+    }
+    return {
+        conversation: "Hai im gss botwa",
+    };
+}
+
+gss.ev.on('messages.update', async chatUpdate => {
+    for (const { key, update } of chatUpdate) {
+        if (update.pollUpdates && key.fromMe) {
+            const pollCreation = await getMessage(key);
+            if (pollCreation) {
+                const pollUpdate = await getAggregateVotesInPollMessage({
+                    message: pollCreation,
+                    pollUpdates: update.pollUpdates,
+                });
+                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
+                if (toCmd == undefined) return;
+                var prefCmd = prefix + toCmd;
+
+                // Delete the poll message
+                await gss.deleteMessage(key.remoteJid, key.id);
+
+                gss.appenTextMessage(prefCmd, chatUpdate);
+            }
         }
     }
-    gss.ev.on('messages.update', async chatUpdate => {
-        for(const { key, update } of chatUpdate) {
-			if(update.pollUpdates && key.fromMe) {
-				const pollCreation = await getMessage(key)
-				if(pollCreation) {
-				    const pollUpdate = await getAggregateVotesInPollMessage({
-							message: pollCreation,
-							pollUpdates: update.pollUpdates,
-						})
-	                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name
-	                if (toCmd == undefined) return
-                    var prefCmd = prefix+toCmd
-	                gss.appenTextMessage(prefCmd, chatUpdate)
-				}
-			}
-		}
-    })
+});
+
     
     // Group Update
     gss.ev.on('groups.update', async pea => {
