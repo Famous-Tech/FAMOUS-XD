@@ -1784,8 +1784,6 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 }
 
 
-
-
 // Inside the 'yts' case:
 case 'yts': {
   if (!text) {
