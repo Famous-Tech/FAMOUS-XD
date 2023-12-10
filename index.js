@@ -164,15 +164,15 @@ gss.ev.on("call", async (json) => {
        }
        let wm_fatih = { url : ppgc }
        if (ciko.announce == true) {
-       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup has been closed by admin, Now only admin can send messages !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup has been closed by admin, Now only admin can send messages !`, `Group Settings Change Message`, wm_fatih, [])
        } else if (ciko.announce == false) {
-       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup has been opened by admin, Now participants can send messages !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup has been opened by admin, Now participants can send messages !`, `Group Settings Change Message`, wm_fatih, [])
        } else if (ciko.restrict == true) {
-       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup info has been restricted, Now only admin can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup info has been restricted, Now only admin can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
        } else if (ciko.restrict == false) {
-       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup info has been opened, Now participants can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
+       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup info has been opened, Now participants can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
        } else {
-       gss.send5ButImg(ciko.id, `「 Group Settings Change 」\n\nGroup Subject telah diganti menjadi *${ciko.subject}*`, `Group Settings Change Message`, wm_fatih, [])
+       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup Subject telah diganti menjadi *${ciko.subject}*`, `Group Settings Change Message`, wm_fatih, [])
      }
     }
     } catch (err){
