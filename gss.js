@@ -8,7 +8,7 @@ const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 const fsx = require('fs-extra')
-const ytSearch = require('yt-search');
+const yts = require('yt-search');
 const util = require('util')
 const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
@@ -1797,7 +1797,7 @@ case 'yts':
 
         try {
             // Perform YouTube search
-            const searchResults = await ytSearch(searchText);
+            const searchResults = await yts(searchText);
 
             // Extracting only titles from the top 5 search results and prepending "Play"
             const topTitles = searchResults.videos.slice(0, 5).map(result => `Play ${result.title}`);
