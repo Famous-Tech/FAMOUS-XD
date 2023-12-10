@@ -9,6 +9,7 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require('fs')
 const fsx = require('fs-extra')
 const ytSearch = require('yt-search');
+const ytdl = require('ytdl-core');
 const util = require('util')
 const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
@@ -64,6 +65,11 @@ let akinator = global.db.data.game.akinator = []
 let props;
 const reportedMessages = {};
 const videoSearchResults = new Map();
+// Map to store the search results for each chat
+const searchResultsMap = new Map();
+
+// Map to store the details of the second poll for each chat
+const detailsPollMap = new Map();
 let titleUrlMap = {}; 
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
@@ -1785,32 +1791,109 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 
 
 
+
+
+// Function to handle YouTube search and create a poll
+async function handleYouTubeSearch(m, args) {
+    const searchText = args.join(' ');
+
+    if (!searchText) {
+        gss.sendMessage(m.chat, 'Please provide a search query for YouTube.', { quoted: m });
+        return;
+    }
+
+    try {
+        const searchResults = await ytSearch(searchText);
+        const topTitles = searchResults.videos.slice(0, 5).map((result, index) => `${index + 1}. ${result.title}`);
+        gss.sendPoll(m.chat, `Top 5 Results for "${searchText}"`, topTitles, { quoted: m });
+
+        // Store search results for later use
+        searchResultsMap.set(m.chat, searchResults);
+
+        return searchResults;
+    } catch (error) {
+        console.error(error);
+        gss.sendMessage(m.chat, 'An error occurred while searching on YouTube.', { quoted: m });
+        return null;
+    }
+}
+
+// Example command for searching YouTube and creating a poll
 case 'yts':
     {
-        const searchText = args.join(' '); // Combine all arguments to form the search query
-
-        if (!searchText) {
-            // Handle the case where no search query is provided
-            gss.sendMessage(m.chat, 'Please provide a search query for YouTube.', { quoted: m });
-            return;
-        }
-
-        try {
-            // Perform YouTube search
-            const searchResults = await ytSearch(searchText);
-
-            // Extracting only titles from the top 5 search results and prepending "Play"
-            const topTitles = searchResults.videos.slice(0, 5).map(result => `Play ${result.title}`);
-
-            // Sending a poll with the titles
-            gss.sendPoll(m.chat, `Top 5 Results for "${searchText}"`, topTitles, { quoted: m });
-        } catch (error) {
-            console.error(error);
-            gss.sendMessage(m.chat, 'An error occurred while searching on YouTube.', { quoted: m });
-        }
+        searchResults = await handleYouTubeSearch(m, args);
     }
     break;
 
+// Poll response handling
+case /^(\d)$/:
+    {
+        const searchResults = searchResultsMap.get(m.chat);
+
+        if (!searchResults) {
+            gss.sendMessage(m.chat, 'No search results available. Please use the `yts` command first.', { quoted: m });
+            return;
+        }
+
+        const selectedIndex = parseInt(command) - 1;
+
+        if (isNaN(selectedIndex) || selectedIndex < 0 || selectedIndex >= 5) {
+            gss.sendMessage(m.chat, 'Invalid selection. Please vote for a valid option.', { quoted: m });
+            return;
+        }
+
+        // Get video information for the selected option
+        const selectedVideo = searchResults.videos[selectedIndex];
+
+        // Store video details for later use
+        detailsPollMap.set(m.chat, {
+            title: selectedVideo.title,
+            url: selectedVideo.url,
+            audioVotes: 0,
+            videoVotes: 0,
+        });
+
+        // Example: sending options for audio and video
+        const optionsMessage = `Select an option for "${selectedVideo.title}":\n1. Audio\n2. Video`;
+
+        gss.sendMessage(m.chat, optionsMessage, { quoted: m });
+    }
+    break;
+
+// Handling the option selected in the second poll
+case '1':
+    {
+        const details = detailsPollMap.get(m.chat);
+
+        if (!details) {
+            gss.sendMessage(m.chat, 'No video details available. Please vote in the first poll first.', { quoted: m });
+            return;
+        }
+
+        // Increment audio votes
+        details.audioVotes++;
+
+        // Replace this with your actual logic for handling the audio download
+        gss.sendMessage(m.chat, 'Downloading audio... (Replace this with actual logic)', { quoted: m });
+    }
+    break;
+
+case '2':
+    {
+        const details = detailsPollMap.get(m.chat);
+
+        if (!details) {
+            gss.sendMessage(m.chat, 'No video details available. Please vote in the first poll first.', { quoted: m });
+            return;
+        }
+
+        // Increment video votes
+        details.videoVotes++;
+
+        // Replace this with your actual logic for handling the video download
+        gss.sendMessage(m.chat, 'Downloading video... (Replace this with actual logic)', { quoted: m });
+    }
+    break;
 
 
 
