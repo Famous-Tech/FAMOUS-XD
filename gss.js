@@ -9,6 +9,7 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require('fs')
 const fsx = require('fs-extra')
 const ytSearch = require('yt-search');
+const ytdl = require('ytdl-core');
 const util = require('util')
 const truecallerjs = require("truecallerjs");
 const ffmpeg = require('fluent-ffmpeg');
@@ -1784,7 +1785,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 }
 
 
-// Inside the 'yts' case:
+// Inside the '' case:
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1898,8 +1899,6 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
-
-// Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
     return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
@@ -1927,44 +1926,24 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     return m.reply('Error: Video details not available for the selected sub-option.');
   }
 
-  const uniqueKey = `yts_${videoSubOption}`;
-
   try {
     console.log('Fetching video details for URL:', selectedVideo.url);
 
-    // Fetch details using the selectedVideo.url directly
-    const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const videoResult = await videoDetailsResponse.json();
-
-    console.log('Video details API response:', JSON.stringify(videoResult, null, 2));
-
-    if (!videoResult || !videoResult.downloadUrl) {
-      console.error('Error: Download URL not available in the API response.');
-      return m.reply('Error: Download URL not available in the API response.');
-    }
+    // Use ytdl-core to get video details
+    const videoInfo = await ytdl.getInfo(selectedVideo.url);
 
     // Fetch the video content
-    const videoBufferReq = await fetch(videoResult.downloadUrl);
-
-    if (!videoBufferReq.ok) {
-      console.error('Failed to fetch video content. Status:', videoBufferReq.status);
-      return m.reply('Error fetching video content.');
-    }
-
-    const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-    const videoBuffer = Buffer.from(videoArrayBuffer);
-
-    const randomName = `temp_video_${videoSubOption}.mp4`;
-    fs.writeFileSync(`./${randomName}`, videoBuffer);
+    const videoBuffer = await ytdl(selectedVideo.url, { format: 'mp4' }).catch(error => {
+      console.error('Error fetching video content:', error);
+      throw new Error('Error fetching video content.');
+    });
 
     // Create a stylish caption with video details
-    const videoDetailsCaption = ` 🌟 *Title:* _${videoResult.title}_\n 👀 *Views:* _${videoResult.views}_\n ⏱️ *Duration:* _${videoResult.duration}_\n 📅 *Upload Date:* _${videoResult.uploadDate}_\n 📺 *YouTube URL:* ${videoResult.youtubeUrl}\n 📢 *Upload Channel:* _${videoResult.uploadChannel}_\n 🤖 Downloaded by *gss botwa*`;
+    const videoDetailsCaption = ` 🌟 *Title:* _${videoInfo.videoDetails.title}_\n 👀 *Views:* _${videoInfo.videoDetails.viewCount}_\n ⏱️ *Duration:* _${videoInfo.videoDetails.lengthSeconds}s_\n 📅 *Upload Date:* _${videoInfo.videoDetails.uploadDate}_\n 📺 *YouTube URL:* ${selectedVideo.url}\n 📢 *Upload Channel:* _${videoInfo.videoDetails.author.name}_\n 🤖 Downloaded by *gss botwa*`;
 
     // Send the video with the stylish caption
-    await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
+    await gss.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
 
-    // Delete the temporary file
-    fs.unlinkSync(`./${randomName}`);
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
     m.reply('Unexpected error occurred.');
@@ -1972,12 +1951,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   break;
 }
 
-
-
-
-
-
-
+// Inside the '𝐚𝐮𝐝𝐢𝐨' case:
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
     return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
@@ -2005,36 +1979,21 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     return m.reply('Error: Video details not available for the selected sub-option.');
   }
 
-  const uniqueKey = `play_${audioSubOption}`;
-
   try {
-    const audioDetailsResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const audioResult = await audioDetailsResponse.json();
+    console.log('Fetching audio details for URL:', selectedVideo.url);
 
-    if (audioResult && audioResult.downloadURL) {
-      const audioBufferReq = await fetch(audioResult.downloadURL);
+    // Use ytdl-core to get audio details
+    const audioInfo = await ytdl.getInfo(selectedVideo.url);
 
-      if (!audioBufferReq.ok) {
-        console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
-        return m.reply('Error fetching audio content.');
-      }
+    // Fetch the audio content
+    const audioBuffer = await ytdl(selectedVideo.url, { format: 'mp3' }).catch(error => {
+      console.error('Error fetching audio content:', error);
+      throw new Error('Error fetching audio content.');
+    });
 
-      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-      const audioBuffer = Buffer.from(audioArrayBuffer);
+    // Send the audio
+    await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mp3', fileName: `${audioInfo.videoDetails.title}.mp3` }, { quoted: m });
 
-      const randomName = `temp_audio_${audioSubOption}.mp3`;
-      fs.writeFileSync(`./${randomName}`, audioBuffer);
-
-      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.title}.mp3` }, { quoted: m });
-
-      fs.unlinkSync(`./${randomName}`);
-    } else if (audioResult && audioResult.error) {
-      console.error('API response error:', audioResult);
-      return m.reply(`Error: ${audioResult.error}`);
-    } else {
-      console.error('Invalid API response:', audioResult);
-      m.reply('Unexpected error occurred.');
-    }
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
     m.reply('Unexpected error occurred.');
