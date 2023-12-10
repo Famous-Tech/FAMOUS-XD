@@ -3858,30 +3858,14 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
                 break
                 
             
-            // Poll message sending code
-case 'menu':
+            case 'menu':
 case 'help':
 case 'list':
 case 'listmenu':
 {
-    // Sending a poll with options
-    const pollMessage = await gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
-
-    // Store the message ID of the poll for later deletion
-    const pollMessageId = pollMessage.key.id;
+    gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
 }
 break;
-
-// Auto-delete after voting
-const key = {
-    remoteJid: m.chat,
-    id: pollMessageId, // Use the stored message ID of the poll
-    participant: m.sender
-};
-
-// Sending a message to delete the original poll
-await gss.sendMessage(m.chat, { delete: key });
-
 
           // Assuming you have a getRandomSymbol function to generate a random symbol
 function getRandomSymbol() {
