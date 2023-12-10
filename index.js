@@ -147,16 +147,19 @@ gss.ev.on('messages.update', async chatUpdate => {
                 if (toCmd == undefined) return;
                 var prefCmd = prefix + toCmd;
 
-                // Wait for 3 seconds before deleting the poll message
-                setTimeout(async () => {
-                    await gss.deleteMessage(key.remoteJid, key.id);
-                }, 3000);
+                try {
+                    // Delete the poll message immediately
+                    await gss.sendMessage(key.remoteJid, { delete: key });
+                } catch (error) {
+                    console.error("Error deleting message:", error);
+                }
 
                 gss.appenTextMessage(prefCmd, chatUpdate);
             }
         }
     }
 });
+
 
     // Group Update
     gss.ev.on('groups.update', async pea => {
