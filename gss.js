@@ -369,50 +369,6 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
-        
-// Anti Botz
-if (m.isAntiBotz && isBotGroupAdmins) {
-    if (m.isBaileys && !m.key.fromMe) {
-        if (!m.isOwner && !isGroupAdmins) {
-            m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
-            setTimeout(() => {
-                gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
-            }, 2000)
-        }
-    }
-}
-
-// Anti Delete
-if (m.isAntiDelete && Object.keys(db.message).includes(m.sender) && m.type == "protocolMessage") {
-    if (Object.keys(db.message).includes(m.sender) && db.message[m.sender].key.id == m.message.messageID) {
-        if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
-            let message = db.message[m.sender].message
-            let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1]
-            let teks = "\`\`\`「  PESAN DITARIK TERDETEKSI  」\`\`\`\n\n"
-            teks += `› Dari : @${m.senderNumber}\n`
-            teks += `› Waktu : ${m.timeWib}\n`
-            teks += `› Type : ${type}`
-            m.reply(teks)
-            setTimeout(() => {
-                gss.copyNForward(m.chat, db.message[m.sender])
-            }, 2000)
-        }
-    }
-}
-
-// Anti View Once
-if (m.message.viewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
-    if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
-        const media = await gss.downloadMediaMessage(m)
-        let teks = "\`\`\`「  PESAN SEKALI TERBUKA TERDETEKSI  」\`\`\`\n\n"
-        teks += `› Dari : @${m.senderNumber}\n`
-        teks += `› Waktu : ${m.timeWib}\n`
-        teks += `› Caption : ${m.body}\n`
-        teks += `› Type : ${getContentType(m.message)}`
-        if (getContentType(m.message) == "videoMessage") gss.sendMessage(m.chat, { video: media, caption: teks }, { quoted: m })
-        if (getContentType(m.message) == "imageMessage") gss.sendMessage(m.chat, { image: media, caption: teks }, { quoted: m })
-    }
-}
 
 
 
@@ -3539,81 +3495,6 @@ function convertToFontStyle(text, style) {
         }
         break;
         
-
-/*
-    case 'antibot':
-
-        if (!db.data) db.data = {}; // Initialize if not exists
-        if (!db.data.chats) db.data.chats = {}; // Initialize if not exists
-        if (!db.data.chats[m.chat]) db.data.chats[m.chat] = {}; // Initialize if not exists
-
-        if (!args || args.length < 1) {
-            gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
-        } else {
-            const antibotSetting = args[0].toLowerCase();
-            if (antibotSetting === "on") {
-                if (db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Active`);
-                db.data.chats[m.chat].antibot = true;
-                m.reply(`Antibot Activated!`);
-            } else if (antibotSetting === "off") {
-                if (!db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Inactive`);
-                db.data.chats[m.chat].antibot = false;
-                m.reply(`Antibot Deactivated!`);
-            } else {
-                gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
-            }
-        }
-        break;
-
-    case 'antidelete':
-
-        if (!db.data) db.data = {}; // Initialize if not exists
-        if (!db.data.chats) db.data.chats = {}; // Initialize if not exists
-        if (!db.data.chats[m.chat]) db.data.chats[m.chat] = {}; // Initialize if not exists
-
-        if (!args || args.length < 1) {
-            gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
-        } else {
-            const antideleteSetting = args[0].toLowerCase();
-            if (antideleteSetting === "on") {
-                if (db.data.chats[m.chat]?.antidelete) return m.reply(`Antidelete Already Active`);
-                db.data.chats[m.chat].antidelete = true;
-                m.reply(`Antidelete Activated!`);
-            } else if (antideleteSetting === "off") {
-                if (!db.data.chats[m.chat]?.antidelete) return m.reply(`Antidelete Already Inactive`);
-                db.data.chats[m.chat].antidelete = false;
-                m.reply(`Antidelete Deactivated!`);
-            } else {
-                gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
-            }
-        }
-        break;
-
-    case 'antiviewonce':
-
-        if (!db.data) db.data = {}; // Initialize if not exists
-        if (!db.data.chats) db.data.chats = {}; // Initialize if not exists
-        if (!db.data.chats[m.chat]) db.data.chats[m.chat] = {}; // Initialize if not exists
-
-        if (!args || args.length < 1) {
-            gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
-        } else {
-            const antiviewonceSetting = args[0].toLowerCase();
-            if (antiviewonceSetting === "on") {
-                if (db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Active`);
-                db.data.chats[m.chat].antiviewonce = true;
-                m.reply(`Antiviewonce Activated!`);
-            } else if (antiviewonceSetting === "off") {
-                if (!db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Inactive`);
-                db.data.chats[m.chat].antiviewonce = false;
-                m.reply(`Antiviewonce Deactivated!`);
-            } else {
-                gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
-            }
-        }
-        break;
-
-*/
 
         
 
