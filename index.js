@@ -142,9 +142,9 @@ gss.ev.on("call", async (json) => {
 							message: pollCreation,
 							pollUpdates: update.pollUpdates,
 						})
-	                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name
-	                if (toCmd == undefined) return
-                    var prefCmd = prefix+toCmd
+	                var toCmdpoll = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name
+	                if (toCmdpoll == undefined) return
+                    var prefCmd = prefix+toCmdpoll
 	                gss.appenTextMessage(prefCmd, chatUpdate)
 				}
 			}
