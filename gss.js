@@ -859,6 +859,19 @@ case 'toqr': {
                 }, 10000)
             }
             break
+            
+case "readqr": {
+try {
+mee = await gss.downloadAndSaveMediaMessage(quoted)
+mem = await TelegraPh(mee)
+const res = await fetch(`http://api.qrserver.com/v1/read-qr-code/?fileurl=${mem}`)
+const data = await res.json() 
+m.reply(util.format(data[0].symbol))
+} catch (err) {
+m.reply(`Reply Image That Has Qr`)
+}
+}
+break
 
 case 'setppgroup':
             case 'setppgrup':
