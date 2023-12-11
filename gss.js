@@ -8,6 +8,7 @@ const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 const fsx = require('fs-extra')
+const { PDFDocument } = require('@pdf-lib/core');
 const ytSearch = require('yt-search');
 const ytsr = require('ytsr');
 const ytdl = require('ytdl-core');
@@ -2909,6 +2910,51 @@ case 'pinterest': {
   gss.sendMessage(m.chat, { image: { url: result }, caption: '⭔ Media Url : ' + result }, { quoted: m });
 }
 break;
+
+
+
+async function convertToPDF(content, outputPath) {
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage();
+  const { width, height } = page.getSize();
+
+  if (content instanceof Uint8Array) {
+    // If content is image or video
+    const embeddedImage = await pdfDoc.embedPng(content);
+    page.drawImage(embeddedImage, { x: 0, y: height - embeddedImage.height, width: embeddedImage.width, height: embeddedImage.height });
+  } else {
+    throw new Error('Unsupported content type');
+  }
+
+  const pdfBytes = await pdfDoc.save();
+
+  await fs.writeFile(outputPath, pdfBytes);
+}
+
+  case 'pdf':
+    let media = await gss.downloadMediaMessage(qmsg);
+    let pdfFileName = `result_${Date.now()}.pdf`; // Unique file name based on timestamp
+    let pdfPath = path.join('/tmp', pdfFileName);
+
+    try {
+      if (/image|video/.test(mime)) {
+        // If content is image or video
+        m.reply('Converting image/video to PDF...');
+        await convertToPDF(media, pdfPath);
+
+        // Send the PDF using gss.sendMessage
+        gss.sendMessage(m.chat, { document: fs.createReadStream(pdfPath) }, 'document', { mimetype: 'application/pdf', filename: pdfFileName });
+
+        m.reply('PDF sent!');
+      } else {
+        m.reply(`Unsupported content type. Send image or video with caption ${prefix + command}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      m.reply('An error occurred during PDF conversion and sending.');
+    }
+    break;
+
 
 case 'wallpaper': {
   if (!text) throw 'Enter Query Title';
