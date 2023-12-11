@@ -160,6 +160,7 @@ gss.ev.on('messages.update', async chatUpdate => {
     }
 });
 
+/*
 
     // Group Update
     gss.ev.on('groups.update', async pea => {
@@ -189,6 +190,8 @@ gss.ev.on('messages.update', async chatUpdate => {
     console.log(err)
     }
     })
+
+*/
 
     gss.ev.on('group-participants.update', async (anu) => {
         console.log(anu)
