@@ -155,11 +155,24 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
-async function generateProfilePicture(media) {
-    return {
-        img: 'placeholder_image_data'
-    };
+async function convertToPDF(content, outputPath) {
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage();
+  const { width, height } = page.getSize();
+
+  if (content instanceof Uint8Array) {
+    // If content is image or video
+    const embeddedImage = await pdfDoc.embedPng(content);
+    page.drawImage(embeddedImage, { x: 0, y: height - embeddedImage.height, width: embeddedImage.width, height: embeddedImage.height });
+  } else {
+    throw new Error('Unsupported content type');
+  }
+
+  const pdfBytes = await pdfDoc.save();
+
+  await fs.writeFile(outputPath, pdfBytes);
 }
+
 	
 async function getIPInfo() {
   try {
@@ -2911,25 +2924,6 @@ case 'pinterest': {
 }
 break;
 
-
-
-async function convertToPDF(content, outputPath) {
-  const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage();
-  const { width, height } = page.getSize();
-
-  if (content instanceof Uint8Array) {
-    // If content is image or video
-    const embeddedImage = await pdfDoc.embedPng(content);
-    page.drawImage(embeddedImage, { x: 0, y: height - embeddedImage.height, width: embeddedImage.width, height: embeddedImage.height });
-  } else {
-    throw new Error('Unsupported content type');
-  }
-
-  const pdfBytes = await pdfDoc.save();
-
-  await fs.writeFile(outputPath, pdfBytes);
-}
 
   case 'pdf':
     let media = await gss.downloadMediaMessage(qmsg);
