@@ -1785,10 +1785,6 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 }
 
 
-const ytSearch = require('yt-search');
-const ytdl = require('ytdl-core');
-
-// Inside the '' case:
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
