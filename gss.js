@@ -2255,19 +2255,6 @@ case 'anime':
     break;
 
 
-case 'cry': case 'kill': case 'hug': case 'pat': case 'lick': 
-case 'kiss': case 'bite': case 'yeet': case 'bully': case 'bonk':
-case 'wink': case 'poke': case 'nom': case 'slap': case 'smile': 
-case 'wave': case 'awoo': case 'blush': case 'smug': case 'glomp': 
-case 'happy': case 'dance': case 'cringe': case 'cuddle': case 'highfive': 
-case 'shinobu': case 'handhold': {
-axios.get(`https://api.waifu.pics/sfw/${isCommand}`)
-.then(({data}) => {
-gss.sendImageAsSticker(m.chat, data.url, m, { packname: global.packname, author: global.author })
-})
-}
-break
-
 
 case 'waifu':
 // Make a GET request to the API endpoint
