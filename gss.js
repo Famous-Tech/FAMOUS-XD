@@ -9,6 +9,7 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 const fs = require('fs')
 const fsx = require('fs-extra')
 const ytSearch = require('yt-search');
+const ytsr = require('ytsr');
 const ytdl = require('ytdl-core');
 const util = require('util')
 const truecallerjs = require("truecallerjs");
@@ -1785,7 +1786,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 }
 
 
-
+// Inside the 'yts' case:
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -1796,11 +1797,30 @@ case 'yts': {
     
     // Check if the provided text is a URL
     if (text.includes('youtube.com')) {
-      // URL provided, fetch search details using yt-search
-      result = await ytSearch({ videoId: ytSearch.getVideoID(text) });
+      // URL provided, fetch search details using ytsr
+      const videoID = ytsr.getVideoID(text);
+      const videoInfo = await ytsr.getVideo(videoID);
+      result = {
+        videos: [{
+          title: videoInfo.title,
+          url: text,
+          uploadDate: videoInfo.uploadDate,
+          views: videoInfo.views,
+          duration: videoInfo.duration,
+        }]
+      };
     } else {
-      // Use ytSearch to get search results
-      result = await ytSearch(text);
+      // Use ytsr to get search results
+      const searchResults = await ytsr(text, { limit: 5 });
+      result = {
+        videos: searchResults.items.map(video => ({
+          title: video.title,
+          url: video.url,
+          uploadDate: video.uploadDate,
+          views: video.views,
+          duration: video.duration,
+        }))
+      };
     }
 
     if (result && result.videos && result.videos.length > 0) {
@@ -1808,8 +1828,7 @@ case 'yts': {
       let optionIndex = 1;
 
       // Iterate through the top 5 search results
-      for (let i = 0; i < Math.min(result.videos.length, 5); i++) {
-        const video = result.videos[i];
+      for (const video of result.videos) {
         const uniqueKey = `yts_${optionIndex}`;
 
         // Check if the key already exists in the Map
@@ -1858,6 +1877,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 case '𝐩𝐥𝐚𝐲': {
