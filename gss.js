@@ -117,6 +117,32 @@ let format = sizeFormatter({
      keepTrailingZeroes: false, 
      render: (literal, symbol) => `${literal} ${symbol}B`, 
  })
+ 
+const downloadMp4 = async (Link) => {
+let gHz = require("./lib/savefrom")
+let Lehd = await gHz.savefrom(Link)
+let ghd = await reSize(Lehd.thumb, 300, 300)
+let ghed = await ytdl.getInfo(Link)
+let gdyr = await gss.sendMessage(m.from, {image: { url: Lehd.thumb } , caption: `Channel Name : ${ghed.player_response.videoDetails.author}
+Channel Link : https://youtube.com/channel/${ghed.player_response.videoDetails.channelId}
+Title : ${Lehd.meta.title}
+Duration : ${Lehd.meta.duration}
+Desc : ${ghed.player_response.videoDetails.shortDescription}`}, { quoted : m })
+try {
+await ytdl.getInfo(Link)
+let mp4File = getRandom('.mp4')
+console.log(color('Download Video With ytdl-core'))
+let nana = ytdl(Link)
+.pipe(fs.createWriteStream(mp4File))
+.on('finish', async () => {
+await gss.sendMessage(m.from, { video: fs.readFileSync(mp4File), caption: mess.succes, gifPlayback: false }, { quoted: gdyr })
+fs.unlinkSync(`./${mp4File}`)
+})
+} catch (err) {
+m.reply(`${err}`)
+}
+}
+ 
 //  Bot Prosess Time
   const uptime = process.uptime();
 const day = Math.floor(uptime / (24 * 3600)); // Calculate days
@@ -2730,6 +2756,14 @@ case 'buypremium':
                 })
             }
             break
+            
+case 'ytvxxx': case 'ytmp4xxx': case 'mp4xxx':{
+if (!text) return m.reply('Enter the link!!!')
+m.reply(mess.wait)
+downloadMp4(text)
+}
+break
+            
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
