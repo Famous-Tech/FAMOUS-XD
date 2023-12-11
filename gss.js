@@ -1794,7 +1794,7 @@ case 'yts': {
 
   try {
     let result;
-    
+
     // Check if the provided text is a URL
     if (text.includes('youtube.com')) {
       // URL provided, fetch search details using ytsr
@@ -1877,6 +1877,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
