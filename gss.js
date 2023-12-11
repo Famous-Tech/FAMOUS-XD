@@ -1793,14 +1793,9 @@ case 'yts': {
   try {
     // Check if the provided text is a URL
     if (ytdl.validateURL(text)) {
-      // Direct URL provided, fetch video details using ytdl-core
+
       const videoInfo = await ytdl.getInfo(text);
 
-      // Process videoInfo and send content as needed
-      // ...
-
-      // For example, you can send the video using gss.sendMessage:
-      // await gss.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
 
     } else {
       // Use ytSearch to get search results
