@@ -160,39 +160,8 @@ gss.ev.on('messages.update', async chatUpdate => {
     }
 });
 
-/*
 
-    // Group Update
-    gss.ev.on('groups.update', async pea => {
-    //console.log(pea)
-    try {
-    for(let ciko of pea) {
-    // Get Profile Picture Group
-       try {
-       ppgc = await gss.profilePictureUrl(ciko.id, 'image')
-       } catch {
-       ppgc = 'https://tinyurl.com/yx93l6da'
-       }
-       let wm_fatih = { url : ppgc }
-       if (ciko.announce == true) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup has been closed by admin, Now only admin can send messages !`, `Group Settings Change Message`, wm_fatih, [])
-       } else if (ciko.announce == false) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup has been opened by admin, Now participants can send messages !`, `Group Settings Change Message`, wm_fatih, [])
-       } else if (ciko.restrict == true) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup info has been restricted, Now only admin can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
-       } else if (ciko.restrict == false) {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup info has been opened, Now participants can edit group info !`, `Group Settings Change Message`, wm_fatih, [])
-       } else {
-       gss.sendMessage(ciko.id, `「 Group Settings Change 」\n\nGroup Subject telah diganti menjadi *${ciko.subject}*`, `Group Settings Change Message`, wm_fatih, [])
-     }
-    }
-    } catch (err){
-    console.log(err)
-    }
-    })
-
-*/
-
+//group updates
     gss.ev.on('group-participants.update', async (anu) => {
         console.log(anu)
         try {
