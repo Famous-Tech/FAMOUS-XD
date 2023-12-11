@@ -1785,71 +1785,72 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 }
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
 
   try {
+    let result;
+    
     // Check if the provided text is a URL
-    if (ytdl.validateURL(text)) {
-
-      const videoInfo = await ytdl.getInfo(text);
-
-
+    if (text.includes('youtube.com')) {
+      // URL provided, fetch search details using yt-search
+      result = await ytSearch({ videoId: ytSearch.getVideoID(text) });
     } else {
       // Use ytSearch to get search results
-      const result = await ytSearch(text);
+      result = await ytSearch(text);
+    }
 
-      if (result && result.videos && result.videos.length > 0) {
-        let pollOptions = [];
-        let optionIndex = 1;
+    if (result && result.videos && result.videos.length > 0) {
+      let pollOptions = [];
+      let optionIndex = 1;
 
-        // Iterate through the top 5 search results
-        for (let i = 0; i < Math.min(result.videos.length, 5); i++) {
-          const video = result.videos[i];
-          const uniqueKey = `yts_${optionIndex}`;
+      // Iterate through the top 5 search results
+      for (let i = 0; i < Math.min(result.videos.length, 5); i++) {
+        const video = result.videos[i];
+        const uniqueKey = `yts_${optionIndex}`;
 
-          // Check if the key already exists in the Map
-          if (videoSearchResults.has(uniqueKey)) {
-            // Key exists, find the next available sub-option number
-            let subOption = 1;
-            while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
-              subOption += 1;
-            }
-
-            // Add the new video details with the updated sub-option number
-            videoSearchResults.get(uniqueKey).push({
-              subOption,
-              title: video.title,
-              url: video.url,
-              uploadDate: video.uploadDate,
-              views: video.views,
-              duration: video.duration
-            });
-          } else {
-            // Key doesn't exist, create a new array with the current video details
-            videoSearchResults.set(uniqueKey, [{
-              subOption: 1,
-              title: video.title,
-              url: video.url,
-              uploadDate: video.uploadDate,
-              views: video.views,
-              duration: video.duration
-            }]);
+        // Check if the key already exists in the Map
+        if (videoSearchResults.has(uniqueKey)) {
+          // Key exists, find the next available sub-option number
+          let subOption = 1;
+          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
+            subOption += 1;
           }
 
-          // Update pollOptions accordingly (use optionIndex and sub-option number)
-          pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${video.title}`);
-          optionIndex += 1;
+          // Add the new video details with the updated sub-option number
+          videoSearchResults.get(uniqueKey).push({
+            subOption,
+            title: video.title,
+            url: video.url,
+            uploadDate: video.uploadDate,
+            views: video.views,
+            duration: video.duration
+          });
+        } else {
+          // Key doesn't exist, create a new array with the current video details
+          videoSearchResults.set(uniqueKey, [{
+            subOption: 1,
+            title: video.title,
+            url: video.url,
+            uploadDate: video.uploadDate,
+            views: video.views,
+            duration: video.duration
+          }]);
         }
 
-        // Send the poll with titles as options
-        await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
-      } else {
-        console.error('Invalid search result:', result);
-        return m.reply('Error retrieving search results.');
+        // Update pollOptions accordingly (use optionIndex and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${video.title}`);
+        optionIndex += 1;
       }
+
+      // Send the poll with titles as options
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
+    } else {
+      console.error('Invalid search result:', result);
+      return m.reply('Error retrieving search results.');
     }
   } catch (error) {
     console.error('Error during yts:', error);
@@ -1857,6 +1858,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
