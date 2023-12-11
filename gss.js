@@ -155,6 +155,7 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
+/*
 async function convertToPDF(content, outputPath) {
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage();
@@ -173,6 +174,7 @@ async function convertToPDF(content, outputPath) {
   await fs.writeFile(outputPath, pdfBytes);
 }
 
+*/
 	
 async function getIPInfo() {
   try {
@@ -2925,7 +2927,7 @@ case 'pinterest': {
 break;
 
 
-  case 'pdf':
+/*  case 'pdf':
     let media = await gss.downloadMediaMessage(qmsg);
     let pdfFileName = `result_${Date.now()}.pdf`; // Unique file name based on timestamp
     let pdfPath = path.join('/tmp', pdfFileName);
@@ -2948,7 +2950,7 @@ break;
       m.reply('An error occurred during PDF conversion and sending.');
     }
     break;
-
+*/
 
 case 'wallpaper': {
   if (!text) throw 'Enter Query Title';
