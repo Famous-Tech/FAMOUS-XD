@@ -1792,43 +1792,18 @@ case 'yts': {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
 
+  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+
   try {
-    let result;
+    const response = await fetch(apiURL);
+    const data = await response.json();
 
-    // Check if the provided text is a URL
-    if (text.includes('youtube.com')) {
-      // URL provided, fetch search details using ytsr
-      const videoID = ytsr.getVideoID(text);
-      const videoInfo = await ytsr.getVideo(videoID);
-      result = {
-        videos: [{
-          title: videoInfo.title,
-          url: text,
-          uploadDate: videoInfo.uploadDate,
-          views: videoInfo.views,
-          duration: videoInfo.duration,
-        }]
-      };
-    } else {
-      // Use ytsr to get search results
-      const searchResults = await ytsr(text, { limit: 5 });
-      result = {
-        videos: searchResults.items.map(video => ({
-          title: video.title,
-          url: video.url,
-          uploadDate: video.uploadDate,
-          views: video.views,
-          duration: video.duration,
-        }))
-      };
-    }
-
-    if (result && result.videos && result.videos.length > 0) {
+    if (data.type === 'search' && Array.isArray(data.data)) {
       let pollOptions = [];
       let optionIndex = 1;
 
-      // Iterate through the top 5 search results
-      for (const video of result.videos) {
+      // Iterate through the search results
+      for (const result of data.data) {
         const uniqueKey = `yts_${optionIndex}`;
 
         // Check if the key already exists in the Map
@@ -1842,33 +1817,33 @@ case 'yts': {
           // Add the new video details with the updated sub-option number
           videoSearchResults.get(uniqueKey).push({
             subOption,
-            title: video.title,
-            url: video.url,
-            uploadDate: video.uploadDate,
-            views: video.views,
-            duration: video.duration
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
           });
         } else {
           // Key doesn't exist, create a new array with the current video details
           videoSearchResults.set(uniqueKey, [{
             subOption: 1,
-            title: video.title,
-            url: video.url,
-            uploadDate: video.uploadDate,
-            views: video.views,
-            duration: video.duration
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
           }]);
         }
 
         // Update pollOptions accordingly (use optionIndex and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${video.title}`);
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
         optionIndex += 1;
       }
 
       // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
     } else {
-      console.error('Invalid search result:', result);
+      console.error('Invalid API response:', data);
       return m.reply('Error retrieving search results.');
     }
   } catch (error) {
@@ -1879,8 +1854,7 @@ case 'yts': {
 }
 
 
-
-
+// Inside the '𝐩𝐥𝐚𝐲' case:
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
@@ -1904,26 +1878,43 @@ case '𝐩𝐥𝐚𝐲': {
 
   const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
 
-  // Fetch details using the yt-search library
-  const detailsResult = await ytSearch(selectedVideo.url);
+  // Store the selected URL and details for later use
+  const uniqueKey = `play_${selectedVideo.url}`;
 
-  // Check if details are available
-  if (detailsResult && detailsResult.videos && detailsResult.videos.length > 0) {
-    const videoDetails = detailsResult.videos[0];
+  // Set the 'selectedUrl' key to the unique key
+  videoSearchResults.set('selectedUrl', {
+    url: selectedVideo.url,
+    subOption
+  });
 
-    // Send the video details within the poll options with the URL option number
-    await gss.sendPoll(
-      m.chat,
-      `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.ago}\nURL: ${selectedVideo.url}`,
-      [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
-    );
-  } else {
-    console.error('Invalid details result:', detailsResult);
-    return m.reply('Error retrieving video details.');
+  // Fetch details using the selectedUrl
+  const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
+
+  try {
+    const detailsResponse = await fetch(apiDetailsURL);
+    const detailsData = await detailsResponse.json();
+
+    // Check if data is available and it's an array
+    if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
+      const videoDetails = detailsData.data[0];
+
+      // Send the video details within the poll options with the URL option number
+      await gss.sendPoll(
+        m.chat,
+        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
+        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
+      );
+    } else {
+      console.error('Invalid API response:', detailsData);
+      return m.reply('Error retrieving video details.');
+    }
+  } catch (error) {
+    console.error('Error fetching video details:', error);
+    return m.reply('Unexpected error occurred while fetching video details.');
   }
-
   break;
 }
+
 
 // Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
@@ -1999,6 +1990,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 }
 
 
+
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
     return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
@@ -2062,6 +2054,8 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
+
 
 
 async function instaDownload(apiKeys, url) {
