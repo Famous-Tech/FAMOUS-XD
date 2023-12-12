@@ -3312,46 +3312,42 @@ case 'tiktoknowmdoc':
             break
 
 
-    case 'ai':
-case 'gpt':
-case 'chatgpt':
-  if (!text) {
-    await m.reply(`*You can use the AI command with text to get a response.*\n\n*Example usage:*\n*◉ ${prefix + command} How does photosynthesis work?*`);
-    break;
-  }
+    case "ai":
+case "gpt":
+  const think = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
+    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+
     const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(text)}`;
-    let response = await axios.get(apiEndpoint);
-    let responseData = response.data;
+    const response = await axios.get(apiEndpoint);
 
-    if (responseData.result) {
-      const result = responseData.result;
+    const result = response.data.result;
+    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
 
+    const words = result.split(' ');
+    let i = 0;
 
-      let gptContent = '';
-
-      const responseWords = result.split(' ');
-
-      for (const word of responseWords) {
-        await new Promise(resolve => setTimeout(resolve, 500)); // Adjust the delay as needed
-
-
-        await gss.relayMessage(m.chat, {
+    const typewriterInterval = setInterval(() => {
+      if (i < words.length) {
+        const typedText = words.slice(0, i + 1).join(' ');
+        gss.relayMessage(m.chat, {
           protocolMessage: {
-            key: m.key,
+            key: think.key,
             type: 14,
             editedMessage: {
-              conversation: word
-            }
-          }
+              conversation: typedText,
+            },
+          },
         }, {});
+        i++;
+      } else {
+        clearInterval(typewriterInterval); // Stop the typewriter effect
       }
-    } else {
-      console.log('API returned an unexpected response:', responseData);
-    }
+    }, typingSpeed);
   } catch (error) {
     console.error(error);
+    m.reply("Error: " + error.message);
   }
   break;
 
