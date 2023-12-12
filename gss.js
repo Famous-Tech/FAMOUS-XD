@@ -363,7 +363,7 @@ if (!chats || typeof chats !== 'object') {
 console.log('Current chats settings:', chats);
 
 // Initialize isAntiBotz, isMuted, and isAntiLink
-let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : false;
+let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : true;
 let isMuted = chats && 'mute' in chats ? chats.mute : false;
 let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 
@@ -372,8 +372,11 @@ console.log('isAntiBotz value:', isAntiBotz);
 console.log('isMuted value:', isMuted);
 console.log('isAntiLink value:', isAntiLink);
 
+// Logging all message properties for inspection
+console.log('Message Object:', m);
+
 // Anti-bot detection logic
-if (isAntiBotz && isBotAdmins && isBaileys && !m.key.fromMe) {
+if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
     // Logging for debugging
     console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
 
@@ -397,9 +400,6 @@ if (isAntiBotz && isBotAdmins && isBaileys && !m.key.fromMe) {
         // Logging for debugging
         console.log('Sender is the owner or a bot admin. No action taken.');
     }
-} else {
-    // Logging for debugging
-    console.log('Bot detection conditions NOT met. isAntiBotz:', isAntiBotz, 'isBotAdmins:', isBotAdmins, 'm.isBaileys:', m.isBaileys, 'm.key.fromMe:', m.key.fromMe);
 }
 
 
