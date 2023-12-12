@@ -2992,13 +2992,16 @@ break;
   
 
 
-
 case 'pdf': {
   if (/image/.test(mime)) {
     m.reply(mess.wait);
     try {
       let media = await gss.downloadMediaMessage(qmsg);
       console.log('Media path:', media); // Log the file path
+
+      if (!media) {
+        return m.reply('Failed to download the image.');
+      }
 
       const dimensions = imageSize(media);
 
@@ -3025,13 +3028,17 @@ case 'pdf': {
       console.error('Error during PDF creation:', error);
       m.reply('Unexpected error occurred.');
     }
-
   } else if (/video/.test(mime)) {
     m.reply(mess.wait);
     if (qmsg.seconds > 11) return m.reply('Maximum duration is 10 seconds!');
     try {
       let media = await gss.downloadMediaMessage(qmsg);
       console.log('Media path:', media); // Log the file path
+
+      if (!media) {
+        return m.reply('Failed to download the video.');
+      }
+
 
       // Remove temporary files
       await fs.unlink(media);
