@@ -359,6 +359,9 @@ if (!chats || typeof chats !== 'object') {
     chats = db.data.chats[m.chat];
 }
 
+// Logging for debugging
+console.log('Current chats settings:', chats);
+
 // Initialize isAntiBotz, isMuted, and isAntiLink
 let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : false;
 let isMuted = chats && 'mute' in chats ? chats.mute : false;
@@ -366,45 +369,42 @@ let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
-// Send the chat settings
-m.reply(
-    `Current Chat Settings:\n` +
-    `AntiBotz: ${isAntiBotz}\n` +
-    `Muted: ${isMuted}\n` +
-    `AntiLink: ${isAntiLink}\n` +
-    `AntiDelete: ${isAntiDelete}\n` +
-    `AntiViewOnce: ${isAntiViewOnce}`
-);
+// Logging for debugging
+console.log('isAntiBotz value:', isAntiBotz);
+console.log('isMuted value:', isMuted);
+console.log('isAntiLink value:', isAntiLink);
+console.log('isAntiDelete value:', isAntiDelete);
+console.log('isAntiViewOnce value:', isAntiViewOnce);
 
-// Send the message object details
-m.reply(`Message Object:\n${JSON.stringify(m, null, 2)}`);
+// Logging all message properties for inspection
+console.log('Message Object:', m);
 
-// Antibot detection logic
-if (isAntiBotz && isBotAdmins) {
-    // Check if the message is sent using Baileys library
-    if (m.isBaileys) {
+// Anti-bot detection logic
+if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
+    // Logging for debugging
+    console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
+
+    // Check if the sender is not the owner and not a bot admin
+    if (!m.isOwner && !isBotAdmins) {
         // Logging for debugging
-        console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
+        console.log('Detected bot. m.sender:', m.sender);
 
-        // Check if the sender is not the owner and not a bot admin
-        if (!m.isOwner && !isBotAdmins) {
-            // Logging for debugging
+        // Reply to the user indicating that a bot has been detected
+        m.reply("```「 BOT DETECTED 」```");
+
+        // Log the group participants for additional debugging
+        console.log('Group Participants:', gss.groupMetadata(m.chat));
+
+        // Remove the detected bot from the group after a delay (2 seconds in this case)
+        setTimeout(() => {
             console.log('Removing detected bot. m.sender:', m.sender);
-
-            // Reply to the user indicating that a bot has been detected
-            m.reply("```「 BOT DETECTED 」```");
-
-            // Remove the detected bot from the group after a delay (2 seconds in this case)
-            setTimeout(() => {
-                gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
-            }, 2000);
-        }
+            gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+        }, 2000);
     } else {
         // Logging for debugging
-        console.log('Bot detection conditions NOT met. isAntiBotz:', isAntiBotz, 'isBotAdmins:', isBotAdmins, 'm.isBaileys:', m.isBaileys, 'm.key.fromMe:', m.key.fromMe);
+        console.log('Sender is the owner or a bot admin. No action taken.');
     }
 }
-
 
 // Anti Delete
 if (isAntiDelete && db.message && db.message[m.sender] && Object.keys(db.message[m.sender]).length > 0 && m.type == "protocolMessage") {
