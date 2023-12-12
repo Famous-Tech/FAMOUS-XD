@@ -2909,6 +2909,33 @@ downloadMp4(text)
 }
 break
             
+            
+case 'fmmods': {
+  m.reply(mess.wait);
+
+  // Replace with your actual URL
+  const apiUrl = 'https://vihangayt.me/download/fmmods';
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    if (data.status === true && data.data) {
+      // Assuming you want to process the data for each WhatsApp mod
+      for (const modName in data.data) {
+        const modInfo = data.data[modName];
+        const message = `Mod Name: ${modName}\nAPK Name: ${modInfo.name}\nDownload Link: ${modInfo.link}`;
+        await m.reply(message);
+      }
+    } else {
+      await m.reply('Error in API response. Please try again later.');
+    }
+  } catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+    await m.reply('Error fetching data. Please try again later.');
+  }
+}
+break;
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
