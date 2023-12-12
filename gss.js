@@ -3133,14 +3133,14 @@ case 'ping': {
         }
         await gss.sendMessage(m.chat, successReactionMessage); 
   const startTime = new Date();
-  const pingMsg = await gss.sendMessage(m.chat, { text: 'cheking...' });
+  const pingMsg = await gss.sendMessage(m.chat, { text: '*cheking...*' });
 
  await gss.relayMessage(m.chat, {
       protocolMessage: {
         key: pingMsg.key,
         type: 14,
         editedMessage: {
-          conversation: `Rᴇsᴘᴏɴᴅ Sᴘᴇᴇᴅ: ${new Date() - startTime} ms`
+          conversation: `*Response speed is:* ${new Date() - startTime} ms`
         }
       }
     }, {});
