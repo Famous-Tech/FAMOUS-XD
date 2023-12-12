@@ -3131,13 +3131,13 @@ break;
   for (const word of words) {
     await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
 
-    // Edit the existing message using relayMessage
+    // Edit the existing message using relayMessage, appending the new word
     await gss.relayMessage(m.chat, {
       protocolMessage: {
         key: typingMessage.key,
         type: 14,
         editedMessage: {
-          conversation: word
+          conversation: `${typingMessage.editedMessage.conversation || ''} ${word}`
         }
       }
     }, {});
@@ -3160,19 +3160,20 @@ break;
   for (const word of responseWords) {
     await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
 
-    // Edit the existing message using relayMessage
+    // Edit the existing message using relayMessage, appending the new word
     await gss.relayMessage(m.chat, {
       protocolMessage: {
         key: pingMsg.key,
         type: 14,
         editedMessage: {
-          conversation: word
+          conversation: `${pingMsg.editedMessage.conversation || ''} ${word}`
         }
       }
     }, {});
   }
 }
 break;
+
 
             
             case 'owner': case 'creator': {
@@ -3343,13 +3344,13 @@ case 'chatgpt':
       for (const word of responseWords) {
         await new Promise(resolve => setTimeout(resolve, 500)); // Adjust the delay as needed
 
-        // Edit the existing message using relayMessage
+        // Edit the existing message using relayMessage, appending the new word
         await gss.relayMessage(m.chat, {
           protocolMessage: {
             key: m.key,
             type: 14,
             editedMessage: {
-              conversation: word
+              conversation: `${m.editedMessage.conversation || ''} ${word}`
             }
           }
         }, {});
@@ -3361,6 +3362,7 @@ case 'chatgpt':
     console.error(error);
   }
   break;
+
 
 
 
