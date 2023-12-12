@@ -2921,12 +2921,43 @@ case 'fmmods': {
     const data = response.data;
 
     if (data.status === true && data.data) {
-      // Assuming you want to process the data for each WhatsApp mod
-      for (const modName in data.data) {
-        const modInfo = data.data[modName];
-        const message = `Mod Name: ${modName}\nAPK Name: ${modInfo.name}\nDownload Link: ${modInfo.link}`;
-        await m.reply(message);
-      }
+      const modNames = Object.keys(data.data);
+
+      // Build the poll options with mod names
+      const pollOptions = modNames.map((modName, index) => `${index + 1}. ${modName}`);
+
+      // Send the poll with mod names as options
+      const pollMessage = `Choose a mod to download:\n${pollOptions.join('\n')}`;
+      const pollResult = await gss.sendPoll(m.chat, pollMessage, pollOptions);
+
+      // Listen for poll votes
+      const onPollVote = async (m) => {
+        const votedOption = m.pollOption.trim();
+
+        // Check if the voted option is a valid number
+        if (!isNaN(votedOption)) {
+          const selectedIndex = parseInt(votedOption) - 1;
+
+          // Check if the selected index is within the valid range
+          if (selectedIndex >= 0 && selectedIndex < modNames.length) {
+            const selectedModName = modNames[selectedIndex];
+            const selectedModInfo = data.data[selectedModName];
+
+            // Send the APK link as a reply
+            const replyMessage = `APK Name: ${selectedModInfo.name}\nDownload Link: ${selectedModInfo.link}`;
+            await gss.sendMessage(m.chat, replyMessage, { quoted: m });
+          }
+        }
+      };
+
+      // Listen for poll votes on the same chat
+      gss.on('poll-vote', onPollVote);
+
+      // Remove the event listener after a certain time (e.g., 2 minutes)
+      setTimeout(() => {
+        gss.off('poll-vote', onPollVote);
+      }, 2 * 60 * 1000); // 2 minutes
+
     } else {
       await m.reply('Error in API response. Please try again later.');
     }
@@ -2936,6 +2967,7 @@ case 'fmmods': {
   }
 }
 break;
+
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
