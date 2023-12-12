@@ -367,10 +367,10 @@ let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
-// Antibot detection logic
+// Antibot detection logic for Baileys library
 if (isAntiBotz && isBotAdmins) {
     // Check if the message is sent using Baileys library and not from the bot itself
-    if (m.raw && m.raw.includes('Baileys') && !m.key.fromMe) {
+    if (m.isBaileys && !m.key.fromMe) {
         // Logging for debugging
         console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
 
@@ -389,7 +389,7 @@ if (isAntiBotz && isBotAdmins) {
         }
     } else {
         // Logging for debugging
-        console.log('Bot detection conditions NOT met. isAntiBotz:', isAntiBotz, 'isBotAdmins:', isBotAdmins, 'm.raw:', m.raw, 'm.key.fromMe:', m.key.fromMe);
+        console.log('Bot detection conditions NOT met. isAntiBotz:', isAntiBotz, 'isBotAdmins:', isBotAdmins, 'm.isBaileys:', m.isBaileys, 'm.key.fromMe:', m.key.fromMe);
     }
 }
 
