@@ -379,7 +379,6 @@ if (!('autobio' in setting)) setting.autobio = false
 	    } else global.db.data.settings[botNumber] = {
 	    anticall: true,
 		status: 0,
-		antibot: true, 
 		autobio: true
 	    }
 	    
