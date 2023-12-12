@@ -2973,6 +2973,7 @@ case 'fmmods': {
 }
 break;
 
+// Handle the FMMod command with the specific mod number
 case 'fmmod': {
     // Extract the mod number from the command, e.g., '.fmmod 1'
     const modNumber = parseInt(text.split(' ')[1]);
@@ -2982,15 +2983,13 @@ case 'fmmod': {
     }
 
     try {
-        const response = await axios.get(`https://vihangayt.me/download/fmmods/${modNumber}`);
-        const modDetails = response.data;
+        const response = await axios.get(`https://vihangayt.me/download/fmmods`);
+        const mods = response.data.data;
 
-        if (modDetails.status === true && modDetails.data) {
-            const message = `Mod Name: ${modDetails.data.name}\nAPK Name: ${modDetails.data.link}`;
+        if (mods && mods[`com_whatsapp${modNumber}`]) {
+            const modDetails = mods[`com_whatsapp${modNumber}`];
+            const message = `Mod Name: ${modDetails.name}\nAPK Name: ${modDetails.link}`;
             await gss.sendMessage(m.chat, message, { quoted: m });
-
-            // If you have the APK file, you can send it as well
-            // Example: await gss.sendDocument(m.chat, modDetails.data.apkFile, { quoted: m });
         } else {
             await m.reply(`Mod with number ${modNumber} not found.`);
         }
