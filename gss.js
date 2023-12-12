@@ -348,6 +348,9 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
             }
     
 
+// Assuming you have a database object 'db' to store settings
+// and 'm.chat' represents the current chat ID
+
 let chats = db.data.chats[m.chat];
 
 // Initialize chats if not defined
@@ -377,10 +380,16 @@ if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
     // Check if the sender is not the owner and not a bot admin
     if (!m.isOwner && !isBotAdmins) {
         // Logging for debugging
-        console.log('Sending "done" message to the user. m.sender:', m.sender);
+        console.log('Detected bot. m.sender:', m.sender);
 
         // Reply to the user indicating that a bot has been detected
-        m.reply("```「 BOT DETECTED, DONE 」```");
+        m.reply("```「 BOT DETECTED 」```");
+
+        // Remove the detected bot from the group after a delay (2 seconds in this case)
+        setTimeout(() => {
+            console.log('Removing detected bot. m.sender:', m.sender);
+            gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+        }, 2000);
     }
 }
 
