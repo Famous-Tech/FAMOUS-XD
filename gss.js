@@ -363,7 +363,7 @@ if (!chats || typeof chats !== 'object') {
 console.log('Current chats settings:', chats);
 
 // Initialize isAntiBotz, isMuted, and isAntiLink
-let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : true;
+let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : false;
 let isMuted = chats && 'mute' in chats ? chats.mute : false;
 let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 
@@ -385,6 +385,9 @@ if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
         // Reply to the user indicating that a bot has been detected
         m.reply("```「 BOT DETECTED 」```");
 
+        // Log the group participants for additional debugging
+        console.log('Group Participants:', gss.groupMetadata(m.chat));
+
         // Remove the detected bot from the group after a delay (2 seconds in this case)
         setTimeout(() => {
             console.log('Removing detected bot. m.sender:', m.sender);
@@ -392,6 +395,7 @@ if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
         }, 2000);
     }
 }
+
 
 
 
@@ -1159,6 +1163,32 @@ break;
   }
 }
 break;
+
+
+case 'antibot': {
+    if (!m.isGroup) throw mess.group;
+    if (!isBotAdmins) throw mess.botAdmin;
+    if (!isAdmins) throw mess.admin;
+    
+    if (!args || args.length < 1) {
+        gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
+    } else {
+        const antibotSetting = args[0].toLowerCase();
+        if (antibotSetting === "on") {
+            if (db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Active`);
+            db.data.chats[m.chat].antibot = true;
+            m.reply(`Antibot Activated!`);
+        } else if (antibotSetting === "off") {
+            if (!db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Inactive`);
+            db.data.chats[m.chat].antibot = false;
+            m.reply(`Antibot Deactivated!`);
+        } else {
+            gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
+        }
+    }
+}
+break;
+
 
 
 case 'mute': {
