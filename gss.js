@@ -385,6 +385,7 @@ if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
 }
 
 
+
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
