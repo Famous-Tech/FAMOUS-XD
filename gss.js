@@ -958,7 +958,7 @@ case 'akinatorstart':
     data["step"] = step;
 
     // Translate the question to English
-    const translatedQuestion = await Translate(question, { to: 'en' });
+    const translatedQuestion = await translate(question, { to: 'en' });
     imi_txt = `${translatedQuestion}\n\n`;
     imi_txt += "0 - Yes\n";
     imi_txt += "1 - No\n";
