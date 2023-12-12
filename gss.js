@@ -2992,6 +2992,7 @@ break;
   
 
 
+
 case 'pdf': {
   m.reply(mess.wait);
 
@@ -3014,32 +3015,16 @@ case 'pdf': {
         height: dimensions.height,
       });
 
-      // Save PDF to a temporary folder
-      const tempFolder = 'temp';
-      await fs.mkdir(tempFolder, { recursive: true });
-      const tempFilePath = `${tempFolder}/image_${Date.now()}.pdf`;
+      // Send the PDF directly without saving to a file
       const pdfBytes = await pdfDoc.save();
-const pdfBuffer = Buffer.from(pdfBytes);
-await fs.writeFile(tempFilePath, pdfBuffer);
-
-      // Send the PDF file
-      await gss.sendMessage(m.chat, { document: tempFilePath }, { mimetype: 'application/pdf' });
-
+      await gss.sendMessage(m.chat, { document: pdfBytes, mimetype: 'application/pdf' });
 
     } else if (/video/.test(mime)) {
       // ... (same as your existing video to PDF conversion code)
 
-      // Save PDF to a temporary folder
-      const tempFolder = 'temp';
-      await fs.mkdir(tempFolder, { recursive: true });
-      const tempFilePath = `${tempFolder}/video_${Date.now()}.pdf`;
+      // Send the PDF directly without saving to a file
       const pdfBytes = await pdfDoc.save();
-const pdfBuffer = Buffer.from(pdfBytes);
-await fs.writeFile(tempFilePath, pdfBuffer);
-
-      // Send the PDF file
-      await gss.sendMessage(m.chat, { document: tempFilePath }, { mimetype: 'application/pdf' });
-
+      await gss.sendMessage(m.chat, { document: pdfBytes, mimetype: 'application/pdf' });
 
       // Remove temporary files
       await fs.rmdir(framesDirectory, { recursive: true });
@@ -3055,6 +3040,7 @@ await fs.writeFile(tempFilePath, pdfBuffer);
   }
 }
 break;
+
 
 
 
