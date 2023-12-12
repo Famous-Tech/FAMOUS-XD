@@ -400,7 +400,48 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
+if (m.isAntiBotz && isBotGroupAdmins) {
+    if (m.isBaileys && !m.key.fromMe) {
+        if (!m.isOwner && !isGroupAdmins) {
+            m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
+            setTimeout(() => {
+                gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
+            }, 2000)
+        }
+    }
+}
 
+// Anti Delete
+if (m.isAntiDelete && Object.keys(db.message).includes(m.sender) && m.type == "protocolMessage") {
+    if (Object.keys(db.message).includes(m.sender) && db.message[m.sender].key.id == m.message[m.type].key.id) {
+        if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
+            let message = db.message[m.sender].message
+            let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1]
+            let teks = "\`\`\`「  PESAN DITARIK TERDETEKSI  」\`\`\`\n\n"
+            teks += `› Dari : @${m.senderNumber}\n`
+            teks += `› Waktu : ${m.timeWib}\n`
+            teks += `› Type : ${type}`
+            m.reply(teks)
+            setTimeout(() => {
+                gss.copyNForward(m.chat, db.message[m.sender])
+            }, 2000)
+        }
+    }
+}
+
+// Anti View Once
+if (m.isAntiViewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
+    if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
+        const media = await gss.downloadMediaMessage(m)
+        let teks = "\`\`\`「  PESAN SEKALI TERBUKA TERDETEKSI  」\`\`\`\n\n"
+        teks += `› Dari : @${m.senderNumber}\n`
+        teks += `› Waktu : ${m.timeWib}\n`
+        teks += `› Caption : ${m.body}\n`
+        teks += `› Type : ${getContentType(m.message)}`
+        if (getContentType(m.message) == "videoMessage") gss.sendMessage(m.chat, { video: media, caption: teks }, { quoted: m })
+        if (getContentType(m.message) == "imageMessage") gss.sendMessage(m.chat, { image: media, caption: teks }, { quoted: m })
+    }
+}
 
 
 if (isCommand) {
