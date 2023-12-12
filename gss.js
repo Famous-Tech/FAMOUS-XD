@@ -373,7 +373,7 @@ if (chats) {
 }
 
 // Assign the 'antibot' property to m.isAntiBotz
-let isAntiBotz = Object.keys(db.data.chats).includes(m.chat) ? db.data.chats[m.chat].antibot : false;
+let isAntiBotz = Object.keys(db.data.chats).includes(m.chat) ? db.data.chats[m.chat].antibot : true;
 
 // Logging for debugging
 console.log('isAntiBotz value:', isAntiBotz);
