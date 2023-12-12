@@ -3010,7 +3010,7 @@ case '.fmmod': {
 
 case 'invite': {
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
-if (!text) return replygcxeon(`*Enter the number you want to invite to the group*\n\nExample :\n*${prefix + command}* 919142294671`)
+if (!text) return m.reply(`*Enter the number you want to invite to the group*\n\nExample :\n*${prefix + command}* 919142294671`)
 if (text.includes('+')) return m.reply(`Enter the number together without *+*`)
 if (isNaN(text)) return m.reply(`Enter only the numbers plus your country code without spaces`)
 let group = m.chat
