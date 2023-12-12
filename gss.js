@@ -369,7 +369,7 @@ let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : fal
 
 // Antibot detection logic
 if (isAntiBotz && isBotAdmins) {
-    // Check if the message is sent using Baileys library
+    // Check if the message is sent using Baileys library and not from the bot itself
     if (m.isBaileys && !m.key.fromMe) {
         // Logging for debugging
         console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
@@ -392,6 +392,7 @@ if (isAntiBotz && isBotAdmins) {
         console.log('Bot detection conditions NOT met. isAntiBotz:', isAntiBotz, 'isBotAdmins:', isBotAdmins, 'm.isBaileys:', m.isBaileys, 'm.key.fromMe:', m.key.fromMe);
     }
 }
+
 
 
 // Anti Delete
