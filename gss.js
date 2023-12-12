@@ -407,8 +407,8 @@ if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
 }
 
 // Anti Delete
-if (isAntiDelete && Object.keys(db.message).includes(m.sender) && m.type == "protocolMessage") {
-    if (Object.keys(db.message).includes(m.sender) && db.message[m.sender].key.id == m.message[m.type].key.id) {
+if (isAntiDelete && db.message && db.message[m.sender] && Object.keys(db.message[m.sender]).length > 0 && m.type == "protocolMessage") {
+    if (Object.keys(db.message[m.sender]).includes("key") && db.message[m.sender].key.id == m.message[m.type].key.id) {
         if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
             let message = db.message[m.sender].message;
             let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1];
@@ -423,6 +423,7 @@ if (isAntiDelete && Object.keys(db.message).includes(m.sender) && m.type == "pro
         }
     }
 }
+
 
 // Anti View Once
 if (isAntiViewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
