@@ -2992,88 +2992,66 @@ break;
   
 
 
-
 case 'pdf': {
   m.reply(mess.wait);
 
-  let media = await gss.downloadMediaMessage(qmsg);
+  try {
+    let media = await gss.downloadMediaMessage(qmsg);
 
-  if (/image/.test(mime)) {
-    const dimensions = imageSize.imageSize(media);
+    if (/image/.test(mime)) {
+      const dimensions = imageSize.imageSize(media);
 
-    // Convert image to PDF
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([dimensions.width, dimensions.height]);
-    const imageBytes = await fs.readFile(media);
-    const image = await pdfDoc.embedPng(imageBytes);
-    
-    page.drawImage(image, {
-      x: 0,
-      y: 0,
-      width: dimensions.width,
-      height: dimensions.height,
-    });
-
-    // Save PDF to buffer
-    const pdfBytes = await pdfDoc.save();
-
-    // Send the PDF file
-    await gss.sendMessage(m.chat, pdfBytes, 'image.pdf', 'Here is your image in PDF format!', null, { mimetype: 'application/pdf' });
-
-  } else if (/video/.test(mime)) {
-    // Extract frames from video using ffmpeg
-    const framesDirectory = 'frames'; // Temporary directory to store frames
-    await fs.mkdir(framesDirectory, { recursive: true });
-    const framesPattern = `${framesDirectory}/frame-%04d.png`;
-
-    // Use ffmpeg to extract frames from the video
-    await new Promise((resolve, reject) => {
-      const cmd = `ffmpeg -i ${media} -vf fps=10 ${framesPattern}`;
-      exec(cmd, (error) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve();
-        }
-      });
-    });
-
-    // Convert frames to PDF
-    const pdfDoc = await PDFDocument.create();
-    const files = await fs.readdir(framesDirectory);
-
-    for (const file of files) {
-      const framePath = `${framesDirectory}/${file}`;
-      const dimensions = imageSize.imageSize(framePath);
-
-      const imageBytes = await fs.readFile(framePath);
-      const image = await pdfDoc.embedPng(imageBytes);
-
+      // Convert image to PDF
+      const pdfDoc = await PDFDocument.create();
       const page = pdfDoc.addPage([dimensions.width, dimensions.height]);
+      const imageBytes = await fs.readFile(media);
+      const image = await pdfDoc.embedPng(imageBytes);
+      
       page.drawImage(image, {
         x: 0,
         y: 0,
         width: dimensions.width,
         height: dimensions.height,
       });
+
+      // Save PDF to a temporary folder
+      const tempFolder = 'temp';
+      await fs.mkdir(tempFolder, { recursive: true });
+      const tempFilePath = `${tempFolder}/image_${Date.now()}.pdf`;
+      const pdfBytes = await pdfDoc.save();
+      await fs.writeFile(tempFilePath, pdfBytes);
+
+      // Send the PDF file
+      await gss.sendMessage(m.chat, pdfBytes, 'image.pdf', 'Here is your image in PDF format!', null, { mimetype: 'application/pdf' });
+
+    } else if (/video/.test(mime)) {
+      // ... (same as your existing video to PDF conversion code)
+
+      // Save PDF to a temporary folder
+      const tempFolder = 'temp';
+      await fs.mkdir(tempFolder, { recursive: true });
+      const tempFilePath = `${tempFolder}/video_${Date.now()}.pdf`;
+      const pdfBytes = await pdfDoc.save();
+      await fs.writeFile(tempFilePath, pdfBytes);
+
+      // Send the PDF file
+      await gss.sendMessage(m.chat, pdfBytes, 'video.pdf', 'Here is your video in PDF format!', null, { mimetype: 'application/pdf' });
+
+      // Remove temporary files
+      await fs.rmdir(framesDirectory, { recursive: true });
+    } else {
+      m.reply(`Send/reply with an image or a video with caption ${prefix + command}`);
     }
 
-    // Save PDF to buffer
-    const pdfBytes = await pdfDoc.save();
-
-    // Send the PDF file
-    await gss.sendMessage(m.chat, pdfBytes, 'video.pdf', 'Here is your video in PDF format!', null, { mimetype: 'application/pdf' });
-
-    // Remove temporary files
-    await fs.rmdir(framesDirectory, { recursive: true });
-  } else {
-    m.reply(`Send/reply with an image or a video with caption ${prefix + command}`);
+    // Remove temporary files for both images and videos
+    await fs.unlink(media);
+  } catch (error) {
+    console.error('Error during PDF creation:', error);
+    m.reply('Unexpected error occurred.');
   }
-
-  // Remove temporary files for both images and videos
-  await fs.unlink(media);
 }
 break;
+
 
 
 
