@@ -2989,68 +2989,6 @@ break;
   let filename = (await fetch(gitUrl, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
   gss.sendMessage(m.chat, { document: { url: gitUrl }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply(mess.error))
   break;
-  
-
-
-case 'pdf': {
-  if (/image/.test(mime)) {
-    m.reply(mess.wait);
-    try {
-      let media = await gss.downloadMediaMessage(qmsg);
-      console.log('Media path:', media); // Log the file path
-
-      if (!media) {
-        return m.reply('Failed to download the image.');
-      }
-
-      const dimensions = imageSize(media);
-
-      // Convert image to PDF
-      const pdfDoc = await PDFDocument.create();
-      const page = pdfDoc.addPage([dimensions.width, dimensions.height]);
-      const imageBytes = await fs.readFile(media);
-      const image = await pdfDoc.embedPng(imageBytes);
-
-      page.drawImage(image, {
-        x: 0,
-        y: 0,
-        width: dimensions.width,
-        height: dimensions.height,
-      });
-
-      // Send the PDF directly without saving to a file
-      const pdfBytes = await pdfDoc.save();
-      await gss.sendMessage(m.chat, { document: pdfBytes, mimetype: 'application/pdf' });
-
-      // Remove temporary files
-      await fs.unlink(media);
-    } catch (error) {
-      console.error('Error during PDF creation:', error);
-      m.reply('Unexpected error occurred.');
-    }
-  } else if (/video/.test(mime)) {
-    m.reply(mess.wait);
-    if (qmsg.seconds > 11) return m.reply('Maximum duration is 10 seconds!');
-    try {
-      let media = await gss.downloadMediaMessage(qmsg);
-      console.log('Media path:', media); // Log the file path
-
-      if (!media) {
-        return m.reply('Failed to download the video.');
-      }
-
-
-      // Remove temporary files
-      await fs.unlink(media);
-    } catch (error) {
-      console.error('Error during PDF creation:', error);
-      m.reply('Unexpected error occurred.');
-    }
-  } else {
-    m.reply(`Send/reply with an image or a video with caption ${prefix + command}\nVideo/Gif duration 1-9 seconds`);
-  }
-}
-break;
 
 
 
@@ -3179,33 +3117,43 @@ break;
             
             case 'ping': {
   const reactionMessage = {
-            react: {
-                text: "🕐",
-                key: m.key
-            }
-        }
-        await gss.sendMessage(m.chat, reactionMessage);
-        const successReactionMessage = {
-            react: {
-                text: "📌",
-                key: m.key
-            }
-        }
-        await gss.sendMessage(m.chat, successReactionMessage); 
-  const startTime = new Date();
-  const pingMsg = await gss.sendMessage(m.chat, { text: 'cheking...' });
+    react: {
+      text: "🕐",
+      key: m.key
+    }
+  };
+  await gss.sendMessage(m.chat, reactionMessage);
 
- await gss.relayMessage(m.chat, {
-      protocolMessage: {
-        key: pingMsg.key,
-        type: 14,
-        editedMessage: {
-          conversation: `Rᴇsᴘᴏɴᴅ Sᴘᴇᴇᴅ: ${new Date() - startTime} ms`
-        }
-      }
-    }, {});
-  } 
+  // Typewriter effect for the 'checking...' message
+  const typingMessage = await gss.sendMessage(m.chat, { text: 'checking...' });
+  const words = ['checking', '...', 'almost', 'there', '!'];
+
+  for (const word of words) {
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
+    await gss.editMessage(m.chat, typingMessage.key, { text: word });
+  }
+
+  const successReactionMessage = {
+    react: {
+      text: "📌",
+      key: m.key
+    }
+  };
+  await gss.sendMessage(m.chat, successReactionMessage);
+
+  const startTime = new Date();
+  const pingMsg = await gss.sendMessage(m.chat, { text: 'checking...' });
+
+  // Typewriter effect for the response message
+  const responseWords = ['Rᴇsᴘᴏɴᴅ', 'Sᴘᴇᴇᴅ:', `${new Date() - startTime} ms`];
+
+  for (const word of responseWords) {
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
+    await gss.editMessage(m.chat, pingMsg.key, { text: word });
+  }
+}
 break;
+
             
             case 'owner': case 'creator': {
                 gss.sendContact(m.chat, global.owner, m)
@@ -3369,7 +3317,14 @@ case 'chatgpt':
 
     if (responseData.result) {
       const result = responseData.result;
-      await m.reply(result);
+
+      // Typewriter effect for the GPT response
+      const responseWords = result.split(' ');
+
+      for (const word of responseWords) {
+        await new Promise(resolve => setTimeout(resolve, 500)); // Adjust the delay as needed
+        await m.reply(word);
+      }
     } else {
       console.log('API returned an unexpected response:', responseData);
     }
@@ -3377,6 +3332,7 @@ case 'chatgpt':
     console.error(error);
   }
   break;
+
 
 
 
