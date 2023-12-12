@@ -2956,11 +2956,11 @@ case 'fmmods': {
       };
 
       // Listen for poll votes on all chats
-      gss.on('poll-update', onPollVote);
+      gss.ev.on('poll-update', onPollVote);
 
       // Remove the event listener after a certain time (e.g., 2 minutes)
       setTimeout(() => {
-        gss.off('poll-update', onPollVote);
+        gss.ev.off('poll-update', onPollVote);
       }, 2 * 60 * 1000); // 2 minutes
 
     } else {
