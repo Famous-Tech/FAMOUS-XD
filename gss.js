@@ -406,9 +406,9 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
-if (m.isAntiBotz && isBotGroupAdmins) {
+if (m.isAntiBotz && isBotAdmins) {
     if (m.isBaileys && !m.key.fromMe) {
-        if (!m.isOwner && !isGroupAdmins) {
+        if (!m.isOwner && !isBotAdmins) {
             m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
             setTimeout(() => {
                 gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
