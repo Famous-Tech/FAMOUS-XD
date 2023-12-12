@@ -2990,35 +2990,82 @@ break;
   break;
   
 
+
 case 'pdf': {
-  if (/image|video/.test(mime)) {
-    m.reply(mess.wait);
-    let media = await gss.downloadMediaMessage(qmsg);
-    
-    // Check if it's an image
-    if (/image/.test(mime)) {
-      await gss.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author });
-    }
-    
-    // Check if it's a video
-    else if (/video/.test(mime)) {
-      if (qmsg.seconds > 11) return m.reply('Maximum duration is 10 seconds!');
-      await gss.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author });
+  m.reply(mess.wait);
+
+  let media = await gss.downloadMediaMessage(qmsg);
+
+  if (/image/.test(mime)) {
+    // Convert image to PDF
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage();
+    const { width, height } = page.getSize();
+    const image = await pdfDoc.embedPng(media);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+    });
+
+    // Save PDF to buffer
+    const pdfBytes = await pdfDoc.save();
+
+    // Send the PDF file
+    await gss.sendMessage(m.chat, pdfBytes, 'image.pdf', 'Here is your image in PDF format!', null, { mimetype: 'application/pdf' });
+
+  } else if (/video/.test(mime)) {
+    // Extract frames from video using ffmpeg
+    const framesDirectory = 'frames'; // Temporary directory to store frames
+    await fs.mkdir(framesDirectory, { recursive: true });
+    const framesPattern = `${framesDirectory}/frame-%04d.png`;
+
+    // Use ffmpeg to extract frames from the video
+    await new Promise((resolve, reject) => {
+      const cmd = `ffmpeg -i ${media} -vf fps=10 ${framesPattern}`;
+      exec(cmd, (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    // Convert frames to PDF
+    const pdfDoc = await PDFDocument.create();
+    const files = await fs.readdir(framesDirectory);
+
+    for (const file of files) {
+      const framePath = `${framesDirectory}/${file}`;
+      const image = await pdfDoc.embedPng(await fs.readFile(framePath));
+      const page = pdfDoc.addPage();
+      page.drawImage(image, {
+        x: 0,
+        y: 0,
+        width: page.getWidth(),
+        height: page.getHeight(),
+      });
     }
 
-    // Convert media to PDF
-    let pdfBuffer = /* your code to convert media to PDF */
-    
+    // Save PDF to buffer
+    const pdfBytes = await pdfDoc.save();
+
     // Send the PDF file
-    await m.sendFile(m.chat, pdfBuffer, 'media.pdf', `Here is your media in PDF format!`, null, { mimetype: 'application/pdf' });
+    await gss.sendMessage(m.chat, pdfBytes, 'video.pdf', 'Here is your video in PDF format!', null, { mimetype: 'application/pdf' });
 
     // Remove temporary files
-    await fs.unlinkSync(media);
+    await fs.rmdir(framesDirectory, { recursive: true });
   } else {
-    m.reply(`Send/reply with an image/video/gif with caption ${prefix + command}\nVideo/Gif duration 1-9 seconds`);
+    m.reply(`Send/reply with an image or a video with caption ${prefix + command}`);
   }
+
+  // Remove temporary files for both images and videos
+  await fs.unlink(media);
 }
 break;
+
 
 
 case 'google': {
