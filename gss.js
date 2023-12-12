@@ -3008,6 +3008,18 @@ case '.fmmod': {
     break;
 }
 
+case 'invite': {
+  if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
+if (!text) return replygcxeon(`*Enter the number you want to invite to the group*\n\nExample :\n*${prefix + command}* 919142294671`)
+if (text.includes('+')) return m.reply(`Enter the number together without *+*`)
+if (isNaN(text)) return m.reply(`Enter only the numbers plus your country code without spaces`)
+let group = m.chat
+let link = 'https://chat.whatsapp.com/' + await gss.groupInviteCode(group)
+      await gss.sendMessage(text+'@s.whatsapp.net', {text: `≡ *GROUP INVITATION*\n\nA user invites you to join this group \n\n${link}`, mentions: [m.sender]})
+        m.reply(` An invite link is sent to the user`) 
+}
+break
+
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
