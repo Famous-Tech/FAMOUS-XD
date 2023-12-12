@@ -3011,7 +3011,7 @@ case 'pdf': {
     const pdfBytes = await pdfDoc.save();
 
     // Send the PDF file
-    await gss.sendFile(m.chat, pdfBytes, 'image.pdf', 'Here is your image in PDF format!', null, { mimetype: 'application/pdf' });
+    await gss.sendMessage(m.chat, pdfBytes, 'image.pdf', 'Here is your image in PDF format!', null, { mimetype: 'application/pdf' });
 
     // Remove temporary files
     await fs.unlinkSync(media);
