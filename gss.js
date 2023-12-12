@@ -352,13 +352,13 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
 // and 'm.chat' represents the current chat ID
 
 // Retrieve the chats settings directly from the database
-let chats = db.data.chats[m.chat];
+let chats = db.data.chats[m.chat] || {};
 
 // Logging for debugging
 console.log('Current chats settings:', chats);
 
-// If the chats settings are not present or not an object, initialize them
-if (typeof chats !== 'object' || chats === null) {
+// If the chats settings are not an object, initialize them
+if (typeof chats !== 'object') {
     db.data.chats[m.chat] = {
         mute: false,
         antilink: false,
@@ -398,6 +398,7 @@ if (isAntiBotz && isBotAdmins) {
         }
     }
 }
+
 
 
 
