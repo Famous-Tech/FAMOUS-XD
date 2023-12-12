@@ -3125,19 +3125,24 @@ break;
   await gss.sendMessage(m.chat, reactionMessage);
 
   // Typewriter effect for the 'checking...' message
-  const typingMessage = await gss.sendMessage(m.chat, { text: 'checking...' });
+  let typingMessage = await gss.sendMessage(m.chat, { text: 'checking...' });
+  let typingContent = '';
+
   const words = ['checking', '...', 'almost', 'there', '!'];
 
   for (const word of words) {
     await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
 
-    // Edit the existing message using relayMessage, appending the new word
+    // Build the content with the new word
+    typingContent += ` ${word}`;
+
+    // Edit the existing message using relayMessage
     await gss.relayMessage(m.chat, {
       protocolMessage: {
         key: typingMessage.key,
         type: 14,
         editedMessage: {
-          conversation: `${typingMessage.editedMessage.conversation || ''} ${word}`
+          conversation: typingContent.trim() // Trim leading space
         }
       }
     }, {});
@@ -3155,24 +3160,29 @@ break;
   const pingMsg = await gss.sendMessage(m.chat, { text: 'checking...' });
 
   // Typewriter effect for the response message
+  let responseContent = '';
   const responseWords = ['Rᴇsᴘᴏɴᴅ', 'Sᴘᴇᴇᴅ:', `${new Date() - startTime} ms`];
 
   for (const word of responseWords) {
     await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
 
-    // Edit the existing message using relayMessage, appending the new word
+    // Build the content with the new word
+    responseContent += ` ${word}`;
+
+    // Edit the existing message using relayMessage
     await gss.relayMessage(m.chat, {
       protocolMessage: {
         key: pingMsg.key,
         type: 14,
         editedMessage: {
-          conversation: `${pingMsg.editedMessage.conversation || ''} ${word}`
+          conversation: responseContent.trim() // Trim leading space
         }
       }
     }, {});
   }
 }
 break;
+
 
 
             
@@ -3344,13 +3354,16 @@ case 'chatgpt':
       for (const word of responseWords) {
         await new Promise(resolve => setTimeout(resolve, 500)); // Adjust the delay as needed
 
+        // Check if m.editedMessage is defined before accessing the 'conversation' property
+        const editedMessage = m.editedMessage || { conversation: '' };
+
         // Edit the existing message using relayMessage, appending the new word
         await gss.relayMessage(m.chat, {
           protocolMessage: {
             key: m.key,
             type: 14,
             editedMessage: {
-              conversation: `${m.editedMessage.conversation || ''} ${word}`
+              conversation: `${editedMessage.conversation} ${word}`
             }
           }
         }, {});
@@ -3362,6 +3375,7 @@ case 'chatgpt':
     console.error(error);
   }
   break;
+
 
 
 
