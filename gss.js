@@ -2911,102 +2911,37 @@ break
             
             
 case 'fmmods': {
-  m.reply(mess.wait);
-
-  // Replace with your actual URL
-  const apiUrl = 'https://vihangayt.me/download/fmmods';
-
-  try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-
-    if (data.status === true && data.data) {
-      const modNames = Object.keys(data.data);
-
-      // Build the poll options with mod names
-      const pollOptions = modNames.map((modName, index) => `${index + 1}. ${modName}`);
-
-      // Send the poll with mod names as options
-      const pollMessage = `Choose a mod to download:\n${pollOptions.join('\n')}`;
-      const pollResult = await gss.sendPoll(m.chat, pollMessage, pollOptions);
-
-      // Listen for poll votes
-      const pollMessages = await gss.pollMessages(pollResult.key.id, pollResult.key.remoteJID);
-      const pollMessageID = pollMessages[0].id;
-
-      const onPollVote = (m) => {
-        if (m.key.id === pollMessageID) {
-          const votedOption = m.pollOption.trim();
-
-          // Check if the voted option is a valid number
-          if (!isNaN(votedOption)) {
-            const selectedIndex = parseInt(votedOption) - 1;
-
-            // Check if the selected index is within the valid range
-            if (selectedIndex >= 0 && selectedIndex < modNames.length) {
-              const selectedModName = modNames[selectedIndex];
-              const selectedModInfo = data.data[selectedModName];
-
-              // Send the APK link as a reply
-              const replyMessage = `APK Name: ${selectedModInfo.name}\nDownload Link: ${selectedModInfo.link}`;
-              gss.sendMessage(m.chat, replyMessage, { quoted: m });
-            }
-          }
-        }
-      };
-
-      // Listen for poll votes on all chats
-      gss.ev.on('poll-update', onPollVote);
-
-      // Remove the event listener after a certain time (e.g., 2 minutes)
-      setTimeout(() => {
-        gss.ev.off('poll-update', onPollVote);
-      }, 2 * 60 * 1000); // 2 minutes
-
-    } else {
-      await m.reply('Error in API response. Please try again later.');
-    }
-  } catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    await m.reply('Error fetching data. Please try again later.');
-  }
-}
-break;
-
-// Handle the FMMod command with the specific mod number
-case '.fmmod': {
-    // Extract the mod number from the command, e.g., '.fmmod 1'
-    const modNumber = parseInt(text.split(' ')[1]);
-
-    if (isNaN(modNumber)) {
-        return m.reply('Invalid mod number. Please provide a valid number.');
-    }
+    m.reply(mess.wait);
+    
+    // Replace with your actual URL
+    const apiUrl = 'https://vihangayt.me/download/fmmods';
 
     try {
-        const response = await axios.get(`https://vihangayt.me/download/fmmods`);
-        const mods = response.data.data;
+        const response = await axios.get(apiUrl);
+        const data = response.data;
 
-        // Create an array of mod keys
-        const modKeys = Object.keys(mods);
+        if (data.status === true && data.data) {
+            // Assuming you want to process the data for each WhatsApp mod
+            for (const modName in data.data) {
+                const modInfo = data.data[modName];
+                const apkBufferReq = await fetch(modInfo.link);
+                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+                const apkBuffer = Buffer.from(apkArrayBuffer);
 
-        // Check if the provided mod number is within the range of available mods
-        if (modNumber <= 0 || modNumber > modKeys.length) {
-            return m.reply(`Mod with number ${modNumber} not found.`);
+                // Send the APK directly with the mod details
+                await gss.sendMessage(m.chat, { document: apkBuffer, mimetype: 'application/vnd.android.package-archive', filename: `${modName}.apk` }, { quoted: m });
+            }
+        } else {
+            await m.reply('Error in API response. Please try again later.');
         }
-
-        // Get the mod key based on the mod number
-        const modKey = modKeys[modNumber - 1];
-        const modDetails = mods[modKey];
-
-        const message = `Mod Name: ${modKey}\nAPK Name: ${modDetails.name}\nDownload Link: ${modDetails.link}`;
-        await gss.sendMessage(m.chat, message, { quoted: m });
     } catch (error) {
-        console.error('Error fetching mod details from the API:', error.message);
-        await m.reply('Error fetching mod details. Please try again later.');
+        console.error('Error fetching data from the API:', error.message);
+        await m.reply('Error fetching data. Please try again later.');
     }
-
     break;
 }
+
+
 
 case 'invite': {
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
