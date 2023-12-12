@@ -2990,15 +2990,28 @@ break;
   break;
   
 
-case 'pdf': {
-  if (/image/.test(mime)) {
-    m.reply(mess.wait);
-    let media = await gss.downloadMediaMessage(qmsg);
+const convertToPdf = async (media, isVideo, text) => {
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage();
+  const { width, height } = page.getSize();
 
+  if (isVideo) {
+    // Convert video to image
+    const imageBuffer = await promisify(ffmpeg().input(media).outputFormat('image2').outputOptions('-vframes 1').toBuffer)();
+    const image = await pdfDoc.embedPng(imageBuffer);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+    });
+  } else if (text) {
+    // Add text to PDF
+    const font = await pdfDoc.embedFont(PDFDocument.Font.Helvetica);
+    const textSize = 12;
+    page.drawText(text, { x: 50, y: height - 50, font, size: textSize });
+  } else {
     // Convert image to PDF
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage();
-    const { width, height } = page.getSize();
     const image = await pdfDoc.embedPng(media);
     page.drawImage(image, {
       x: 0,
@@ -3006,17 +3019,44 @@ case 'pdf': {
       width: width,
       height: height,
     });
+  }
 
-    // Save PDF to buffer
-    const pdfBytes = await pdfDoc.save();
+  // Save PDF to buffer
+  const pdfBytes = await pdfDoc.save();
+  return pdfBytes;
+};
+
+
+case 'pdf': {
+  let pdfContent = '';
+
+  // Check if it's an image, video, or text
+  if (/image|video/.test(mime)) {
+    m.reply(mess.wait);
+    let media = await gss.downloadMediaMessage(qmsg);
+
+    // Check if it's a video
+    const isVideo = /video/.test(mime);
+
+    // Convert media to PDF
+    const pdfBytes = await convertToPdf(media, isVideo, pdfContent);
 
     // Send the PDF file
-    await gss.sendMessage(m.chat, pdfBytes, 'image.pdf', 'Here is your image in PDF format!', null, { mimetype: 'application/pdf' });
+    await gss.sendMessage(m.chat, pdfBytes, 'media.pdf', 'Here is your media in PDF format!', null, { mimetype: 'application/pdf' });
 
     // Remove temporary files
     await fs.unlinkSync(media);
+  } else if (/text/.test(mime)) {
+    // Extract text from the message
+    pdfContent = m.text.substr(5); // Assuming the command is "!pdf "
+    
+    // Convert text to PDF
+    const pdfBytes = await convertToPdf(null, false, pdfContent);
+
+    // Send the PDF file
+    await gss.sendMessage(m.chat, pdfBytes, 'text.pdf', 'Here is your text in PDF format!', null, { mimetype: 'application/pdf' });
   } else {
-    m.reply(`Send/reply with an image with caption ${prefix + command}`);
+    m.reply(`Send/reply with an image, video, or text with caption ${prefix + command}`);
   }
 }
 break;
