@@ -2931,31 +2931,36 @@ case 'fmmods': {
       const pollResult = await gss.sendPoll(m.chat, pollMessage, pollOptions);
 
       // Listen for poll votes
-      const onPollVote = async (m) => {
-        const votedOption = m.pollOption.trim();
+      const pollMessages = await gss.pollMessages(pollResult.key.id, pollResult.key.remoteJID);
+      const pollMessageID = pollMessages[0].id;
 
-        // Check if the voted option is a valid number
-        if (!isNaN(votedOption)) {
-          const selectedIndex = parseInt(votedOption) - 1;
+      const onPollVote = (m) => {
+        if (m.key.id === pollMessageID) {
+          const votedOption = m.pollOption.trim();
 
-          // Check if the selected index is within the valid range
-          if (selectedIndex >= 0 && selectedIndex < modNames.length) {
-            const selectedModName = modNames[selectedIndex];
-            const selectedModInfo = data.data[selectedModName];
+          // Check if the voted option is a valid number
+          if (!isNaN(votedOption)) {
+            const selectedIndex = parseInt(votedOption) - 1;
 
-            // Send the APK link as a reply
-            const replyMessage = `APK Name: ${selectedModInfo.name}\nDownload Link: ${selectedModInfo.link}`;
-            await gss.sendMessage(m.chat, replyMessage, { quoted: m });
+            // Check if the selected index is within the valid range
+            if (selectedIndex >= 0 && selectedIndex < modNames.length) {
+              const selectedModName = modNames[selectedIndex];
+              const selectedModInfo = data.data[selectedModName];
+
+              // Send the APK link as a reply
+              const replyMessage = `APK Name: ${selectedModInfo.name}\nDownload Link: ${selectedModInfo.link}`;
+              gss.sendMessage(m.chat, replyMessage, { quoted: m });
+            }
           }
         }
       };
 
-      // Listen for poll votes on the same chat
-      gss.on('poll-vote', onPollVote);
+      // Listen for poll votes on all chats
+      gss.on('poll-update', onPollVote);
 
       // Remove the event listener after a certain time (e.g., 2 minutes)
       setTimeout(() => {
-        gss.off('poll-vote', onPollVote);
+        gss.off('poll-update', onPollVote);
       }, 2 * 60 * 1000); // 2 minutes
 
     } else {
@@ -2967,6 +2972,7 @@ case 'fmmods': {
   }
 }
 break;
+
 
 
 case 'fb': case 'fbdl': case 'facebook': {
