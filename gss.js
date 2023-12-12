@@ -2998,6 +2998,8 @@ case 'pdf': {
     m.reply(mess.wait);
     try {
       let media = await gss.downloadMediaMessage(qmsg);
+      console.log('Media path:', media); // Log the file path
+
       const dimensions = imageSize(media);
 
       // Convert image to PDF
@@ -3016,7 +3018,7 @@ case 'pdf': {
       // Send the PDF directly without saving to a file
       const pdfBytes = await pdfDoc.save();
       await gss.sendMessage(m.chat, { document: pdfBytes, mimetype: 'application/pdf' });
-      
+
       // Remove temporary files
       await fs.unlink(media);
     } catch (error) {
@@ -3029,7 +3031,9 @@ case 'pdf': {
     if (qmsg.seconds > 11) return m.reply('Maximum duration is 10 seconds!');
     try {
       let media = await gss.downloadMediaMessage(qmsg);
+      console.log('Media path:', media); // Log the file path
 
+      // Remove temporary files
       await fs.unlink(media);
     } catch (error) {
       console.error('Error during PDF creation:', error);
@@ -3040,6 +3044,7 @@ case 'pdf': {
   }
 }
 break;
+
 
 
 
