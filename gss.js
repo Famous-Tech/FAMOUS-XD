@@ -347,7 +347,8 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
                 limit: limitUser,
             }
     
-            let chats = db.data.chats[m.chat];
+
+let chats = db.data.chats[m.chat];
 
 if (typeof chats !== 'object') {
     db.data.chats[m.chat] = {};
@@ -356,17 +357,35 @@ if (typeof chats !== 'object') {
 if (chats) {
     if (!('mute' in chats)) chats.mute = false;
     if (!('antilink' in chats)) chats.antilink = false;
-    if (!('antibot' in chats)) chats.antibot = false; // Add this line to initialize 'antibot'
+    if (!('antibot' in chats)) chats.antibot = true; // Set antibot to true to enable it
 } else {
     global.db.data.chats[m.chat] = {
         mute: false,
-        antilink: true,
-        antibot: true, // Add this line to initialize 'antibot'
+        antilink: false,
+        antibot: true, // Set antibot to true to enable it
     };
 }
 
 // Assign the 'antibot' property to m.isAntiBotz
-m.isAntiBotz = Object.keys(db.data.chats).includes(m.chat) ? db.data.chats[m.chat].antibot : true;
+let isAntiBotz = Object.keys(db.data.chats).includes(m.chat) ? db.data.chats[m.chat].antibot : false;
+
+// Anti-bot detection logic
+if (isAntiBotz && isBotAdmins) {
+    // Check if the message is sent using Baileys library and not from the bot itself
+    if (m.isBaileys && !m.key.fromMe) {
+        // Check if the sender is not the owner and not a bot admin
+        if (!m.isOwner && !isBotAdmins) {
+            // Reply to the user indicating that a bot has been detected
+            m.reply("```「 BOT DETECTED 」```");
+
+            // Remove the detected bot from the group after a delay (2 seconds in this case)
+            setTimeout(() => {
+                gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+            }, 2000);
+        }
+    }
+}
+
 
 
 		
@@ -405,16 +424,6 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
-if (m.isAntiBotz && isBotAdmins) {
-    if (m.isBaileys && !m.key.fromMe) {
-        if (!m.isOwner && !isBotAdmins) {
-            m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
-            setTimeout(() => {
-                gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
-            }, 2000)
-        }
-    }
-}
 
 // Anti Delete
 if (m.isAntiDelete && Object.keys(db.message).includes(m.sender) && m.type == "protocolMessage") {
