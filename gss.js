@@ -2974,7 +2974,7 @@ case 'fmmods': {
 break;
 
 // Handle the FMMod command with the specific mod number
-case 'fmmod': {
+case '.fmmod': {
     // Extract the mod number from the command, e.g., '.fmmod 1'
     const modNumber = parseInt(text.split(' ')[1]);
 
@@ -2986,13 +2986,20 @@ case 'fmmod': {
         const response = await axios.get(`https://vihangayt.me/download/fmmods`);
         const mods = response.data.data;
 
-        if (mods && mods[`com_whatsapp${modNumber}`]) {
-            const modDetails = mods[`com_whatsapp${modNumber}`];
-            const message = `Mod Name: ${modDetails.name}\nAPK Name: ${modDetails.link}`;
-            await gss.sendMessage(m.chat, message, { quoted: m });
-        } else {
-            await m.reply(`Mod with number ${modNumber} not found.`);
+        // Create an array of mod keys
+        const modKeys = Object.keys(mods);
+
+        // Check if the provided mod number is within the range of available mods
+        if (modNumber <= 0 || modNumber > modKeys.length) {
+            return m.reply(`Mod with number ${modNumber} not found.`);
         }
+
+        // Get the mod key based on the mod number
+        const modKey = modKeys[modNumber - 1];
+        const modDetails = mods[modKey];
+
+        const message = `Mod Name: ${modKey}\nAPK Name: ${modDetails.name}\nDownload Link: ${modDetails.link}`;
+        await gss.sendMessage(m.chat, message, { quoted: m });
     } catch (error) {
         console.error('Error fetching mod details from the API:', error.message);
         await m.reply('Error fetching mod details. Please try again later.');
@@ -3000,6 +3007,7 @@ case 'fmmod': {
 
     break;
 }
+
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
