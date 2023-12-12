@@ -351,29 +351,24 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
 // Assuming you have a database object 'db' to store settings
 // and 'm.chat' represents the current chat ID
 
+// Retrieve the chats settings directly from the database
 let chats = db.data.chats[m.chat];
-
-if (typeof chats !== 'object') {
-    db.data.chats[m.chat] = {};
-}
 
 // Logging for debugging
 console.log('Current chats settings:', chats);
 
-if (chats) {
-    if (!('mute' in chats)) chats.mute = false;
-    if (!('antilink' in chats)) chats.antilink = false;
-    if (!('antibot' in chats)) chats.antibot = true; // Set antibot to true to enable it
-} else {
-    global.db.data.chats[m.chat] = {
+// If the chats settings are not present or not an object, initialize them
+if (typeof chats !== 'object' || chats === null) {
+    db.data.chats[m.chat] = {
         mute: false,
         antilink: false,
         antibot: true, // Set antibot to true to enable it
     };
+    chats = db.data.chats[m.chat]; // Update 'chats' variable
 }
 
 // Assign the 'antibot' property to m.isAntiBotz
-let isAntiBotz = Object.keys(db.data.chats).includes(m.chat) ? db.data.chats[m.chat].antibot : false;
+let isAntiBotz = chats.antibot || false;
 
 // Logging for debugging
 console.log('isAntiBotz value:', isAntiBotz);
@@ -382,9 +377,6 @@ console.log('isAntiBotz value:', isAntiBotz);
 if (isAntiBotz && isBotAdmins) {
     // Check if the message is sent using Baileys library and not from the bot itself
     if (m.isBaileys && !m.key.fromMe) {
-        // Logging for debugging
-        console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
-
         // Check if the sender is not the owner and not a bot admin
         if (!m.isOwner && !isBotAdmins) {
             // Logging for debugging
@@ -393,13 +385,20 @@ if (isAntiBotz && isBotAdmins) {
             // Reply to the user indicating that a bot has been detected
             m.reply("```「 BOT DETECTED 」```");
 
+            // Additional logging
+            console.log('Group participants before removal:', gss.groupParticipants[m.chat]);
+
             // Remove the detected bot from the group after a delay (2 seconds in this case)
             setTimeout(() => {
                 gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+
+                // Additional logging
+                console.log('Group participants after removal:', gss.groupParticipants[m.chat]);
             }, 2000);
         }
     }
 }
+
 
 
 
