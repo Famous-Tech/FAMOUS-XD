@@ -2973,7 +2973,34 @@ case 'fmmods': {
 }
 break;
 
+case 'fmmod': {
+    // Extract the mod number from the command, e.g., '.fmmod 1'
+    const modNumber = parseInt(text.split(' ')[1]);
 
+    if (isNaN(modNumber)) {
+        return m.reply('Invalid mod number. Please provide a valid number.');
+    }
+
+    try {
+        const response = await axios.get(`https://vihangayt.me/download/fmmods/${modNumber}`);
+        const modDetails = response.data;
+
+        if (modDetails.status === true && modDetails.data) {
+            const message = `Mod Name: ${modDetails.data.name}\nAPK Name: ${modDetails.data.link}`;
+            await gss.sendMessage(m.chat, message, { quoted: m });
+
+            // If you have the APK file, you can send it as well
+            // Example: await gss.sendDocument(m.chat, modDetails.data.apkFile, { quoted: m });
+        } else {
+            await m.reply(`Mod with number ${modNumber} not found.`);
+        }
+    } catch (error) {
+        console.error('Error fetching mod details from the API:', error.message);
+        await m.reply('Error fetching mod details. Please try again later.');
+    }
+
+    break;
+}
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
