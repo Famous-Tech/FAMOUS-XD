@@ -3022,7 +3022,7 @@ case 'pdf': {
       await fs.writeFile(tempFilePath, pdfBytes);
 
       // Send the PDF file
-      await gss.sendMessage(m.chat, { document: tempFilePath, caption: 'Here is your image/video in PDF format!' }, { mimetype: 'application/pdf' });
+      await gss.sendMessage(m.chat, { document: tempFilePath }, { mimetype: 'application/pdf' });
 
 
     } else if (/video/.test(mime)) {
@@ -3036,7 +3036,7 @@ case 'pdf': {
       await fs.writeFile(tempFilePath, pdfBytes);
 
       // Send the PDF file
-      await gss.sendMessage(m.chat, { document: tempFilePath, caption: 'Here is your image/video in PDF format!' }, { mimetype: 'application/pdf' });
+      await gss.sendMessage(m.chat, { document: tempFilePath }, { mimetype: 'application/pdf' });
 
 
       // Remove temporary files
