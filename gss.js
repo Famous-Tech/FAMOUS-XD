@@ -3019,7 +3019,8 @@ case 'pdf': {
       await fs.mkdir(tempFolder, { recursive: true });
       const tempFilePath = `${tempFolder}/image_${Date.now()}.pdf`;
       const pdfBytes = await pdfDoc.save();
-      await fs.writeFile(tempFilePath, pdfBytes);
+const pdfBuffer = Buffer.from(pdfBytes);
+await fs.writeFile(tempFilePath, pdfBuffer);
 
       // Send the PDF file
       await gss.sendMessage(m.chat, { document: tempFilePath }, { mimetype: 'application/pdf' });
@@ -3033,7 +3034,8 @@ case 'pdf': {
       await fs.mkdir(tempFolder, { recursive: true });
       const tempFilePath = `${tempFolder}/video_${Date.now()}.pdf`;
       const pdfBytes = await pdfDoc.save();
-      await fs.writeFile(tempFilePath, pdfBytes);
+const pdfBuffer = Buffer.from(pdfBytes);
+await fs.writeFile(tempFilePath, pdfBuffer);
 
       // Send the PDF file
       await gss.sendMessage(m.chat, { document: tempFilePath }, { mimetype: 'application/pdf' });
