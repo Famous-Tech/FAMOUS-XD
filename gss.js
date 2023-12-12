@@ -162,6 +162,28 @@ async function generateProfilePicture(media) {
     };
 }
 	
+async function typewriterEffect(message, words) {
+  let content = '';
+
+  for (const word of words) {
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
+
+    // Build the content with the new word
+    content += ` ${word}`;
+
+    // Edit the existing message using relayMessage
+    await gss.relayMessage(m.chat, {
+      protocolMessage: {
+        key: message.key,
+        type: 14,
+        editedMessage: {
+          conversation: content.trim() // Trim leading space
+        }
+      }
+    }, {});
+  }
+}
+	
 async function getIPInfo() {
   try {
     const response = await axios.get('https://api.myip.com');
@@ -3115,7 +3137,8 @@ break;
 
 
             
-            case 'ping': {
+
+case 'ping': {
   const reactionMessage = {
     react: {
       text: "🕐",
@@ -3126,27 +3149,9 @@ break;
 
   // Typewriter effect for the 'checking...' message
   let typingMessage = await gss.sendMessage(m.chat, { text: 'checking...' });
-  let typingContent = '';
 
-  const words = ['checking', '...', 'almost', 'there', '!'];
-
-  for (const word of words) {
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
-
-    // Build the content with the new word
-    typingContent += ` ${word}`;
-
-    // Edit the existing message using relayMessage
-    await gss.relayMessage(m.chat, {
-      protocolMessage: {
-        key: typingMessage.key,
-        type: 14,
-        editedMessage: {
-          conversation: typingContent.trim() // Trim leading space
-        }
-      }
-    }, {});
-  }
+  // Use the typewriterEffect function
+  await typewriterEffect(typingMessage, ['checking', '...', 'almost', 'there', '!']);
 
   const successReactionMessage = {
     react: {
@@ -3160,26 +3165,7 @@ break;
   const pingMsg = await gss.sendMessage(m.chat, { text: 'checking...' });
 
   // Typewriter effect for the response message
-  let responseContent = '';
-  const responseWords = ['Rᴇsᴘᴏɴᴅ', 'Sᴘᴇᴇᴅ:', `${new Date() - startTime} ms`];
-
-  for (const word of responseWords) {
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
-
-    // Build the content with the new word
-    responseContent += ` ${word}`;
-
-    // Edit the existing message using relayMessage
-    await gss.relayMessage(m.chat, {
-      protocolMessage: {
-        key: pingMsg.key,
-        type: 14,
-        editedMessage: {
-          conversation: responseContent.trim() // Trim leading space
-        }
-      }
-    }, {});
-  }
+  await typewriterEffect(pingMsg, ['Rᴇsᴘᴏɴᴅ', 'Sᴘᴇᴇᴅ:', `${new Date() - startTime} ms`]);
 }
 break;
 
@@ -3349,21 +3335,24 @@ case 'chatgpt':
       const result = responseData.result;
 
       // Typewriter effect for the GPT response
+      let gptMessage = await m.reply({ text: 'Processing response...' });
+      let gptContent = '';
+
       const responseWords = result.split(' ');
 
       for (const word of responseWords) {
         await new Promise(resolve => setTimeout(resolve, 500)); // Adjust the delay as needed
 
-        // Check if m.editedMessage is defined before accessing the 'conversation' property
-        const editedMessage = m.editedMessage || { conversation: '' };
+        // Build the content with the new word
+        gptContent += ` ${word}`;
 
-        // Edit the existing message using relayMessage, appending the new word
+        // Edit the existing message using relayMessage
         await gss.relayMessage(m.chat, {
           protocolMessage: {
-            key: m.key,
+            key: gptMessage.key,
             type: 14,
             editedMessage: {
-              conversation: `${editedMessage.conversation} ${word}`
+              conversation: gptContent.trim() // Trim leading space
             }
           }
         }, {});
@@ -3375,9 +3364,6 @@ case 'chatgpt':
     console.error(error);
   }
   break;
-
-
-
 
 
 
