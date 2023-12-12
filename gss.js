@@ -393,8 +393,12 @@ if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
             console.log('Removing detected bot. m.sender:', m.sender);
             gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
         }, 2000);
+    } else {
+        // Logging for debugging
+        console.log('Sender is the owner or a bot admin. No action taken.');
     }
 }
+
 
 
 
