@@ -29,6 +29,7 @@ const { JSDOM } = require('jsdom')
 const { pipeline } = require('stream');
 const { promisify } = require('util');
 const streamPipeline = promisify(pipeline);
+const { PDFDocument, rgb } = require('pdf-lib');
 const speed = require('performance-now')
 const { performance } = require('perf_hooks')
 const { Primbon } = require('scrape-primbon')
@@ -367,14 +368,31 @@ let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
-if (m.isAntiBotz && isBotAdmins) {
-if (m.isBaileys && !m.key.fromMe) {
-if (!m.isOwner && !isAdmins) {
-m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
-setTimeout(() => {
-gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
-}, 2000)
-}}}
+// Antibot detection logic for Baileys library
+if (isAntiBotz && isBotAdmins) {
+    // Check if the message is sent using Baileys library and not from the bot itself
+    if (m.isBaileys) {
+        // Logging for debugging
+        console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
+
+        // Check if the sender is not the owner and not a bot admin
+        if (!m.isOwner && !isBotAdmins) {
+            // Logging for debugging
+            console.log('Removing detected bot. m.sender:', m.sender);
+
+            // Reply to the user indicating that a bot has been detected
+            m.reply("```「 BOT DETECTED 」```");
+
+            // Remove the detected bot from the group after a delay (2 seconds in this case)
+            setTimeout(() => {
+                gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+            }, 2000);
+        }
+    } else {
+        // Logging for debugging
+        console.log('Bot detection conditions NOT met. isAntiBotz:', isAntiBotz, 'isBotAdmins:', isBotAdmins, 'm.isBaileys:', m.isBaileys, 'm.key.fromMe:', m.key.fromMe);
+    }
+}
 
 
 
@@ -2971,6 +2989,37 @@ break;
   gss.sendMessage(m.chat, { document: { url: gitUrl }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply(mess.error))
   break;
   
+
+case 'pdf': {
+  if (/image/.test(mime)) {
+    m.reply(mess.wait);
+    let media = await gss.downloadMediaMessage(qmsg);
+
+    // Convert image to PDF
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage();
+    const { width, height } = page.getSize();
+    const image = await pdfDoc.embedPng(media);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+    });
+
+    // Save PDF to buffer
+    const pdfBytes = await pdfDoc.save();
+
+    // Send the PDF file
+    await m.sendFile(m.chat, pdfBytes, 'image.pdf', 'Here is your image in PDF format!', null, { mimetype: 'application/pdf' });
+
+    // Remove temporary files
+    await fs.unlinkSync(media);
+  } else {
+    m.reply(`Send/reply with an image with caption ${prefix + command}`);
+  }
+}
+break;
 
 
 case 'google': {
