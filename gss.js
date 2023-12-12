@@ -363,7 +363,7 @@ console.log('Current chats settings:', chats);
 if (chats) {
     if (!('mute' in chats)) chats.mute = false;
     if (!('antilink' in chats)) chats.antilink = false;
-    if (!('antibot' in chats)) chats.antibot = true; // Set antibot to true to enable it
+    if (!('antibot' in chats)) chats.antibot = false; // Set antibot to true to enable it
 } else {
     global.db.data.chats[m.chat] = {
         mute: false,
