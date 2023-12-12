@@ -463,11 +463,6 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         step
     } = akinator[m.sender.split('@')[0]];
     if (step == "0" && body == "5") m.reply("Sorry, you have reached the first question");
-
-    // Translate the question to English
-    const translatedQuestion = await translate(question, { to: 'en' });
-    console.log('Translated Question:', translatedQuestion);
-
     var ini_url = `https://api.lolhuman.xyz/api/akinator/answer?apikey=haikalgans&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
     var get_result = await fetchJson(ini_url);
     var get_result = get_result.result;
@@ -475,7 +470,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         var ini_name = get_result.name;
         var description = get_result.description;
         ini_txt = `${ini_name} - ${description}\n\n`;
-        ini_txt += "*Thank You*\n*Powered By  gssbotwa*";
+        ini_txt += "*Thank You*\n*Powered By ArxzyDev & LoL Human*";
         await gss.sendMessage(m.chat, {
             image: {
                 url: get_result.image
@@ -487,15 +482,18 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         });
         return;
     }
-
-    ini_txt = `${translatedQuestion}\n\n`;
+    var {
+        question,
+        _,
+        step
+    } = get_result;
+    ini_txt = `${question}\n\n`;
     ini_txt += "0 - Yes\n";
     ini_txt += "1 - No\n";
     ini_txt += "2 - I Don't Know\n";
     ini_txt += "3 - Maybe\n";
     ini_txt += "4 - Maybe Not\n";
     ini_txt += "5 - Go Back to the Previous Question";
-
     if (args[0] === '5') {
         var ini_url = `https://api.lolhuman.xyz/api/akinator/back?apikey=haikalgans&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
         var get_result = await fetchJson(ini_url);
@@ -505,12 +503,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
             _,
             step
         } = get_result;
-
-        // Translate the question to English
-        const translatedBackQuestion = await translate(question, { to: 'en' });
-        console.log('Translated Back Question:', translatedBackQuestion);
-
-        ini_txt = `${translatedBackQuestion}\n\n`;
+        ini_txt = `${question}\n\n`;
         ini_txt += "0 - Yes\n";
         ini_txt += "1 - No\n";
         ini_txt += "2 - I Don't Know\n";
@@ -518,7 +511,6 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         ini_txt += "4 - Maybe Not\n";
         ini_txt += "5 - Go Back to the Previous Question";
     }
-
     gss.sendText(m.chat, ini_txt, m).then(() => {
         const data_ = akinator[m.sender.split('@')[0]];
         data_["question"] = question;
@@ -527,6 +519,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         fs.writeFileSync("./src/data/akinator.json", JSON.stringify(akinator));
     });
 }
+
 
 
         // Respon Cmd with media
@@ -965,7 +958,7 @@ case 'akinatorstart':
     data["step"] = step;
 
     // Translate the question to English
-    const translatedQuestion = await translate(question, { to: 'en' });
+    const translatedQuestion = await Translate(question, { to: 'en' });
     imi_txt = `${translatedQuestion}\n\n`;
     imi_txt += "0 - Yes\n";
     imi_txt += "1 - No\n";
