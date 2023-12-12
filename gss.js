@@ -3130,7 +3130,17 @@ break;
 
   for (const word of words) {
     await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
-    await gss.editMessage(m.chat, typingMessage.key, { text: word });
+
+    // Edit the existing message using relayMessage
+    await gss.relayMessage(m.chat, {
+      protocolMessage: {
+        key: typingMessage.key,
+        type: 14,
+        editedMessage: {
+          conversation: word
+        }
+      }
+    }, {});
   }
 
   const successReactionMessage = {
@@ -3149,7 +3159,17 @@ break;
 
   for (const word of responseWords) {
     await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
-    await gss.editMessage(m.chat, pingMsg.key, { text: word });
+
+    // Edit the existing message using relayMessage
+    await gss.relayMessage(m.chat, {
+      protocolMessage: {
+        key: pingMsg.key,
+        type: 14,
+        editedMessage: {
+          conversation: word
+        }
+      }
+    }, {});
   }
 }
 break;
@@ -3164,7 +3184,6 @@ break;
             
 case 'getbio':  
    if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
   try {
     let who
     if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender
@@ -3323,7 +3342,17 @@ case 'chatgpt':
 
       for (const word of responseWords) {
         await new Promise(resolve => setTimeout(resolve, 500)); // Adjust the delay as needed
-        await m.reply(word);
+
+        // Edit the existing message using relayMessage
+        await gss.relayMessage(m.chat, {
+          protocolMessage: {
+            key: m.key,
+            type: 14,
+            editedMessage: {
+              conversation: word
+            }
+          }
+        }, {});
       }
     } else {
       console.log('API returned an unexpected response:', responseData);
