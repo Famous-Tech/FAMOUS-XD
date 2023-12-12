@@ -3007,7 +3007,7 @@ case 'pdf': {
     }
 
     // Convert media to PDF
-    let pdfBuffer = /* your code to convert media to PDF */;
+    let pdfBuffer = /* your code to convert media to PDF */
     
     // Send the PDF file
     await m.sendFile(m.chat, pdfBuffer, 'media.pdf', `Here is your media in PDF format!`, null, { mimetype: 'application/pdf' });
