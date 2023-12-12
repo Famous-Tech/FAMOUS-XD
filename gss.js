@@ -373,7 +373,7 @@ console.log('isMuted value:', isMuted);
 console.log('isAntiLink value:', isAntiLink);
 
 // Anti-bot detection logic
-if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
+if (isAntiBotz && isBotAdmins && isBaileys && !m.key.fromMe) {
     // Logging for debugging
     console.log('Bot detection conditions met. Sender:', m.sender, 'isOwner:', m.isOwner, 'isBotAdmins:', isBotAdmins);
 
