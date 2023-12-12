@@ -2994,20 +2994,18 @@ break;
 
 
 case 'pdf': {
-  m.reply(mess.wait);
-
-  try {
-    let media = await gss.downloadMediaMessage(qmsg);
-
-    if (/image/.test(mime)) {
-      const dimensions = imageSize.imageSize(media);
+  if (/image/.test(mime)) {
+    m.reply(mess.wait);
+    try {
+      let media = await gss.downloadMediaMessage(qmsg);
+      const dimensions = imageSize(media);
 
       // Convert image to PDF
       const pdfDoc = await PDFDocument.create();
       const page = pdfDoc.addPage([dimensions.width, dimensions.height]);
       const imageBytes = await fs.readFile(media);
       const image = await pdfDoc.embedPng(imageBytes);
-      
+
       page.drawImage(image, {
         x: 0,
         y: 0,
@@ -3018,31 +3016,30 @@ case 'pdf': {
       // Send the PDF directly without saving to a file
       const pdfBytes = await pdfDoc.save();
       await gss.sendMessage(m.chat, { document: pdfBytes, mimetype: 'application/pdf' });
-
-    } else if (/video/.test(mime)) {
-      // ... (same as your existing video to PDF conversion code)
-
-      // Send the PDF directly without saving to a file
-      const pdfBytes = await pdfDoc.save();
-      await gss.sendMessage(m.chat, { document: pdfBytes, mimetype: 'application/pdf' });
-
+      
       // Remove temporary files
-      await fs.rmdir(framesDirectory, { recursive: true });
-    } else {
-      m.reply(`Send/reply with an image or a video with caption ${prefix + command}`);
+      await fs.unlink(media);
+    } catch (error) {
+      console.error('Error during PDF creation:', error);
+      m.reply('Unexpected error occurred.');
     }
 
-    // Remove temporary files for both images and videos
-    await fs.unlink(media);
-  } catch (error) {
-    console.error('Error during PDF creation:', error);
-    m.reply('Unexpected error occurred.');
+  } else if (/video/.test(mime)) {
+    m.reply(mess.wait);
+    if (qmsg.seconds > 11) return m.reply('Maximum duration is 10 seconds!');
+    try {
+      let media = await gss.downloadMediaMessage(qmsg);
+
+      await fs.unlink(media);
+    } catch (error) {
+      console.error('Error during PDF creation:', error);
+      m.reply('Unexpected error occurred.');
+    }
+  } else {
+    m.reply(`Send/reply with an image or a video with caption ${prefix + command}\nVideo/Gif duration 1-9 seconds`);
   }
 }
 break;
-
-
-
 
 
 
