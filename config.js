@@ -22,24 +22,24 @@ global.APIs = {
 
 // Other
 global.apikey = 'bf2d2cf29b3edc604b447983';
-global.ownername = 'sid bhai';
+global.ownername = '𝑆𝛪𝐷 𝐵𝛨𝛥𝛪';
 global.owner = ['917050906659'];
 global.premium = ['917050906659'];
-global.packname = 'gss botwa';
-global.author = 'gss botwa';
+global.packname = '𝚜𝚝𝚒𝚌𝚔𝚎𝚛 𝚋𝚢';
+global.author = '𝐆𝐒𝐒 𝚩𝚯𝚻𝐖𝚫';
 global.sessionName = 'session';
 global.prefa = ['', '!', '.'];
 global.sp = '✪';
 global.mess = {
-    success: '✓ Success',
-    admin: 'Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs',
-    botAdmin: 'ɪ ᴀᴍ ɴᴏᴛ ᴀɴ ᴀᴅᴍɪɴ!',
-    owner: 'Yᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ᴏᴡɴᴇʀ',
-    group: 'ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌',
-    private: 'ғᴇᴀᴛᴜʀᴇ ɪs ᴜsᴇᴅ ᴏɴʟʏ ғᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀᴛs!',
-    bot: 'ʙᴏᴛ ɴᴜᴍʙᴇʀ ᴜsᴇʀ sᴘᴇᴄɪᴀʟ ғᴇᴀᴛᴜʀᴇs',
+    success: '```✓ Success```',
+    admin: '```This feature is only for group admins```',
+    botAdmin: '```I am not an admin!```',
+    owner: '```You are not my owner```',
+    group: '```You can use this command only in groups ❌```',
+    private: '```Feature is used only for private chats!```',
+    bot: '```Bot number user special features```',
     wait: '*Processing Your request*',
-    endLimit: 'ʏᴏᴜʀ ᴅᴀɪʟʏ ʟɪᴍɪᴛ ʜᴀs ᴇxᴘɪʀᴇᴅ, ᴛʜᴇ ʟɪᴍɪᴛ ᴡɪʟʟ ʙᴇ ʀᴇsᴇᴛ ᴇᴠᴇʀʏ 12 ʜᴏᴜʀs',
+    endLimit: '```Your daily limit has expired, the limit will be reset every 12 hours```',
 };
 global.link = 'https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w'
 global.autoblok212 = true
