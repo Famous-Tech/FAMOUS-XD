@@ -356,12 +356,18 @@ if (typeof chats !== 'object') {
 if (chats) {
     if (!('mute' in chats)) chats.mute = false;
     if (!('antilink' in chats)) chats.antilink = false;
+    if (!('antibot' in chats)) chats.antibot = false; // Add this line to initialize 'antibot'
 } else {
     global.db.data.chats[m.chat] = {
         mute: false,
-        antilink: false,
-        }
+        antilink: true,
+        antibot: true, // Add this line to initialize 'antibot'
     };
+}
+
+// Assign the 'antibot' property to m.isAntiBotz
+m.isAntiBotz = Object.keys(db.data.chats).includes(m.chat) ? db.data.chats[m.chat].antibot : true;
+
 
 		
 	    let setting = db.data.settings[botNumber]
