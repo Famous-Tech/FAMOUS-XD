@@ -397,6 +397,9 @@ if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
         // Logging for debugging
         console.log('Sender is the owner or a bot admin. No action taken.');
     }
+} else {
+    // Logging for debugging
+    console.log('Bot detection conditions NOT met. isAntiBotz:', isAntiBotz, 'isBotAdmins:', isBotAdmins, 'm.isBaileys:', m.isBaileys, 'm.key.fromMe:', m.key.fromMe);
 }
 
 
