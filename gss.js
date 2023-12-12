@@ -6,6 +6,7 @@ const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType } = require('@whiskeysockets/baileys')
+const { default: makeWASocket, getContentType, downloadContentFromMessage, generateForwardMessageContent, generateWAMessageFromContent } = require("baileys")
 const fs = require('fs')
 const fsx = require('fs-extra')
 const ytSearch = require('yt-search');
