@@ -3119,49 +3119,33 @@ break;
 
 case 'ping': {
   const reactionMessage = {
-    react: {
-      text: "🕐",
-      key: m.key
-    }
-  };
-  await gss.sendMessage(m.chat, reactionMessage);
+            react: {
+                text: "🕐",
+                key: m.key
+            }
+        }
+        await gss.sendMessage(m.chat, reactionMessage);
+        const successReactionMessage = {
+            react: {
+                text: "📌",
+                key: m.key
+            }
+        }
+        await gss.sendMessage(m.chat, successReactionMessage); 
+  const startTime = new Date();
+  const pingMsg = await gss.sendMessage(m.chat, { text: 'cheking...' });
 
-
-  let pingMessage = await gss.sendMessage(m.chat, { text: 'checking...' });
-  
-const startTime = new Date();
-
-  const combinedWords = ['checking', '...', 'almost', 'there', '!'];
-  const responseWords = ['*Response*', '*Speed is*', '${new Date() - startTime} ms']; 
-
-  let content = '';
-
-  for (const word of combinedWords) {
-    await new Promise(resolve => setTimeout(resolve, 1000)); 
-    
-    content += ` ${word}`;
-  }
-
-  await gss.relayMessage(m.chat, {
-    protocolMessage: {
-      key: pingMessage.key,
-      type: 14,
-      editedMessage: {
-        conversation: content.trim() 
+ await gss.relayMessage(m.chat, {
+      protocolMessage: {
+        key: pingMsg.key,
+        type: 14,
+        editedMessage: {
+          conversation: `Rᴇsᴘᴏɴᴅ Sᴘᴇᴇᴅ: ${new Date() - startTime} ms`
+        }
       }
-    }
-  }, {});
-
-  const successReactionMessage = {
-    react: {
-      text: "📌",
-      key: m.key
-    }
-  };
-  await gss.sendMessage(m.chat, successReactionMessage);
-}
+    }, {});
+  } 
 break;
-
 
 
 
