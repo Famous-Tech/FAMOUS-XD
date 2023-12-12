@@ -29,6 +29,7 @@ const { JSDOM } = require('jsdom')
 const { pipeline } = require('stream');
 const { promisify } = require('util');
 const streamPipeline = promisify(pipeline);
+const imageSize = require('image-size');
 const { PDFDocument, rgb } = require('pdf-lib');
 const speed = require('performance-now')
 const { performance } = require('perf_hooks')
@@ -2991,22 +2992,26 @@ break;
   
 
 
+
 case 'pdf': {
   m.reply(mess.wait);
 
   let media = await gss.downloadMediaMessage(qmsg);
 
   if (/image/.test(mime)) {
+    const dimensions = imageSize.imageSize(media);
+
     // Convert image to PDF
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage();
-    const { width, height } = page.getSize();
-    const image = await pdfDoc.embedPng(media);
+    const page = pdfDoc.addPage([dimensions.width, dimensions.height]);
+    const imageBytes = await fs.readFile(media);
+    const image = await pdfDoc.embedPng(imageBytes);
+    
     page.drawImage(image, {
       x: 0,
       y: 0,
-      width: width,
-      height: height,
+      width: dimensions.width,
+      height: dimensions.height,
     });
 
     // Save PDF to buffer
@@ -3039,13 +3044,17 @@ case 'pdf': {
 
     for (const file of files) {
       const framePath = `${framesDirectory}/${file}`;
-      const image = await pdfDoc.embedPng(await fs.readFile(framePath));
-      const page = pdfDoc.addPage();
+      const dimensions = imageSize.imageSize(framePath);
+
+      const imageBytes = await fs.readFile(framePath);
+      const image = await pdfDoc.embedPng(imageBytes);
+
+      const page = pdfDoc.addPage([dimensions.width, dimensions.height]);
       page.drawImage(image, {
         x: 0,
         y: 0,
-        width: page.getWidth(),
-        height: page.getHeight(),
+        width: dimensions.width,
+        height: dimensions.height,
       });
     }
 
@@ -3065,6 +3074,7 @@ case 'pdf': {
   await fs.unlink(media);
 }
 break;
+
 
 
 
