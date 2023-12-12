@@ -2929,7 +2929,7 @@ case 'fmmods': {
                 const apkBuffer = Buffer.from(apkArrayBuffer);
 
                 // Send the APK directly with the mod details
-                await gss.sendMessage(m.chat, { document: apkBuffer, mimetype: 'application/vnd.android.package-archive', filename: `${modName}.apk` }, { quoted: m });
+                await gss.sendMessage(m.chat, { document: apkBuffer, mimetype: 'application/vnd.android.package-archive', fileName: `${modName}.apk` }, { quoted: m });
             }
         } else {
             await m.reply('Error in API response. Please try again later.');
