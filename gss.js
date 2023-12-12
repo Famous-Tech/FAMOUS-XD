@@ -359,9 +359,6 @@ if (!chats || typeof chats !== 'object') {
     chats = db.data.chats[m.chat];
 }
 
-// Logging for debugging
-console.log('Current chats settings:', chats);
-
 // Initialize isAntiBotz, isMuted, and isAntiLink
 let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : false;
 let isMuted = chats && 'mute' in chats ? chats.mute : false;
@@ -369,15 +366,18 @@ let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
-// Logging for debugging
-console.log('isAntiBotz value:', isAntiBotz);
-console.log('isMuted value:', isMuted);
-console.log('isAntiLink value:', isAntiLink);
-console.log('isAntiDelete value:', isAntiDelete);
-console.log('isAntiViewOnce value:', isAntiViewOnce);
+// Send the chat settings
+m.reply(
+    `Current Chat Settings:\n` +
+    `AntiBotz: ${isAntiBotz}\n` +
+    `Muted: ${isMuted}\n` +
+    `AntiLink: ${isAntiLink}\n` +
+    `AntiDelete: ${isAntiDelete}\n` +
+    `AntiViewOnce: ${isAntiViewOnce}`
+);
 
-// Logging all message properties for inspection
-console.log('Message Object:', m);
+// Send the message object details
+m.reply(`Message Object:\n${JSON.stringify(m, null, 2)}`);
 
 // Anti-bot detection logic
 if (isAntiBotz && isBotAdmins && m.isBaileys && !m.key.fromMe) {
