@@ -3655,29 +3655,30 @@ case 'gdrive':
 function convertToFontStyle(text, style) {
     let styledText = '';
 
-    // Assuming fonts is an array of mappings for each style
+   
     if (fonts[style]) {
-        // Iterate through each character in the input text
+
         for (const char of text) {
-            // Check if the character is in the fonts object and the selected style
+
             if (fonts[style][char]) {
+              
                 styledText += fonts[style][char];
             } else {
-                // If the character is not in the mappings, use the original character
+
                 styledText += char;
             }
         }
     } else {
-        // Handle the case where fonts for the selected style are not available
+      
         styledText = text;
     }
 
     return styledText;
 }
 
-// Assuming your original code is within a switch statements
+
     case 'fontchange': case 'fancy':
-        // Check if the user provided arguments for text and style
+
         if (args.length === 0) {
             const availableStylesPreview = availableStyles.map(style => {
                 const previewText = convertToFontStyle("gss botwa", parseInt(style));
@@ -3686,14 +3687,14 @@ function convertToFontStyle(text, style) {
 
             m.reply(`Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${availableStylesPreview}`);
         } else {
-            const style = parseInt(args[0]); // The selected font style number (from 0 to 34)
-            const inputText = args.slice(1).join(" "); // The text to be styled
+            const style = parseInt(args[0]); 
+            
+            const inputText = args.slice(1).join(" "); 
 
-            // Check if the selected style is within the valid range (0 to 34)
             if (style < 0 || style > 34) {
                 m.reply(`Style number should be between 0 and 34. Please choose a valid style.`);
             } else {
-                // Convert the input text to the selected font style
+
                 const styledText = convertToFontStyle(inputText, style);
 
                 m.reply(`${styledText}`);
