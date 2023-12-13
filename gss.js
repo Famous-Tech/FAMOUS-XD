@@ -327,37 +327,20 @@ const reactionMessage = {
   `);
 }
 
-const menuMessage = 'Here is the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka';
+const mainMenuMessage = 'Select a menu option:\n1. Allmenu\n2. Groupmenu\n3. Downloadmenu\n4. Searchmenu\n5. Funmenu\n6. Toolmenu\n7. Convertmenu\n8. aimenu\n9. Mainmenu\n10. Ownermenu';
 
 const subMenus = {
-  '1': 'Sub menu for hi',
-  '2': 'Sub menu for bye',
-  '3': 'Sub menu for huo',
-  '4': 'Sub menu for jksd',
-  '5': 'Sub menu for jka'
+  'Allmenu': 'Submenu for Allmenu',
+  'Groupmenu': 'Submenu for Groupmenu',
+  'Downloadmenu': 'Submenu for Downloadmenu',
+  'Searchmenu': 'Submenu for Searchmenu',
+  'Funmenu': 'Submenu for Funmenu',
+  'Toolmenu': 'Submenu for Toolmenu',
+  'Convertmenu': 'Submenu for Convertmenu',
+  'aimenu': 'Submenu for aimenu',
+  'Mainmenu': 'Submenu for Mainmenu',
+  'Ownermenu': 'Submenu for Ownermenu'
 };
-
-// Assuming 'm' is the message object
-if (m.text && !m.key.fromMe) {
-  const lowerText = m.text.toLowerCase();
-
-  if (lowerText === 'menuu') {
-    m.reply(menuMessage);
-  } else if (/^\d+$/.test(lowerText) && m.quoted && m.quoted.text) {
-    const quotedText = m.quoted.text.toLowerCase();
-
-    if (quotedText.includes(menuMessage.toLowerCase())) {
-      const selectedNumber = lowerText;
-      const subMenu = subMenus[selectedNumber];
-
-      if (subMenu) {
-        m.reply(subMenu);
-      } else {
-        m.reply('Invalid menu number. Please select a number from the menu.');
-      }
-    }
-  }
-}
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
@@ -511,6 +494,18 @@ if (!m.isGroup && !isCreator && global.onlygroup) {
 // Private Only
 if (!isCreator && global.onlypc && m.isGroup) {
     return m.reply("Hello, if you want to use this bot, please chat privately with the bot.")
+}
+
+if (m.text && !m.key.fromMe) {
+  const lowerText = m.text.toLowerCase();
+
+  if (lowerText === 'menu' || lowerText === 'help' || lowerText === 'list' || lowerText === 'listmenu') {
+    gss.sendPoll(m.chat, "List Menu", ['Allmenu', 'Groupmenu', 'Downloadmenu', 'Searchmenu', 'Funmenu', 'Toolmenu', 'Convertmenu', 'aimenu', 'Mainmenu', 'Ownermenu'], { quoted: m });
+  } else if (subMenus[lowerText]) {
+    m.reply(subMenus[lowerText]);
+  } else {
+    m.reply('Invalid menu option. Please select a valid option from the main menu.');
+  }
 }
 
 if (TYPING_ENABLED && command) {
