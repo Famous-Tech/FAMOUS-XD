@@ -2230,7 +2230,6 @@ case '𝐚𝐮𝐝𝐢𝐨': {
 
 
 
-
 async function instaDownload(url) {
     try {
         const apiUrl = `https://vihangayt.me/download/instagram?url=${encodeURIComponent(url)}`;
@@ -2287,7 +2286,8 @@ async function downloadAndSendMedia(m, text, isDocument) {
 
         if (media.type === 'image' || media.type === 'video') {
             const response = await fetch(media.url);
-            const fileBuffer = await response.buffer();
+            const bufferArray = await response.arrayBuffer();
+            const fileBuffer = Buffer.from(bufferArray);
 
             const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
@@ -2319,6 +2319,7 @@ case 'igdoc':
 case 'instagramdoc':
     await downloadAndSendMedia(m, text, true);
     break;
+
 
 
 
