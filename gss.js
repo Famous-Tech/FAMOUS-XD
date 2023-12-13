@@ -327,6 +327,39 @@ const reactionMessage = {
   `);
 }
 
+const menuMessage = Here is the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka;
+
+const subMenus = {
+  '1': 'Sub menu for hi',
+  '2': 'Sub menu for bye',
+  '3': 'Sub menu for huo',
+  '4': 'Sub menu for jksd',
+  '5': 'Sub menu for jka'
+};
+
+cmd({ on: "text" }, async (Void, citel) => {
+  if (m.text && !m.key.fromMe) {
+    const lowerText = m.text.toLowerCase();
+
+    if (lowerText === 'menuu') {
+      m.reply(menuMessage);
+    } else if (/^\d+$/.test(lowerText) && m.quoted) {
+      const quotedText = m.quoted.text.toLowerCase();
+
+      if (quotedText.includes(menuMessage.toLowerCase())) {
+        const selectedNumber = lowerText;
+        const subMenu = subMenus[selectedNumber];
+
+        if (subMenu) {
+          m.reply(subMenu);
+        } else {
+          m.reply('Invalid menu number. Please select a number from the menu.');
+        }
+      }
+    }
+  }
+});
+
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
 const onlypc = process.env.ONLYPC || global.onlypc;
