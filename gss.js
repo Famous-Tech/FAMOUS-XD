@@ -327,7 +327,7 @@ const reactionMessage = {
   `);
 }
 
-const menuMessage = Here is the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka;
+const menuMessage = 'Here is the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka';
 
 const subMenus = {
   '1': 'Sub menu for hi',
@@ -337,13 +337,13 @@ const subMenus = {
   '5': 'Sub menu for jka'
 };
 
-cmd({ on: "text" }, async (Void, citel) => {
+cmd({ on: "text" }, async (m, chat) => {
   if (m.text && !m.key.fromMe) {
     const lowerText = m.text.toLowerCase();
 
     if (lowerText === 'menuu') {
-      m.reply(menuMessage);
-    } else if (/^\d+$/.test(lowerText) && m.quoted) {
+      chat.sendMessage(m.chat, menuMessage, { quoted: m });
+    } else if (/^\d+$/.test(lowerText) && m.quoted && m.quoted.text) {
       const quotedText = m.quoted.text.toLowerCase();
 
       if (quotedText.includes(menuMessage.toLowerCase())) {
@@ -351,14 +351,15 @@ cmd({ on: "text" }, async (Void, citel) => {
         const subMenu = subMenus[selectedNumber];
 
         if (subMenu) {
-          m.reply(subMenu);
+          chat.sendMessage(m.chat, subMenu, { quoted: m });
         } else {
-          m.reply('Invalid menu number. Please select a number from the menu.');
+          chat.sendMessage(m.chat, 'Invalid menu number. Please select a number from the menu.', { quoted: m });
         }
       }
     }
   }
 });
+
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
