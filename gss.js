@@ -2291,7 +2291,7 @@ async function downloadAndSendMedia(m, text, isDocument) {
 
             const fileName = `instagram_media.jpg`;
 
-
+            // Send the image using gss.sendMessage with the saved file
             await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else if (media.type === 'video') {
             const response = await fetch(media.url);
@@ -2300,10 +2300,21 @@ async function downloadAndSendMedia(m, text, isDocument) {
 
             const fileName = `instagram_media.mp4`;
 
-
+            // Send the video using gss.sendMessage with the saved file
             await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else {
-            throw new Error('Unsupported media type');
+            // If it's a document, send as a document
+            if (isDocument) {
+                const response = await fetch(media.url);
+                const bufferArray = await response.arrayBuffer();
+                const fileBuffer = Buffer.from(bufferArray);
+
+                const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
+
+                await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            } else {
+                throw new Error('Unsupported media type');
+            }
         }
     } catch (error) {
         console.error('Error while processing Instagram media:', error);
