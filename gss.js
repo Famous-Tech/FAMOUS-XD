@@ -337,28 +337,27 @@ const subMenus = {
   '5': 'Sub menu for jka'
 };
 
-command({ on: "text" }, async (m, chat) => {
-  if (m.text && !m.key.fromMe) {
-    const lowerText = m.text.toLowerCase();
+// Assuming 'm' is the message object
+if (m.text && !m.key.fromMe) {
+  const lowerText = m.text.toLowerCase();
 
-    if (lowerText === 'menuu') {
-      chat.sendMessage(m.chat, menuMessage, { quoted: m });
-    } else if (/^\d+$/.test(lowerText) && m.quoted && m.quoted.text) {
-      const quotedText = m.quoted.text.toLowerCase();
+  if (lowerText === 'menuu') {
+    m.reply(menuMessage);
+  } else if (/^\d+$/.test(lowerText) && m.quoted && m.quoted.text) {
+    const quotedText = m.quoted.text.toLowerCase();
 
-      if (quotedText.includes(menuMessage.toLowerCase())) {
-        const selectedNumber = lowerText;
-        const subMenu = subMenus[selectedNumber];
+    if (quotedText.includes(menuMessage.toLowerCase())) {
+      const selectedNumber = lowerText;
+      const subMenu = subMenus[selectedNumber];
 
-        if (subMenu) {
-          chat.sendMessage(m.chat, subMenu, { quoted: m });
-        } else {
-          chat.sendMessage(m.chat, 'Invalid menu number. Please select a number from the menu.', { quoted: m });
-        }
+      if (subMenu) {
+        m.reply(subMenu);
+      } else {
+        m.reply('Invalid menu number. Please select a number from the menu.');
       }
     }
   }
-});
+}
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
