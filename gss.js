@@ -342,6 +342,18 @@ const subMenus = {
   'Ownermenu': 'Submenu for Ownermenu'
 };
 
+if (m.text && !m.key.fromMe) {
+  const lowerText = m.text.toLowerCase();
+
+  if (lowerText === 'menuu' || lowerText === 'help' || lowerText === 'list' || lowerText === 'listmenu') {
+    gss.sendPoll(m.chat, "List Menu", ['Allmenu', 'Groupmenu', 'Downloadmenu', 'Searchmenu', 'Funmenu', 'Toolmenu', 'Convertmenu', 'aimenu', 'Mainmenu', 'Ownermenu'], { quoted: m });
+  } else if (subMenus[lowerText]) {
+    m.reply(subMenus[lowerText]);
+  } else {
+    m.reply('Invalid menu option. Please select a valid option from the main menu.');
+  }
+}
+
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
@@ -494,18 +506,6 @@ if (!m.isGroup && !isCreator && global.onlygroup) {
 // Private Only
 if (!isCreator && global.onlypc && m.isGroup) {
     return m.reply("Hello, if you want to use this bot, please chat privately with the bot.")
-}
-
-if (m.text && !m.key.fromMe) {
-  const lowerText = m.text.toLowerCase();
-
-  if (lowerText === 'menu' || lowerText === 'help' || lowerText === 'list' || lowerText === 'listmenu') {
-    gss.sendPoll(m.chat, "List Menu", ['Allmenu', 'Groupmenu', 'Downloadmenu', 'Searchmenu', 'Funmenu', 'Toolmenu', 'Convertmenu', 'aimenu', 'Mainmenu', 'Ownermenu'], { quoted: m });
-  } else if (subMenus[lowerText]) {
-    m.reply(subMenus[lowerText]);
-  } else {
-    m.reply('Invalid menu option. Please select a valid option from the main menu.');
-  }
 }
 
 if (TYPING_ENABLED && command) {
