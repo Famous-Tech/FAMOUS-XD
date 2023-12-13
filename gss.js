@@ -2229,136 +2229,107 @@ case '𝐚𝐮𝐝𝐢𝐨': {
 
 
 
-async function instaDownload(apiKeys, url) {
-    let currentIndex = 0;
+async function instaDownload(url) {
+    try {
+        const apiUrl = `https://vihangayt.me/download/instagram?url=${encodeURIComponent(url)}`;
+        const response = await fetch(apiUrl);
 
-    while (currentIndex < apiKeys.length) {
-        const apiKey = apiKeys[currentIndex];
-
-        try {
-            const apiUrl = `https://api.xfarr.com/api/download/instagram?apikey=${encodeURIComponent(apiKey)}&url=${encodeURIComponent(url)}`;
-            const response = await fetch(apiUrl);
-
-            if (!response.ok) {
-                const errorMessage = await response.text();
-                throw new Error(`API Error (${response.status}): ${errorMessage}`);
-            }
-
-            const result = await response.json();
-            return result;
-        } catch (error) {
-            console.error(`Error with API key ${apiKey}: ${error.message}`);
-            currentIndex++;
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`API Error (${response.status}): ${errorMessage}`);
         }
-    }
 
-    throw new Error('All API keys failed');
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(`Error with API: ${error.message}`);
+        throw error;
+    }
 }
 
-async function downloadInstagramVideo(apiKeys, url) {
+async function downloadInstagramMedia(url) {
     try {
-        const result = await instaDownload(apiKeys, url);
+        const result = await instaDownload(url);
 
         console.log('API Response:', result);
 
-        if (result.status === 200 && result.result && result.result.length > 0) {
-            const videoUrl = result.result[0];
+        if (result.status && result.data && result.data.data && result.data.data.length > 0) {
+            const mediaType = result.data.data[0].type;
+            const mediaUrl = result.data.data[0].url;
 
-            if (videoUrl) {
-                return videoUrl;
+            if (mediaType && mediaUrl) {
+                return { type: mediaType, url: mediaUrl };
             } else {
-                throw new Error('Video URL not found in API response');
+                throw new Error('Media type or URL not found in API response');
             }
         } else {
             throw new Error('Invalid or unexpected API response');
         }
     } catch (error) {
-        console.error('Error downloading Instagram video:', error.message);
+        console.error('Error downloading Instagram media:', error.message);
         throw error;
     }
 }
+
+async function downloadAndSendMedia(m, text, isDocument) {
+    const url = text;
+
+    if (!url) {
+        return m.reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
+    }
+
+    m.reply(mess.wait);
+
+    try {
+        const media = await downloadInstagramMedia(url);
+
+        let fileBuffer;
+        let fileName;
+
+        if (isDocument) {
+            fileBuffer = await fetch(media.url).then(response => response.buffer());
+            fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
+        } else {
+            fileBuffer = await fetch(media.url).then(response => response.buffer());
+            fileName = `temp_${Math.floor(Math.random() * 10000)}.${media.type === 'image' ? 'jpg' : 'mp4'}`;
+        }
+
+        fs.writeFileSync(`./${fileName}`, fileBuffer);
+
+        // Send the media using gss.sendMessage with the saved file
+        if (isDocument) {
+            await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${fileName}`), mimetype: `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+        } else {
+            await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${fileName}`), mimetype: `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, caption: 'Downloaded by gss botwa' }, { quoted: m });
+        }
+
+        // Delete the temporary file
+        fs.unlinkSync(`./${fileName}`);
+    } catch (error) {
+        if (error.message.includes('Media type or URL not found')) {
+            return m.reply('The Instagram media could not be found.');
+        } else {
+            console.error('Error while processing Instagram media:', error);
+            return m.reply(`An error occurred: ${error.message}`);
+        }
+    }
+}
+
 
 case 'igdl':
 case 'insta':
 case 'ig':
 case 'instagram':
-{
-    const apiKeys = ['Uc3LRsLE2d']; // Add your API keys here
-    const url = text;
-
-    if (!url) {
-        return m.reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
-    }
-
-    m.reply(mess.wait);
-
-    try {
-        const videoUrl = await downloadInstagramVideo(apiKeys, url);
-        const videoBufferReq = await fetch(videoUrl);
-        const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-        const videoBuffer = Buffer.from(videoArrayBuffer);
-
-        // Save the video to a temporary file
-        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
-        fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-        // Send the video using gss.sendMessage with the saved video
-        await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
-
-        // Delete the temporary file
-        fs.unlinkSync(`./${randomName}`);
-    } catch (error) {
-        if (error.message.includes('Video URL not found')) {
-            return m.reply('The Instagram video could not be found.');
-        } else {
-            console.error('Error while processing Instagram video:', error);
-            return m.reply(`An error occurred: ${error.message}`);
-        }
-    }
+    await downloadAndSendMedia(m, text, false);
     break;
-}
 
 
-//for insta video in document
 case 'igdldoc':
 case 'instadoc':
 case 'igdoc':
 case 'instagramdoc':
-{
-    const apiKeys = ['Uc3LRsLE2d']; // Add your API keys here
-    const url = text;
-
-    if (!url) {
-        return m.reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
-    }
-
-    m.reply(mess.wait);
-
-    try {
-        const videoUrl = await downloadInstagramVideo(apiKeys, url);
-        const videoBufferReq = await fetch(videoUrl);
-        const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-        const videoBuffer = Buffer.from(videoArrayBuffer);
-
-        // Save the video to a temporary file
-        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
-        fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-        // Send the video as a document using gss.sendMessage with the saved video
-        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', fileName: 'instagram_video.mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
-
-        // Delete the temporary file
-        fs.unlinkSync(`./${randomName}`);
-    } catch (error) {
-        if (error.message.includes('Video URL not found')) {
-            return m.reply('The Instagram video could not be found.');
-        } else {
-            console.error('Error while processing Instagram video:', error);
-            return m.reply(`An error occurred: ${error.message}`);
-        }
-    }
+    await downloadAndSendMedia(m, text, true);
     break;
-}
 
 
 
