@@ -2229,9 +2229,6 @@ case '𝐚𝐮𝐝𝐢𝐨': {
 
 
 
-const fetch = require('node-fetch');
-const fs = require('fs');
-
 async function instaDownload(url) {
     try {
         const apiUrl = `https://vihangayt.me/download/instagram?url=${encodeURIComponent(url)}`;
