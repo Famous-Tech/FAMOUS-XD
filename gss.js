@@ -2273,6 +2273,8 @@ async function downloadInstagramMedia(url) {
 }
 
 
+// ...
+
 async function downloadAndSendMedia(m, text, isDocument) {
     const url = text;
 
@@ -2285,25 +2287,20 @@ async function downloadAndSendMedia(m, text, isDocument) {
     try {
         const media = await downloadInstagramMedia(url);
 
-        if (media.type === 'image' || media.type === 'video') {
-            const response = await fetch(media.url);
-            const bufferArray = await response.arrayBuffer();
-            const fileBuffer = Buffer.from(bufferArray);
+        const response = await fetch(media.url);
+        const bufferArray = await response.arrayBuffer();
+        const fileBuffer = Buffer.from(bufferArray);
 
-            const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
+        const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
-            // Send the media using gss.sendMessage with the saved file
-            await gss.sendMessage(m.chat, { [isDocument ? 'document' : 'video']: fileBuffer, mimetype: isDocument ? `application/octet-stream` : `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+        // Send the media using gss.sendMessage with the saved file
+        if (isDocument) {
+            await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `application/octet-stream`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else {
-            // If it's a document, send as a document
-            if (isDocument) {
-                const response = await fetch(media.url);
-                const bufferArray = await response.arrayBuffer();
-                const fileBuffer = Buffer.from(bufferArray);
-
-                const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
-
-                await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `application/octet-stream`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            if (media.type === 'image') {
+                await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            } else if (media.type === 'video') {
+                await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
             } else {
                 throw new Error('Unsupported media type');
             }
@@ -2314,7 +2311,17 @@ async function downloadAndSendMedia(m, text, isDocument) {
     }
 }
 
+// ...
 
+// Handle Instagram media download
+case 'igdl':
+case 'insta':
+case 'ig':
+case 'instagram':
+    await downloadAndSendMedia(m, text, false);
+    break;
+
+// Handle Instagram media download as document
 case 'igdldoc':
 case 'instadoc':
 case 'igdoc':
