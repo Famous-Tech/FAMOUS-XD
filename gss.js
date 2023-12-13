@@ -2272,6 +2272,7 @@ async function downloadInstagramMedia(url) {
     }
 }
 
+
 async function downloadAndSendMedia(m, text, isDocument) {
     const url = text;
 
@@ -2284,24 +2285,15 @@ async function downloadAndSendMedia(m, text, isDocument) {
     try {
         const media = await downloadInstagramMedia(url);
 
-        if (media.type === 'image') {
+        if (media.type === 'image' || media.type === 'video') {
             const response = await fetch(media.url);
             const bufferArray = await response.arrayBuffer();
             const fileBuffer = Buffer.from(bufferArray);
 
-            const fileName = `instagram_media.jpg`;
+            const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
-            // Send the image using gss.sendMessage with the saved file
-            await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-        } else if (media.type === 'video') {
-            const response = await fetch(media.url);
-            const bufferArray = await response.arrayBuffer();
-            const fileBuffer = Buffer.from(bufferArray);
-
-            const fileName = `instagram_media.mp4`;
-
-            // Send the video using gss.sendMessage with the saved file
-            await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            // Send the media using gss.sendMessage with the saved file
+            await gss.sendMessage(m.chat, { [isDocument ? 'document' : 'video']: fileBuffer, mimetype: isDocument ? `application/octet-stream` : `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else {
             // If it's a document, send as a document
             if (isDocument) {
@@ -2311,7 +2303,7 @@ async function downloadAndSendMedia(m, text, isDocument) {
 
                 const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
-                await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+                await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `application/octet-stream`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
             } else {
                 throw new Error('Unsupported media type');
             }
@@ -2323,19 +2315,13 @@ async function downloadAndSendMedia(m, text, isDocument) {
 }
 
 
-case 'igdl':
-case 'insta':
-case 'ig':
-case 'instagram':
-    await downloadAndSendMedia(m, text, false);
-    break;
-
 case 'igdldoc':
 case 'instadoc':
 case 'igdoc':
 case 'instagramdoc':
     await downloadAndSendMedia(m, text, true);
     break;
+
 
 
 
@@ -2543,157 +2529,7 @@ case 'qc':
     break;
 
 
-async function downloadApk(apiKey, packageName, outputPath) {
-  try {
-    const apiUrl = `https://api.xfarr.com/api/download/apk?apikey=${encodeURIComponent(apiKey)}&package=${encodeURIComponent(packageName)}`;
-    const response = await fetch(apiUrl);
 
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(`API Error (${response.status}): ${errorMessage}`);
-    }
-
-    const result = await response.json();
-
-    if (result && result.status === 200 && result.result && result.result.file && result.result.file.path) {
-      const apkUrl = result.result.file.path;
-
-function formatSizze(sizeInBytes) {
-  const kilobytes = sizeInBytes / 1024;
-  const megabytes = kilobytes / 1024;
-  const gigabytes = megabytes / 1024;
-
-  if (gigabytes >= 1) {
-    return `${gigabytes.toFixed(2)} GB`;
-  } else if (megabytes >= 1) {
-    return `${megabytes.toFixed(2)} MB`;
-  } else {
-    return `${kilobytes.toFixed(2)} KB`;
-  }
-}
-
-const appDetails = {
-  name: result.result.name,
-  icon: result.result.icon,
-  modified: result.result.modified,
-  developer: {
-    name: result.result.developer.name,
-  },
-  size: result.result.size,
-  filePath: apkUrl,
-  vername: result.result.file.vername,
-};
-
-const formattedSizze = formatSizze(appDetails.size);
-
-const appInformation = `
-  *App Information*
-  - *Name:* ${appDetails.name} 
-  - *Size:* ${formattedSizze}
-  - *Version:* ${appDetails.vername}
-  - *Last Update:* ${appDetails.modified}
-  - *Developer:* ${appDetails.developer.name} 
-`;
-
-
-     const apkResponse = await fetch(apkUrl);
-      const apkBuffer = Buffer.from(await apkResponse.arrayBuffer());
-
-      // Save the APK
-      fs.writeFileSync(outputPath, apkBuffer, 'binary');
-
-      gss.sendMessage(m.chat, {
-        image: {
-          url: appDetails.icon,
-        },
-        caption: appInformation,
-      }, {
-        quoted: m,
-      });
-      
-
-      console.log(`APK downloaded successfully and saved to: ${outputPath}`);
-
-      return outputPath;
-    } else {
-      throw new Error('Invalid API response or APK link not found');
-    }
-  } catch (error) {
-    console.error('Error downloading APK:', error.message);
-    throw error;
-  }
-}
-
-
-
-async function getAppPackageInfo(appName) {
-  try {
-    const searchUrl = `https://play.google.com/store/search?q=${encodeURIComponent(appName)}&c=apps`;
-    console.log('Search URL:', searchUrl);
-
-    // Make HTTP request
-    const response = await axios.get(searchUrl);
-    console.log('Response Status:', response.status);
-
-    // Load HTML content into Cheerio
-    const $ = cheerio.load(response.data);
-
-    // Extract the first package name from the search result
-    const firstPackageElement = $('[data-item-id]').first();
-
-    // Extract only the package name part using a regular expression
-    const packageNameMatch = firstPackageElement.attr('data-item-id').match(/"([^"]+)"/);
-    const packageName = packageNameMatch ? packageNameMatch[1] : null;
-
-    console.log('Package Name:', packageName);
-
-
-    return { packageNames: packageName ? [packageName] : []};
-  } catch (error) {
-    console.error('Error getting app package information:', error.message);
-    throw error;
-  }
-}
-
-
-case 'apk2': case 'app2': case 'apkdl2':
-  
-const apiKeyss = ['8sXSeFyb7T']; // Replace 'your_api_key' with your actual API key
-
-if (!text) {
-  console.log('Please provide the app name.');
-} else {
-  try {
-    const appInfo = await getAppPackageInfo(text);
-
-    if (appInfo.packageNames && appInfo.packageNames.length > 0) {
-      const packageName = appInfo.packageNames[0];
-
-      const outputPath = 'downloaded_app.apk';
-      await downloadApk(apiKeyss[0], packageName, outputPath);
-
-      
-      await gss.sendMessage(m.chat, {
-        document: fs.readFileSync(outputPath),
-        mimetype: 'application/vnd.android.package-archive',
-        fileName: `${text}.apk`,
-        caption: 'Downloaded by gss botwa'
-      }, { quoted: m });
-
-      await fs.promises.unlink(outputPath);
-    } else {
-      console.log(`Could not find package names for ${text}.`);
-    }
-  } catch (error) {
-    if (error.message.includes('API key not found')) {
-      console.log('API key not found. Please check your API key and register if necessary.');
-    } else {
-      console.error('Error while processing APK download:', error);
-      console.log(`An error occurred: ${error.message}`);
-    }
-  }
-}
-break;
 
 case 'apk': case 'app': case 'apkdl': {
   if (!text) throw `I need an apk name for download`;
