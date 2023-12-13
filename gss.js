@@ -1059,9 +1059,9 @@ case 'akinatorstop':
 case 'tagall': case 'all':{
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
 if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-let teks = `乂  *ᴀᴛᴛᴇɴᴛɪᴏɴ ᴇᴠᴇʀʏᴏɴᴇ* 乂 
+let teks = `乂 *ᴀᴛᴛᴇɴᴛɪᴏɴ ᴇᴠᴇʀʏᴏɴᴇ* 乂 
 
-*Message:* ```${args.join(" ") ? args.join(" ") : 'no message'}```\n\n`
+*Message:* ${args.join(" ") ? args.join(" ") : 'no message'}\n\n`
 for (let mem of participants) {
 teks += `✪ @${mem.id.split('@')[0]}\n`
 }
