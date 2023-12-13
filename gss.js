@@ -2229,6 +2229,9 @@ case '𝐚𝐮𝐝𝐢𝐨': {
 
 
 
+const fetch = require('node-fetch');
+const fs = require('fs');
+
 async function instaDownload(url) {
     try {
         const apiUrl = `https://vihangayt.me/download/instagram?url=${encodeURIComponent(url)}`;
@@ -2283,35 +2286,18 @@ async function downloadAndSendMedia(m, text, isDocument) {
     try {
         const media = await downloadInstagramMedia(url);
 
-        let fileBuffer;
-        let fileName;
+        if (media.type === 'image' || media.type === 'video') {
+            const fileBuffer = await fetch(media.url).then(response => response.buffer());
+            const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
-        if (isDocument) {
-            fileBuffer = await fetch(media.url).then(response => response.buffer());
-            fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
+            // Send the media using gss.sendMessage with the saved file
+            await gss.sendMessage(m.chat, { [isDocument ? 'document' : 'video']: fileBuffer, mimetype: `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else {
-            fileBuffer = await fetch(media.url).then(response => response.buffer());
-            fileName = `temp_${Math.floor(Math.random() * 10000)}.${media.type === 'image' ? 'jpg' : 'mp4'}`;
+            throw new Error('Unsupported media type');
         }
-
-        fs.writeFileSync(`./${fileName}`, fileBuffer);
-
-        // Send the media using gss.sendMessage with the saved file
-        if (isDocument) {
-            await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${fileName}`), mimetype: `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-        } else {
-            await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${fileName}`), mimetype: `video/${media.type === 'image' ? 'jpeg' : 'mp4'}`, caption: 'Downloaded by gss botwa' }, { quoted: m });
-        }
-
-        // Delete the temporary file
-        fs.unlinkSync(`./${fileName}`);
     } catch (error) {
-        if (error.message.includes('Media type or URL not found')) {
-            return m.reply('The Instagram media could not be found.');
-        } else {
-            console.error('Error while processing Instagram media:', error);
-            return m.reply(`An error occurred: ${error.message}`);
-        }
+        console.error('Error while processing Instagram media:', error);
+        return m.reply(`An error occurred: ${error.message}`);
     }
 }
 
@@ -2323,13 +2309,14 @@ case 'instagram':
     await downloadAndSendMedia(m, text, false);
     break;
 
-
+// Handle Instagram media download as document
 case 'igdldoc':
 case 'instadoc':
 case 'igdoc':
 case 'instagramdoc':
     await downloadAndSendMedia(m, text, true);
     break;
+
 
 
 
