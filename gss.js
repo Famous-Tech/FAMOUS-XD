@@ -337,7 +337,7 @@ const subMenus = {
   '5': 'Sub menu for jka'
 };
 
-isCommand({ on: "text" }, async (m, chat) => {
+command({ on: "text" }, async (m, chat) => {
   if (m.text && !m.key.fromMe) {
     const lowerText = m.text.toLowerCase();
 
