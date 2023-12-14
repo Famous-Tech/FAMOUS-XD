@@ -539,7 +539,7 @@ setInterval(setBio, 60000);
      * @param {*} options 
      * @returns 
      */
-gss.cMod = (jid, copy, text = '', sender = gßs.user.id, options = {}) => {
+gss.cMod = (jid, copy, text = '', sender = gss.user.id, options = {}) => {
 //let copy = message.toJSON()
 let mtype = Object.keys(copy.message)[0]
 let isEphemeral = mtype === 'ephemeralMessage'
