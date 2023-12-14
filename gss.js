@@ -343,7 +343,9 @@ try {
     const response = await axios.get(apiUrl);
     const data = response.data;
 
-
+if (m.text && !m.key.fromMe) {
+  const lowerText = m.text.toLowerCase();
+  
     if (data.status === true && data.data) {
         if (m.text.toLowerCase() === '.fmmod') {
             // Send the list of FMMods with numbers and stylish formatting
