@@ -336,7 +336,6 @@ if (m.text && !m.key.fromMe) {
 }   */
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
-const conversationState = {};
 
 try {
     const response = await axios.get(apiUrl);
@@ -351,32 +350,36 @@ try {
             const pollMessage = await gss.sendPoll(m.chat, 'Select an FMMod to download:', pollOptions, { quoted: m });
 
             // Save poll details in the conversation state
-            conversationState[m.sender] = { pollMessageKey: pollMessage.key, fmmodData: data.data };
-        } else if (conversationState[m.sender] && m.pollDetail && /^\d+$/.test(m.pollDetail.option)) {
-            const selectedNumber = parseInt(m.pollDetail.option);
-            const { fmmodData } = conversationState[m.sender];
-            const fmmodNames = Object.keys(fmmodData);
+            const conversationState = { pollMessageKey: pollMessage.key, fmmodData: data.data };
 
-            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                const fmmodName = fmmodNames[selectedNumber - 1];
-                const fmmodDetails = fmmodData[fmmodName].description;
+            // Wait for user response
+            const response = await gss.waitForMessage(m.chat, { key: pollMessage.key });
 
-                // Send APK file with details
-                const apkBufferReq = await fetch(fmmodData[fmmodName].link);
-                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                const apkBuffer = Buffer.from(apkArrayBuffer);
+            if (response && response.text && /^\d+$/.test(response.text)) {
+                const selectedNumber = parseInt(response.text);
+                const { fmmodData } = conversationState;
+                const fmmodNames = Object.keys(fmmodData);
 
-                await gss.sendMessage(m.chat, {
-                    document: apkBuffer,
-                    mimetype: 'application/vnd.android.package-archive',
-                    fileName: `${fmmodName}.apk`,
-                    caption: `Details for ${fmmodName} - ${fmmodDetails}`
-                });
+                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                    const fmmodName = fmmodNames[selectedNumber - 1];
+                    const fmmodDetails = fmmodData[fmmodName].description;
 
-                // Clear the conversation state after sending the APK
-                delete conversationState[m.sender];
+                    // Send APK file with details
+                    const apkBufferReq = await fetch(fmmodData[fmmodName].link);
+                    const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+                    const apkBuffer = Buffer.from(apkArrayBuffer);
+
+                    await gss.sendMessage(m.chat, {
+                        document: apkBuffer,
+                        mimetype: 'application/vnd.android.package-archive',
+                        fileName: `${fmmodName}.apk`,
+                        caption: `Details for ${fmmodName} - ${fmmodDetails}`
+                    });
+                } else {
+                    await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
+                }
             } else {
-                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
+                await m.reply('Invalid response. Please select an FMMod by voting in the poll.');
             }
         }
     }
