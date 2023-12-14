@@ -383,36 +383,51 @@ try {
 }
 
 
-// Assuming m.text contains the user's message, e.g., ".ytvdownload https://youtu.be/5C8yvJUVB-0"
-const commandRegex = /^\.ytv\s+(https:\/\/youtu\.be\/[a-zA-Z0-9_-]+)$/i;
-const match = m.text.match(commandRegex);
+const ytvApiUrl = 'https://vihangayt.me/download/ytmp4?url=https://youtu.be/5C8yvJUVB-0'; // Replace with the actual YouTube URL
 
-if (match) {
-    const youtubeUrl = match[1];
-    const ytvApiUrl = `https://vihangayt.me/download/ytmp4?url=${encodeURIComponent(youtubeUrl)}`;
+try {
+    const response = await axios.get(ytvApiUrl);
+    const data = response.data;
 
-    try {
-        const response = await axios.get(ytvApiUrl);
-        const data = response.data;
+    if (data.status === true && data.data) {
+        if (m.text && !m.key.fromMe) {
+            const lowerText = m.text.toLowerCase();
 
-        if (data.status === true && data.data) {
-            let downloadOptions = 'Here are the download options:\n';
-            Object.keys(data.data).forEach((option, index) => {
-                downloadOptions += `${index + 1}. ${option}\n`;
-            });
+            if (lowerText === '.ytvdownload') {
+                let downloadOptions = `Here are the quality options for "${data.data.title}":\n\n`;
 
-            await m.reply(downloadOptions);
-        } else {
-            console.error('Invalid response from the API');
+                const qualityOptions = Object.keys(data.data)
+                    .filter(key => key.startsWith('vid_'))
+                    .map((key, index) => ({ index: index + 1, key: key.toUpperCase(), url: data.data[key] }));
+
+                qualityOptions.forEach(option => {
+                    downloadOptions += `${option.index}. ${option.key}\n`;
+                });
+
+                await m.reply(downloadOptions);
+            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes(`Here are the quality options for "${data.data.title}"`)) {
+                const selectedNumber = parseInt(lowerText);
+
+                const selectedOption = qualityOptions.find(option => option.index === selectedNumber);
+
+                if (selectedOption) {
+                    await gss.sendMessage(m.chat, {
+                        text: `Downloading ${selectedOption.key} - ${data.data.title}`,
+                        url: selectedOption.url
+                    });
+                } else {
+                    
+                }
+            }
         }
-    } catch (error) {
-        console.error('Error fetching data from the API:', error.message);
-        await m.reply('Error fetching data. Please try again later.');
+    } else {
+        console.error('Invalid response from the API');
     }
-} else {
-    // Handle cases where the command format is incorrect
-    await m.reply('Invalid command format. Please use ".ytvdownload <YouTube URL>".');
+} catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+    await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 
