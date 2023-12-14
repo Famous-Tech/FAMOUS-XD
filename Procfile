@@ -1,1 +1,1 @@
-worker: node . -- db 'mongodb+srv://fs6ykicu1l:wSgj3ITMZRckI2d1@cluster0.55amjwn.mongodb.net/?retryWrites=true&w=majority'
+worker: node . -- db 'mongodb://uwrr2obvrb4kbwnrvimy:rbgieh8nfk7EylXCh2D@byg4ii8uzy5rro8bcdfu-mongodb.services.clever-cloud.com:2008/byg4ii8uzy5rro8bcdfu'
