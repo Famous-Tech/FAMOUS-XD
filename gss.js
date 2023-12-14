@@ -327,8 +327,6 @@ const reactionMessage = {
   `);
 }
 
-const mainMenuMessage = 'Select a menu option:\n1. Allmenu\n2. Groupmenu\n3. Downloadmenu\n4. Searchmenu\n5. Funmenu\n6. Toolmenu\n7. Convertmenu\n8. aimenu\n9. Mainmenu\n10. Ownermenu';
-
 const subMenus = {
   'allmenu': 'Submenu for Allmenu',
   'groupmenu': 'Submenu for Groupmenu',
