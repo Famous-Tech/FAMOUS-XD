@@ -335,99 +335,39 @@ if (m.text && !m.key.fromMe) {
   }
 }   */
 
-const axios = require('axios');
+
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
-// Dictionary to store conversation state
-const conversationState = {};
+try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
 
-// Function to send the list of FMMods as a poll
-async function sendFMModPoll(m) {
-    try {
-        const response = await axios.get(apiUrl);
-        const data = response.data;
-
-        if (data.status === true && data.data) {
+    if (data.status === true && data.data) {
+        if (m.text.toLowerCase() === 'fmmod') {
+            // Send the list of FMMods as a poll
             const fmmodOptions = Object.keys(data.data);
+            await gss.sendPoll(m.chat, "Choose an FMMod:", fmmodOptions);
+        } else if (/^\d+$/.test(m.text)) {
+            // Process the selected FMMod number
+            const selectedNumber = parseInt(m.text);
+            const fmmodNames = Object.keys(data.data);
 
-            if (fmmodOptions.length > 0) {
-                const pollOptions = fmmodOptions.map(option => ({ text: option }));
+            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                const fmmodName = fmmodNames[selectedNumber - 1];
+                const fmmodDetails = data.data[fmmodName].description;
 
-                if (pollOptions.length > 0) {
-                    const pollMessage = await gss.sendPoll(m.chat, "Select an FMMod", pollOptions, { quoted: m });
-
-                    // Store the poll ID and FMMod options in the conversation state
-                    conversationState[m.sender] = { pollId: pollMessage.pollMessage.id, fmmodOptions };
-                } else {
-                    await m.reply("No FMMod options available.");
-                }
+                // Send details or perform any other action based on the selected FMMod
+                await m.reply(`Details for ${fmmodName} - ${fmmodDetails}`);
             } else {
-                await m.reply("No FMMods found. Please try again later.");
-            }
-        } else {
-            await m.reply('Error in API response. Please try again later.');
-        }
-    } catch (error) {
-        console.error('Error fetching data from the API:', error.message);
-        await m.reply('Error fetching data. Please try again later.');
-    }
-}
-
-// Handle poll votes and send the corresponding FMMod
-gss.ev.on('messages.update', async chatUpdate => {
-    for (const { key, update } of chatUpdate) {
-        if (update.pollUpdates && key.fromMe) {
-            const pollCreation = await getMessage(key);
-            if (pollCreation) {
-                const pollUpdate = await getAggregateVotesInPollMessage({
-                    message: pollCreation,
-                    pollUpdates: update.pollUpdates,
-                });
-                const selectedOption = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
-
-                if (selectedOption !== undefined) {
-                    try {
-                        const { pollId, fmmodOptions } = conversationState[key.remoteJid];
-                        const selectedNumber = fmmodOptions.indexOf(selectedOption) + 1;
-
-                        // Delete the poll message immediately
-                        await gss.sendMessage(key.remoteJid, { delete: pollId });
-
-                        // Send the FMMod file with details
-                        const fmmodDetails = data.data[selectedOption].description;
-                        const apkBufferReq = await fetch(data.data[selectedOption].link);
-                        const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                        const apkBuffer = Buffer.from(apkArrayBuffer);
-
-                        await gss.sendMessage(key.remoteJid, {
-                            document: apkBuffer,
-                            mimetype: 'application/vnd.android.package-archive',
-                            fileName: `${selectedOption}.apk`,
-                            caption: `Details for ${selectedOption} - ${fmmodDetails}`
-                        });
-                    } catch (error) {
-                        console.error("Error sending FMMod:", error);
-                    }
-
-                    // Clear the conversation state after sending the FMMod
-                    delete conversationState[key.remoteJid];
-                }
+                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
             }
         }
     }
-});
-
-// Function to retrieve the original poll message
-async function getMessage(key) {
-    if (store) {
-        const msg = await store.loadMessage(key.remoteJid, key.id);
-        return msg?.message;
-    }
-    return null;
+} catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+    await m.reply('Error fetching data. Please try again later.');
 }
-
-
 
 
 
