@@ -397,6 +397,7 @@ try {
     } else if (lowerText.startsWith('.xnxx')) {
         const text = lowerText.replace('.xnxx', '').trim();
 
+        // Search API
         const searchApiUrl = xxapiUrl + '?query=' + encodeURIComponent(text);
         const searchResponse = await axios.get(searchApiUrl);
 
@@ -431,8 +432,9 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
 
                 if (number <= movies.length) {
                     const selectedMovie = movies[number - 1];
-                    const downloadApiUrlWithUrlParam = downloadApiUrl + '?url=' + encodeURIComponent(selectedMovie.url);
 
+                    // Download API
+                    const downloadApiUrlWithUrlParam = downloadApiUrl + '?url=' + encodeURIComponent(selectedMovie.url);
                     const downloadResponse = await axios.get(downloadApiUrlWithUrlParam);
 
                     console.log("Download API Response:", downloadResponse.data); // Log the download API response
@@ -464,7 +466,8 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
                         await gss.sendMessage(m.chat, buttonMessage, { quoted: m });
                         await gss.sendMessage(m.chat, { delete: menuMessageKey });
                     } else {
-                        await m.reply("Error!! Unable to fetch video information. Please try again later.");
+                        console.error("Error fetching video information. Download API response:", downloadResponse.data);
+                        await m.reply("Error!! Unable to fetch video information. Please try again later or perform a new search.");
                     }
 
                     delete conversationState[m.sender];
@@ -480,6 +483,7 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
         }
     }
 }
+
 
 
 
