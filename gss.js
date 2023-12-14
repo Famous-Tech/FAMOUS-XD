@@ -2784,16 +2784,19 @@ case 'buypremium':
             
             
             
-case 'fmmods': {
+case 'fmmods':
+case 'fmmod': {
     m.reply(mess.wait);
-    
+
     // Replace with your actual URL
     const apiUrl = 'https://vihangayt.me/download/fmmods';
 
     try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
+        const response = await axios.get(apiUrl);
+        const data = response.data;
 
+        if (m.text.toLowerCase() === 'fmmods') {
+            // Send the list of FMMods with numbers and stylish formatting
             let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
             Object.keys(data.data).forEach((fmmodName, index) => {
                 fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
@@ -2822,14 +2825,15 @@ case 'fmmods': {
                 await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
             }
         }
+    } catch (error) {
+        console.error('Error fetching data from the API:', error.message);
+        // Optionally, you can add logging or other handling for the error
+        await m.reply('Error fetching data. Please try again later.');
     }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    // Optionally, you can add logging or other handling for the error
-    await m.reply('Error fetching data. Please try again later.');
-}
+
     break;
 }
+
 
 
 
