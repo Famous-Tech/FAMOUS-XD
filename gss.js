@@ -1,5 +1,7 @@
 require("dotenv").config();  
 require('./config')
+const { cmd } = require('../gss');
+
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
 const more = String.fromCharCode(8206)
