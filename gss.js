@@ -345,7 +345,7 @@ try {
     // Send the list of FMMods as options in the poll
     const fmmodOptions = Object.keys(data.data);
     await gss.sendPoll(m.chat, "Select an FMMod", fmmodOptions, { quoted: m });
-}
+
         } else if (m.quoted && m.quoted.pollMessage) {
             const votedOptionIndex = m.quoted.pollMessage.votes[0]?.option;
             const fmmodName = Object.keys(data.data)[votedOptionIndex];
