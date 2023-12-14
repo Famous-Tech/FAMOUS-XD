@@ -337,38 +337,52 @@ if (m.text && !m.key.fromMe) {
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
-try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
+// Function to send the list of FMMods as a poll
+async function sendFMModPoll(m) {
+    try {
+        const response = await axios.get(apiUrl);
+        const data = response.data;
 
-    if (m.text.toLowerCase() === 'fmmod') {
-    // Send the list of FMMods as options in the poll
-    const fmmodOptions = Object.keys(data.data);
-    await gss.sendPoll(m.chat, "Select an FMMod", fmmodOptions, { quoted: m });
+        if (data.status === true && data.data) {
+            const fmmodOptions = Object.keys(data.data);
+            const pollOptions = fmmodOptions.map(option => ({ text: option }));
+            const pollMessage = await gss.sendMessage(m.chat, { poll: { question: "Select an FMMod", options: pollOptions } });
 
-        } else if (m.quoted && m.quoted.pollMessage) {
-            const votedOptionIndex = m.quoted.pollMessage.votes[0]?.option;
-            const fmmodName = Object.keys(data.data)[votedOptionIndex];
-            const fmmodDetails = data.data[fmmodName]?.description;
-
-            // Send APK file with details
-            const apkBufferReq = await fetch(data.data[fmmodName].link);
-            const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-            const apkBuffer = Buffer.from(apkArrayBuffer);
-
-            await gss.sendMessage(m.chat, {
-                document: apkBuffer,
-                mimetype: 'application/vnd.android.package-archive',
-                fileName: `${fmmodName}.apk`,
-                caption: `Details for ${fmmodName} - ${fmmodDetails}`
-            });
+            // Store the poll ID in the conversation state
+            conversationState[m.sender] = { pollId: pollMessage.pollMessage.id, fmmodOptions };
+        } else {
+            await m.reply('Error in API response. Please try again later.');
         }
+    } catch (error) {
+        console.error('Error fetching data from the API:', error.message);
+        await m.reply('Error fetching data. Please try again later.');
     }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    // Optionally, you can add logging or other handling for the error
-    await m.reply('Error fetching data. Please try again later.');
 }
+
+// Check if the received message is "fmmod" to initiate the poll
+const fmmodRegex = /^fmmod$/i;
+
+if (fmmodRegex.test(m.text)) {
+    sendFMModPoll(m);
+} else if (conversationState[m.sender] && conversationState[m.sender].pollId === m.pollMessage.id) {
+    // Process the poll response and send the corresponding FMMod
+    const selectedOption = m.pollMessage?.options.findIndex(opt => opt.text === m.text);
+
+    if (selectedOption !== -1) {
+        const selectedFMMod = conversationState[m.sender].fmmodOptions[selectedOption];
+
+        // Add code to send the corresponding FMMod (similar to the previous implementation)
+        // ...
+
+    } else {
+        // Handle invalid option
+        await m.reply("Invalid option. Please select a valid option from the poll.");
+    }
+
+    // Clear the conversation state after processing the poll response
+    delete conversationState[m.sender];
+}
+
 
 
 
