@@ -352,8 +352,8 @@ try {
 
             // Save poll details in the conversation state
             conversationState[m.sender] = { pollMessageKey: pollMessage.key, fmmodData: data.data };
-        } else if (/^\d+$/.test(m.text) && conversationState[m.sender]) {
-            const selectedNumber = parseInt(m.text);
+        } else if (conversationState[m.sender] && m.pollDetail && /^\d+$/.test(m.pollDetail.option)) {
+            const selectedNumber = parseInt(m.pollDetail.option);
             const { fmmodData } = conversationState[m.sender];
             const fmmodNames = Object.keys(fmmodData);
 
@@ -385,7 +385,6 @@ try {
     }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
-    // Optionally, you can add logging or other handling for the error
     await m.reply('Error fetching data. Please try again later.');
 }
 
