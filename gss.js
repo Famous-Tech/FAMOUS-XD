@@ -330,16 +330,16 @@ const reactionMessage = {
 const mainMenuMessage = 'Select a menu option:\n1. Allmenu\n2. Groupmenu\n3. Downloadmenu\n4. Searchmenu\n5. Funmenu\n6. Toolmenu\n7. Convertmenu\n8. aimenu\n9. Mainmenu\n10. Ownermenu';
 
 const subMenus = {
-  'Allmenu': 'Submenu for Allmenu',
-  'Groupmenu': 'Submenu for Groupmenu',
-  'Downloadmenu': 'Submenu for Downloadmenu',
-  'Searchmenu': 'Submenu for Searchmenu',
-  'Funmenu': 'Submenu for Funmenu',
-  'Toolmenu': 'Submenu for Toolmenu',
-  'Convertmenu': 'Submenu for Convertmenu',
+  'allmenu': 'Submenu for Allmenu',
+  'groupmenu': 'Submenu for Groupmenu',
+  'downloadmenu': 'Submenu for Downloadmenu',
+  'searchmenu': 'Submenu for Searchmenu',
+  'funmenu': 'Submenu for Funmenu',
+  'toolmenu': 'Submenu for Toolmenu',
+  'convertmenu': 'Submenu for Convertmenu',
   'aimenu': 'Submenu for aimenu',
-  'Mainmenu': 'Submenu for Mainmenu',
-  'Ownermenu': 'Submenu for Ownermenu'
+  'mainmenu': 'Submenu for Mainmenu',
+  'ownermenu': 'Submenu for Ownermenu'
 };
 
 if (m.text && !m.key.fromMe) {
@@ -349,7 +349,7 @@ if (m.text && !m.key.fromMe) {
 
         if (lowerText === 'menu' || lowerText === 'help' || lowerText === 'list' || lowerText === 'listmenu') {
             console.log('Sending menu poll...'); // Debugging line
-            gss.sendPoll(m.chat, "List Menu", ['Allmenu', 'Groupmenu', 'Downloadmenu', 'Searchmenu', 'Funmenu', 'Toolmenu', 'Convertmenu', 'aimenu', 'Mainmenu', 'Ownermenu'], { quoted: m });
+            gss.sendPoll(m.chat, "List Menu", ['allmenu', 'groupmenu', 'downloadmenu', 'searchmenu', 'funmenu', 'toolmenu', 'convertmenu', 'aimenu', 'mainmenu', 'ownermenu'], { quoted: m });
         } else if (subMenus[lowerText]) {
             console.log('Sending submenu response...'); // Debugging line
             m.reply(subMenus[lowerText]);
