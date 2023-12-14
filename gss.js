@@ -581,7 +581,7 @@ if (isAntiViewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
 		if (!isNumber(setting.status)) setting.status = 0
 if (!('autobio' in setting)) setting.autobio = false
 	    } else global.db.data.settings[botNumber] = {
-	    anticall: true,
+	    anticall: false,
 		status: 0,
 		autobio: true
 	    }
