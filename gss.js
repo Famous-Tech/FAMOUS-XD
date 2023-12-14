@@ -441,35 +441,34 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
 
                     const videoUrl = downloadResponse.data.url;
 
-                    if (videoUrl) {
-                        const caption = "powered by gss botwa";
+if (videoUrl) {
+    const caption = "powered by gss botwa";
 
-                        const buttonMessage = {
-                            video: { url: videoUrl },
-                            mimetype: 'video/mp4',
-                            fileName: 'downloadedVideo.mp4',
-                            caption: caption,
-                            headerType: 4,
-                            contextInfo: {
-                                externalAdReply: {
-                                    title: caption,
-                                    body: m.pushName,
-                                    thumbnail: Buffer.from(videoUrl),
-                                    renderLargerThumbnail: false,
-                                    mediaType: 2,
-                                    mediaUrl: videoUrl,
-                                    sourceUrl: videoUrl
-                                }
-                            }
-                        };
+    const buttonMessage = {
+        video: { url: videoUrl },
+        mimetype: 'video/mp4',
+        fileName: 'downloadedVideo.mp4',
+        caption: caption,
+        headerType: 4,
+        contextInfo: {
+            externalAdReply: {
+                title: caption,
+                body: m.pushName,
+                thumbnail: Buffer.from(videoUrl),
+                renderLargerThumbnail: false,
+                mediaType: 2,
+                mediaUrl: videoUrl,
+                sourceUrl: videoUrl
+            }
+        }
+    };
 
-                        await gss.sendMessage(m.chat, buttonMessage, { quoted: m });
-                        await gss.sendMessage(m.chat, { delete: menuMessageKey });
-                    } else {
-                        console.error("Error fetching video information. Download API response:", downloadResponse.data);
-                        await m.reply("Error!! Unable to fetch video information. Please try again later or perform a new search.");
-                    }
-
+    await gss.sendMessage(m.chat, buttonMessage, { quoted: m });
+    await gss.sendMessage(m.chat, { delete: menuMessageKey });
+} else {
+    console.error("Error fetching video information. Download API response:", downloadResponse.data);
+    await m.reply("Error!! Unable to fetch video information. Please try again later or perform a new search.");
+}
                     delete conversationState[m.sender];
                 } else {
                     await m.reply("Invalid menu number. Please select a number from the menu.");
