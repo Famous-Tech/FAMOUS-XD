@@ -303,6 +303,7 @@ const reactionMessage = {
   `);
 }
 
+/*
 const menuMessage = 'Here is the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka';
 
 const subMenus = {
@@ -332,7 +333,7 @@ if (m.text && !m.key.fromMe) {
       }
     }
   }
-}
+}   */
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
