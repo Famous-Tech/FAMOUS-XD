@@ -2,9 +2,6 @@ require("dotenv").config();
 require('./config')
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
-const allMenu = require('./allmenu.js');
-const menuList = require('./menu.js');
-const menus = require('./menu.js');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
@@ -329,32 +326,6 @@ const reactionMessage = {
    ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```' }
   `);
 }
-
-
-
-const menuList = Object.keys(menus);
-
-if (m.text && !m.key.fromMe) {
-    const lowerText = m.text.toLowerCase();
-
-    if (['menu', 'help', 'list', 'listmenu'].includes(lowerText)) {
-        // Send poll with main menu list
-        gss.sendPoll(m.chat, "List Menu", menuList, { quoted: m });
-    } else if (lowerText === 'fullmenu' || lowerText === 'allmenu') {
-        // Send the content of all menus
-        const allMenusContent = Object.values(menus).flat().join('\n');
-        m.reply(allMenusContent);
-    } else if (menuList.includes(lowerText)) {
-        // Send the content of the selected menu based on menuList
-        const selectedMenu = menus[lowerText];
-        m.reply(selectedMenu.join('\n'));
-    } else {
-        // No reply for invalid options
-    }
-}
-
-
-
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
