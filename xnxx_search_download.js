@@ -1,4 +1,4 @@
-const { cmd } = require('../gss');
+const { cmd } = require('/gss');
 const axios = require('axios');
 
 const apiUrl = 'https://raganork-network.vercel.app/api/xvideos/search';
