@@ -391,7 +391,11 @@ const conversationState = {};
 
 try {
     const lowerText = m.text.toLowerCase(); // Assuming m.text is the incoming message text
-    if (lowerText.startsWith('.xnxx')) {
+
+    if (lowerText === '.xnxx') {
+        // Reply when only '.xnxx' is sent without additional text
+        await m.reply("Please provide a search term along with '.xnxx'.");
+    } else if (lowerText.startsWith('.xnxx')) {
         const text = lowerText.replace('.xnxx', '').trim(); // Extract search text
 
         const searchApiUrl = xxapiUrl + '?query=' + encodeURIComponent(text);
@@ -414,14 +418,18 @@ try {
     await m.reply("Error!! Unable to fetch movie information. Please try again later.");
 }
 
-    if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search results for")) {
-        const number = parseInt(m.text);
+// Handle quoted message and download logic
+if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search results for")) {
+    const number = parseInt(m.text);
 
-        if (!isNaN(number) && number >= 1) {
-            try {
-                const { movies, menuMessageKey } = conversationState[m.sender];
+    if (!isNaN(number) && number >= 1) {
+        try {
+            const conversationUserState = conversationState[m.sender];
 
-                if (movies && number <= movies.length) {
+            if (conversationUserState && conversationUserState.movies) {
+                const { movies, menuMessageKey } = conversationUserState;
+
+                if (number <= movies.length) {
                     const selectedMovie = movies[number - 1];
                     const downloadApiUrlWithUrlParam = downloadApiUrl + '?url=' + encodeURIComponent(selectedMovie.url);
 
@@ -447,7 +455,7 @@ try {
                                     renderLargerThumbnail: false,
                                     mediaType: 2,
                                     mediaUrl: videoUrl,
-                                    sourceUrl: videoUrl
+                                    sourceUrl: global.link
                                 }
                             }
                         };
@@ -466,12 +474,16 @@ try {
                 } else {
                     await m.reply("Invalid menu number. Please select a number from the menu.");
                 }
-            } catch (error) {
-                console.error("Error fetching video:", error);
-                await m.reply("Error!! Unable to fetch video information. Please try again later.");
+            } else {
+                await m.reply("Error fetching video information. Please try again later or perform a new search.");
             }
+        } catch (error) {
+            console.error("Error fetching video:", error);
+            await m.reply("Error!! Unable to fetch video information. Please try again later.");
         }
     }
+}
+
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
