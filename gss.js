@@ -337,43 +337,6 @@ if (m.text && !m.key.fromMe) {
 
 
 
-// Dictionary to store conversation state
-const conversationState = {};
-
-async function getMessage(key) {
-    if (store) {
-        const msg = await store.loadMessage(key.remoteJid, key.id);
-        return msg?.message;
-    }
-    return {
-        conversation: "Hai im gss botwa",
-    };
-}
-
-
-gss.ev.on('messages.update', async (chatUpdate) => {
-    for (const { key, update } of chatUpdate) {
-        if (update.pollUpdates && key.fromMe) {
-            const pollCreation = await getMessage(key);
-            if (pollCreation) {
-                const pollUpdate = await getAggregateVotesInPollMessage({
-                    message: pollCreation,
-                    pollUpdates: update.pollUpdates,
-                });
-                const selectedOptionIndex = pollUpdate.findIndex((option) => option.voters.length !== 0);
-
-                if (selectedOptionIndex !== -1) {
-                    const selectedOption = pollUpdate[selectedOptionIndex].name;
-                    const fmmodDetails = data.data[selectedOption].description;
-
-                    // Send details or perform any other action based on the selected FMMod
-                    await gss.sendMessage(key.remoteJid, `Details for ${selectedOption} - ${fmmodDetails}`);
-                }
-            }
-        }
-    }
-});
-
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
 try {
@@ -382,21 +345,32 @@ try {
 
     if (data.status === true && data.data) {
         if (m.text.toLowerCase() === 'fmmod') {
-            // Send the list of FMMods
+            // Send the list of FMMods with numbers
             let fmmodList = 'Here are the FMMods, sir:\n';
-            for (const fmmodName in data.data) {
-                fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
-            }
+            data.data.forEach((fmmod, index) => {
+                fmmodList += `${index + 1}. ${fmmod.name} - ${fmmod.description}\n`;
+            });
             await m.reply(fmmodList);
         } else if (/^\d+$/.test(m.text)) {
-            const selectedOption = parseInt(m.text);
-            const fmmodNames = Object.keys(data.data);
+            const selectedNumber = parseInt(m.text);
+            const fmmods = data.data;
 
-            if (selectedOption >= 1 && selectedOption <= fmmodNames.length) {
-                const selectedFmmod = fmmodNames[selectedOption - 1];
-                const fmmodDetails = data.data[selectedFmmod].description;
+            if (selectedNumber >= 1 && selectedNumber <= fmmods.length) {
+                const selectedFMMod = fmmods[selectedNumber - 1];
+                const fmmodName = selectedFMMod.name;
+                const fmmodDetails = selectedFMMod.description;
 
-                // Continue with the rest of your code
+                // Send APK file with details
+                const apkBufferReq = await fetch(selectedFMMod.link);
+                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+                const apkBuffer = Buffer.from(apkArrayBuffer);
+
+                await gss.sendMessage(m.chat, {
+                    document: apkBuffer,
+                    mimetype: 'application/vnd.android.package-archive',
+                    fileName: `${fmmodName}.apk`,
+                    caption: `Details for ${fmmodName} - ${fmmodDetails}`
+                });
             } else {
                 await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
             }
@@ -404,6 +378,7 @@ try {
     }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
+    // Optionally, you can add logging or other handling for the error
     await m.reply('Error fetching data. Please try again later.');
 }
 
