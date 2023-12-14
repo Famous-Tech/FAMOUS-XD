@@ -348,11 +348,10 @@ try {
 
         if (data.status === true && data.data) {
             if (lowerText === '.fmmod') {
-                let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
+                let fmmodList = 'Here is the FMMod list:\n';
                 Object.keys(data.data).forEach((fmmodName, index) => {
-                    fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
+                    fmmodList += `${index + 1}. ${fmmodName}\n`;
                 });
-                fmmodList += '╰────────────⦿';
                 await m.reply(fmmodList);
             } else if (m.quoted && /^\d+$/.test(lowerText)) {
                 const selectedNumber = parseInt(lowerText);
