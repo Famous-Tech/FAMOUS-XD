@@ -382,12 +382,18 @@ try {
     await m.reply('Error fetching data. Please try again later.');
 }
 
-/*
+
 
 const xxapiUrl = 'https://raganork-network.vercel.app/api/xvideos/search';
 const downloadApiUrl = 'https://raganork-network.vercel.app/api/xvideos/download';
 
+const conversationState = {};
+
 try {
+    const lowerText = m.text.toLowerCase(); // Assuming m.text is the incoming message text
+    if (lowerText.startsWith('.xnxx')) {
+        const text = lowerText.replace('.xnxx', '').trim(); // Extract search text
+
         const searchApiUrl = xxapiUrl + '?query=' + encodeURIComponent(text);
         const searchResponse = await axios.get(searchApiUrl);
 
@@ -396,18 +402,17 @@ try {
         if (movies.length > 0) {
             const movieResultsText = movies.slice(0, 10).map((movie, index) => `${index + 1}. Title: ${movie.title}\n⏰ Duration: ${movie.duration}\n`).join('\n');
 
-
             // Send the menu message and store the search result in the conversation state
             const menuMessage = await m.reply("Here are the search results for '" + text + "' 👇\n\n" + movieResultsText);
             conversationState[m.sender] = { menuMessageKey: menuMessage.key, movies };
-
         } else {
             await m.reply("No results found for '" + text + "'. Please try a different search term.");
         }
-    } catch (error) {
-        console.error("Error fetching movies:", error);
-        await m.reply("Error!! Unable to fetch movie information. Please try again later.");
     }
+} catch (error) {
+    console.error("Error fetching movies:", error);
+    await m.reply("Error!! Unable to fetch movie information. Please try again later.");
+}
 
     if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search results for")) {
         const number = parseInt(m.text);
@@ -468,7 +473,6 @@ try {
         }
     }
 
-*/
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
