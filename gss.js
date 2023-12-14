@@ -347,7 +347,7 @@ try {
         const lowerText = m.text.toLowerCase();
 
         if (data.status === true && data.data) {
-            if (lowerText === '.fmmod') {
+            if (lowerText === '.fmmod' && m.quoted && m.quoted.text && m.quoted.text.includes('Here is the FMMod list')) {
                 let fmmodList = 'Here is the FMMod list:\n';
                 Object.keys(data.data).forEach((fmmodName, index) => {
                     fmmodList += `${index + 1}. ${fmmodName}\n`;
@@ -357,7 +357,7 @@ try {
                 const selectedNumber = parseInt(lowerText);
                 const fmmodNames = Object.keys(data.data);
 
-                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length && m.quoted.text.includes('Here is the FMMod list')) {
                     const fmmodName = fmmodNames[selectedNumber - 1];
 
                     const apkBufferReq = await fetch(data.data[fmmodName].link);
