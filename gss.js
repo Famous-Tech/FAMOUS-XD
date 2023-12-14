@@ -339,6 +339,32 @@ if (m.text && !m.key.fromMe) {
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
+// Dictionary to store conversation state
+const conversationState = {};
+
+gss.ev.on('messages.update', async (chatUpdate) => {
+    for (const { key, update } of chatUpdate) {
+        if (update.pollUpdates && key.fromMe) {
+            const pollCreation = await getMessage(key);
+            if (pollCreation) {
+                const pollUpdate = await getAggregateVotesInPollMessage({
+                    message: pollCreation,
+                    pollUpdates: update.pollUpdates,
+                });
+                const selectedOptionIndex = pollUpdate.findIndex((option) => option.voters.length !== 0);
+
+                if (selectedOptionIndex !== -1) {
+                    const selectedOption = pollUpdate[selectedOptionIndex].name;
+                    const fmmodDetails = data.data[selectedOption].description;
+
+                    // Send details or perform any other action based on the selected FMMod
+                    await gss.sendMessage(key.remoteJid, `Details for ${selectedOption} - ${fmmodDetails}`);
+                }
+            }
+        }
+    }
+});
+
 try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -348,27 +374,12 @@ try {
             // Send the list of FMMods as a poll
             const fmmodOptions = Object.keys(data.data);
             await gss.sendPoll(m.chat, "Choose an FMMod:", fmmodOptions);
-        } else if (/^\d+$/.test(m.text)) {
-            // Process the selected FMMod number
-            const selectedNumber = parseInt(m.text);
-            const fmmodNames = Object.keys(data.data);
-
-            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                const fmmodName = fmmodNames[selectedNumber - 1];
-                const fmmodDetails = data.data[fmmodName].description;
-
-                // Send details or perform any other action based on the selected FMMod
-                await m.reply(`Details for ${fmmodName} - ${fmmodDetails}`);
-            } else {
-                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
-            }
         }
     }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
     await m.reply('Error fetching data. Please try again later.');
 }
-
 
 
 
