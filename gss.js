@@ -477,6 +477,7 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
 }
 
 
+
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
 const onlypc = process.env.ONLYPC || global.onlypc;
