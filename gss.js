@@ -344,7 +344,7 @@ try {
     const data = response.data;
 
     if (data.status === true && data.data) {
-        if (m.text.toLowerCase() === 'fmmod' && m.quoted) {
+        if (m.text.toLowerCase() === 'fmmod') {
             // Send the list of FMMods with numbers and stylish formatting
             let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
             Object.keys(data.data).forEach((fmmodName, index) => {
@@ -352,23 +352,23 @@ try {
             });
             fmmodList += '╰────────────⦿';
             await m.reply(fmmodList);
-        } else if (/^\d+$/.test(m.text) && m.quoted) {
+        } else if (m.quoted /^\d+$/.test(m.text)) {
             const selectedNumber = parseInt(m.text);
             const fmmodNames = Object.keys(data.data);
 
             if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                const selectedFmmod = fmmodNames[selectedNumber - 1];
+                const fmmodName = fmmodNames[selectedNumber - 1];
 
                 // Send APK file with details
-                const apkBufferReq = await fetch(data.data[selectedFmmod].link);
+                const apkBufferReq = await fetch(data.data[fmmodName].link);
                 const apkArrayBuffer = await apkBufferReq.arrayBuffer();
                 const apkBuffer = Buffer.from(apkArrayBuffer);
 
                 await gss.sendMessage(m.chat, {
                     document: apkBuffer,
                     mimetype: 'application/vnd.android.package-archive',
-                    fileName: `${selectedFmmod}.apk`,
-                    caption: `Details for ${selectedFmmod}`
+                    fileName: `${fmmodName}.apk`,
+                    caption: `Details for ${fmmodName}`
                 });
             } else {
                 await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
@@ -380,7 +380,6 @@ try {
     // Optionally, you can add logging or other handling for the error
     await m.reply('Error fetching data. Please try again later.');
 }
-
 
 
 
