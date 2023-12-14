@@ -382,6 +382,8 @@ try {
     await m.reply('Error fetching data. Please try again later.');
 }
 
+/*
+
 const xxapiUrl = 'https://raganork-network.vercel.app/api/xvideos/search';
 const downloadApiUrl = 'https://raganork-network.vercel.app/api/xvideos/download';
 
@@ -466,7 +468,7 @@ try {
         }
     }
 
-
+*/
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
