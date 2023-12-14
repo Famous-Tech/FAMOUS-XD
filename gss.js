@@ -529,28 +529,34 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details fo
 
     if (!isNaN(choice) && (choice === 1 || choice === 2)) {
         try {
-            const { videoTitle, thumbnailUrl, audioUrl, videoUrl, menuMessageKey } = conversationState[m.sender];
+            const conversationData = conversationState[m.sender];
 
-            // Customize the caption as needed
-            let caption;
+            if (conversationData) {
+                const { videoTitle, thumbnailUrl, audioUrl, videoUrl, menuMessageKey } = conversationData;
 
-            if (choice === 1) {
-                caption = `Audio Download - ${videoTitle}`;
-                // Add logic to handle audio download
-                // Example: Send audio as a reply
-                await gss.sendMessage(m.chat, { audio: audioUrl, quoted: m, mimetype: 'audio/mp4', caption: caption });
-            } else if (choice === 2) {
-                caption = `Video Download - ${videoTitle}`;
-                // Add logic to handle video download
-                // Example: Send video as a reply
-                await gss.sendMessage(m.chat, { video: { url: videoUrl }, quoted: m, mimetype: 'video/mp4', caption: caption });
+                // Customize the caption as needed
+                let caption;
+
+                if (choice === 1) {
+                    caption = `Audio Download - ${videoTitle}`;
+                    // Add logic to handle audio download
+                    // Example: Send audio as a reply
+                    await gss.sendMessage(m.chat, { audio: audioUrl, quoted: m, mimetype: 'audio/mp4', caption: caption });
+                } else if (choice === 2) {
+                    caption = `Video Download - ${videoTitle}`;
+                    // Add logic to handle video download
+                    // Example: Send video as a reply
+                    await gss.sendMessage(m.chat, { video: { url: videoUrl }, quoted: m, mimetype: 'video/mp4', caption: caption });
+                }
+
+                // Delete the menu message
+                await gss.sendMessage(m.chat, { delete: menuMessageKey });
+
+                // Clear the conversation state after sending the download
+                delete conversationState[m.sender];
+            } else {
+                await m.reply("Error!! Unable to retrieve conversation data. Please try again later.");
             }
-
-            // Delete the menu message
-            await gss.sendMessage(m.chat, { delete: menuMessageKey });
-
-            // Clear the conversation state after sending the download
-            delete conversationState[m.sender];
         } catch (error) {
             console.error("Error handling user's choice:", error);
             await m.reply("Error!! Unable to handle your choice. Please try again later.");
