@@ -390,13 +390,12 @@ const downloadApiUrl = 'https://raganork-network.vercel.app/api/xvideos/download
 const conversationState = {};
 
 try {
-    const lowerText = m.text.toLowerCase(); // Assuming m.text is the incoming message text
+    const lowerText = m.text.toLowerCase();
 
     if (lowerText === '.xnxx') {
-        // Reply when only '.xnxx' is sent without additional text
         await m.reply("Please provide a search term along with '.xnxx'.");
     } else if (lowerText.startsWith('.xnxx')) {
-        const text = lowerText.replace('.xnxx', '').trim(); // Extract search text
+        const text = lowerText.replace('.xnxx', '').trim();
 
         const searchApiUrl = xxapiUrl + '?query=' + encodeURIComponent(text);
         const searchResponse = await axios.get(searchApiUrl);
@@ -406,7 +405,6 @@ try {
         if (movies.length > 0) {
             const movieResultsText = movies.slice(0, 10).map((movie, index) => `${index + 1}. Title: ${movie.title}\n⏰ Duration: ${movie.duration}\n`).join('\n');
 
-            // Send the menu message and store the search result in the conversation state
             const menuMessage = await m.reply("Here are the search results for '" + text + "' 👇\n\n" + movieResultsText);
             conversationState[m.sender] = { menuMessageKey: menuMessage.key, movies };
         } else {
@@ -437,11 +435,9 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
                     const videoUrl = downloadResponse.data.url;
 
                     if (videoUrl) {
-                        // Customize the caption as needed
                         const caption = "powered by gss botwa";
 
-                        // Send the video as a reply
-                        let buttonMessage = {
+                        const buttonMessage = {
                             video: { url: videoUrl },
                             mimetype: 'video/mp4',
                             fileName: 'downloadedVideo.mp4',
@@ -451,25 +447,21 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
                                 externalAdReply: {
                                     title: caption,
                                     body: m.pushName,
-                                    thumbnail: Buffer.from(videoUrl), // Add your thumbnail buffer here if available
+                                    thumbnail: Buffer.from(videoUrl),
                                     renderLargerThumbnail: false,
                                     mediaType: 2,
                                     mediaUrl: videoUrl,
-                                    sourceUrl: global.link
+                                    sourceUrl: videoUrl
                                 }
                             }
                         };
 
-                        // Send the message as a reply to the original message
                         await gss.sendMessage(m.chat, buttonMessage, { quoted: m });
-
-                        // Delete the menu message
                         await gss.sendMessage(m.chat, { delete: menuMessageKey });
                     } else {
                         await m.reply("Error!! Unable to fetch video information. Please try again later.");
                     }
 
-                    // Clear the conversation state after sending the video
                     delete conversationState[m.sender];
                 } else {
                     await m.reply("Invalid menu number. Please select a number from the menu.");
@@ -483,7 +475,6 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
         }
     }
 }
-
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
