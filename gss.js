@@ -420,64 +420,65 @@ try {
 }
 
 // Handle quoted message and download logic
-    if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search results for")) {
-        const number = parseInt(m.text);
+if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search results for")) {
+    const number = parseInt(m.text);
 
-        if (!isNaN(number) && number >= 1) {
-            try {
-                const { movies, menuMessageKey } = conversationState[m.sender];
+    if (!isNaN(number) && number >= 1) {
+        try {
+            const conversationData = conversationState[m.sender];
 
-                if (movies && number <= movies.length) {
-                    const selectedMovie = movies[number - 1];
-                    const downloadApiUrlWithUrlParam = downloadApiUrl + '?url=' + encodeURIComponent(selectedMovie.url);
+            if (conversationData && conversationData.movies) {
+                const { movies, menuMessageKey } = conversationData;
+                const selectedMovie = movies[number - 1];
+                const downloadApiUrlWithUrlParam = downloadApiUrl + '?url=' + encodeURIComponent(selectedMovie.url);
 
-                    const downloadResponse = await axios.get(downloadApiUrlWithUrlParam);
-                    const videoUrl = downloadResponse.data.url;
+                const downloadResponse = await axios.get(downloadApiUrlWithUrlParam);
+                const videoUrl = downloadResponse.data.url;
 
-                    if (videoUrl) {
-                        // Customize the caption as needed
-                        const caption = "powered by gss botwa";
+                if (videoUrl) {
+                    // Customize the caption as needed
+                    const caption = "powered by gss botwa";
 
-                        // Send the video as a reply
-                        let buttonMessage = {
-                            video: { url: videoUrl },
-                            mimetype: 'video/mp4',
-                            fileName: 'downloadedVideo.mp4',
-                            caption: caption,
-                            headerType: 4,
-                            contextInfo: {
-                                externalAdReply: {
-                                    title: caption,
-                                    body: m.pushName,
-                                    thumbnail: Buffer.from(videoUrl), // Add your thumbnail buffer here if available
-                                    renderLargerThumbnail: false,
-                                    mediaType: 2,
-                                    mediaUrl: videoUrl,
-                                    sourceUrl: videoUrl
-                                }
+                    // Send the video as a reply
+                    let buttonMessage = {
+                        video: { url: videoUrl },
+                        mimetype: 'video/mp4',
+                        fileName: 'downloadedVideo.mp4',
+                        caption: caption,
+                        headerType: 4,
+                        contextInfo: {
+                            externalAdReply: {
+                                title: caption,
+                                body: m.pushName,
+                                thumbnail: Buffer.from(videoUrl), // Add your thumbnail buffer here if available
+                                renderLargerThumbnail: false,
+                                mediaType: 2,
+                                mediaUrl: videoUrl,
+                                sourceUrl: videoUrl
                             }
-                        };
+                        }
+                    };
 
-                        // Send the message as a reply to the original message
-                        await gss.sendMessage(m.chat, buttonMessage, { quoted: m });
+                    // Send the message as a reply to the original message
+                    await gss.sendMessage(m.chat, buttonMessage, { quoted: m });
 
-                        // Delete the menu message
-                        await gss.sendMessage(m.chat, { delete: menuMessageKey });
-                    } else {
-                        await m.reply("Error!! Unable to fetch video information. Please try again later.");
-                    }
-
-                    // Clear the conversation state after sending the video
-                    delete conversationState[m.sender];
+                    // Delete the menu message
+                    await gss.sendMessage(m.chat, { delete: menuMessageKey });
                 } else {
-                    await m.reply("Invalid menu number. Please select a number from the menu.");
+                    await m.reply("Error!! Unable to fetch video information. Please try again later.");
                 }
-            } catch (error) {
-                console.error("Error fetching video:", error);
-                await m.reply("Error!! Unable to fetch video information. Please try again later.");
+
+                // Clear the conversation state after sending the video
+                delete conversationState[m.sender];
+            } else {
+                await m.reply("Error fetching video information. Please try again later.");
             }
+        } catch (error) {
+            console.error("Error fetching video:", error);
+            await m.reply("Error!! Unable to fetch video information. Please try again later.");
         }
     }
+}
 
 
 
