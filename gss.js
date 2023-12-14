@@ -339,6 +339,49 @@ if (m.text && !m.key.fromMe) {
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
+try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    if (data.status === true && data.data) {
+        if (m.text.toLowerCase() === 'fmmod') {
+            // Send the list of FMMods with numbers and stylish formatting
+            let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
+            Object.keys(data.data).forEach((fmmodName, index) => {
+                fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
+            });
+            fmmodList += '╰────────────⦿';
+            await m.reply(fmmodList);
+        } else if (m.quoted && /^\d+$/.test(m.text)) {
+            const selectedNumber = parseInt(m.text);
+            const fmmodNames = Object.keys(data.data);
+
+            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                const fmmodName = fmmodNames[selectedNumber - 1];
+
+                // Send APK file with details
+                const apkBufferReq = await fetch(data.data[fmmodName].link);
+                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+                const apkBuffer = Buffer.from(apkArrayBuffer);
+
+                await gss.sendMessage(m.chat, {
+                    document: apkBuffer,
+                    mimetype: 'application/vnd.android.package-archive',
+                    fileName: `${fmmodName}.apk`,
+                    caption: `${fmmodName}`
+                });
+            } else {
+                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
+            }
+        }
+    }
+} catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+    // Optionally, you can add logging or other handling for the error
+    await m.reply('Error fetching data. Please try again later.');
+}
+
+
 
 
 
@@ -486,48 +529,6 @@ if (!('autobio' in setting)) setting.autobio = false
 
 
 if (isCommand) {
-  
-try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-
-    if (data.status === true && data.data) {
-        if (m.text.toLowerCase() === 'fmmod') {
-            // Send the list of FMMods with numbers and stylish formatting
-            let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
-            Object.keys(data.data).forEach((fmmodName, index) => {
-                fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
-            });
-            fmmodList += '╰────────────⦿';
-            await m.reply(fmmodList);
-        } else if (m.quoted && /^\d+$/.test(m.text)) {
-            const selectedNumber = parseInt(m.text);
-            const fmmodNames = Object.keys(data.data);
-
-            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                const fmmodName = fmmodNames[selectedNumber - 1];
-
-                // Send APK file with details
-                const apkBufferReq = await fetch(data.data[fmmodName].link);
-                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                const apkBuffer = Buffer.from(apkArrayBuffer);
-
-                await gss.sendMessage(m.chat, {
-                    document: apkBuffer,
-                    mimetype: 'application/vnd.android.package-archive',
-                    fileName: `${fmmodName}.apk`,
-                    caption: `${fmmodName}`
-                });
-            } else {
-                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
-            }
-        }
-    }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    // Optionally, you can add logging or other handling for the error
-    await m.reply('Error fetching data. Please try again later.');
-}
             
 if (!m.isGroup && !isCreator && global.onlygroup) {
     return m.reply("Hello, because we want to reduce spam, please use the bot in a group!\n\nIf there are joint interests, please type .owner to contact the owner.")
@@ -2784,10 +2785,9 @@ case 'buypremium':
             
             
             
-case 'fmmods':
-case 'fmmod': {
+case 'fmmods': {
     m.reply(mess.wait);
-
+    
     // Replace with your actual URL
     const apiUrl = 'https://vihangayt.me/download/fmmods';
 
@@ -2795,47 +2795,26 @@ case 'fmmod': {
         const response = await axios.get(apiUrl);
         const data = response.data;
 
-        // Send the list of FMMods with numbers and stylish formatting
-        let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
-        Object.keys(data.data).forEach((fmmodName, index) => {
-            fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
-        });
-        fmmodList += '╰────────────⦿';
-
-        await m.reply(fmmodList);
-
-        if (m.text.toLowerCase() === 'fmmod' && m.quoted && /^\d+$/.test(m.text)) {
-            const selectedNumber = parseInt(m.text);
-            const fmmodNames = Object.keys(data.data);
-
-            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                const fmmodName = fmmodNames[selectedNumber - 1];
-
-                // Send APK file with details
-                const apkBufferReq = await fetch(data.data[fmmodName].link);
+        if (data.status === true && data.data) {
+            // Assuming you want to process the data for each WhatsApp mod
+            for (const modName in data.data) {
+                const modInfo = data.data[modName];
+                const apkBufferReq = await fetch(modInfo.link);
                 const apkArrayBuffer = await apkBufferReq.arrayBuffer();
                 const apkBuffer = Buffer.from(apkArrayBuffer);
 
-                await gss.sendMessage(m.chat, {
-                    document: apkBuffer,
-                    mimetype: 'application/vnd.android.package-archive',
-                    fileName: `${fmmodName}.apk`,
-                    caption: `${fmmodName}`
-                });
-            } else {
-                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
+                // Send the APK directly with the mod details
+                await gss.sendMessage(m.chat, { document: apkBuffer, mimetype: 'application/vnd.android.package-archive', fileName: `${modName}.apk` }, { quoted: m });
             }
+        } else {
+            await m.reply('Error in API response. Please try again later.');
         }
     } catch (error) {
         console.error('Error fetching data from the API:', error.message);
-        // Optionally, you can add logging or other handling for the error
         await m.reply('Error fetching data. Please try again later.');
     }
-
     break;
 }
-
-
 
 
 
