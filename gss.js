@@ -353,11 +353,11 @@ try {
                     fmmodList += `${index + 1}. ${fmmodName}\n`;
                 });
                 await m.reply(fmmodList);
-            } else if (m.quoted && /^\d+$/.test(lowerText)) {
+            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the FMMod list')) {
                 const selectedNumber = parseInt(lowerText);
                 const fmmodNames = Object.keys(data.data);
 
-                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length && m.quoted.text.includes('Here is the FMMod list')) {
+                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
                     const fmmodName = fmmodNames[selectedNumber - 1];
 
                     const apkBufferReq = await fetch(data.data[fmmodName].link);
@@ -380,6 +380,7 @@ try {
     console.error('Error fetching data from the API:', error.message);
     await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 
