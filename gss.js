@@ -382,17 +382,18 @@ try {
     await m.reply('Error fetching data. Please try again later.');
 }
 
-const apiUrl = 'https://raganork-network.vercel.app/api/xvideos/search';
+const xxapiUrl = 'https://raganork-network.vercel.app/api/xvideos/search';
 const downloadApiUrl = 'https://raganork-network.vercel.app/api/xvideos/download';
 
 try {
-        const searchApiUrl = apiUrl + '?query=' + encodeURIComponent(text);
+        const searchApiUrl = xxapiUrl + '?query=' + encodeURIComponent(text);
         const searchResponse = await axios.get(searchApiUrl);
 
         const movies = searchResponse.data.result;
 
         if (movies.length > 0) {
-            const movieResultsText = movies.map((movie, index) => `${index + 1}. Title: ${movie.title}\n⏰ Duration: ${movie.duration}\n`).join('\n');
+            const movieResultsText = movies.slice(0, 10).map((movie, index) => `${index + 1}. Title: ${movie.title}\n⏰ Duration: ${movie.duration}\n`).join('\n');
+
 
             // Send the menu message and store the search result in the conversation state
             const menuMessage = await m.reply("Here are the search results for '" + text + "' 👇\n\n" + movieResultsText);
