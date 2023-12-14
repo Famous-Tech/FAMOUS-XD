@@ -342,6 +342,17 @@ const apiUrl = 'https://vihangayt.me/download/fmmods';
 // Dictionary to store conversation state
 const conversationState = {};
 
+async function getMessage(key) {
+    if (store) {
+        const msg = await store.loadMessage(key.remoteJid, key.id);
+        return msg?.message;
+    }
+    return {
+        conversation: "Hai im gss botwa",
+    };
+}
+
+
 gss.ev.on('messages.update', async (chatUpdate) => {
     for (const { key, update } of chatUpdate) {
         if (update.pollUpdates && key.fromMe) {
