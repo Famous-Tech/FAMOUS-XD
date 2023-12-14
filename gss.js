@@ -345,23 +345,22 @@ try {
 
     if (data.status === true && data.data) {
         if (m.text.toLowerCase() === 'fmmod') {
-            // Send the list of FMMods with numbers
+            // Send the list of FMMods
             let fmmodList = 'Here are the FMMods, sir:\n';
-            data.data.forEach((fmmod, index) => {
-                fmmodList += `${index + 1}. ${fmmod.name} - ${fmmod.description}\n`;
-            });
+            for (const fmmodName in data.data) {
+                fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
+            }
             await m.reply(fmmodList);
         } else if (/^\d+$/.test(m.text)) {
             const selectedNumber = parseInt(m.text);
-            const fmmods = data.data;
+            const fmmodNames = Object.keys(data.data);
 
-            if (selectedNumber >= 1 && selectedNumber <= fmmods.length) {
-                const selectedFMMod = fmmods[selectedNumber - 1];
-                const fmmodName = selectedFMMod.name;
-                const fmmodDetails = selectedFMMod.description;
+            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                const fmmodName = fmmodNames[selectedNumber - 1];
+                const fmmodDetails = data.data[fmmodName].description;
 
                 // Send APK file with details
-                const apkBufferReq = await fetch(selectedFMMod.link);
+                const apkBufferReq = await fetch(data.data[fmmodName].link);
                 const apkArrayBuffer = await apkBufferReq.arrayBuffer();
                 const apkBuffer = Buffer.from(apkArrayBuffer);
 
@@ -381,6 +380,7 @@ try {
     // Optionally, you can add logging or other handling for the error
     await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 
