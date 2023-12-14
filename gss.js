@@ -340,7 +340,7 @@ if (m.text && !m.key.fromMe) {
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
-if (isCmd)({ on: "text" }, async (gss, m) => {
+if (isCommand)({ on: "text" }, async (gss, m) => {
     try {
         const response = await axios.get(apiUrl);
         const data = response.data;
