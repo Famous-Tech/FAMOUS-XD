@@ -69,6 +69,7 @@ let props;
 const reportedMessages = {};
 const videoSearchResults = new Map();
 let titleUrlMap = {}; 
+const userContextMap = new Map();
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
