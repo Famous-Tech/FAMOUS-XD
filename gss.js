@@ -383,52 +383,6 @@ try {
 }
 
 
-const ytvApiUrl = 'https://vihangayt.me/download/ytmp4?url=https://youtu.be/5C8yvJUVB-0'; // Replace with the actual YouTube URL
-
-try {
-    const response = await axios.get(ytvApiUrl);
-    const data = response.data;
-
-    if (data.status === true && data.data) {
-        if (m.text && !m.key.fromMe) {
-            const lowerText = m.text.toLowerCase();
-
-            if (lowerText === '.ytvdownload') {
-                let downloadOptions = `Here are the quality options for "${data.data.title}":\n\n`;
-
-                const qualityOptions = Object.keys(data.data)
-                    .filter(key => key.startsWith('vid_'))
-                    .map((key, index) => ({ index: index + 1, key: key.toUpperCase(), url: data.data[key] }));
-
-                qualityOptions.forEach(option => {
-                    downloadOptions += `${option.index}. ${option.key}\n`;
-                });
-
-                await m.reply(downloadOptions);
-            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes(`Here are the quality options for "${data.data.title}"`)) {
-                const selectedNumber = parseInt(lowerText);
-
-                const selectedOption = qualityOptions.find(option => option.index === selectedNumber);
-
-                if (selectedOption) {
-                    await gss.sendMessage(m.chat, {
-                        text: `Downloading ${selectedOption.key} - ${data.data.title}`,
-                        url: selectedOption.url
-                    });
-                } else {
-                    
-                }
-            }
-        }
-    } else {
-        console.error('Invalid response from the API');
-    }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    await m.reply('Error fetching data. Please try again later.');
-}
-
-
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
