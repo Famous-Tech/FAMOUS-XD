@@ -406,7 +406,6 @@ try {
         console.error("Error fetching movies:", error);
         await m.reply("Error!! Unable to fetch movie information. Please try again later.");
     }
-});
 
     if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search results for")) {
         const number = parseInt(m.text);
