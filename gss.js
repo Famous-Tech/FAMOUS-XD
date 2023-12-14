@@ -373,9 +373,6 @@ try {
                     caption: `Details for ${fmmodName} - ${fmmodDetails}`
                 });
 
-                // Delete the poll message
-                await gss.sendMessage(m.chat, { delete: conversationState[m.sender].pollMessageKey });
-
                 // Clear the conversation state after sending the APK
                 delete conversationState[m.sender];
             } else {
