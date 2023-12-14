@@ -1,6 +1,5 @@
 require("dotenv").config();  
 require('./config')
-
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
 const more = String.fromCharCode(8206)
@@ -340,49 +339,53 @@ if (m.text && !m.key.fromMe) {
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
+try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    
 if (isCommand)({ on: "text" }, async (gss, m) => {
-    try {
-        const response = await axios.get(apiUrl);
-        const data = response.data;
+  if (m.text) {
+    const lowerText = m.text.toLowerCase();
 
-        if (data.status === true && data.data) {
-            if (m.text.toLowerCase() === 'fmmod') {
-                // Send the list of FMMods with numbers and stylish formatting
-                let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
-                Object.keys(data.data).forEach((fmmodName, index) => {
-                    fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
+
+    if (data.status === true && data.data) {
+        if (m.text.toLowerCase() === 'fmmod') {
+            // Send the list of FMMods with numbers and stylish formatting
+            let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
+            Object.keys(data.data).forEach((fmmodName, index) => {
+                fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
+            });
+            fmmodList += '╰────────────⦿';
+            await m.reply(fmmodList);
+        } else if (m.quoted && /^\d+$/.test(m.text)) {
+            const selectedNumber = parseInt(m.text);
+            const fmmodNames = Object.keys(data.data);
+
+            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                const fmmodName = fmmodNames[selectedNumber - 1];
+
+                // Send APK file with details
+                const apkBufferReq = await fetch(data.data[fmmodName].link);
+                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+                const apkBuffer = Buffer.from(apkArrayBuffer);
+
+                await gss.sendMessage(m.chat, {
+                    document: apkBuffer,
+                    mimetype: 'application/vnd.android.package-archive',
+                    fileName: `${fmmodName}.apk`,
+                    caption: `${fmmodName}`
                 });
-                fmmodList += '╰────────────⦿';
-                await m.reply(fmmodList);
-            } else if (m.quoted && /^\d+$/.test(m.text)) {
-                const selectedNumber = parseInt(m.text);
-                const fmmodNames = Object.keys(data.data);
-
-                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                    const fmmodName = fmmodNames[selectedNumber - 1];
-
-                    // Send APK file with details
-                    const apkBufferReq = await fetch(data.data[fmmodName].link);
-                    const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                    const apkBuffer = Buffer.from(apkArrayBuffer);
-
-                    await gss.sendMessage(m.chat, {
-                        document: apkBuffer,
-                        mimetype: 'application/vnd.android.package-archive',
-                        fileName: `${fmmodName}.apk`,
-                        caption: `${fmmodName}`
-                    });
-                } else {
-                    await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
-                }
+            } else {
+                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
             }
         }
-    } catch (error) {
-        console.error('Error fetching data from the API:', error.message);
-        // Optionally, you can add logging or other handling for the error
-        await m.reply('Error fetching data. Please try again later.');
     }
-});
+} catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+    // Optionally, you can add logging or other handling for the error
+    await m.reply('Error fetching data. Please try again later.');
+}
+
 
 
 
