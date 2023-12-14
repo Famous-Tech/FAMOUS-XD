@@ -481,6 +481,68 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
 }
 
 
+const playCommand = '.playy'; // Customize your play command
+const audioOption = '1';
+const videoOption = '2';
+
+try {
+    const apiResponse = { /* Paste the provided API response here */ };
+
+    if (apiResponse.status === 200 && apiResponse.result) {
+        const { title, thumbnail, audio, video } = apiResponse.result;
+
+        // Display thumbnail and details
+        const caption = `*Title:* ${title}\n`;
+        const mediaMessage = {
+            image: { url: thumbnail },
+            caption: caption,
+            quoted: m,
+        };
+
+        // Send the thumbnail and details
+        const optionsMessage = await gss.sendMessage(m.chat, mediaMessage);
+
+        // Display audio and video options
+        const optionsCaption = 'Select an option:\n1. Audio\n2. Video';
+
+        const optionsMessageKey = optionsMessage.key; // Save the options message key
+
+        // Delete the options message after a certain time (e.g., 60 seconds)
+        setTimeout(async () => {
+            await gss.sendMessage(m.chat, { delete: optionsMessageKey });
+        }, 60000);
+
+        await m.reply(optionsCaption);
+
+        // Handle user selection
+        gss.once('message_create', async (audioVideoMessage) => {
+            const lowerText = audioVideoMessage.text.toLowerCase();
+
+            // Check if the quoted message includes specific text
+            if (m.quoted.text && m.quoted.text.includes("Select an option:")) {
+                const userSelection = lowerText.trim();
+
+                // Check user selection
+                if (userSelection === audioOption) {
+                    // Send audio
+                    await gss.sendMessage(m.chat, { audio: { url: audio }, quoted: m });
+                } else if (userSelection === videoOption) {
+                    // Send video
+                    await gss.sendMessage(m.chat, { video: { url: video }, quoted: m });
+                } else {
+                    // Invalid selection
+                    await m.reply('Invalid selection. Please choose 1 for audio or 2 for video.');
+                }
+            }
+        });
+    } else {
+        // Handle API response error
+        await m.reply('Error in fetching play details. Please try again later.');
+    }
+} catch (error) {
+    console.error('Error handling play command:', error);
+    await m.reply('Error handling play command. Please try again later.');
+}
 
 
 
