@@ -349,21 +349,36 @@ try {
                 fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
             }
             await m.reply(fmmodList);
-        } else if (m.quoted && /^\d+$/.test(m.text)) {
-            const selectedNumber = m.text;
-            const fmmodName = Object.keys(data.data)[selectedNumber - 1];
+        } else if (/^\d+$/.test(m.text)) {
+            const selectedNumber = parseInt(m.text);
+            const fmmodNames = Object.keys(data.data);
 
-            if (fmmodName) {
+            if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                const fmmodName = fmmodNames[selectedNumber - 1];
                 const fmmodDetails = data.data[fmmodName].description;
-                // Send details for the selected FMMod
-                await m.reply(`Details for ${fmmodName} - ${fmmodDetails}`);
+
+                // Send APK file with details
+                const apkBufferReq = await fetch(data.data[fmmodName].link);
+                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+                const apkBuffer = Buffer.from(apkArrayBuffer);
+
+                await gss.sendMessage(m.chat, {
+                    document: apkBuffer,
+                    mimetype: 'application/vnd.android.package-archive',
+                    fileName: `${fmmodName}.apk`,
+                    caption: `Details for ${fmmodName} - ${fmmodDetails}`
+                });
+            } else {
+                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
             }
         }
     }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
     // Optionally, you can add logging or other handling for the error
+    await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 
