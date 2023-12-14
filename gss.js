@@ -385,58 +385,82 @@ try {
 
 
 try {
-    // Check if the command is 'yts' and there is a query text
-    if (m.text.toLowerCase().startsWith('yts ') && m.text.length > 4) {
-        const searchTerm = m.text.substring(4).trim(); // Extract the query text
+    if (m.text && !m.key.fromMe) {
+        const lowerText = m.text.toLowerCase();
 
-        // Search YouTube using yt-search
-        const searchResults = await ytSearch(searchTerm);
+        if (lowerText.startsWith('yts ') && lowerText.length > 4) {
+            const searchTerm = lowerText.substring(4).trim();
+            const searchResults = await ytSearch(searchTerm);
 
-        // Send the list of top 10 search results
-        let resultList = 'Top 10 Search Results:\n';
-        searchResults.videos.slice(0, 10).forEach((result, index) => {
-            resultList += `${index + 1}. ${result.title}\n`;
-        });
-        await m.reply(resultList);
+            let resultList = 'Top 10 Search Results:\n';
+            searchResults.videos.slice(0, 10).forEach((result, index) => {
+                resultList += `${index + 1}. ${result.title} (${result.views} views)\n`;
+            });
 
-        // Listen for user's reply with a number
-        if (m.quoted && /^\d+$/.test(m.text)) {
-            const selectedNumber = parseInt(m.text);
-            if (selectedNumber >= 1 && selectedNumber <= 10) {
-                const selectedResult = searchResults.videos[selectedNumber - 1];
+            const listMessage = await m.reply(resultList);
+            const uniqueIdentifier = Math.random().toString(36).substr(2, 9);
 
-                // Ask user to choose between audio and video
-                await m.reply('Select an option:\n1. Audio\n2. Video');
+            // Store context in userContextMap
+            userContextMap.set(listMessage.id, { searchTerm, searchResults, uniqueIdentifier });
+        } else if (m.quoted && userContextMap.has(m.quoted)) {
+            const context = userContextMap.get(m.quoted);
 
-                // Listen for user's reply with 1 or 2
-                if (m.quoted && /^[1-2]$/.test(m.text)) {
-                    const fileType = m.text === '1' ? 'audio' : 'video';
+            if (/^\d+$/.test(lowerText)) {
+                const selectedNumber = parseInt(lowerText);
+                const selectedResult = context.searchResults.videos[selectedNumber - 1];
+
+                // Construct details for the selected result
+                const details = `Title: ${selectedResult.title}\nViews: ${selectedResult.views}\n`;
+                const fileTypeMessage = `Select an option for "${selectedResult.title}":\n1. Audio\n2. Video`;
+
+                // Send details and options
+                await m.reply(details + fileTypeMessage);
+
+                // Store context for the selected result
+                const resultContext = {
+                    selectedResult,
+                    uniqueIdentifier: context.uniqueIdentifier,
+                };
+
+                // Store the result context
+                userContextMap.set(m.id, resultContext);
+            } else if (context.uniqueIdentifier === userContextMap.get(m.id)?.uniqueIdentifier) {
+                // Check if the reply is for the selected result
+                const resultContext = userContextMap.get(m.id);
+
+                if (/^[1-2]$/.test(lowerText)) {
+                    const fileType = lowerText === '1' ? 'audio' : 'video';
 
                     // Download and send the selected audio or video
-                    const downloadURL = ytdl(selectedResult.url, { quality: 'highest' });
+                    const downloadURL = ytdl(resultContext.selectedResult.url, { quality: 'highest' });
 
+                    // Construct the caption with details
+                    const caption = `Title: ${resultContext.selectedResult.title}\nViews: ${resultContext.selectedResult.views}\nType: ${fileType}`;
+
+                    // Send the selected audio or video
                     await gss.sendMessage(m.chat, {
                         [fileType]: downloadURL,
                         mimetype: `video/${fileType === 'video' ? 'mp4' : 'webm'}`,
-                        fileName: `${selectedResult.title}.${fileType === 'video' ? 'mp4' : 'webm'}`,
-                        caption: `Title: ${selectedResult.title}\nType: ${fileType}`,
+                        fileName: `${resultContext.selectedResult.title}.${fileType === 'video' ? 'mp4' : 'webm'}`,
+                        caption: caption,
                     });
                 } else {
                     await m.reply('Invalid option. Please select 1 for audio or 2 for video.');
                 }
+
+                // Remove the context after handling the user's reply
+                userContextMap.delete(m.id);
             } else {
                 await m.reply('Invalid number. Please select a number from the list.');
             }
-        }
-    } else {
-        // Handle other commands or conditions here...
 
-        // Example: If the command is not 'yts', execute other logic
-        await m.reply('Invalid command. Use "yts <search query>" to search YouTube.');
+            // Remove the context after handling the user's reply
+            userContextMap.delete(m.quoted);
+        }
     }
 } catch (error) {
-    console.error('Error fetching YouTube data:', error.message);
-    await m.reply('Error fetching YouTube data. Please try again later.');
+    console.error('Error handling:', error.message);
+    await m.reply('Error handling. Please try again later.');
 }
 
 
