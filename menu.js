@@ -1,4 +1,5 @@
 const menuList = [
+  'allmenu',
   'aiMenu',
   'toolMenu',
   'adminMenu',
