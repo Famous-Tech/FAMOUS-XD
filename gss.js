@@ -347,11 +347,11 @@ try {
         const lowerText = m.text.toLowerCase();
 
         if (data.status === true && data.data) {
-            if (lowerText === '.fmmod' && m.quoted && m.quoted.text && m.quoted.text.includes('Here is the FMMod list')) {
-                let fmmodList = 'Here is the FMMod list:\n';
-                Object.keys(data.data).forEach((fmmodName, index) => {
-                    fmmodList += `${index + 1}. ${fmmodName}\n`;
-                });
+    if (lowerText === '.fmmod') {
+        let fmmodList = 'Here is the FMMod list:\n';
+        Object.keys(data.data).forEach((fmmodName, index) => {
+            fmmodList += `${index + 1}. ${fmmodName}\n`;
+        });
                 await m.reply(fmmodList);
             } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the FMMod list')) {
                 const selectedNumber = parseInt(lowerText);
