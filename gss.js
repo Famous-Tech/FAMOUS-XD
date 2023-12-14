@@ -336,6 +336,7 @@ if (m.text && !m.key.fromMe) {
 }   */
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
+const conversationState = {};
 
 try {
     const response = await axios.get(apiUrl);
