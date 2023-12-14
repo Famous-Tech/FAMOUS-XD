@@ -386,6 +386,60 @@ try {
 
 
 
+try {
+    if (m.text.toLowerCase() === 'yts') {
+        // Send instructions for YouTube search
+    } else {
+        const searchTerm = 'lowertext'; // Replace with your desired search term
+        const searchResults = await ytdl.search(searchTerm);
+
+        // Send the list of top 10 search results
+        let resultList = 'Top 10 Search Results:\n';
+        searchResults.items.slice(0, 10).forEach((result, index) => {
+            resultList += `${index + 1}. ${result.title}\n`;
+        });
+        await m.reply(resultList);
+
+        // Listen for user's reply with a number
+        if (m.quoted && /^\d+$/.test(m.text)) {
+            const selectedNumber = parseInt(m.text);
+            if (selectedNumber >= 1 && selectedNumber <= 10) {
+                const selectedResult = searchResults.items[selectedNumber - 1];
+
+                // Ask user to choose between audio and video
+                await m.reply('Select an option:\n1. Audio\n2. Video');
+
+                // Listen for user's reply with 1 or 2
+                if (m.quoted && /^[1-2]$/.test(m.text)) {
+                    const fileType = m.text === '1' ? 'audio' : 'video';
+
+                    // Download and send the selected audio or video
+                    const videoInfo = await ytdl.getBasicInfo(selectedResult.url);
+                    const downloadURL = ytdl(selectedResult.url, { quality: 'highest' });
+
+                    await gss.sendMessage(m.chat, {
+                        [fileType]: downloadURL,
+                        mimetype: `video/${fileType === 'video' ? 'mp4' : 'webm'}`,
+                        fileName: `${selectedResult.title}.${fileType === 'video' ? 'mp4' : 'webm'}`,
+                        caption: `Title: ${selectedResult.title}\nType: ${fileType}`,
+                    });
+                } else {
+                    await m.reply('Invalid option. Please select 1 for audio or 2 for video.');
+                }
+            } else {
+                await m.reply('Invalid number. Please select a number from the list.');
+            }
+        }
+    }
+} catch (error) {
+    console.error('Error fetching YouTube data:', error.message);
+    await m.reply('Error fetching YouTube data. Please try again later.');
+}
+
+
+
+
+
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
 const onlypc = process.env.ONLYPC || global.onlypc;
