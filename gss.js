@@ -1,6 +1,6 @@
 require("dotenv").config();  
 require('./config')
-const { cmd } = require('./lib');
+const cmd  = require('./gss');
 
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
