@@ -342,14 +342,10 @@ const apiUrl = 'https://vihangayt.me/download/fmmods';
 try {
     const response = await axios.get(apiUrl);
     const data = response.data;
-    
-if (isCommand)({ on: "text" }, async (gss, m) => {
-  if (m.text) {
-    const lowerText = m.text.toLowerCase();
 
 
     if (data.status === true && data.data) {
-        if (m.text.toLowerCase() === 'fmmod') {
+        if (m.text.toLowerCase() === '.fmmod') {
             // Send the list of FMMods with numbers and stylish formatting
             let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
             Object.keys(data.data).forEach((fmmodName, index) => {
