@@ -2784,37 +2784,6 @@ case 'buypremium':
             
             
             
-case 'fmmods': {
-    m.reply(mess.wait);
-    
-    // Replace with your actual URL
-    const apiUrl = 'https://vihangayt.me/download/fmmods';
-
-    try {
-        const response = await axios.get(apiUrl);
-        const data = response.data;
-
-        if (data.status === true && data.data) {
-            // Assuming you want to process the data for each WhatsApp mod
-            for (const modName in data.data) {
-                const modInfo = data.data[modName];
-                const apkBufferReq = await fetch(modInfo.link);
-                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                const apkBuffer = Buffer.from(apkArrayBuffer);
-
-                // Send the APK directly with the mod details
-                await gss.sendMessage(m.chat, { document: apkBuffer, mimetype: 'application/vnd.android.package-archive', fileName: `${modName}.apk` }, { quoted: m });
-            }
-        } else {
-            await m.reply('Error in API response. Please try again later.');
-        }
-    } catch (error) {
-        console.error('Error fetching data from the API:', error.message);
-        await m.reply('Error fetching data. Please try again later.');
-    }
-    break;
-}
-
 
 
 case 'invite': {
