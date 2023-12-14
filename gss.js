@@ -400,6 +400,8 @@ try {
         const searchApiUrl = xxapiUrl + '?query=' + encodeURIComponent(text);
         const searchResponse = await axios.get(searchApiUrl);
 
+        console.log("Search API Response:", searchResponse.data); // Log the search API response
+
         const movies = searchResponse.data.result;
 
         if (movies.length > 0) {
@@ -432,6 +434,9 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
                     const downloadApiUrlWithUrlParam = downloadApiUrl + '?url=' + encodeURIComponent(selectedMovie.url);
 
                     const downloadResponse = await axios.get(downloadApiUrlWithUrlParam);
+
+                    console.log("Download API Response:", downloadResponse.data); // Log the download API response
+
                     const videoUrl = downloadResponse.data.url;
 
                     if (videoUrl) {
@@ -475,6 +480,7 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
         }
     }
 }
+
 
 
 
