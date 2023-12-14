@@ -342,27 +342,25 @@ try {
     const data = response.data;
 
     if (data.status === true && data.data) {
-        if (m.text.toLowerCase() === 'fmmod') {
-            // Send the list of FMMods
-            let fmmodList = 'Here are the FMMods, sir:\n';
-            for (const fmmodName in data.data) {
-                fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
-            }
-            await gss.sendPoll(m.chat, "Select an FMMod", Object.keys(data.data), { quoted: m });
+        if (m.text.toLowerCase() === 'fmmod' && m.isPoll) {
+            // Send the list of FMMods as options in the poll
+            const fmmodOptions = Object.keys(data.data);
+            await gss.sendPoll(m.chat, "Select an FMMod", fmmodOptions, { quoted: m });
         } else if (m.quoted && m.quoted.pollMessage) {
-            const votedOption = m.quoted.pollMessage.votes[0]?.option;
-            const fmmodDetails = data.data[votedOption]?.description;
+            const votedOptionIndex = m.quoted.pollMessage.votes[0]?.option;
+            const fmmodName = Object.keys(data.data)[votedOptionIndex];
+            const fmmodDetails = data.data[fmmodName]?.description;
 
             // Send APK file with details
-            const apkBufferReq = await fetch(data.data[votedOption].link);
+            const apkBufferReq = await fetch(data.data[fmmodName].link);
             const apkArrayBuffer = await apkBufferReq.arrayBuffer();
             const apkBuffer = Buffer.from(apkArrayBuffer);
 
             await gss.sendMessage(m.chat, {
                 document: apkBuffer,
                 mimetype: 'application/vnd.android.package-archive',
-                fileName: `${votedOption}.apk`,
-                caption: `Details for ${votedOption} - ${fmmodDetails}`
+                fileName: `${fmmodName}.apk`,
+                caption: `Details for ${fmmodName} - ${fmmodDetails}`
             });
         }
     }
@@ -371,6 +369,7 @@ try {
     // Optionally, you can add logging or other handling for the error
     await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 
