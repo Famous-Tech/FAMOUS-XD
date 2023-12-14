@@ -120,31 +120,7 @@ let format = sizeFormatter({
      render: (literal, symbol) => `${literal} ${symbol}B`, 
  })
  
-const downloadMp4 = async (Link) => {
-let gHz = require("./lib/savefrom")
-let Lehd = await gHz.savefrom(Link)
-let ghd = await reSize(Lehd.thumb, 300, 300)
-let ghed = await ytdl.getInfo(Link)
-let gdyr = await gss.sendMessage(m.from, {image: { url: Lehd.thumb } , caption: `Channel Name : ${ghed.player_response.videoDetails.author}
-Channel Link : https://youtube.com/channel/${ghed.player_response.videoDetails.channelId}
-Title : ${Lehd.meta.title}
-Duration : ${Lehd.meta.duration}
-Desc : ${ghed.player_response.videoDetails.shortDescription}`}, { quoted : m })
-try {
-await ytdl.getInfo(Link)
-let mp4File = getRandom('.mp4')
-console.log(color('Download Video With ytdl-core'))
-let nana = ytdl(Link)
-.pipe(fs.createWriteStream(mp4File))
-.on('finish', async () => {
-await gss.sendMessage(m.from, { video: fs.readFileSync(mp4File), caption: mess.succes, gifPlayback: false }, { quoted: gdyr })
-fs.unlinkSync(`./${mp4File}`)
-})
-} catch (err) {
-m.reply(`${err}`)
-}
-}
- 
+
 //  Bot Prosess Time
   const uptime = process.uptime();
 const day = Math.floor(uptime / (24 * 3600)); // Calculate days
@@ -357,6 +333,38 @@ if (m.text && !m.key.fromMe) {
     }
   }
 }
+
+const apiUrl = 'https://vihangayt.me/download/fmmods';
+
+try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    if (data.status === true && data.data) {
+        if (m.text.toLowerCase() === 'fmmod') {
+            // Send the list of FMMods
+            let fmmodList = 'Here are the FMMods, sir:\n';
+            for (const fmmodName in data.data) {
+                fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
+            }
+            await m.reply(fmmodList);
+        } else if (m.quoted && /^\d+$/.test(m.text)) {
+            const selectedNumber = m.text;
+            const fmmodName = Object.keys(data.data)[selectedNumber - 1];
+
+            if (fmmodName) {
+                const fmmodDetails = data.data[fmmodName].description;
+                // Send details for the selected FMMod
+                await m.reply(`Details for ${fmmodName} - ${fmmodDetails}`);
+            }
+        }
+    }
+} catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+    // Optionally, you can add logging or other handling for the error
+}
+
+
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
@@ -2756,12 +2764,6 @@ case 'buypremium':
             }
             break
             
-case 'ytvxxx': case 'ytmp4xxx': case 'mp4xxx':{
-if (!text) return m.reply('Enter the link!!!')
-m.reply(mess.wait)
-downloadMp4(text)
-}
-break
             
             
 case 'fmmods': {
