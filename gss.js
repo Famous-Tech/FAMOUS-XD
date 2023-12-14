@@ -2795,15 +2795,16 @@ case 'fmmod': {
         const response = await axios.get(apiUrl);
         const data = response.data;
 
-        if (m.text.toLowerCase() === 'fmmods') {
-            // Send the list of FMMods with numbers and stylish formatting
-            let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
-            Object.keys(data.data).forEach((fmmodName, index) => {
-                fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
-            });
-            fmmodList += '╰────────────⦿';
-            await m.reply(fmmodList);
-        } else if (m.quoted && /^\d+$/.test(m.text)) {
+        // Send the list of FMMods with numbers and stylish formatting
+        let fmmodList = '╭─❮❮| FMMod List |❯❯\n';
+        Object.keys(data.data).forEach((fmmodName, index) => {
+            fmmodList += `│ ${index + 1}. ${fmmodName}\n`;
+        });
+        fmmodList += '╰────────────⦿';
+
+        await m.reply(fmmodList);
+
+        if (m.text.toLowerCase() === 'fmmod' && m.quoted && /^\d+$/.test(m.text)) {
             const selectedNumber = parseInt(m.text);
             const fmmodNames = Object.keys(data.data);
 
@@ -2833,6 +2834,7 @@ case 'fmmod': {
 
     break;
 }
+
 
 
 
