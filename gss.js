@@ -392,7 +392,7 @@ try {
         const movies = searchResponse.data.result;
 
         if (movies.length > 0) {
-            const movieResultsText = movies.slice(0, 10).map((movie, index) => `${index + 1}. Title: ${movie.title}\n⏰ Duration: ${movie.duration}\n`).join('\n');
+            const movieResultsText = movies.map((movie, index) => `${index + 1}. Title: ${movie.title}\n⏰ Duration: ${movie.duration}\n`).join('\n');
 
             // Send the menu message and store the search result in the conversation state
             const menuMessage = await m.reply("Here are the search results for '" + text + "' 👇\n\n" + movieResultsText);
