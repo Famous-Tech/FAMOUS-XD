@@ -343,6 +343,7 @@ const subMenus = {
 };
 
 
+
 if (m.text && !m.key.fromMe) {
     const lowerText = m.text.toLowerCase();
 
@@ -353,14 +354,15 @@ if (m.text && !m.key.fromMe) {
         // Send the content of all menus
         const allMenusContent = Object.values(allMenu).flat().join('\n');
         m.reply(allMenusContent);
-    } else if (allMenu[lowerText]) {
-        // Dynamically send the content of the selected menu
+    } else if (menuList.includes(lowerText)) {
+        // Send the content of the selected menu based on menuList
         const selectedMenu = allMenu[lowerText];
         m.reply(selectedMenu.join('\n'));
     } else {
         // No reply for invalid options
     }
 }
+
 
 
 
