@@ -481,68 +481,85 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
 }
 
 
-const playCommand = '.playy'; // Customize your play command
-const audioOption = '1';
-const videoOption = '2';
 
 try {
-    const apiResponse = { /* Paste the provided API response here */ };
+    const lowerText = m.text.toLowerCase();
 
-    if (apiResponse.status === 200 && apiResponse.result) {
-        const { title, thumbnail, audio, video } = apiResponse.result;
+    if (lowerText.startsWith('.ytplay')) {
+        const query = lowerText.replace('.ytplay', '').trim();
 
-        // Display thumbnail and details
-        const caption = `*Title:* ${title}\n`;
-        const mediaMessage = {
-            image: { url: thumbnail },
-            caption: caption,
-            quoted: m,
-        };
+        // Search API
+        const ytApiUrl = `https://api.lolhuman.xyz/api/ytplay2?apikey=bf2d2cf29b3edc604b447983&query=${encodeURIComponent(query)}`;
+        const response = await axios.get(ytApiUrl);
 
-        // Send the thumbnail and details
-        const optionsMessage = await gss.sendMessage(m.chat, mediaMessage);
+        if (response.status === 200 && response.data.status === 200) {
+            const result = response.data.result;
 
-        // Display audio and video options
-        const optionsCaption = 'Select an option:\n1. Audio\n2. Video';
+            const videoTitle = result.title;
+            const thumbnailUrl = result.thumbnail;
+            const audioUrl = result.audio;
+            const videoUrl = result.video;
 
-        const optionsMessageKey = optionsMessage.key; // Save the options message key
+            // Now you can use these variables to perform any actions, such as sending a message or processing the URLs.
+            console.log('Video Title:', videoTitle);
+            console.log('Thumbnail URL:', thumbnailUrl);
+            console.log('Audio URL:', audioUrl);
+            console.log('Video URL:', videoUrl);
 
-        // Delete the options message after a certain time (e.g., 60 seconds)
-        setTimeout(async () => {
-            await gss.sendMessage(m.chat, { delete: optionsMessageKey });
-        }, 60000);
-
-        await m.reply(optionsCaption);
-
-        // Handle user selection
-        gss.once('message_create', async (audioVideoMessage) => {
-            const lowerText = audioVideoMessage.text.toLowerCase();
-
-            // Check if the quoted message includes specific text
-            if (m.quoted.text && m.quoted.text.includes("Select an option:")) {
-                const userSelection = lowerText.trim();
-
-                // Check user selection
-                if (userSelection === audioOption) {
-                    // Send audio
-                    await gss.sendMessage(m.chat, { audio: { url: audio }, quoted: m });
-                } else if (userSelection === videoOption) {
-                    // Send video
-                    await gss.sendMessage(m.chat, { video: { url: video }, quoted: m });
-                } else {
-                    // Invalid selection
-                    await m.reply('Invalid selection. Please choose 1 for audio or 2 for video.');
-                }
+            if (videoTitle && thumbnailUrl && audioUrl && videoUrl) {
+                const message = `Here are the details for the video '${videoTitle}' 👇\n\nTitle: ${videoTitle}\nThumbnail: ${thumbnailUrl}\n\nReply with a number to choose an option:\n1. Download Audio\n2. Download Video`;
+                const menuMessage = await m.reply(message);
+                conversationState[m.sender] = { menuMessageKey: menuMessage.key, videoTitle, thumbnailUrl, audioUrl, videoUrl };
+            } else {
+                await m.reply("Error!! Incomplete video information. Please try again later.");
             }
-        });
-    } else {
-        // Handle API response error
-        await m.reply('Error in fetching play details. Please try again later.');
+        } else {
+            console.error('API request failed:', response.data.message);
+            await m.reply('Error!! Unable to fetch video information. Please try again later.');
+        }
     }
 } catch (error) {
-    console.error('Error handling play command:', error);
-    await m.reply('Error handling play command. Please try again later.');
+    console.error('Error:', error.message);
+    await m.reply('Error!! Unable to fetch video information. Please try again later.');
 }
+
+// Handle user's choice
+if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details for the video")) {
+    const choice = parseInt(m.text);
+
+    if (!isNaN(choice) && (choice === 1 || choice === 2)) {
+        try {
+            const { videoTitle, thumbnailUrl, audioUrl, videoUrl, menuMessageKey } = conversationState[m.sender];
+
+            // Customize the caption as needed
+            let caption;
+
+            if (choice === 1) {
+                caption = `Audio Download - ${videoTitle}`;
+                // Add logic to handle audio download
+                // Example: Send audio as a reply
+                await gss.sendMessage(m.chat, { audio: audioUrl, quoted: m, mimetype: 'audio/mp4', caption: caption });
+            } else if (choice === 2) {
+                caption = `Video Download - ${videoTitle}`;
+                // Add logic to handle video download
+                // Example: Send video as a reply
+                await gss.sendMessage(m.chat, { video: { url: videoUrl }, quoted: m, mimetype: 'video/mp4', caption: caption });
+            }
+
+            // Delete the menu message
+            await gss.sendMessage(m.chat, { delete: menuMessageKey });
+
+            // Clear the conversation state after sending the download
+            delete conversationState[m.sender];
+        } catch (error) {
+            console.error("Error handling user's choice:", error);
+            await m.reply("Error!! Unable to handle your choice. Please try again later.");
+        }
+    } else {
+        await m.reply("Invalid choice. Reply with a valid number (1 for audio, 2 for video).");
+    }
+}
+
 
 
 
