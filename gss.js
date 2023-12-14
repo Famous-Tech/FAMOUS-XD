@@ -343,48 +343,34 @@ try {
 
     if (data.status === true && data.data) {
         if (m.text.toLowerCase() === 'fmmod') {
-            // Prepare options for the poll
-            const pollOptions = Object.keys(data.data).map((fmmodName, index) => `${index + 1}. ${fmmodName}`);
-
-            // Send the poll with FMMod options
-            const pollMessage = await gss.sendPoll(m.chat, 'Select an FMMod to download:', pollOptions, { quoted: m });
-
-            // Wait for user response
-            const response = await gss.waitForMessage(m.chat, { key: pollMessage.key });
-
-            if (response && response.poll && response.poll.selectedOptions && response.poll.selectedOptions.length > 0) {
-                const selectedNumber = response.poll.selectedOptions[0] - 1;
-                const fmmodNames = Object.keys(data.data);
-
-                if (selectedNumber >= 0 && selectedNumber < fmmodNames.length) {
-                    const fmmodName = fmmodNames[selectedNumber];
-                    const fmmodDetails = data.data[fmmodName].description;
-
-                    // Send APK file with details
-                    const apkBufferReq = await fetch(data.data[fmmodName].link);
-                    const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                    const apkBuffer = Buffer.from(apkArrayBuffer);
-
-                    await gss.sendMessage(m.chat, {
-                        document: apkBuffer,
-                        mimetype: 'application/vnd.android.package-archive',
-                        fileName: `${fmmodName}.apk`,
-                        caption: `Details for ${fmmodName} - ${fmmodDetails}`
-                    });
-                } else {
-                    await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
-                }
-            } else {
-                await m.reply('Invalid response. Please select an FMMod by voting in the poll.');
+            // Send the list of FMMods
+            let fmmodList = 'Here are the FMMods, sir:\n';
+            for (const fmmodName in data.data) {
+                fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
             }
+            await gss.sendPoll(m.chat, "Select an FMMod", Object.keys(data.data), { quoted: m });
+        } else if (m.quoted && m.quoted.pollMessage) {
+            const votedOption = m.quoted.pollMessage.votes[0]?.option;
+            const fmmodDetails = data.data[votedOption]?.description;
+
+            // Send APK file with details
+            const apkBufferReq = await fetch(data.data[votedOption].link);
+            const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+            const apkBuffer = Buffer.from(apkArrayBuffer);
+
+            await gss.sendMessage(m.chat, {
+                document: apkBuffer,
+                mimetype: 'application/vnd.android.package-archive',
+                fileName: `${votedOption}.apk`,
+                caption: `Details for ${votedOption} - ${fmmodDetails}`
+            });
         }
     }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
+    // Optionally, you can add logging or other handling for the error
     await m.reply('Error fetching data. Please try again later.');
 }
-
-
 
 
 
