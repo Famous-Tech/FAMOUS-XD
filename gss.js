@@ -352,9 +352,9 @@ try {
             });
             fmmodList += '╰────────────⦿';
             await m.reply(fmmodList);
-        } else if (/^\d+$/.test(m.text)) {
-            const selectedNumber = parseInt(m.text);
-            const fmmodNames = Object.keys(data.data);
+        } else if (m.quoted && /^\d+$/.test(m.text)) {
+            const selectedNumber = m.text;
+            const fmmodName = Object.keys(data.data)[selectedNumber - 1];
 
             if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
                 const fmmodName = fmmodNames[selectedNumber - 1];
