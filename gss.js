@@ -383,14 +383,10 @@ try {
 }
 
 
-
-
-
 try {
-    if (m.text.toLowerCase() === 'yts') {
-        // Send instructions for YouTube search
-    } else {
-        const searchTerm = 'lowertext'; // Replace with your desired search term
+    // Check if the command is 'yts' and there is a query text
+    if (m.text.toLowerCase().startsWith('yts ') && m.text.length > 4) {
+        const searchTerm = m.text.substring(4).trim(); // Extract the query text
         const searchResults = await ytdl.search(searchTerm);
 
         // Send the list of top 10 search results
@@ -430,12 +426,16 @@ try {
                 await m.reply('Invalid number. Please select a number from the list.');
             }
         }
+    } else {
+        // Handle other commands or conditions here...
+
+        // Example: If the command is not 'yts', execute other logic
+        await m.reply('Invalid command. Use "yts <search query>" to search YouTube.');
     }
 } catch (error) {
     console.error('Error fetching YouTube data:', error.message);
     await m.reply('Error fetching YouTube data. Please try again later.');
 }
-
 
 
 
