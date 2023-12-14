@@ -341,11 +341,11 @@ try {
     const response = await axios.get(apiUrl);
     const data = response.data;
 
-    if (data.status === true && data.data) {
-        if (m.text.toLowerCase() === 'fmmod' && m.isPoll) {
-            // Send the list of FMMods as options in the poll
-            const fmmodOptions = Object.keys(data.data);
-            await gss.sendPoll(m.chat, "Select an FMMod", fmmodOptions, { quoted: m });
+    if (m.text.toLowerCase() === 'fmmod') {
+    // Send the list of FMMods as options in the poll
+    const fmmodOptions = Object.keys(data.data);
+    await gss.sendPoll(m.chat, "Select an FMMod", fmmodOptions, { quoted: m });
+}
         } else if (m.quoted && m.quoted.pollMessage) {
             const votedOptionIndex = m.quoted.pollMessage.votes[0]?.option;
             const fmmodName = Object.keys(data.data)[votedOptionIndex];
