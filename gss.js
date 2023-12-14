@@ -337,8 +337,6 @@ if (m.text && !m.key.fromMe) {
 
 
 
-const apiUrl = 'https://vihangayt.me/download/fmmods';
-
 // Dictionary to store conversation state
 const conversationState = {};
 
@@ -376,22 +374,38 @@ gss.ev.on('messages.update', async (chatUpdate) => {
     }
 });
 
+const apiUrl = 'https://vihangayt.me/download/fmmods';
+
 try {
     const response = await axios.get(apiUrl);
     const data = response.data;
 
     if (data.status === true && data.data) {
         if (m.text.toLowerCase() === 'fmmod') {
-            // Send the list of FMMods as a poll
-            const fmmodOptions = Object.keys(data.data);
-            await gss.sendPoll(m.chat, "Choose an FMMod:", fmmodOptions);
+            // Send the list of FMMods
+            let fmmodList = 'Here are the FMMods, sir:\n';
+            for (const fmmodName in data.data) {
+                fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
+            }
+            await m.reply(fmmodList);
+        } else if (/^\d+$/.test(m.text)) {
+            const selectedOption = parseInt(m.text);
+            const fmmodNames = Object.keys(data.data);
+
+            if (selectedOption >= 1 && selectedOption <= fmmodNames.length) {
+                const selectedFmmod = fmmodNames[selectedOption - 1];
+                const fmmodDetails = data.data[selectedFmmod].description;
+
+                // Continue with the rest of your code
+            } else {
+                await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
+            }
         }
     }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
     await m.reply('Error fetching data. Please try again later.');
 }
-
 
 
 
