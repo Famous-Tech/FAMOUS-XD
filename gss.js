@@ -349,23 +349,19 @@ try {
             // Send the poll with FMMod options
             const pollMessage = await gss.sendPoll(m.chat, 'Select an FMMod to download:', pollOptions, { quoted: m });
 
-            // Save poll details in the conversation state
-            const conversationState = { pollMessageKey: pollMessage.key, fmmodData: data.data };
-
             // Wait for user response
             const response = await gss.waitForMessage(m.chat, { key: pollMessage.key });
 
-            if (response && response.text && /^\d+$/.test(response.text)) {
-                const selectedNumber = parseInt(response.text);
-                const { fmmodData } = conversationState;
-                const fmmodNames = Object.keys(fmmodData);
+            if (response && response.poll && response.poll.selectedOptions && response.poll.selectedOptions.length > 0) {
+                const selectedNumber = response.poll.selectedOptions[0] - 1;
+                const fmmodNames = Object.keys(data.data);
 
-                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                    const fmmodName = fmmodNames[selectedNumber - 1];
-                    const fmmodDetails = fmmodData[fmmodName].description;
+                if (selectedNumber >= 0 && selectedNumber < fmmodNames.length) {
+                    const fmmodName = fmmodNames[selectedNumber];
+                    const fmmodDetails = data.data[fmmodName].description;
 
                     // Send APK file with details
-                    const apkBufferReq = await fetch(fmmodData[fmmodName].link);
+                    const apkBufferReq = await fetch(data.data[fmmodName].link);
                     const apkArrayBuffer = await apkBufferReq.arrayBuffer();
                     const apkBuffer = Buffer.from(apkArrayBuffer);
 
@@ -387,6 +383,7 @@ try {
     console.error('Error fetching data from the API:', error.message);
     await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 
