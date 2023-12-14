@@ -383,15 +383,19 @@ try {
 }
 
 
+
+
 try {
     // Check if the command is 'yts' and there is a query text
     if (m.text.toLowerCase().startsWith('yts ') && m.text.length > 4) {
         const searchTerm = m.text.substring(4).trim(); // Extract the query text
-        const searchResults = await ytdl.search(searchTerm);
+
+        // Search YouTube using yt-search
+        const searchResults = await ytSearch(searchTerm);
 
         // Send the list of top 10 search results
         let resultList = 'Top 10 Search Results:\n';
-        searchResults.items.slice(0, 10).forEach((result, index) => {
+        searchResults.videos.slice(0, 10).forEach((result, index) => {
             resultList += `${index + 1}. ${result.title}\n`;
         });
         await m.reply(resultList);
@@ -400,7 +404,7 @@ try {
         if (m.quoted && /^\d+$/.test(m.text)) {
             const selectedNumber = parseInt(m.text);
             if (selectedNumber >= 1 && selectedNumber <= 10) {
-                const selectedResult = searchResults.items[selectedNumber - 1];
+                const selectedResult = searchResults.videos[selectedNumber - 1];
 
                 // Ask user to choose between audio and video
                 await m.reply('Select an option:\n1. Audio\n2. Video');
@@ -410,7 +414,6 @@ try {
                     const fileType = m.text === '1' ? 'audio' : 'video';
 
                     // Download and send the selected audio or video
-                    const videoInfo = await ytdl.getBasicInfo(selectedResult.url);
                     const downloadURL = ytdl(selectedResult.url, { quality: 'highest' });
 
                     await gss.sendMessage(m.chat, {
@@ -427,15 +430,13 @@ try {
             }
         }
     } else {
-        // Handle other commands or conditions here...
-
-        // Example: If the command is not 'yts', execute other logic
         await m.reply('Invalid command. Use "yts <search query>" to search YouTube.');
     }
 } catch (error) {
     console.error('Error fetching YouTube data:', error.message);
     await m.reply('Error fetching YouTube data. Please try again later.');
 }
+
 
 
 
