@@ -343,22 +343,25 @@ try {
 
     if (data.status === true && data.data) {
         if (m.text.toLowerCase() === 'fmmod') {
-            // Send the list of FMMods
-            let fmmodList = 'Here are the FMMods, sir:\n';
-            for (const fmmodName in data.data) {
-                fmmodList += `${fmmodName} - ${data.data[fmmodName].description}\n`;
-            }
-            await m.reply(fmmodList);
-        } else if (/^\d+$/.test(m.text)) {
+            // Prepare options for the poll
+            const pollOptions = Object.keys(data.data).map((fmmodName, index) => `${index + 1}. ${fmmodName}`);
+
+            // Send the poll with FMMod options
+            const pollMessage = await gss.sendPoll(m.chat, 'Select an FMMod to download:', pollOptions, { quoted: m });
+
+            // Save poll details in the conversation state
+            conversationState[m.sender] = { pollMessageKey: pollMessage.key, fmmodData: data.data };
+        } else if (/^\d+$/.test(m.text) && conversationState[m.sender]) {
             const selectedNumber = parseInt(m.text);
-            const fmmodNames = Object.keys(data.data);
+            const { fmmodData } = conversationState[m.sender];
+            const fmmodNames = Object.keys(fmmodData);
 
             if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
                 const fmmodName = fmmodNames[selectedNumber - 1];
-                const fmmodDetails = data.data[fmmodName].description;
+                const fmmodDetails = fmmodData[fmmodName].description;
 
                 // Send APK file with details
-                const apkBufferReq = await fetch(data.data[fmmodName].link);
+                const apkBufferReq = await fetch(fmmodData[fmmodName].link);
                 const apkArrayBuffer = await apkBufferReq.arrayBuffer();
                 const apkBuffer = Buffer.from(apkArrayBuffer);
 
@@ -368,6 +371,12 @@ try {
                     fileName: `${fmmodName}.apk`,
                     caption: `Details for ${fmmodName} - ${fmmodDetails}`
                 });
+
+                // Delete the poll message
+                await gss.sendMessage(m.chat, { delete: conversationState[m.sender].pollMessageKey });
+
+                // Clear the conversation state after sending the APK
+                delete conversationState[m.sender];
             } else {
                 await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
             }
@@ -378,6 +387,7 @@ try {
     // Optionally, you can add logging or other handling for the error
     await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 
