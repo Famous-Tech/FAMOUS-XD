@@ -343,16 +343,22 @@ const subMenus = {
 };
 
 if (m.text && !m.key.fromMe) {
-  const lowerText = m.text.toLowerCase();
+        const lowerText = m.text.toLowerCase();
 
-  if (lowerText === 'menuu' || lowerText === 'help' || lowerText === 'list' || lowerText === 'listmenu') {
-    gss.sendPoll(m.chat, "List Menu", ['Allmenu', 'Groupmenu', 'Downloadmenu', 'Searchmenu', 'Funmenu', 'Toolmenu', 'Convertmenu', 'aimenu', 'Mainmenu', 'Ownermenu'], { quoted: m });
-  } else if (subMenus[lowerText]) {
-    m.reply(subMenus[lowerText]);
-  } else {
-    m.reply('Invalid menu option. Please select a valid option from the main menu.');
-  }
-}
+        console.log('Received command:', lowerText); // Debugging line
+
+        if (lowerText === 'menu' || lowerText === 'help' || lowerText === 'list' || lowerText === 'listmenu') {
+            console.log('Sending menu poll...'); // Debugging line
+            gss.sendPoll(m.chat, "List Menu", ['Allmenu', 'Groupmenu', 'Downloadmenu', 'Searchmenu', 'Funmenu', 'Toolmenu', 'Convertmenu', 'aimenu', 'Mainmenu', 'Ownermenu'], { quoted: m });
+        } else if (subMenus[lowerText]) {
+            console.log('Sending submenu response...'); // Debugging line
+            m.reply(subMenus[lowerText]);
+        } else {
+            console.log('Invalid menu option. User input:', lowerText); // Debugging line
+            m.reply('Invalid menu option. Please select a valid option from the main menu.');
+        }
+    }
+
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
