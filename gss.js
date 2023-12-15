@@ -3198,7 +3198,7 @@ case 'mode2': {
         ];
 
         const buttonMessage = {
-            image: { url: 'https://example.com/image.jpeg' },
+            image: { url: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg' },
             caption: "Hi, it's a button message",
             footer: 'Hello World',
             buttons: buttons,
