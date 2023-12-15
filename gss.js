@@ -43,6 +43,12 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 
+const buttons = [
+    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
+    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
+    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
+    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
+];
 
 
 const {
@@ -3155,10 +3161,10 @@ break;
 	    break
 	    
 	    
-		      case 'mode': {
+		      case '': {
     if (!isCreator) throw mess.owner;
 
-    const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
+    const valids = ['public', 'self', 'onlygroup', 'onlypc'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
         gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode}`));
@@ -3179,13 +3185,6 @@ break;
 
 
 
-const buttons = [
-    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
-    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
-    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
-    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
-];
-
 case 'mode2': {
     if (!isCreator) throw mess.owner;
 
@@ -3196,7 +3195,7 @@ case 'mode2': {
             m.chat,
             {
                 contentText: 'Choose Bot Mode:',
-                buttons: buttons,
+                buttons: buttons, // Make sure buttons is defined before using it
                 footerText: 'Select a mode by tapping the buttons.'
             },
             'buttonsMessage'
@@ -3212,6 +3211,7 @@ case 'mode2': {
     }
 }
 break;
+
 
 
             
