@@ -3161,10 +3161,10 @@ break;
 	    break
 	    
 	    
-		      case '': {
+		      case 'mode': {
     if (!isCreator) throw mess.owner;
 
-    const valids = ['public', 'self', 'onlygroup', 'onlypc'];
+    const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
         gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode}`));
@@ -3206,7 +3206,7 @@ case 'mode2': {
         if (validModes.includes(selectedMode)) {
             // Handle the selected mode
             gss[selectedMode] = true; // Assuming gss is a global variable
-            gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
+            m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
         }
     }
 }
