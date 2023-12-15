@@ -4651,6 +4651,10 @@ break;
 		    if (!(budy.toLowerCase() in msgs)) return
 		    gss.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
 		}
+if (/^bot/i.test(m.body)) {
+                    m.reply(`Bot Activated "${m.pushName}"`)
+                }
+		
         }
         
 
