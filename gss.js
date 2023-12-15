@@ -44,12 +44,6 @@ const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, 
 
 
 
-const buttons = [
-    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
-    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
-    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
-    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
-];
 
 const {
     addPremiumUser,
@@ -3185,22 +3179,32 @@ break;
 
 
 
-case 'mode2': {
+const buttons = [
+    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
+    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
+    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
+    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
+];
+
+case 'mode': {
     if (!isCreator) throw mess.owner;
 
     const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
-        gss.sendMessage(
+        conn.sendMessage(
             m.chat,
-            'Choose Bot Mode:',
-            'buttons',
-            { buttons }
+            {
+                contentText: 'Choose Bot Mode:',
+                buttons: buttons,
+                footerText: 'Select a mode by tapping the buttons.'
+            },
+            'buttonsMessage'
         );
     } else {
         const selectedMode = args[0].toLowerCase();
 
-        if (selectedMode === 'public' || selectedMode === 'self' || selectedMode === 'onlygroup' || selectedMode === 'onlypc') {
+        if (validModes.includes(selectedMode)) {
             // Handle the selected mode
             gss[selectedMode] = true; // Assuming gss is a global variable
             gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
@@ -3208,6 +3212,7 @@ case 'mode2': {
     }
 }
 break;
+
 
             
 
