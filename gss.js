@@ -3195,7 +3195,12 @@ case 'mode2': {
             m.chat,
             {
                 contentText: 'Choose Bot Mode:',
-                buttons: buttons, // Make sure buttons is defined before using it
+                buttons: [
+                    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
+                    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
+                    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
+                    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
+                ],
                 footerText: 'Select a mode by tapping the buttons.'
             },
             'buttonsMessage'
@@ -3206,7 +3211,7 @@ case 'mode2': {
         if (validModes.includes(selectedMode)) {
             // Handle the selected mode
             gss[selectedMode] = true; // Assuming gss is a global variable
-            m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
+            gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode});
         }
     }
 }
