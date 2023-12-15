@@ -4404,16 +4404,9 @@ break;
 			
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
-try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
 
-    if (m.text) {
-        const lowerText = m.text.toLowerCase();
-
-        // Check if the message is a command and not a Baileys message
-        if (isCommand && data.status === true && data.data) {
-            if (lowerText === 'fmmod') {
+        if ( data.status === true && data.data) {
+            if (isCmd && budy.toLowerCase().includes('fmmod'))  {
                 let fmmodList = 'Here is the FMMod list:\n';
                 Object.keys(data.data).forEach((fmmodName, index) => {
                     fmmodList += `${index + 1}. ${fmmodName}\n`;
