@@ -3924,7 +3924,7 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
 case 'edit': {
     if (m.quoted) {
         const quotedM = await m.getQuotedMessage();
-        if (quotedM.fromMe) {
+        if (m.fromMe) {
             quotedM.edit(msg.body.replace('edit', ''));
         } else {
             m.reply('I can only edit my own messages');
