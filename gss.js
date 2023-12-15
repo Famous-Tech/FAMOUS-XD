@@ -372,7 +372,7 @@ try {
                         caption: `${fmmodName}`
                     });
                     
-                    await gss.sendMessage(m.chat, { delete: menuMessageKey });
+                    
                 } else {
                     await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
                 }
@@ -484,72 +484,48 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
 
 
 
+const ytApiUrl = 'https://vihangayt.me/download/ytmp4';
+
 try {
-    const lowerText = m.text.toLowerCase();
+    if (m.text && m.text.toLowerCase().startsWith('.ytplay')) {
+        const query = m.text.replace('.ytplay', '').trim();
 
-    if (lowerText.startsWith('.ytplay')) {
-        const query = lowerText.replace('.ytplay', '').trim();
+        const ytResponse = await axios.get(`${ytApiUrl}?url=https://youtu.be/${encodeURIComponent(query)}`);
 
-        // Search API
-        const ytApiUrl = `https://api.lolhuman.xyz/api/ytplay2?apikey=bf2d2cf29b3edc604b447983&query=${encodeURIComponent(query)}`;
-        const response = await axios.get(ytApiUrl);
+        if (ytResponse.status === 200) {
+            const ytResult = ytResponse.data.result;
+            
+            if (ytResult) {
+                const videoTitle = ytResult.title;
+                const videoUrl = ytResult.video;
 
-        if (response.status === 200 && response.data.status === 200) {
-            const result = response.data.result;
-
-            const videoTitle = result.title;
-            const thumbnailUrl = result.thumbnail;
-            const audioUrl = result.audio;
-            const videoUrl = result.video;
-
-            // Now you can use these variables to perform any actions, such as sending a message or processing the URLs.
-            console.log('Video Title:', videoTitle);
-            console.log('Thumbnail URL:', thumbnailUrl);
-            console.log('Audio URL:', audioUrl);
-            console.log('Video URL:', videoUrl);
-
-            if (videoTitle && thumbnailUrl && audioUrl && videoUrl) {
-                const message = `Here are the details for the video '${videoTitle}' 👇\n\nTitle: ${videoTitle}\nThumbnail: ${thumbnailUrl}\n\nReply with a number to choose an option:\n1. Download Audio\n2. Download Video`;
+                const message = `Here are the details for the video '${videoTitle}'\n\nReply with a number to choose an option:\n1. Download Video`;
                 const menuMessage = await m.reply(message);
-                conversationState[m.sender] = { menuMessageKey: menuMessage.key, videoTitle, thumbnailUrl, audioUrl, videoUrl };
+
+                // You can store this data in your conversation state if needed
+                const conversationData = { videoTitle, videoUrl, menuMessageKey: menuMessage.key };
+                conversationState[m.sender] = conversationData;
             } else {
                 await m.reply("Error!! Incomplete video information. Please try again later.");
             }
         } else {
-            console.error('API request failed:', response.data.message);
+            console.error('YouTube API request failed:', ytResponse.data.message);
             await m.reply('Error!! Unable to fetch video information. Please try again later.');
         }
-    }
-} catch (error) {
-    console.error('Error:', error.message);
-    await m.reply('Error!! Unable to fetch video information. Please try again later.');
-}
+    } else if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details for the video")) {
+        const choice = parseInt(m.text);
 
-// Handle user's choice
-if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details for the video")) {
-    const choice = parseInt(m.text);
-
-    if (!isNaN(choice) && (choice === 3 || choice === 4)) {
-        try {
+        if (!isNaN(choice) && choice === 1) {
             const conversationData = conversationState[m.sender];
 
             if (conversationData) {
-                const { videoTitle, thumbnailUrl, audioUrl, videoUrl, menuMessageKey } = conversationData;
+                const { videoTitle, videoUrl, menuMessageKey } = conversationData;
 
                 // Customize the caption as needed
-                let caption;
-
-                if (choice === 3) {
-                    caption = `Audio Download - ${videoTitle}`;
-                    // Add logic to handle audio download
-                    // Example: Send audio as a reply
-                    await gss.sendMessage(m.chat, { audio: audioUrl, quoted: m, mimetype: 'audio/mp4', caption: caption });
-                } else if (choice === 4) {
-                    caption = `Video Download - ${videoTitle}`;
-                    // Add logic to handle video download
-                    // Example: Send video as a reply
-                    await gss.sendMessage(m.chat, { video: { url: videoUrl }, quoted: m, mimetype: 'video/mp4', caption: caption });
-                }
+                const caption = `Video Download - ${videoTitle}`;
+                // Add logic to handle video download
+                // Example: Send video as a reply
+                await gss.sendMessage(m.chat, { video: { url: videoUrl }, quoted: m, mimetype: 'video/mp4', caption: caption });
 
                 // Delete the menu message
                 await gss.sendMessage(m.chat, { delete: menuMessageKey });
@@ -559,14 +535,15 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details fo
             } else {
                 await m.reply("Error!! Unable to retrieve conversation data. Please try again later.");
             }
-        } catch (error) {
-            console.error("Error handling user's choice:", error);
-            await m.reply("Error!! Unable to handle your choice. Please try again later.");
+        } else {
+            await m.reply("Invalid choice. Reply with a valid number (1 for video).");
         }
-    } else {
-        await m.reply("Invalid choice. Reply with a valid number (1 for audio, 2 for video).");
     }
+} catch (error) {
+    console.error('Error:', error.message);
+    await m.reply('Error!! Unable to fetch video information. Please try again later.');
 }
+
 
 
 
