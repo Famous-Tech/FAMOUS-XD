@@ -4435,7 +4435,6 @@ const apiUrl = 'https://vihangayt.me/download/fmmods';
                 }
             }
         }
-    }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
     await m.reply('Error fetching data. Please try again later.');
