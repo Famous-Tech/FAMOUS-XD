@@ -3192,19 +3192,20 @@ case 'mode2': {
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
         const buttons = [
-            { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
-            { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
-            { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
-            { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
+            { buttonId: 'id1', buttonText: { displayText: 'Button 1' }, type: 1 },
+            { buttonId: 'id2', buttonText: { displayText: 'Button 2' }, type: 1 },
+            { buttonId: 'id3', buttonText: { displayText: 'Button 3' }, type: 1 }
         ];
 
         const buttonMessage = {
-            contentText: 'Choose Bot Mode:',
+            image: { url: 'https://example.com/image.jpeg' },
+            caption: "Hi, it's a button message",
+            footer: 'Hello World',
             buttons: buttons,
-            footerText: 'Select a mode by tapping the buttons.'
+            headerType: 4
         };
 
-        gss.sendMessage(m.chat, buttonMessage, 'buttonsMessage');
+        const sendMsg = await gss.sendMessage(id, buttonMessage);
     } else {
         const selectedMode = args[0].toLowerCase();
 
