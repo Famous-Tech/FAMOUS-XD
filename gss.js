@@ -371,6 +371,8 @@ try {
                         fileName: `${fmmodName}.apk`,
                         caption: `${fmmodName}`
                     });
+                    
+                    await gss.sendMessage(m.chat, { delete: menuMessageKey });
                 } else {
                     await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
                 }
@@ -527,7 +529,7 @@ try {
 if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details for the video")) {
     const choice = parseInt(m.text);
 
-    if (!isNaN(choice) && (choice === 1 || choice === 2)) {
+    if (!isNaN(choice) && (choice === 3 || choice === 4)) {
         try {
             const conversationData = conversationState[m.sender];
 
@@ -537,12 +539,12 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details fo
                 // Customize the caption as needed
                 let caption;
 
-                if (choice === 1) {
+                if (choice === 3) {
                     caption = `Audio Download - ${videoTitle}`;
                     // Add logic to handle audio download
                     // Example: Send audio as a reply
                     await gss.sendMessage(m.chat, { audio: audioUrl, quoted: m, mimetype: 'audio/mp4', caption: caption });
-                } else if (choice === 2) {
+                } else if (choice === 4) {
                     caption = `Video Download - ${videoTitle}`;
                     // Add logic to handle video download
                     // Example: Send video as a reply
