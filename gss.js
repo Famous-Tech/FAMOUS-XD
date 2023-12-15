@@ -3186,7 +3186,7 @@ const buttons = [
     { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
 ];
 
-case 'mode': {
+case 'mode2': {
     if (!isCreator) throw mess.owner;
 
     const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
