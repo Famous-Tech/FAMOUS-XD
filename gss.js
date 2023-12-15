@@ -3211,7 +3211,7 @@ case 'mode2': {
         if (validModes.includes(selectedMode)) {
             // Handle the selected mode
             gss[selectedMode] = true; // Assuming gss is a global variable
-            gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode});
+            gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
         }
     }
 }
