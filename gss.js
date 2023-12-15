@@ -4170,6 +4170,18 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
                 }
                 break
                 
+case 'edit': {
+    if (m.quoted) {
+        const quotedM = await msg.getQuotedMessage();
+        if (quotedM.fromMe) {
+            quotedM.edit(msg.body.replace('edit', ''));
+        } else {
+            m.reply('I can only edit my own messages');
+        }
+    }
+    break;
+}
+
             
             case 'menu':
 case 'help':
