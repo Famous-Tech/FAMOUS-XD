@@ -3192,7 +3192,7 @@ case 'mode2': {
     const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
-        conn.sendMessage(
+        gss.sendMessage(
             m.chat,
             {
                 contentText: 'Choose Bot Mode:',
