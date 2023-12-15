@@ -487,44 +487,51 @@ if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the search res
 const ytApiUrl = 'https://vihangayt.me/download/ytmp4';
 
 try {
-    if (m.text && m.text.toLowerCase().startsWith('.ytplay')) {
-        const query = m.text.replace('.ytplay', '').trim();
+    if (m.text && m.text.toLowerCase().startsWith('.yfplay')) {
+        const query = m.text.replace('.yfplay', '').trim();
+        const ytplayApiUrl = `https://vihangayt.me/download/ytmp4?url=${encodeURIComponent(query)}`;
 
-        const ytResponse = await axios.get(`${ytApiUrl}?url=https://youtu.be/${encodeURIComponent(query)}`);
+        const response = await axios.get(ytplayApiUrl);
 
-        if (ytResponse.status === 200) {
-            const ytResult = ytResponse.data.result;
-            
-            if (ytResult) {
-                const videoTitle = ytResult.title;
-                const videoUrl = ytResult.video;
+        if (response.status === 200 && response.data.status === true) {
+            const data = response.data.data;
+            const videoTitle = data.title;
+            const thumbnailUrl = data.thumbnail;
 
-                const message = `Here are the details for the video '${videoTitle}'\n\nReply with a number to choose an option:\n1. Download Video`;
-                const menuMessage = await m.reply(message);
+            let qualityList = `Choose a quality for '${videoTitle}':\n`;
+            let index = 1;
 
-                // You can store this data in your conversation state if needed
-                const conversationData = { videoTitle, videoUrl, menuMessageKey: menuMessage.key };
-                conversationState[m.sender] = conversationData;
-            } else {
-                await m.reply("Error!! Incomplete video information. Please try again later.");
-            }
+            // Append each available quality to the list
+            Object.keys(data).forEach(key => {
+                if (key.startsWith('vid_')) {
+                    qualityList += `${index}. ${key.replace('vid_', '')}\n`;
+                    index++;
+                }
+            });
+
+            const message = `Here are the available qualities for the video '${videoTitle}'\n\n${qualityList}`;
+            const menuMessage = await m.reply(message);
+
+            // Store data in conversation state
+            const conversationData = { videoTitle, thumbnailUrl, data, menuMessageKey: menuMessage.key };
+            conversationState[m.sender] = conversationData;
         } else {
-            console.error('YouTube API request failed:', ytResponse.data.message);
+            console.error('ytplay API request failed:', response.data.message);
             await m.reply('Error!! Unable to fetch video information. Please try again later.');
         }
-    } else if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the details for the video")) {
+    } else if (m.quoted && m.quoted.text && m.quoted.text.includes("Here are the available qualities for the video")) {
         const choice = parseInt(m.text);
+        const conversationData = conversationState[m.sender];
 
-        if (!isNaN(choice) && choice === 1) {
-            const conversationData = conversationState[m.sender];
+        if (!isNaN(choice) && choice >= 1 && conversationData) {
+            const { videoTitle, thumbnailUrl, data, menuMessageKey } = conversationData;
+            const qualityKeys = Object.keys(data).filter(key => key.startsWith('vid_'));
+            const selectedQuality = qualityKeys[choice - 1];
 
-            if (conversationData) {
-                const { videoTitle, videoUrl, menuMessageKey } = conversationData;
+            if (selectedQuality) {
+                const caption = `Download ${selectedQuality.replace('vid_', '')} - ${videoTitle}`;
+                const videoUrl = data[selectedQuality];
 
-                // Customize the caption as needed
-                const caption = `Video Download - ${videoTitle}`;
-                // Add logic to handle video download
-                // Example: Send video as a reply
                 await gss.sendMessage(m.chat, { video: { url: videoUrl }, quoted: m, mimetype: 'video/mp4', caption: caption });
 
                 // Delete the menu message
@@ -533,16 +540,17 @@ try {
                 // Clear the conversation state after sending the download
                 delete conversationState[m.sender];
             } else {
-                await m.reply("Error!! Unable to retrieve conversation data. Please try again later.");
+                await m.reply("Invalid choice. Please select a valid number.");
             }
         } else {
-            await m.reply("Invalid choice. Reply with a valid number (1 for video).");
+            await m.reply("Invalid choice. Reply with a valid number.");
         }
     }
 } catch (error) {
     console.error('Error:', error.message);
     await m.reply('Error!! Unable to fetch video information. Please try again later.');
 }
+
 
 
 
