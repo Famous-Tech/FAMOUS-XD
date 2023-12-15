@@ -4353,6 +4353,12 @@ break;
 
             
             default:
+            
+            if (/^bot/i.test(m.body)) {
+                    m.reply(`Bot Activated "${m.pushName}"`)
+                }
+		
+        }
                 if (budy.startsWith('=>')) {
                     if (!isCreator) return m.reply(mess.owner)
                     function Return(sul) {
@@ -4414,13 +4420,7 @@ break;
 		    if (!(budy.toLowerCase() in msgs)) return
 		    gss.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
 		}
-if (/^bot/i.test(m.body)) {
-                    m.reply(`Bot Activated "${m.pushName}"`)
-                }
-		
-        }
         
-
     } catch (err) {
         m.reply(util.format(err))
     }
