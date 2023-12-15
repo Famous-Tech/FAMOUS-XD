@@ -43,6 +43,14 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 
+
+const buttons = [
+    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
+    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
+    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
+    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
+];
+
 const {
     addPremiumUser,
     getPremiumExpired,
@@ -2955,38 +2963,6 @@ case 'buypremium':
             break
             
             
-            
-case 'fmmods': {
-    m.reply(mess.wait);
-    
-    // Replace with your actual URL
-    const apiUrl = 'https://vihangayt.me/download/fmmods';
-
-    try {
-        const response = await axios.get(apiUrl);
-        const data = response.data;
-
-        if (data.status === true && data.data) {
-            // Assuming you want to process the data for each WhatsApp mod
-            for (const modName in data.data) {
-                const modInfo = data.data[modName];
-                const apkBufferReq = await fetch(modInfo.link);
-                const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                const apkBuffer = Buffer.from(apkArrayBuffer);
-
-                // Send the APK directly with the mod details
-                await gss.sendMessage(m.chat, { document: apkBuffer, mimetype: 'application/vnd.android.package-archive', fileName: `${modName}.apk` }, { quoted: m });
-            }
-        } else {
-            await m.reply('Error in API response. Please try again later.');
-        }
-    } catch (error) {
-        console.error('Error fetching data from the API:', error.message);
-        await m.reply('Error fetching data. Please try again later.');
-    }
-    break;
-}
-
 
 
 case 'invite': {
@@ -3206,6 +3182,32 @@ break;
 }
 break;
 
+
+
+
+case 'mode2': {
+    if (!isCreator) throw mess.owner;
+
+    const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
+
+    if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
+        gss.sendMessage(
+            m.chat,
+            'Choose Bot Mode:',
+            'buttons',
+            { buttons }
+        );
+    } else {
+        const selectedMode = args[0].toLowerCase();
+
+        if (selectedMode === 'public' || selectedMode === 'self' || selectedMode === 'onlygroup' || selectedMode === 'onlypc') {
+            // Handle the selected mode
+            gss[selectedMode] = true; // Assuming gss is a global variable
+            gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
+        }
+    }
+}
+break;
 
             
 
