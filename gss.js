@@ -3191,20 +3191,20 @@ case 'mode2': {
     const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
-        gss.sendMessage(
-            m.chat,
-            {
-                contentText: 'Choose Bot Mode:',
-                buttons: [
-                    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
-                    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
-                    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
-                    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
-                ],
-                footerText: 'Select a mode by tapping the buttons.'
-            },
-            'buttonsMessage'
-        );
+        const buttons = [
+            { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
+            { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
+            { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
+            { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
+        ];
+
+        const buttonMessage = {
+            contentText: 'Choose Bot Mode:',
+            buttons: buttons,
+            footerText: 'Select a mode by tapping the buttons.'
+        };
+
+        gss.sendMessage(m.chat, buttonMessage, 'buttonsMessage');
     } else {
         const selectedMode = args[0].toLowerCase();
 
@@ -3216,6 +3216,7 @@ case 'mode2': {
     }
 }
 break;
+
 
 
 
