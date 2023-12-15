@@ -3205,7 +3205,7 @@ case 'mode2': {
             headerType: 4
         };
 
-        const sendMsg = await gss.sendMessage(id, buttonMessage);
+        const sendMsg = await gss.sendMessage(m.chat, buttonMessage);
     } else {
         const selectedMode = args[0].toLowerCase();
 
