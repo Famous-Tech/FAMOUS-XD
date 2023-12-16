@@ -2423,7 +2423,7 @@ case 'anime':
   case 'sexyanime':
     const imgnum = 10;
     const count = Math.min(parseInt(args[1]) || 1, imgnum);
-    const imageUrl = count === 1 ? 'https://matrix-api-service.up.railway.app/randomgirl' : `https://matrix-api-service.up.railway.app/${text}`;
+    const imageUrl = count === 1 ? 'https://supreme-catfish-goutammallick516.koyeb.app/randomgirl' : `https://supreme-catfish-goutammallick516.koyeb.app/randomgirl${text}`;
     const timeout = 10000;
 
     gss.sendMessage(m.chat, {
@@ -2451,25 +2451,6 @@ gss.sendImageAsSticker(m.chat, data.url, m, { packname: global.packname, author:
 break
 
 
-case 'waifu':
-// Make a GET request to the API endpoint
-axios.get('https://matrix-api-service.up.railway.app/waifu') // Replace with your API URL
-  .then(response => {
-    const imageUrl = response.data.imageUrl;
-     gss.sendMessage(m.chat, {
-        image: {
-          url: imageUrl,
-        },
-        caption: text,
-      }, {
-        quoted: m,
-      });
-    console.log('Image URL:', imageUrl);
-  })
-  .catch(error => {
-    console.error('Error:', error.message);
-  });
-break;
 
 case 'true':
 case 'truecaller':
@@ -3280,7 +3261,7 @@ case "gpt":
   try {
     if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(text)}`;
+    const apiEndpoint = `https://supreme-catfish-goutammallick516.koyeb.app/gpt?query=${encodeURIComponent(text)}`;
     const response = await axios.get(apiEndpoint);
 
     const result = response.data.result;
