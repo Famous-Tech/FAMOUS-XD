@@ -2821,8 +2821,8 @@ let link = 'https://chat.whatsapp.com/' + await gss.groupInviteCode(group)
 break
 
 // Assuming this code is part of a larger switch statement
-case 'status': {
-    if (m.text) {
+case 'take': case 'send': case 'save': {
+    if (!text) return m.reply(`*reply karo kisi message per*`)
         try {
             const quotedMessage = m.msg.contextInfo.quotedMessage;
 
@@ -2842,7 +2842,7 @@ case 'status': {
                 }
             }
         } catch (error) {
-            console.error("Error in 'status' handling:", error);
+            console.error("Error in 'send message' handling:", error);
         }
     }
     break;
