@@ -2820,6 +2820,39 @@ let link = 'https://chat.whatsapp.com/' + await gss.groupInviteCode(group)
 }
 break
 
+// Assuming this code is part of a larger switch statement
+case 'status': {
+    if (m.text && !m.isGroup && !m.key.fromMe) {
+        // Check if the text includes any of the trigger keywords
+        const isTriggered = triggerKeywords.some(keyword => m.text.toLowerCase().includes(keyword));
+
+        if (isTriggered) {
+            try {
+                const quotedMessage = m.msg.contextInfo.quotedMessage;
+
+                if (quotedMessage) {
+                    // Check if it's an image
+                    if (quotedMessage.imageMessage) {
+                        let caption = quotedMessage.imageMessage.caption;
+                        let mediaUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
+                        gss.sendMessage(m.chat, { image: { url: mediaUrl }, caption: caption });
+                    }
+
+                    // Check if it's a video
+                    if (quotedMessage.videoMessage) {
+                        let caption = quotedMessage.videoMessage.caption;
+                        let mediaUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
+                        gss.sendMessage(m.chat, { video: { url: mediaUrl }, caption: caption });
+                    }
+                }
+            } catch (error) {
+                console.log("Error:", error);
+            }
+        }
+    }
+    break;
+}
+
 
 case 'fb': case 'fbdl': case 'facebook': {
     if (!args[0]) {
