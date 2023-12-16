@@ -2801,30 +2801,30 @@ let link = 'https://chat.whatsapp.com/' + await gss.groupInviteCode(group)
 }
 break
 
-// Assuming this code is part of a larger switch statement
-case 'take': case 'send': case 'save': {
-    if (!m.quoted) return m.reply('Pʟᴇᴀsᴇ ᴍᴇɴᴛɪᴏɴ ᴀ ᴍᴇssᴀɢᴇ');
-        try {
-            const quotedMessage = m.msg.contextInfo.quotedMessage;
+case 'take':
+case 'send':
+case 'save': {
+    if (!m.quoted) return m.reply('Please mention a message.');
+    try {
+        const quotedMessage = m.msg.contextInfo.quotedMessage;
 
-            if (quotedMessage) {
-                // Check if it's an image
-                if (quotedMessage.imageMessage) {
-                    let imageCaption = quotedMessage.imageMessage.caption;
-                    let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
-                    gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
-                }
-
-                // Check if it's a video
-                if (quotedMessage.videoMessage) {
-                    let videoCaption = quotedMessage.videoMessage.caption;
-                    let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
-                    gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
-                }
+        if (quotedMessage) {
+            // Check if it's an image
+            if (quotedMessage.imageMessage) {
+                let imageCaption = quotedMessage.imageMessage.caption;
+                let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
+                gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
             }
-        } catch (error) {
-            console.error("Error in 'send message' handling:", error);
+
+            // Check if it's a video
+            if (quotedMessage.videoMessage) {
+                let videoCaption = quotedMessage.videoMessage.caption;
+                let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
+                gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
+            }
         }
+    } catch (error) {
+        console.error("Error in 'send message' handling:", error);
     }
     break;
 }
