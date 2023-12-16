@@ -2416,16 +2416,19 @@ case 'instagramdoc':
 
 
 case 'anime':
-  case 'girl':
-  case 'animegirl':
-  case 'sexy':
-  case 'sexygirl':
-  case 'sexyanime':
-    const imgnum = 10;
-    const count = Math.min(parseInt(args[1]) || 1, imgnum);
-    const imageUrl = count === 1 ? 'https://supreme-catfish-goutammallick516.koyeb.app/randomgirl' : `https://supreme-catfish-goutammallick516.koyeb.app/randomgirl${text}`;
-    const timeout = 10000;
+case 'girl':
+case 'animegirl':
+case 'sexy':
+case 'sexygirl':
+case 'sexyanime':
+  const maxImageCount = 10;
+  const requestedCount = Math.min(parseInt(args[0]) || 1, maxImageCount);
+  const imageUrl = requestedCount === ${text} ?
+    'https://supreme-catfish-goutammallick516.koyeb.app/randomgirl' :
+    `https://supreme-catfish-goutammallick516.koyeb.app/randomgirl${text}`;
+  const requestTimeout = 10000;
 
+  try {
     gss.sendMessage(m.chat, {
       image: {
         url: imageUrl,
@@ -2434,7 +2437,11 @@ case 'anime':
     }, {
       quoted: m,
     });
-    break;
+  } catch (error) {
+    console.error("Error sending random girl image:", error);
+    m.reply('Failed to fetch or send the image. Please try again later.');
+  }
+  break;
 
 
 case 'cry': case 'kill': case 'hug': case 'pat': case 'lick': 
