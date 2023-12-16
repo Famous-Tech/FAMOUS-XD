@@ -2423,7 +2423,7 @@ case 'sexygirl':
 case 'sexyanime':
   const maxImageCount = 10;
   const requestedCount = Math.min(parseInt(args[0]) || 1, maxImageCount);
-  const imageUrl = requestedCount === ${text} ?
+  const imageUrl = requestedCount === 1 ?
     'https://supreme-catfish-goutammallick516.koyeb.app/randomgirl' :
     `https://supreme-catfish-goutammallick516.koyeb.app/randomgirl${text}`;
   const requestTimeout = 10000;
