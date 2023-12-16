@@ -2822,7 +2822,7 @@ break
 
 // Assuming this code is part of a larger switch statement
 case 'take': case 'send': case 'save': {
-    if (!text) return m.reply(`*reply karo kisi message per*`)
+    if (!m.quoted) return m.reply('Pʟᴇᴀsᴇ ᴍᴇɴᴛɪᴏɴ ᴀ ᴍᴇssᴀɢᴇ');
         try {
             const quotedMessage = m.msg.contextInfo.quotedMessage;
 
