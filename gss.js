@@ -2822,32 +2822,27 @@ break
 
 // Assuming this code is part of a larger switch statement
 case 'status': {
-    if (m.text && !m.isGroup && !m.key.fromMe) {
-        // Check if the text includes any of the trigger keywords
-        const isTriggered = triggerKeywords.some(keyword => m.text.toLowerCase().includes(keyword));
+    if (m.text) {
+        try {
+            const quotedMessage = m.msg.contextInfo.quotedMessage;
 
-        if (isTriggered) {
-            try {
-                const quotedMessage = m.msg.contextInfo.quotedMessage;
-
-                if (quotedMessage) {
-                    // Check if it's an image
-                    if (quotedMessage.imageMessage) {
-                        let caption = quotedMessage.imageMessage.caption;
-                        let mediaUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
-                        gss.sendMessage(m.chat, { image: { url: mediaUrl }, caption: caption });
-                    }
-
-                    // Check if it's a video
-                    if (quotedMessage.videoMessage) {
-                        let caption = quotedMessage.videoMessage.caption;
-                        let mediaUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
-                        gss.sendMessage(m.chat, { video: { url: mediaUrl }, caption: caption });
-                    }
+            if (quotedMessage) {
+                // Check if it's an image
+                if (quotedMessage.imageMessage) {
+                    let imageCaption = quotedMessage.imageMessage.caption;
+                    let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
+                    gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
                 }
-            } catch (error) {
-                console.log("Error:", error);
+
+                // Check if it's a video
+                if (quotedMessage.videoMessage) {
+                    let videoCaption = quotedMessage.videoMessage.caption;
+                    let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
+                    gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
+                }
             }
+        } catch (error) {
+            console.error("Error in 'status' handling:", error);
         }
     }
     break;
