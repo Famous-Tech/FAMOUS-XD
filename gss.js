@@ -3302,7 +3302,7 @@ case "gpt":
 
 case "bot":
 case "chat":
-  const think = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+  const thinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
     if (!text) return m.reply(`*Chat With ChatBot*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} Tell Me a Joke*`);
@@ -3321,7 +3321,7 @@ case "chat":
         const typedText = words.slice(0, i + 1).join(' ');
         gss.relayMessage(m.chat, {
           protocolMessage: {
-            key: think.key,
+            key: thinkk.key,
             type: 14,
             editedMessage: {
               conversation: typedText,
