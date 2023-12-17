@@ -2763,10 +2763,51 @@ case 'mediafire': {
 }
 
 
-case "rvo": {
-                if (!quoted.msg.viewOnceMessage.message) return m.reply(`Reply view once with command ${prefix + command}`)
-                quoted.msg.viewOnceMessage.message = false
+   case "rvo": {
+                if (!quoted.m.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
+                quoted.m.viewOnce = false
                 await gss.sendMessage(m.from, { forward: quoted }, { quoted: m })
+            }
+            break
+            
+case 'toonce':
+            case 'toviewonce': {
+                if (!quoted) return m.reply(`Reply Image/Video`)
+                if (/image/.test(mime)) {
+                    anuan = await gss.downloadAndSaveMediaMessage(quoted)
+                    gss.sendMessage(m.chat, {
+                        image: {
+                            url: anuan
+                        },
+                        caption: mess.done,
+                        fileLength: "999",
+                        viewOnce: true
+                    }, {
+                        quoted: m
+                    })
+                } else if (/video/.test(mime)) {
+                    anuanuan = await gss.downloadAndSaveMediaMessage(quoted)
+                    gss.sendMessage(m.chat, {
+                        video: {
+                            url: anuanuan
+                        },
+                        caption: mess.success,
+                        fileLength: "99999999",
+                        viewOnce: true
+                    }, {
+                        quoted: m
+                    })
+                } else if (/audio/.test(mime)) {
+                   bebasap = await gss.downloadAndSaveMediaMessage(quoted)
+                   gss.sendMessage(m.chat, {
+                     audio: {
+                        url: bebasap
+                     },
+                     mimetype: 'audio/mpeg',
+                     ptt: true,
+                     viewOnce: true
+                   })
+                }
             }
             break
 
