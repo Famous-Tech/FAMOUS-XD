@@ -3300,6 +3300,46 @@ case "gpt":
   }
   break;
 
+case "bot":
+case "chat":
+  const think = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+
+  try {
+    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+
+    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
+    const response = await axios.get(apiEndpoint);
+
+    const result = response.data.cnt.replace(/\${pushname}/g, m.sender); // Replace ${pushname} with the actual user's name
+    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
+
+    const words = result.split(' ');
+    let i = 0;
+
+    const typewriterInterval = setInterval(() => {
+      if (i < words.length) {
+        const typedText = words.slice(0, i + 1).join(' ');
+        gss.relayMessage(m.chat, {
+          protocolMessage: {
+            key: think.key,
+            type: 14,
+            editedMessage: {
+              conversation: typedText,
+            },
+          },
+        }, {});
+        i++;
+      } else {
+        clearInterval(typewriterInterval); // Stop the typewriter effect
+      }
+    }, typingSpeed);
+  } catch (error) {
+    console.error(error);
+    m.reply("Error: " + error.message);
+  }
+  break;
+
+
 case 'snapshot': case 'ss':
   try {
     if (!text) return m.reply("```Uhh Please, Give me Url!```");
