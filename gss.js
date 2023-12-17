@@ -2764,8 +2764,8 @@ case 'mediafire': {
 
 
 case "rvo": {
-                if (!quoted.msg.viewOnceMessage) return m.reply(`Reply view once with command ${prefix + command}`)
-                quoted.msg.viewOnceMessage = false
+                if (!quoted.msg.viewOnceMessage.message) return m.reply(`Reply view once with command ${prefix + command}`)
+                quoted.msg.viewOnceMessage.message = false
                 await gss.sendMessage(m.from, { forward: quoted }, { quoted: m })
             }
             break
