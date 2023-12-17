@@ -977,44 +977,13 @@ case 'setdesc': case 'setdesk': {
 }
 break;
 
-          case "setpp":
-case "setprofile":
-case "seticon": {
-  const media = await gss.downloadAndSaveMediaMessage(m);
-  if (m.isOwner && !m.isGroup) {
-    if (/full/i.test(m.text)) await gss.setProfilePicture(gss?.user?.id, media, "full");
-    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(gss.decodeJid(gss?.user?.id));
-    else await gss.setProfilePicture(gss?.user?.id, media, "normal");
-  } else if (m.isGroup && m.isAdmin && m.isBotAdmin) {
-    if (/full/i.test(m.text)) await gss.setProfilePicture(m.chat, media, "full");
-    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(m.chat);
-    else await gss.setProfilePicture(m.chat, media, "normal");
-  }
-}
-break;
-
-
-
-case "fetch":
-case "get": {
-  if (!/^https:\/\//i.test(m.text)) return m.reply(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`);
-  m.reply("Wait");
-  const mime = await import("mime-types");
-  try {
-    const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" });
-
-    if (!/utf-8|json|html|plain/.test(res?.headers?.get("content-type"))) {
-      const fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["';]/g, '') : '';
-      return m.reply(res.data, { fileName, mimetype: mime.lookup(fileName) });
-    }
-
-    let text = res?.data?.toString() || res?.data;
-    text = format(text);
-
-    m.reply(text.slice(0, 65536) + '');
-  } catch (e) {
-    m.reply(format(e));
-  }
+          case 'setppbot': {
+  if (!isCreator) throw mess.owner;
+  if (!/image/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
+  if (/webp/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
+  let media = await gss.downloadAndSaveMediaMessage(qmsg);
+  await gss.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media));
+  m.reply(mess.success);
 }
 break;
 
@@ -2810,7 +2779,7 @@ case 'toonce':
                         image: {
                             url: anuan
                         },
-                        caption: mess.done,
+                        caption: mess.success,
                         fileLength: "999",
                         viewOnce: true
                     }, {
