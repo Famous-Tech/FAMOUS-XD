@@ -977,39 +977,47 @@ case 'setdesc': case 'setdesk': {
 }
 break;
 
-          case "setpp": case "setprofile": case "seticon": {
-                const media = await gss.downloadAndSaveMediaMessage()
-                if (m.isOwner && !m.isGroup) {
-                    if (/full/i.test(m.text)) await gss.setProfilePicture(gss?.user?.id, media, "full")
-                    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(gss.decodeJid(gss?.user?.id))
-                    else await gss.setProfilePicture(gss?.user?.id, media, "normal")
-                } else if (m.isGroup && m.isAdmin && m.isBotAdmin) {
-                    if (/full/i.test(m.text)) await gss.setProfilePicture(m.from, media, "full")
-                    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(m.from)
-                    else await gss.setProfilePicture(m.from, media, "normal")
-                }
-            }
-            break
+          case "setpp":
+case "setprofile":
+case "seticon": {
+  const media = await gss.downloadAndSaveMediaMessage(m);
+  if (m.isOwner && !m.isGroup) {
+    if (/full/i.test(m.text)) await gss.setProfilePicture(gss?.user?.id, media, "full");
+    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(gss.decodeJid(gss?.user?.id));
+    else await gss.setProfilePicture(gss?.user?.id, media, "normal");
+  } else if (m.isGroup && m.isAdmin && m.isBotAdmin) {
+    if (/full/i.test(m.text)) await gss.setProfilePicture(m.chat, media, "full");
+    else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(m.chat);
+    else await gss.setProfilePicture(m.chat, media, "normal");
+  }
+}
+break;
 
 
-case "fetch": case "get": {
-                if (!/^https:\/\//i.test(m.text)) return m.reply(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`)
-                m.reply("wait")
-                let mime = (await import("mime-types"))
-                const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" })
-                if (!/utf-8|json|html|plain/.test(res?.headers?.get("content-type"))) {
-                    let fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["';]/g, '') : ''
-                    return m.reply(res.data, { fileName, mimetype: mime.lookup(fileName) })
-                }
-                let text = res?.data?.toString() || res?.data
-                text = format(text)
-                try {
-                    m.reply(text.slice(0, 65536) + '')
-                } catch (e) {
-                    m.reply(format(e))
-                }
-            }
-            break
+
+case "fetch":
+case "get": {
+  if (!/^https:\/\//i.test(m.text)) return m.reply(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`);
+  m.reply("Wait");
+  const mime = await import("mime-types");
+  try {
+    const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" });
+
+    if (!/utf-8|json|html|plain/.test(res?.headers?.get("content-type"))) {
+      const fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["';]/g, '') : '';
+      return m.reply(res.data, { fileName, mimetype: mime.lookup(fileName) });
+    }
+
+    let text = res?.data?.toString() || res?.data;
+    text = format(text);
+
+    m.reply(text.slice(0, 65536) + '');
+  } catch (e) {
+    m.reply(format(e));
+  }
+}
+break;
+
     
 case 'toqr': {
                 if (!q) return m.reply(' Please include link or text!')
