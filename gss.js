@@ -3300,6 +3300,16 @@ case "gpt":
   }
   break;
 
+case 'snapshot': case 'ss':
+  try {
+    if (!text) return m.reply("```Uhh Please, Give me Url!```");
+    let urll = `https://s.vercel.app/api?url=${text.match(/\bhttps?:\/\/\S+/gi)[0]}&width=1280&height=720`
+    let media = await getBuffer(urll)
+    return await gss.sendMessage(m.chat, { image: media }, { quoted: m });
+  } catch (err) {
+    return m.reply("```Error While Fetching Snapshot```");
+  }
+  break;
 
 
 
