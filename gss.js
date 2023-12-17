@@ -2469,7 +2469,7 @@ case 'truecaller':
     }
 
     const installationId = 'a1i0Q--j6pQD-V1-BJnOIongGhfL3HZuNr-yb1WJChcUdQn7GEc9yAScT71cs8_F';
-    const apiUrl = `https://matrix-coder.vercel.app/api/truecaller?phone=${encodeURIComponent(text)}&id=${installationId}`;
+    const apiUrl = `https://matrix-nextjs-api.vercel.app/api/truecaller?phone=${encodeURIComponent(text)}&id=${installationId}`;
 
     let response = await axios.get(apiUrl);
     console.log(response);
