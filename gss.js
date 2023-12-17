@@ -978,7 +978,7 @@ case 'setdesc': case 'setdesk': {
 break;
 
           case "setpp": case "setprofile": case "seticon": {
-                const media = await quoted.download()
+                const media = await gss.downloadAndSaveMediaMessage()
                 if (m.isOwner && !m.isGroup) {
                     if (/full/i.test(m.text)) await gss.setProfilePicture(gss?.user?.id, media, "full")
                     else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await gss.removeProfilePicture(gss.decodeJid(gss?.user?.id))
