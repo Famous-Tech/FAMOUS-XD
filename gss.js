@@ -2469,7 +2469,7 @@ case 'truecaller':
     }
 
     const installationId = 'a1i0Q--j6pQD-V1-BJnOIongGhfL3HZuNr-yb1WJChcUdQn7GEc9yAScT71cs8_F';
-    const apiUrl = `https://matrix-api-service.up.railway.app/truecaller?phone=${encodeURIComponent(text)}&id=${installationId}`;
+    const apiUrl = `https://matrix-coder.vercel.app/api/truecaller?phone=${encodeURIComponent(text)}&id=${installationId}`;
 
     let response = await axios.get(apiUrl);
     console.log(response);
@@ -3268,7 +3268,7 @@ case "gpt":
   try {
     if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const apiEndpoint = `https://supreme-catfish-goutammallick516.koyeb.app/gpt?query=${encodeURIComponent(text)}`;
+    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
     const response = await axios.get(apiEndpoint);
 
     const result = response.data.result;
