@@ -3340,11 +3340,24 @@ case "chat":
   break;
 
 
-case 'snapshot': case 'ss':
+case 'snapshotfull': case 'ssf':
   try {
     if (!text) return m.reply("```Uhh Please, Give me Url!```");
     let urll = `https://image.thum.io/get/fullpage/=${text.match(/\bhttps?:\/\/\S+/gi)[0]}`
     let media = await getBuffer(urll)
+    return await gss.sendMessage(m.chat, { image: media }, { quoted: m });
+  } catch (err) {
+    return m.reply("```Error While Fetching Snapshot```");
+  }
+  break;
+  
+  
+case 'snapshot':
+case 'ss':
+  try {
+    if (!text) return m.reply("```Uhh Please, Give me Url!```");
+    let urll = `https://api.screenshotmachine.com/?key=c04d3a&url=${encodeURIComponent(text)}&dimension=720x720`;
+    let media = await getBuffer(urll);
     return await gss.sendMessage(m.chat, { image: media }, { quoted: m });
   } catch (err) {
     return m.reply("```Error While Fetching Snapshot```");
