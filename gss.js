@@ -3305,7 +3305,7 @@ case "chat":
   const think = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
-    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+    if (!text) return m.reply(`*Chat With ChatBot*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} Tell Me a Joke*`);
 
     const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
     const response = await axios.get(apiEndpoint);
