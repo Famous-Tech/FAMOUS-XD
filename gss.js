@@ -2541,16 +2541,17 @@ case 'xnxxsearch': {
 // Assuming you have a command to initiate the FMMod list poll
 case 'fmmodpoll':
     const fmmodList = ['FMMod1', 'FMMod2', 'FMMod3']; // Replace with your actual FMMod list
-    const pollOptions = fmmodList.map((fmmod, index) => `${index + 1}. ${fmmod}`);
-    
-    const pollMessage = await gss.sendPoll(m.chat, {
-        pollMessage: {
-            question: 'Choose an FMMod:',
-            options: pollOptions,
-            isAnonymous: false,
-            durationMinutes: 5, // Adjust the duration as needed
-        },
-    });
+const pollOptions = fmmodList.map((fmmod, index) => `${index + 1}. ${fmmod}`);
+
+const pollMessage = await gss.sendMessage(m.chat, {
+    pollMessage: {
+        question: 'Choose an FMMod:',
+        options: pollOptions,
+        isAnonymous: false,
+        durationMinutes: 5, // Adjust the duration as needed
+        selectableCount: fmmodList.length, // Ensure this count is within the correct range
+    },
+});
 
     // Listen for poll results
     gss.ev.on('messages.update', async (chatUpdate) => {
