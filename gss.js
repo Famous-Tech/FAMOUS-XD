@@ -370,11 +370,12 @@ try {
         const lowerText = m.text.toLowerCase();
 
         if (data.status === true && data.data) {
-    if (lowerText === '.playy') {
-        let playList = 'Here is the yts list:\n';
-        Object.keys(data.data).forEach((playName, index) => {
-            playList += `${index + 1}. ${playName}\n`;
-        });
+            if (lowerText === '.playy') {
+                let playList = 'Here is the yts list:\n';
+                Object.keys(data.data).forEach((playName, index) => {
+                    const qualityInfo = data.data[playName];
+                    playList += `${index + 1}. Quality: ${qualityInfo.title}\n`;
+                });
                 await m.reply(playList);
             } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the yts list')) {
                 const selectedNumber = parseInt(lowerText);
@@ -393,10 +394,8 @@ try {
                         fileName: `${playName}.mp4`,
                         caption: `${playName}`
                     });
-                    
-                    
                 } else {
-                    await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
+                    await m.reply('Invalid video number. Please select a number from the list.');
                 }
             }
         }
@@ -405,6 +404,7 @@ try {
     console.error('Error fetching data from the API:', error.message);
     await m.reply('Error fetching data. Please try again later.');
 }
+
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
@@ -2538,48 +2538,6 @@ case 'xnxxsearch': {
               }
               break
               
-// Assuming you have a command to initiate the FMMod list poll
-case 'fmmodpoll':
-    const fmmodList = ['FMMod1', 'FMMod2', 'FMMod3']; // Replace with your actual FMMod list
-const pollOptions = fmmodList.map((fmmod, index) => `${index + 1}. ${fmmod}`);
-
-const pollMessage = await gss.sendPoll(m.chat, {
-    pollMessage: {
-        question: 'Choose an FMMod:',
-        options: pollOptions,
-        isAnonymous: false,
-        durationMinutes: 5, // Adjust the duration as needed
-        selectableCount: fmmodList.length, // Ensure this count is within the correct range
-    },
-});
-
-    // Listen for poll results
-    gss.ev.on('messages.update', async (chatUpdate) => {
-        for (const { key, update } of chatUpdate) {
-            if (update.pollUpdates && key.id === pollMessage.id) {
-                // Poll has ended, process the results
-                const pollResults = await getPollResults(update.pollUpdates);
-
-                if (pollResults && pollResults.length > 0) {
-                    const mostVotedIndex = pollResults.reduce((prev, current) =>
-                        current.votes > prev.votes ? current : prev
-                    ).index;
-
-                    const selectedFMMod = fmmodList[mostVotedIndex];
-
-                    // Provide download link based on the selected FMMod
-                    const downloadLink = getDownloadLink(selectedFMMod);
-
-                    await gss.sendMessage(m.chat, {
-                        text: `The most voted FMMod is ${selectedFMMod}. Download link: ${downloadLink}`,
-                    });
-                } else {
-                    await gss.sendMessage(m.chat, { text: 'No votes were cast.' });
-                }
-            }
-        }
-    });
-    break;
 
 
 case 'qc':
