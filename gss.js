@@ -2537,6 +2537,49 @@ case 'xnxxsearch': {
               if (res.status) m.reply(ff)
               }
               break
+              
+// Assuming you have a command to initiate the FMMod list poll
+case 'fmmodpoll':
+    const fmmodList = ['FMMod1', 'FMMod2', 'FMMod3']; // Replace with your actual FMMod list
+    const pollOptions = fmmodList.map((fmmod, index) => `${index + 1}. ${fmmod}`);
+    
+    const pollMessage = await gss.sendMessage(m.chat, {
+        pollMessage: {
+            question: 'Choose an FMMod:',
+            options: pollOptions,
+            isAnonymous: false,
+            durationMinutes: 5, // Adjust the duration as needed
+        },
+    });
+
+    // Listen for poll results
+    gss.ev.on('messages.update', async (chatUpdate) => {
+        for (const { key, update } of chatUpdate) {
+            if (update.pollUpdates && key.id === pollMessage.id) {
+                // Poll has ended, process the results
+                const pollResults = await getPollResults(update.pollUpdates);
+
+                if (pollResults && pollResults.length > 0) {
+                    const mostVotedIndex = pollResults.reduce((prev, current) =>
+                        current.votes > prev.votes ? current : prev
+                    ).index;
+
+                    const selectedFMMod = fmmodList[mostVotedIndex];
+
+                    // Provide download link based on the selected FMMod
+                    const downloadLink = getDownloadLink(selectedFMMod);
+
+                    await gss.sendMessage(m.chat, {
+                        text: `The most voted FMMod is ${selectedFMMod}. Download link: ${downloadLink}`,
+                    });
+                } else {
+                    await gss.sendMessage(m.chat, { text: 'No votes were cast.' });
+                }
+            }
+        }
+    });
+    break;
+
 
 case 'qc':
     try {
