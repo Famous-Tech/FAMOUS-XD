@@ -2764,11 +2764,11 @@ case 'mediafire': {
 
 
    case "rvo": {
-    if (!m.quoted || !m.quoted.m.viewOnce) {
+    if (!m.quoted || !m.quoted.m.viewOnceMessage) {
         return m.reply(`Reply view once with command ${prefix + command}`);
     }
 
-    m.quoted.m.viewOnce = false;
+    m.quoted.m.viewOnceMessage = false;
 
     await gss.sendMessage(m.from, { forward: m.quoted }, { quoted: m });
 }
