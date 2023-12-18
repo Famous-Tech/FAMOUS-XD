@@ -2543,7 +2543,7 @@ case 'fmmodpoll':
     const fmmodList = ['FMMod1', 'FMMod2', 'FMMod3']; // Replace with your actual FMMod list
     const pollOptions = fmmodList.map((fmmod, index) => `${index + 1}. ${fmmod}`);
     
-    const pollMessage = await gss.sendMessage(m.chat, {
+    const pollMessage = await gss.sendPoll(m.chat, {
         pollMessage: {
             question: 'Choose an FMMod:',
             options: pollOptions,
