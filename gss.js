@@ -452,7 +452,7 @@ let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
 if (m.isAntiBotz && isBotAdmins) {
-if (m.isBaileys && !m.key.fromMe) {
+if (isBaileys && !m.key.fromMe) {
 if (!m.isOwner && !isAdmins) {
 m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
 setTimeout(() => {
