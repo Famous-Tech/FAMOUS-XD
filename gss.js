@@ -430,8 +430,6 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
     
 
 
-const isBaileys = m?.key?.id?.startsWith("BAE5");
-
 let chats = db.data.chats[m.chat];
 
 // Initialize chats if not defined
@@ -446,10 +444,6 @@ let isMuted = chats && 'mute' in chats ? chats.mute : false;
 let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
-
-if (isBaileys && m.fromMe) {
-    m.reply('anti bot working');
-}
 
 
 
@@ -553,6 +547,11 @@ if (AUTO_READ_ENABLED && command) {
 }
 }
         
+const isBaileys = m?.key?.id?.startsWith("BAE5");
+
+if (isBaileys && m.fromMe) {
+    m.reply('anti bot working');
+}
 
 	    
 	  // Anti Link
