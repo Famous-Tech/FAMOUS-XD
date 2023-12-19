@@ -336,7 +336,7 @@ if (chatWithChatBot && !m.text) {
         gss.relayMessage(m.chat, {
           protocolMessage: {
             key: thinkingMessage.key,
-            type: MessageType.Text, // Replace 14 with the appropriate MessageType constant
+            type: 14, // Replace 14 with the appropriate MessageType constant
             editedMessage: {
               conversation: typedText,
             },
