@@ -447,14 +447,12 @@ let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
-// Check for antibot and handle accordingly
-if (isAntiBotz && isBaileys && !m.key.fromMe && !m.isOwner && !isAdmins) {
+if (isBaileys && m.fromMe) {
     m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`");
     setTimeout(() => {
         gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
     }, 2000);
 }
-
 
 
 
