@@ -312,6 +312,7 @@ const reactionMessage = {
   `);
 }
 
+/*
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
@@ -404,6 +405,8 @@ try {
     console.error('Error fetching data from the API:', error.message);
     await m.reply('Error fetching data. Please try again later.');
 }
+
+*/
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
