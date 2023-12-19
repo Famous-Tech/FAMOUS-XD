@@ -43,13 +43,6 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 
-const buttons = [
-    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
-    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
-    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
-    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
-];
-
 
 const {
     addPremiumUser,
@@ -312,42 +305,6 @@ const reactionMessage = {
    ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```' }
   `);
 }
-
-
-
-  const botthinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
-
-  try {
-    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
-    const response = await axios.get(apiEndpoint);
-
-    const result = response.data.cnt; // Remove the replace part
-    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
-
-    const words = result.split(' ');
-    let i = 0;
-
-    const typewriterInterval = setInterval(() => {
-      if (i < words.length) {
-        const typedText = words.slice(0, i + 1).join(' ');
-        gss.relayMessage(m.chat, {
-          protocolMessage: {
-            key: botthinkk.key,
-            type: 14,
-            editedMessage: {
-              conversation: typedText,
-            },
-          },
-        }, {});
-        i++;
-      } else {
-        clearInterval(typewriterInterval); // Stop the typewriter effect
-      }
-    }, typingSpeed);
-  } catch (error) {
-    console.error(error);
-    m.reply("Error: " + error.message);
-  }
 
 
 
@@ -3107,41 +3064,6 @@ break;
 }
 break;
 
-
-
-
-case 'mode2': {
-    if (!isCreator) throw mess.owner;
-
-    const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
-
-    if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
-        const buttons = [
-            { buttonId: 'id1', buttonText: { displayText: 'Button 1' }, type: 1 },
-            { buttonId: 'id2', buttonText: { displayText: 'Button 2' }, type: 1 },
-            { buttonId: 'id3', buttonText: { displayText: 'Button 3' }, type: 1 }
-        ];
-
-        const buttonMessage = {
-            image: { url: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg' },
-            caption: "Hi, it's a button message",
-            footer: 'Hello World',
-            buttons: buttons,
-            headerType: 4
-        };
-
-        const sendMsg = await gss.sendMessage(m.chat, buttonMessage);
-    } else {
-        const selectedMode = args[0].toLowerCase();
-
-        if (validModes.includes(selectedMode)) {
-            // Handle the selected mode
-            gss[selectedMode] = true; // Assuming gss is a global variable
-            gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
-        }
-    }
-}
-break;
 
 
 
