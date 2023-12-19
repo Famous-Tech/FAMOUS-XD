@@ -447,7 +447,7 @@ let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
-if (isBaileys && fromMe) {
+if (isBaileys && m.fromMe) {
     m.reply('anti bot working');
 }
 
