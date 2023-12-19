@@ -313,7 +313,7 @@ const reactionMessage = {
 }
 
 
-const apiUrl = 'https://vihangayt.me/download/ds';
+const apiUrl = 'https://vihangayt.me/download/fmmods';
 
 try {
     const response = await axios.get(apiUrl);
