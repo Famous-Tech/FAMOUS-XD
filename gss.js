@@ -313,7 +313,7 @@ const reactionMessage = {
   `);
 }
 
-const chatWithChatBot = true;
+let chatWithChatBot = true;
 
 if (chatWithChatBot && !m.text) {
   const lowerText = m.text.toLowerCase();
