@@ -316,10 +316,10 @@ const reactionMessage = {
 
 
 if (!text) {
-  const thinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+  const botthinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
-    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(!text)}`;
+    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
     const response = await axios.get(apiEndpoint);
 
     const result = response.data.cnt; // Remove the replace part
@@ -333,7 +333,7 @@ if (!text) {
         const typedText = words.slice(0, i + 1).join(' ');
         gss.relayMessage(m.chat, {
           protocolMessage: {
-            key: thinkk.key,
+            key: botthinkk.key,
             type: 14,
             editedMessage: {
               conversation: typedText,
@@ -3331,12 +3331,12 @@ case 'tiktoknowmdoc':
 
     case "ai":
 case "gpt":
-  const think = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+  const aithink = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
     if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(!text)}`;
+    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
     const response = await axios.get(apiEndpoint);
 
     if (response.status === 200) {
@@ -3351,7 +3351,7 @@ case "gpt":
           const typedText = words.slice(0, i + 1).join(' ');
           gss.relayMessage(m.chat, {
             protocolMessage: {
-              key: think.key,
+              key: aithink.key,
               type: 14,
               editedMessage: {
                 conversation: typedText,
@@ -3414,7 +3414,7 @@ case 'ss':
 
         if (responseData.result) {
           const result = responseData.result;
-          const speechURL = `https://matrix-api-service.up.railway.app/speech?text=${encodeURIComponent(result)}`;
+          const speechURL = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(result)}`;
           await gss.sendMessage(m.chat, {
             audio: {
               url: speechURL,
