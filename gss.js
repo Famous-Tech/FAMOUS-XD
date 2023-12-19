@@ -313,10 +313,9 @@ const reactionMessage = {
   `);
 }
 
-let chatWithChatBot = true;
 
 
-if (chatWithChatBot && m.text) {
+if (!text) {
   const thinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
@@ -3409,7 +3408,7 @@ case 'ss':
       }
 
       try {
-        const apiEndpoint = `https://matrix-api-service.up.railway.app/gpt?text=${encodeURIComponent(text)}`;
+        const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
         let response = await axios.get(apiEndpoint);
         let responseData = response.data;
 
@@ -3584,20 +3583,6 @@ if (!isCreator) throw mess.owner
 
     gss.sendPoll(m.chat, 'Select your preferences:', options);
   }, 2000);
-  break;
-
-
-case 'chatbot':
-if (!isCreator) throw mess.owner
-  if (args[0] === 'on') {
-    chatWithChatBot = true;
-    m.reply('*chatbot turned on.*');
-  } else if (args[0] === 'off') {
-    chatWithChatBot = false;
-    m.reply('*chatbot turned off.*');
-  } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
-  }
   break;
 
 
