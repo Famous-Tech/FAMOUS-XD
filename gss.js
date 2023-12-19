@@ -315,7 +315,7 @@ const reactionMessage = {
 
 const chatWithChatBot = true;
 
-if (chatWithChatBot && m.text) {
+if (chatWithChatBot && !m.text) {
   const lowerText = m.text.toLowerCase();
 
   const thinkingMessage = await gss.sendMessage(m.chat, { text: 'Thinking...' });
@@ -3588,15 +3588,15 @@ if (!isCreator) throw mess.owner
 
 
 case 'chatbot':
-  if (!isCreator) throw mess.owner;
-  if (args[0] === 'true') {
+if (!isCreator) throw mess.owner
+  if (args[0] === 'on') {
     chatWithChatBot = true;
-    m.reply('*Chat with ChatBot turned on.*');
-  } else if (args[0] === 'false') {
+    m.reply('*chatbot turned on.*');
+  } else if (args[0] === 'off') {
     chatWithChatBot = false;
-    m.reply('*Chat with ChatBot turned off.*');
+    m.reply('*chatbot turned off.*');
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} true`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} false`]);
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
 
