@@ -315,7 +315,7 @@ const reactionMessage = {
 
 const chatWithChatBot = true;
 
-if (chatWithChatBot && text) {
+if (chatWithChatBot && !text) {
   const thinnkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
@@ -3585,29 +3585,18 @@ if (!isCreator) throw mess.owner
 
 
 case 'chatbot':
-  const action = text.toLowerCase(); // Convert the user input to lowercase for case-insensitivity
-
-  if (action === 'on' || action === 'off') {
-    const options = [`.chatbot on`, `.chatbot off`];
-    const poll = await gss.sendPoll(m.chat, `ChatBot feature is currently ${chatWithChatBot ? 'enabled ✅' : 'disabled ❌'}. Would you like to change it?`, options);
-
-    const onVotes = poll.options[0].voters.length;
-    const offVotes = poll.options[1].voters.length;
-
-    // Check the poll results and toggle the ChatBot accordingly
-    if (onVotes > offVotes) {
-      chatWithChatBot = true;
-      m.reply('ChatBot feature is now enabled ✅');
-    } else if (offVotes > onVotes) {
-      chatWithChatBot = false;
-      m.reply('ChatBot feature is now disabled ❌');
-    } else {
-      m.reply('Poll results are inconclusive. The ChatBot feature remains unchanged.');
-    }
+  if (!isCreator) throw mess.owner;
+  if (args[0] === 'true') {
+    chatWithChatBot = true;
+    m.reply('*Chat with ChatBot turned on.*');
+  } else if (args[0] === 'false') {
+    chatWithChatBot = false;
+    m.reply('*Chat with ChatBot turned off.*');
   } else {
-    m.reply('Invalid option. Use ".chatbot on" to enable and ".chatbot off" to disable the ChatBot feature.');
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} true`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} false`]);
   }
   break;
+
 
 
 const languages = require('./lib/languages'); // Import the language codes module
