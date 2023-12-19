@@ -3560,7 +3560,7 @@ if (!isCreator) throw mess.owner
 
   case "gemini":
     const textQuery = args.join(" ");
-    const think = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+    const thinkkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
     try {
       if (!textQuery) return m.reply("Please provide a text query.");
@@ -3578,7 +3578,7 @@ if (!isCreator) throw mess.owner
           const typedText = words.slice(0, i + 1).join(" ");
           gss.relayMessage(m.chat, {
             protocolMessage: {
-              key: think.key,
+              key: thinkkk.key,
               type: 14,
               editedMessage: {
                 conversation: typedText,
