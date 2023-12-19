@@ -7,7 +7,6 @@ const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser,getAggregateVotesInPollMessage, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
-const { Gemini } = require("@google/generative-ai");
 const fsx = require('fs-extra')
 const ytSearch = require('yt-search');
 const ytsr = require('ytsr');
@@ -42,9 +41,6 @@ const translate = require('translate-google-api');
   const {  sizeFormatter } = require("human-readable");
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
-
-
-const gemini = new Gemini();
 
 const {
     addPremiumUser,
@@ -3556,45 +3552,7 @@ if (!isCreator) throw mess.owner
   }, 2000);
   break;
   
-  
 
-  case "gemini":
-    const textQuery = args.join(" ");
-    const thinkkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
-
-    try {
-      if (!textQuery) return m.reply("Please provide a text query.");
-
-      const geminiProResult = await gemini.complete({ prompt: textQuery, n: 1 });
-      const result = geminiProResult.choices[0].text.trim();
-      
-      const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
-
-      const words = result.split(" ");
-      let i = 0;
-
-      const typewriterInterval = setInterval(() => {
-        if (i < words.length) {
-          const typedText = words.slice(0, i + 1).join(" ");
-          gss.relayMessage(m.chat, {
-            protocolMessage: {
-              key: thinkkk.key,
-              type: 14,
-              editedMessage: {
-                conversation: typedText,
-              },
-            },
-          }, {});
-          i++;
-        } else {
-          clearInterval(typewriterInterval); // Stop the typewriter effect
-        }
-      }, typingSpeed);
-    } catch (error) {
-      console.error(error);
-      m.reply("Error: " + error.message);
-    }
-    break;
 
 
 
