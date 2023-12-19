@@ -313,6 +313,46 @@ const reactionMessage = {
   `);
 }
 
+const chatWithChatBot = true;
+
+if (chatWithChatBot && text) {
+  const thinnkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+
+  try {
+    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
+    const response = await axios.get(apiEndpoint);
+
+    const result = response.data.cnt; // Remove the replace part
+    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
+
+    const words = result.split(' ');
+    let i = 0;
+
+    const typewriterInterval = setInterval(() => {
+      if (i < words.length) {
+        const typedText = words.slice(0, i + 1).join(' ');
+        gss.relayMessage(m.chat, {
+          protocolMessage: {
+            key: thinnkk.key,
+            type: 14,
+            editedMessage: {
+              conversation: typedText,
+            },
+          },
+        }, {});
+        i++;
+      } else {
+        clearInterval(typewriterInterval); // Stop the typewriter effect
+      }
+    }, typingSpeed);
+  } catch (error) {
+    console.error(error);
+    m.reply("Error: " + error.message);
+  }
+}
+
+
+
 /*
 
 const apiUrl = 'https://vihangayt.me/download/fmmods';
@@ -3297,73 +3337,40 @@ case "gpt":
     const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
     const response = await axios.get(apiEndpoint);
 
-    const result = response.data.result;
-    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
+    if (response.status === 200) {
+      const result = response.data.result;
+      const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
 
-    const words = result.split(' ');
-    let i = 0;
+      const words = result.split(' ');
+      let i = 0;
 
-    const typewriterInterval = setInterval(() => {
-      if (i < words.length) {
-        const typedText = words.slice(0, i + 1).join(' ');
-        gss.relayMessage(m.chat, {
-          protocolMessage: {
-            key: think.key,
-            type: 14,
-            editedMessage: {
-              conversation: typedText,
+      const typewriterInterval = setInterval(() => {
+        if (i < words.length) {
+          const typedText = words.slice(0, i + 1).join(' ');
+          gss.relayMessage(m.chat, {
+            protocolMessage: {
+              key: think.key,
+              type: 14,
+              editedMessage: {
+                conversation: typedText,
+              },
             },
-          },
-        }, {});
-        i++;
-      } else {
-        clearInterval(typewriterInterval); // Stop the typewriter effect
-      }
-    }, typingSpeed);
+          }, {});
+          i++;
+        } else {
+          clearInterval(typewriterInterval); // Stop the typewriter effect
+        }
+      }, typingSpeed);
+    } else {
+      console.error(`HTTP request failed with status ${response.status}`);
+      m.reply("Error: Unable to fetch data from the API.");
+    }
   } catch (error) {
     console.error(error);
     m.reply("Error: " + error.message);
   }
   break;
 
-case "bot":
-case "chat":
-  const thinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
-
-  try {
-    if (!text) return m.reply(`*Chat With ChatBot*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} Tell Me a Joke*`);
-
-    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
-    const response = await axios.get(apiEndpoint);
-
-    const result = response.data.cnt.replace(/\${pushname}/g, m.sender); // Replace ${pushname} with the actual user's name
-    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
-
-    const words = result.split(' ');
-    let i = 0;
-
-    const typewriterInterval = setInterval(() => {
-      if (i < words.length) {
-        const typedText = words.slice(0, i + 1).join(' ');
-        gss.relayMessage(m.chat, {
-          protocolMessage: {
-            key: thinkk.key,
-            type: 14,
-            editedMessage: {
-              conversation: typedText,
-            },
-          },
-        }, {});
-        i++;
-      } else {
-        clearInterval(typewriterInterval); // Stop the typewriter effect
-      }
-    }, typingSpeed);
-  } catch (error) {
-    console.error(error);
-    m.reply("Error: " + error.message);
-  }
-  break;
 
 
 case 'snapshotfull': case 'ssf':
@@ -3576,6 +3583,31 @@ if (!isCreator) throw mess.owner
   }, 2000);
   break;
 
+
+case 'chatbot':
+  const action = text.toLowerCase(); // Convert the user input to lowercase for case-insensitivity
+
+  if (action === 'on' || action === 'off') {
+    const options = [`.chatbot on`, `.chatbot off`];
+    const poll = await gss.sendPoll(m.chat, `ChatBot feature is currently ${chatWithChatBot ? 'enabled ✅' : 'disabled ❌'}. Would you like to change it?`, options);
+
+    const onVotes = poll.options[0].voters.length;
+    const offVotes = poll.options[1].voters.length;
+
+    // Check the poll results and toggle the ChatBot accordingly
+    if (onVotes > offVotes) {
+      chatWithChatBot = true;
+      m.reply('ChatBot feature is now enabled ✅');
+    } else if (offVotes > onVotes) {
+      chatWithChatBot = false;
+      m.reply('ChatBot feature is now disabled ❌');
+    } else {
+      m.reply('Poll results are inconclusive. The ChatBot feature remains unchanged.');
+    }
+  } else {
+    m.reply('Invalid option. Use ".chatbot on" to enable and ".chatbot off" to disable the ChatBot feature.');
+  }
+  break;
 
 
 const languages = require('./lib/languages'); // Import the language codes module
