@@ -482,6 +482,11 @@ if (isAntiViewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
     }
 }
 
+if (global.linkGroup.includes("https://chat.whatsapp.com/")) {
+try{
+gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
+} catch { console.log(chalk.whiteBright("├"), chalk.keyword("red")("[ ERROR ]"), "link group invalid!") }
+}
 
 
 	    let setting = db.data.settings[botNumber]
