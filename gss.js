@@ -405,9 +405,6 @@ try {
     await m.reply('Error fetching data. Please try again later.');
 }
 
-
-const isBaileys = m?.key?.id?.startsWith("BAE5");
-
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
 const onlypc = process.env.ONLYPC || global.onlypc;
@@ -433,6 +430,8 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
     
 
 
+const isBaileys = m?.key?.id?.startsWith("BAE5");
+
 let chats = db.data.chats[m.chat];
 
 // Initialize chats if not defined
@@ -441,9 +440,6 @@ if (!chats || typeof chats !== 'object') {
     chats = db.data.chats[m.chat];
 }
 
-// Logging for debugging
-console.log('Current chats settings:', chats);
-
 // Initialize isAntiBotz, isMuted, and isAntiLink
 let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : false;
 let isMuted = chats && 'mute' in chats ? chats.mute : false;
@@ -451,14 +447,14 @@ let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
 let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
 let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
 
-if (m.isAntiBotz && isBotAdmins) {
-if (isBaileys && !m.key.fromMe) {
-if (!m.isOwner && !isAdmins) {
-m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`")
-setTimeout(() => {
-gss.groupParticipantsUpdate(m.chat, [m.sender], "remove")
-}, 2000)
-}}}
+// Check for antibot and handle accordingly
+if (isAntiBotz && isBaileys && !m.key.fromMe && !m.isOwner && !isAdmins) {
+    m.reply("\`\`\`「  BOTZ DETECTED  」\`\`\`");
+    setTimeout(() => {
+        gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+    }, 2000);
+}
+
 
 
 
