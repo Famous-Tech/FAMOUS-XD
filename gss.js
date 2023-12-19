@@ -315,16 +315,15 @@ const reactionMessage = {
 
 let chatWithChatBot = true;
 
-if (chatWithChatBot && !m.text) {
-  const lowerText = m.text.toLowerCase();
 
-  const thinkingMessage = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+if (chatWithChatBot && m.text) {
+  const thinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
     const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
     const response = await axios.get(apiEndpoint);
 
-    const result = response.data.cnt.replace(/\${pushname}/g, m.sender); // Replace ${pushname} with the actual user's name
+    const result = response.data.cnt; // Remove the replace part
     const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
 
     const words = result.split(' ');
@@ -335,7 +334,7 @@ if (chatWithChatBot && !m.text) {
         const typedText = words.slice(0, i + 1).join(' ');
         gss.relayMessage(m.chat, {
           protocolMessage: {
-            key: thinkingMessage,
+            key: thinkk.key,
             type: 14,
             editedMessage: {
               conversation: typedText,
@@ -351,6 +350,9 @@ if (chatWithChatBot && !m.text) {
     console.error(error);
     m.reply("Error: " + error.message);
   }
+}
+
+
 
 
 
