@@ -320,7 +320,7 @@ if (chatWithChatBot && m.text) {
   const thinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
-    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
+    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(!text)}`;
     const response = await axios.get(apiEndpoint);
 
     const result = response.data.cnt; // Remove the replace part
@@ -3337,7 +3337,7 @@ case "gpt":
   try {
     if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
+    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(!text)}`;
     const response = await axios.get(apiEndpoint);
 
     if (response.status === 200) {
