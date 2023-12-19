@@ -315,7 +315,6 @@ const reactionMessage = {
 
 
 
-if (!text) {
   const botthinkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
@@ -349,7 +348,6 @@ if (!text) {
     console.error(error);
     m.reply("Error: " + error.message);
   }
-}
 
 
 
