@@ -550,7 +550,7 @@ if (AUTO_READ_ENABLED && command) {
 }
 }
         
-const isBaileys = m?.key?.id?.startsWith("BAE5");
+const isBaileys = chatUpdate?.messages[0]?.key?.id?.startsWith("BAE5");
 
 if (isBaileys && m.fromMe) {
     m.reply('anti bot working');
