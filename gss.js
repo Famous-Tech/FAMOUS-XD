@@ -351,51 +351,6 @@ try {
 }
 
 
-const playapiUrl = 'https://vihangayt.me/download/ytmp4?url=https://youtu.be/5C8yvJUVB-0';
-
-try {
-    const response = await axios.get(playapiUrl);
-    const data = response.data;
-
-    if (m.text) {
-        const lowerText = m.text.toLowerCase();
-
-        if (data.status === true && data.data) {
-            if (lowerText === '.playy') {
-                let playList = 'Here is the yts list:\n';
-                Object.keys(data.data).forEach((playName, index) => {
-                    const qualityInfo = data.data[playName];
-                    playList += `${index + 1}. Quality: ${qualityInfo.title}\n`;
-                });
-                await m.reply(playList);
-            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the yts list')) {
-                const selectedNumber = parseInt(lowerText);
-                const playNames = Object.keys(data.data);
-
-                if (selectedNumber >= 1 && selectedNumber <= playNames.length) {
-                    const playName = playNames[selectedNumber - 1];
-
-                    const videoBufferReq = await fetch(data.data[playName].link);
-                    const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-                    const videoBuffer = Buffer.from(videoArrayBuffer);
-
-                    await gss.sendMessage(m.chat, {
-                        document: videoBuffer,
-                        mimetype: 'video/mp4',
-                        fileName: `${playName}.mp4`,
-                        caption: `${playName}`
-                    });
-                } else {
-                    await m.reply('Invalid video number. Please select a number from the list.');
-                }
-            }
-        }
-    }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    await m.reply('Error fetching data. Please try again later.');
-}
-
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
