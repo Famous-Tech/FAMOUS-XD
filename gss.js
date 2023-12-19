@@ -321,10 +321,10 @@ if (chatWithChatBot && !m.text) {
   const thinkingMessage = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
-    const brainshopApiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
-    const response = await axios.get(brainshopApiEndpoint);
+    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
+    const response = await axios.get(apiEndpoint);
 
-    const result = response.data.cnt;
+    const result = response.data.cnt.replace(/\${pushname}/g, m.sender); // Replace ${pushname} with the actual user's name
     const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
 
     const words = result.split(' ');
@@ -335,8 +335,8 @@ if (chatWithChatBot && !m.text) {
         const typedText = words.slice(0, i + 1).join(' ');
         gss.relayMessage(m.chat, {
           protocolMessage: {
-            key: thinkingMessage.key,
-            type: 14, // Replace 14 with the appropriate MessageType constant
+            key: thinkingMessage,
+            type: 14,
             editedMessage: {
               conversation: typedText,
             },
@@ -344,15 +344,13 @@ if (chatWithChatBot && !m.text) {
         }, {});
         i++;
       } else {
-        clearInterval(typewriterInterval);
+        clearInterval(typewriterInterval); // Stop the typewriter effect
       }
     }, typingSpeed);
   } catch (error) {
     console.error(error);
     m.reply("Error: " + error.message);
   }
-}
-
 
 
 
