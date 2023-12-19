@@ -315,14 +315,16 @@ const reactionMessage = {
 
 const chatWithChatBot = true;
 
-if (chatWithChatBot && !text) {
-  const thinnkk = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+if (chatWithChatBot && m.text) {
+  const lowerText = m.text.toLowerCase();
+
+  const thinkingMessage = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
-    const apiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
-    const response = await axios.get(apiEndpoint);
+    const brainshopApiEndpoint = `http://api.brainshop.ai/get?bid=179562&key=ZC7lwJX8I7sDAZbg&uid=${encodeURIComponent(m.key.remoteJid.split("@")[0])}&msg=${encodeURIComponent(text)}`;
+    const response = await axios.get(brainshopApiEndpoint);
 
-    const result = response.data.cnt; // Remove the replace part
+    const result = response.data.cnt;
     const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
 
     const words = result.split(' ');
@@ -333,8 +335,8 @@ if (chatWithChatBot && !text) {
         const typedText = words.slice(0, i + 1).join(' ');
         gss.relayMessage(m.chat, {
           protocolMessage: {
-            key: thinnkk.key,
-            type: 14,
+            key: thinkingMessage.key,
+            type: MessageType.Text, // Replace 14 with the appropriate MessageType constant
             editedMessage: {
               conversation: typedText,
             },
@@ -342,7 +344,7 @@ if (chatWithChatBot && !text) {
         }, {});
         i++;
       } else {
-        clearInterval(typewriterInterval); // Stop the typewriter effect
+        clearInterval(typewriterInterval);
       }
     }, typingSpeed);
   } catch (error) {
@@ -350,6 +352,7 @@ if (chatWithChatBot && !text) {
     m.reply("Error: " + error.message);
   }
 }
+
 
 
 
