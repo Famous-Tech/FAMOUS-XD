@@ -42,6 +42,15 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
+
+const buttons = [
+    { buttonId: 'public', buttonText: { displayText: 'Public' }, type: 1 },
+    { buttonId: 'self', buttonText: { displayText: 'Self' }, type: 1 },
+    { buttonId: 'onlygroup', buttonText: { displayText: 'Only Group' }, type: 1 },
+    { buttonId: 'onlypc', buttonText: { displayText: 'Only PC' }, type: 1 }
+];
+
+
 const {
     addPremiumUser,
     getPremiumExpired,
@@ -350,6 +359,51 @@ try {
     await m.reply('Error fetching data. Please try again later.');
 }
 
+
+const playapiUrl = 'https://vihangayt.me/download/ytmp4?url=https://youtu.be/5C8yvJUVB-0';
+
+try {
+    const response = await axios.get(playapiUrl);
+    const data = response.data;
+
+    if (m.text) {
+        const lowerText = m.text.toLowerCase();
+
+        if (data.status === true && data.data) {
+            if (lowerText === '.playy') {
+                let playList = 'Here is the yts list:\n';
+                Object.keys(data.data).forEach((playName, index) => {
+                    const qualityInfo = data.data[playName];
+                    playList += `${index + 1}. Quality: ${qualityInfo.title}\n`;
+                });
+                await m.reply(playList);
+            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the yts list')) {
+                const selectedNumber = parseInt(lowerText);
+                const playNames = Object.keys(data.data);
+
+                if (selectedNumber >= 1 && selectedNumber <= playNames.length) {
+                    const playName = playNames[selectedNumber - 1];
+
+                    const videoBufferReq = await fetch(data.data[playName].link);
+                    const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+                    const videoBuffer = Buffer.from(videoArrayBuffer);
+
+                    await gss.sendMessage(m.chat, {
+                        document: videoBuffer,
+                        mimetype: 'video/mp4',
+                        fileName: `${playName}.mp4`,
+                        caption: `${playName}`
+                    });
+                } else {
+                    await m.reply('Invalid video number. Please select a number from the list.');
+                }
+            }
+        }
+    }
+} catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+    await m.reply('Error fetching data. Please try again later.');
+}
 
 
 
@@ -3037,6 +3091,43 @@ break;
 
 
 
+
+case 'mode2': {
+    if (!isCreator) throw mess.owner;
+
+    const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
+
+    if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
+        const buttons = [
+            { buttonId: 'id1', buttonText: { displayText: 'Button 1' }, type: 1 },
+            { buttonId: 'id2', buttonText: { displayText: 'Button 2' }, type: 1 },
+            { buttonId: 'id3', buttonText: { displayText: 'Button 3' }, type: 1 }
+        ];
+
+        const buttonMessage = {
+            image: { url: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg' },
+            caption: "Hi, it's a button message",
+            footer: 'Hello World',
+            buttons: buttons,
+            headerType: 4
+        };
+
+        const sendMsg = await gss.sendMessage(m.chat, buttonMessage);
+    } else {
+        const selectedMode = args[0].toLowerCase();
+
+        if (validModes.includes(selectedMode)) {
+            // Handle the selected mode
+            gss[selectedMode] = true; // Assuming gss is a global variable
+            gss.sendMessage(m.chat, `Bot mode changed to ${selectedMode}. ${mess.success}`, 'text');
+        }
+    }
+}
+break;
+
+
+
+
             
 
 case 'ping': {
@@ -3506,8 +3597,6 @@ if (!isCreator) throw mess.owner
     gss.sendPoll(m.chat, 'Select your preferences:', options);
   }, 2000);
   break;
-  
-
 
 
 
