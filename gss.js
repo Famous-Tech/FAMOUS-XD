@@ -3252,49 +3252,43 @@ case 'tiktoknowmdoc':
             break
 
 
-    case "ai":
+    
+case "ai":
 case "gpt":
   const aithink = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   try {
-    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*Example usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
-    const response = await axios.get(apiEndpoint);
+    const response = await axios.get(`https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`);
 
-    if (response.status === 200) {
-      const result = response.data.result;
-      const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
+    const responseText = response.data.message;
+    const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per character)
 
-      const words = result.split(' ');
-      let i = 0;
-
-      const typewriterInterval = setInterval(() => {
-        if (i < words.length) {
-          const typedText = words.slice(0, i + 1).join(' ');
-          gss.relayMessage(m.chat, {
-            protocolMessage: {
-              key: aithink.key,
-              type: 14,
-              editedMessage: {
-                conversation: typedText,
-              },
+    let i = 0;
+    const typewriterInterval = setInterval(() => {
+      if (i < responseText.length) {
+        const typedText = responseText.slice(0, i + 1);
+        gss.relayMessage(m.chat, {
+          protocolMessage: {
+            key: aithink.key,
+            type: 14,
+            editedMessage: {
+              conversation: typedText,
             },
-          }, {});
-          i++;
-        } else {
-          clearInterval(typewriterInterval); // Stop the typewriter effect
-        }
-      }, typingSpeed);
-    } else {
-      console.error(`HTTP request failed with status ${response.status}`);
-      m.reply("Error: Unable to fetch data from the API.");
-    }
+          },
+        }, {});
+        i++;
+      } else {
+        clearInterval(typewriterInterval); // Stop the typewriter effect
+      }
+    }, typingSpeed);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     m.reply("Error: " + error.message);
   }
   break;
+
 
 
 
