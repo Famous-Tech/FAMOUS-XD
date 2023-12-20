@@ -3804,7 +3804,7 @@ case 'infobot':
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
     await m.reply(tod);
-    await doReact('✅'); 
+    doneReact();
     break;
 
 
