@@ -136,10 +136,9 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
 async function doneReact() {
-     await doReact('✅'); 
+    await doReact('✅'); 
 }
 
-  
 async function generateProfilePicture(media) {
     return {
         img: 'placeholder_image_data'
@@ -3795,7 +3794,7 @@ case 'tempmail': case 'mail': {
 }
 
 case 'infobot':
-    tod = `
+    const tod = `
 ╭━🔥──━─◈─━🔥─━╮
 │🔖Bot Name : ${botname}
 │🔖Owner Name: ${ownername}
@@ -3803,6 +3802,7 @@ case 'infobot':
 │🔖Prefix :「 Multi Prefix 」
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
+
     await m.reply(tod);
     doneReact();
     break;
