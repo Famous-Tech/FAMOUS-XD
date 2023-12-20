@@ -2746,11 +2746,11 @@ case 'mediafire': {
 
 
    case "rvo": {
-    if (!m.quoted || !m.quoted.m.viewOnce) {
+    if (!m.quoted || !m.quoted.m.isViewOnce) {
         return m.reply(`Reply view once with command ${prefix + command}`);
     }
 
-    m.quoted.m.viewOnce = false;
+    isViewOnce = false;
 
     await gss.sendMessage(m.from, { forward: m.quoted }, { quoted: m });
 }
