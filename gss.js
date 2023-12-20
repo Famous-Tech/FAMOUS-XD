@@ -3808,7 +3808,7 @@ case 'infobot':
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
     await m.reply(tod);
-    m.react('✅'); 
+    await doReact('✅'); 
     break;
 
 
@@ -3855,6 +3855,7 @@ case 'checkmail': {
 
         const replyMessage = `*Message in* ${text}:\n\n*From:* ${sender}\n*Subject:* ${subject}\n*Date:* ${date}\n\n*Messages:*\n\n${messageData.textBody}`;
         m.reply(replyMessage, m.from, { caption: replyMessage });
+        
       } else {
         m.reply(`No message found in ${text}.`);
       }
