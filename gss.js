@@ -135,15 +135,10 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
-async function doReact(emoji) {
-      let react = {
-        react: {
-          text: emoji,
-          key: m.key,
-        },
-      };
-      await gss.sendMessage(m.from, react);
-    }
+async function doneReact() {
+     await doReact('✅'); 
+}
+
   
 async function generateProfilePicture(media) {
     return {
@@ -1956,6 +1951,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 
         // Send the video with the stylish caption
         await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: infoCaption }, { quoted: m });
+        doneReact();
 
         // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
