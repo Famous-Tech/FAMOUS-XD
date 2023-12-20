@@ -450,18 +450,16 @@ let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : fal
 
 
 // Anti Delete
-if (isAntiDelete && db.message && db.message[m.sender] && Object.keys(db.message[m.sender]).length > 0 && m.type == "protocolMessage") {
-    if (Object.keys(db.message[m.sender]).includes("key") && db.message[m.sender].key.id == m.message[m.type].key.id) {
-        if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
-            let message = db.message[m.sender].message;
+if (isAntiDelete && global.db.message && global.db.message[m.sender] && Object.keys(global.db.message[m.sender]).length > 0 && m.type == "protocolMessage") {
+    if (Object.keys(global.db.message[m.sender]).includes("key") && global.db.message[m.sender].key.id == m.message[m.type].key.id) {
+        if (!m.key.fromMe && !isAdmins) {
+            let message = global.db.message[m.sender].message;
             let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1];
             let teks = "\`\`\`「  PESAN DITARIK TERDETEKSI  」\`\`\`\n\n";
             teks += `› Dari : @${m.senderNumber}\n`;
-            teks += `› Waktu : ${m.timeWib}\n`;
-            teks += `› Type : ${type}`;
             m.reply(teks);
             setTimeout(() => {
-                gss.copyNForward(m.chat, db.message[m.sender]);
+                gss.copyNForward(m.chat, global.db.message[m.sender]);
             }, 2000);
         }
     }
