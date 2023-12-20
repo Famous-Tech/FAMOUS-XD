@@ -481,13 +481,13 @@ if (isAntiViewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
         if (getContentType(m.message) == "imageMessage") gss.sendMessage(m.chat, { image: media, caption: teks }, { quoted: m });
     }
 }
-
+/*
 if (global.linkGroup.includes("https://chat.whatsapp.com/")) {
 try{
 gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 } catch { console.log(chalk.whiteBright("├"), chalk.keyword("red")("[ ERROR ]"), "link group invalid!") }
 }
-
+*/
 
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
