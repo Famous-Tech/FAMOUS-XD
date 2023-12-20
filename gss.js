@@ -3259,34 +3259,41 @@ case "gpt":
   try {
     if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const response = await fetch(`https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`);
-  const responseData = await response.json();
+    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
+    const response = await axios.get(apiEndpoint);
 
-  const responseText = responseData.message;
-  const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per character)
+    if (response.status === 200) {
+      const result = response.data.result;
+      const typingSpeed = 200; // Adjust the typing speed as needed (milliseconds per word)
 
-  let i = 0;
-  const typewriterInterval = setInterval(() => {
-    if (i < responseText.length) {
-      const typedText = responseText.slice(0, i + 1);
-      client.relayMessage(m.chat, {
-        protocolMessage: {
-          key: aithink.key,
-          type: 14,
-          editedMessage: {
-            conversation: typedText,
-          },
-        },
-      }, {});
-      i++;
+      const words = result.split(' ');
+      let i = 0;
+
+      const typewriterInterval = setInterval(() => {
+        if (i < words.length) {
+          const typedText = words.slice(0, i + 1).join(' ');
+          gss.relayMessage(m.chat, {
+            protocolMessage: {
+              key: aithink.key,
+              type: 14,
+              editedMessage: {
+                conversation: typedText,
+              },
+            },
+          }, {});
+          i++;
+        } else {
+          clearInterval(typewriterInterval); // Stop the typewriter effect
+        }
+      }, typingSpeed);
     } else {
-      clearInterval(typewriterInterval); // Stop the typewriter effect
+      console.error(`HTTP request failed with status ${response.status}`);
+      m.reply("Error: Unable to fetch data from the API.");
     }
-  }, typingSpeed);
-} catch (error) {
-  console.log(error);
-  m.reply("Error: " + error.message);
-}
+  } catch (error) {
+    console.error(error);
+    m.reply("Error: " + error.message);
+  }
   break;
 
 
