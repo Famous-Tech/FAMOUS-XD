@@ -1928,10 +1928,8 @@ case 'ytmp3doc':
 
 case 'play': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
-  await doReact("❌");
 
   const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
-  await doReact("🕘");
 
   // Fetch data from the API
   const response = await fetch(apiURL);
@@ -1939,7 +1937,6 @@ case 'play': {
 
   if (!data || !data.data || data.data.length === 0) {
     return m.reply('No search results found.');
-    await doReact("❌");
   }
 
   const topResult = data.data[0];
@@ -1958,7 +1955,6 @@ gss.sendPoll(
     `.𝗔𝗨𝗗𝗜𝗢`
   ]
 );
-await doReact("✅");
 
   break;
 }
@@ -2390,7 +2386,6 @@ async function downloadAndSendMedia(m, text, isDocument) {
     if (!url) {
         return m.reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
     }
-    await doReact("🕘");
 
     m.reply(mess.wait);
 
@@ -2406,23 +2401,18 @@ async function downloadAndSendMedia(m, text, isDocument) {
         // Send the media using gss.sendMessage with the saved file
         if (isDocument) {
             await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `application/octet-stream`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-            await doReact("✅");
         } else {
             if (media.type === 'image') {
                 await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-                await doReact("✅");
             } else if (media.type === 'video') {
                 await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-                await doReact("✅");
             } else {
                 throw new Error('Unsupported media type');
-                await doReact("❌");
             }
         }
     } catch (error) {
         console.error('Error while processing Instagram media:', error);
         return m.reply(`An error occurred: ${error.message}`);
-        await doReact("❌");
     }
 }
 
@@ -2500,13 +2490,11 @@ case 'truecaller':
     if (!text) {
       // Reply when no phone number is provided
     return  m.reply ('Please provide a phone number.');
-    await doReact("❌");
       break;
     }
 
     const installationId = 'a1i0Q--j6pQD-V1-BJnOIongGhfL3HZuNr-yb1WJChcUdQn7GEc9yAScT71cs8_F';
     const apiUrl = `https://matrix-nextjs-api.vercel.app/api/truecaller?phone=${encodeURIComponent(text)}&id=${installationId}`;
-    await doReact("🕘");
 
     let response = await axios.get(apiUrl);
     console.log(response);
@@ -2545,7 +2533,6 @@ case 'truecaller':
     }, {
       quoted: m,
     });
-    await doReact("✅");
 
   } catch (error) {
     console.error(error);
@@ -2555,9 +2542,7 @@ case 'truecaller':
 
 case "xnxxdl": {
 	if (!text) return m.reply(`Enter Url`)
-	await doReact("❌");
         if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`)
-        await doReact("🕘");
         const fg = require('api-dylux')
             let xn = await fg.xnxxdl(text)
 gss.sendMessage(m.chat, { caption: `  *XNXX DL*
@@ -2565,19 +2550,16 @@ gss.sendMessage(m.chat, { caption: `  *XNXX DL*
 ✍ *Title:* ${xn.title}
 ⌛ *Duration:* ${xn.duration}
 📽 *Visual Quality:* ${xn.quality}`, video: {url: xn.url_dl} }, { quoted: m })
-await doReact("✅");
 }
 break
 
 
 case 'xnxxsearch': {
 	if (!text) return m.reply(`Enter Query`)
-	await doReact("❌");
 	const fg = require('api-dylux')
 	let res = await fg.xnxxSearch(text)
             let ff = res.result.map((v, i) => `${i + 1}┃ *Title* : ${v.title}\n*Link:* ${v.link}\n`).join('\n') 
               if (res.status) m.reply(ff)
-              await doReact("✅");
               }
               break
               
@@ -2587,12 +2569,10 @@ case 'qc':
     try {
         if (!text) {
             return m.reply('Please provide text for the quote.');
-            await doReact("❌");
         }
 
         if (text.length > 30) {
             return m.reply('Please provide text with a maximum of 30 characters.');
-            await doReact("❌");
         }
 
         const settings = global.db.setting;
@@ -2639,11 +2619,9 @@ case 'qc':
                 packname: global.packname,
                 author: global.author
             });
-            await doReact("✅");
         } catch (error) {
             console.error('Error during HTTP request:', error);
             return m.reply('Error generating sticker. Please try again later.');
-            await doReact("❌");
         }
 
     } catch (error) {
@@ -2657,7 +2635,6 @@ case 'qc':
 
 case 'apk': case 'app': case 'apkdl': {
   if (!text) throw `I need an apk name for download`;
-  await doReact("❌");
 
   const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
   const randomName = getRandomName(".apk");
@@ -2666,7 +2643,6 @@ case 'apk': case 'app': case 'apkdl': {
   let searchResults = await search(text);
 
   if (!searchResults.length) return m.reply("App not found!");
-  await doReact("❌");
 
   const data = await download(searchResults[0].id);
 
@@ -2735,7 +2711,6 @@ case 'apk': case 'app': case 'apkdl': {
       };
 
       gss.sendMessage(m.chat, apkMessage, { quoted: m });
-      await doReact("✅");
 
       // Delete temporary APK file
       fs.unlink(filePath, (err) => {
@@ -2748,7 +2723,6 @@ case 'apk': case 'app': case 'apkdl': {
     }).catch(error => {
       fs.unlink(filePath);
       return m.reply('*Apk not Found, Sorry, try with apk2 cmd*');
-      await doReact("❌");
     });
 
   break;
@@ -2816,7 +2790,59 @@ case 'mediafire': {
 }
 
 
-   
+   case "rvo": {
+    if (!m.quoted || !m.quoted.m.isViewOnce) {
+        return m.reply(`Reply view once with command ${prefix + command}`);
+    }
+
+    isViewOnce = false;
+
+    await gss.sendMessage(m.from, { forward: m.quoted }, { quoted: m });
+}
+break;
+
+            
+case 'toonce':
+            case 'toviewonce': {
+                if (!quoted) return m.reply(`Reply Image/Video`)
+                if (/image/.test(mime)) {
+                    anuan = await gss.downloadAndSaveMediaMessage(quoted)
+                    gss.sendMessage(m.chat, {
+                        image: {
+                            url: anuan
+                        },
+                        caption: mess.success,
+                        fileLength: "999",
+                        viewOnce: true
+                    }, {
+                        quoted: m
+                    })
+                } else if (/video/.test(mime)) {
+                    anuanuan = await gss.downloadAndSaveMediaMessage(quoted)
+                    gss.sendMessage(m.chat, {
+                        video: {
+                            url: anuanuan
+                        },
+                        caption: mess.success,
+                        fileLength: "99999999",
+                        viewOnce: true
+                    }, {
+                        quoted: m
+                    })
+                } else if (/audio/.test(mime)) {
+                   bebasap = await gss.downloadAndSaveMediaMessage(quoted)
+                   gss.sendMessage(m.chat, {
+                     audio: {
+                        url: bebasap
+                     },
+                     mimetype: 'audio/mpeg',
+                     ptt: true,
+                     viewOnce: true
+                   })
+                }
+            }
+            break
+
 
 case 'buypremium':
             case 'premiumuser': {
