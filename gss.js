@@ -42,7 +42,7 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
-
+const timeEmojis = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚", "🕛"];
 
 const {
     addPremiumUser,
@@ -1627,8 +1627,13 @@ case 'ytmp4':
       return;
     }
     
+   const waitWithTimeEmojis = async () => {
+  for (const emoji of timeEmojis) {
     m.reply(mess.wait);
-    await doReact("🕐");
+    await doReact(emoji);
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+  }
+};
 
     const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
 
