@@ -42,7 +42,7 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
-const timeEmojis = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚", "🕛"];
+const emojis = ["🕐", "🕑", "🕒", "🕓", "🕔"];
 
 const {
     addPremiumUser,
@@ -144,6 +144,13 @@ async function doReact(emoji) {
       };
       await gss.sendMessage(m.chat, react);
     }
+
+async function changeEmojis() {
+  for (const emoji of emojis) {
+    await doReact(emoji);
+    await new Promise(resolve => setTimeout(resolve, 1000)); // 1-second delay
+  }
+}
 
 async function generateProfilePicture(media) {
     return {
@@ -1627,13 +1634,9 @@ case 'ytmp4':
       return;
     }
     
-   const waitWithTimeEmojis = async () => {
-  for (const emoji of timeEmojis) {
     m.reply(mess.wait);
-    await doReact(emoji);
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
-  }
-};
+    
+    changeEmojis();
 
     const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
 
@@ -3100,22 +3103,9 @@ break;
             
 
 case 'ping': {
-  const reactionMessage = {
-            react: {
-                text: "🕐",
-                key: m.key
-            }
-        }
-        await gss.sendMessage(m.chat, reactionMessage);
-        const successReactionMessage = {
-            react: {
-                text: "📌",
-                key: m.key
-            }
-        }
-        await gss.sendMessage(m.chat, successReactionMessage); 
   const startTime = new Date();
   const pingMsg = await gss.sendMessage(m.chat, { text: '*cheking...*' });
+  await doReact("🕘");
 
  await gss.relayMessage(m.chat, {
       protocolMessage: {
@@ -3126,6 +3116,7 @@ case 'ping': {
         }
       }
     }, {});
+     await doReact("📍");
   } 
 break;
 
