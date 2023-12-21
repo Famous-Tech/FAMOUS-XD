@@ -42,7 +42,7 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
-const emojis = ["🕐", "🕑", "🕒", "🕓", "🕔"];
+const emojis = ["🕐", "🕑", "🕒"];
 
 const {
     addPremiumUser,
