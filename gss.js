@@ -136,14 +136,14 @@ const seconds = Math.floor(uptime % 60); // Calculate seconds
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
 async function doReact(text) {
-      let react = {
-        react: {
-          text: text,
-          key: m.key,
-        },
-      };
-      await gss.sendMessage(m.from, react);
-    }
+  let reactionMessage = {
+    react: {
+      text: text,
+      key: m.key,
+    },
+  };
+  await gss.sendMessage(m.from, reactionMessage);
+}
 
 async function generateProfilePicture(media) {
     return {
