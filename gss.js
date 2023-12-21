@@ -399,7 +399,8 @@ let chats = db.data.chats[m.chat]
                 mute: false,
                 antilink: false,
             }
-
+            
+/*
 //auto join
 if (global.linkGroup.includes("https://chat.whatsapp.com/")) {
 try{
@@ -407,6 +408,7 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 } catch { console.log(chalk.whiteBright("├"), chalk.keyword("red")("[ ERROR ]"), "link group invalid!") }
 }
 
+*/
 
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
@@ -3640,20 +3642,18 @@ function convertToFontStyle(text, style) {
 case 'runtime': case 'alive':
                 let pinga = ` ${uptimeMessage}`
                 gss.sendMessage(m.chat, {
-                    text: pinga,
-                    contextInfo: {
-                        externalAdReply: {
-                            showAdAttribution: false,
-                            title: 'RUNTIME',
-                            body: `FORGET DONATE`,
-                            thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
-                            sourceUrl: global.link,
-                            mediaType: 1,
-                            renderLargerThumbnail: false
-                        }
-                    }
-                }, {
-                    quoted: m
+        image: fs.readFileSync('./gss.jpg'),
+        caption: pinga,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, {
+      quoted: m
                 })
                 break
                 
