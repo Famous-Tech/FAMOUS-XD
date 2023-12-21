@@ -992,7 +992,7 @@ case 'sc':
             {
                 if (!isCreator) return m.reply(mess.owner)
                 let delb = await gss.downloadAndSaveMediaMessage(quoted)
-                await fsx.copy(delb, './gss.jpg')
+                await fsx.copy(delb, './allmenu.jpg')
                 fs.unlinkSync(delb)
                 m.reply(mess.success)
             }
@@ -3642,7 +3642,7 @@ function convertToFontStyle(text, style) {
 case 'runtime': case 'alive':
                 let pinga = ` ${uptimeMessage}`
                 gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./gss.jpg'),
+        image: fs.readFileSync('./alive.jpg'),
         caption: pinga,
         contextInfo: {
             externalAdReply: {
@@ -4241,7 +4241,7 @@ ${readmore}┗────────────⊰
 
     if (typemenu === 'v1') {
     gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./gss.jpg'),
+        image: fs.readFileSync('./allmenu.jpg'),
         caption: introText,
         contextInfo: {
             externalAdReply: {
