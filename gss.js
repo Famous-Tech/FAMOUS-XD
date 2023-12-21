@@ -3743,8 +3743,18 @@ case 'infobot':
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
 
-    await m.reply(tod);
-    doneReact();
+    gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./gss.jpg'),
+        caption: tod,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }
     break;
 
 
