@@ -3742,18 +3742,9 @@ case 'infobot':
 │🔖Prefix :「 Multi Prefix 」
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
 ╰━━🔥─━─◈─━🔥─━╯`;
-    gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
-        caption: tod,
-        contextInfo: {
-            externalAdReply: {
-                showAdAttribution: false,
-                title: botname,
-                sourceUrl: global.link,
-                body: `Bot Created By ${global.owner}`
-            }
-        }
-    }
+
+    await m.reply(tod);
+    doneReact();
     break;
 
 
