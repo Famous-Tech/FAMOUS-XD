@@ -3754,8 +3754,9 @@ case 'infobot':
                 body: `Bot Created By ${global.owner}`
             }
         }
-    }
+    });
     break;
+
 
 
 case 'checkmail': {
