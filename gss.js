@@ -1628,7 +1628,7 @@ case 'ytmp4':
     }
     
     m.reply(mess.wait);
-    await doReact("🕐,🕑,🕒,🕓,🕔,🕕");
+    await doReact("🕐");
 
     const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
 
