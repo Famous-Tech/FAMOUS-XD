@@ -318,11 +318,6 @@ const reactionMessage = {
 }
 
 
-
-
-
-/*
-
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
 try {
@@ -370,53 +365,6 @@ try {
 }
 
 
-const playapiUrl = 'https://vihangayt.me/download/ytmp4?url=https://youtu.be/5C8yvJUVB-0';
-
-try {
-    const response = await axios.get(playapiUrl);
-    const data = response.data;
-
-    if (m.text) {
-        const lowerText = m.text.toLowerCase();
-
-        if (data.status === true && data.data) {
-            if (lowerText === '.playy') {
-                let playList = 'Here is the yts list:\n';
-                Object.keys(data.data).forEach((playName, index) => {
-                    const qualityInfo = data.data[playName];
-                    playList += `${index + 1}. Quality: ${qualityInfo.title}\n`;
-                });
-                await m.reply(playList);
-            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the yts list')) {
-                const selectedNumber = parseInt(lowerText);
-                const playNames = Object.keys(data.data);
-
-                if (selectedNumber >= 1 && selectedNumber <= playNames.length) {
-                    const playName = playNames[selectedNumber - 1];
-
-                    const videoBufferReq = await fetch(data.data[playName].link);
-                    const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-                    const videoBuffer = Buffer.from(videoArrayBuffer);
-
-                    await gss.sendMessage(m.chat, {
-                        document: videoBuffer,
-                        mimetype: 'video/mp4',
-                        fileName: `${playName}.mp4`,
-                        caption: `${playName}`
-                    });
-                } else {
-                    await m.reply('Invalid video number. Please select a number from the list.');
-                }
-            }
-        }
-    }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    await m.reply('Error fetching data. Please try again later.');
-}
-
-*/
-
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
 const onlypc = process.env.ONLYPC || global.onlypc;
@@ -442,61 +390,23 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
     
 
 
-let chats = db.data.chats[m.chat];
+let chats = db.data.chats[m.chat]
+            if (typeof chats !== 'object') db.data.chats[m.chat] = {}
+            if (chats) {
+                if (!('mute' in chats)) chats.mute = false
+                if (!('antilink' in chats)) chats.antilink = false
+            } else global.db.data.chats[m.chat] = {
+                mute: false,
+                antilink: false,
+            }
 
-// Initialize chats if not defined
-if (!chats || typeof chats !== 'object') {
-    db.data.chats[m.chat] = {};
-    chats = db.data.chats[m.chat];
-}
-
-// Initialize isAntiBotz, isMuted, and isAntiLink
-let isAntiBotz = chats && 'antibot' in chats ? chats.antibot : false;
-let isMuted = chats && 'mute' in chats ? chats.mute : false;
-let isAntiLink = chats && 'antilink' in chats ? chats.antilink : false;
-let isAntiDelete = chats && 'antidelete' in chats ? chats.antidelete : false;
-let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : false;
-
-
-
-
-// Anti Delete
-if (isAntiDelete && global.db.message && global.db.message[m.sender] && Object.keys(global.db.message[m.sender]).length > 0 && m.type == "protocolMessage") {
-    if (Object.keys(global.db.message[m.sender]).includes("key") && global.db.message[m.sender].key.id == m.message[m.type].key.id) {
-        if (!m.key.fromMe && !isAdmins) {
-            let message = global.db.message[m.sender].message;
-            let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1];
-            let teks = "\`\`\`「  PESAN DITARIK TERDETEKSI  」\`\`\`\n\n";
-            teks += `› Dari : @${m.senderNumber}\n`;
-            m.reply(teks);
-            setTimeout(() => {
-                gss.copyNForward(m.chat, global.db.message[m.sender]);
-            }, 2000);
-        }
-    }
-}
-
-
-// Anti View Once
-if (isAntiViewOnce && isViewOnce && Object.keys(cmdOptions).length == 0) {
-    if (!m.isOwner && !m.key.fromMe && !isGroupAdmins) {
-        const media = await gss.downloadMediaMessage(m);
-        let teks = "\`\`\`「  PESAN SEKALI TERBUKA TERDETEKSI  」\`\`\`\n\n";
-        teks += `› Dari : @${m.senderNumber}\n`;
-        teks += `› Waktu : ${m.timeWib}\n`;
-        teks += `› Caption : ${m.body}\n`;
-        teks += `› Type : ${getContentType(m.message)}`;
-        if (getContentType(m.message) == "videoMessage") gss.sendMessage(m.chat, { video: media, caption: teks }, { quoted: m });
-        if (getContentType(m.message) == "imageMessage") gss.sendMessage(m.chat, { image: media, caption: teks }, { quoted: m });
-    }
-}
-/*
+//auto join
 if (global.linkGroup.includes("https://chat.whatsapp.com/")) {
 try{
 gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 } catch { console.log(chalk.whiteBright("├"), chalk.keyword("red")("[ ERROR ]"), "link group invalid!") }
 }
-*/
+
 
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
