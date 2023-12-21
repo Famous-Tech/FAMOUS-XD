@@ -460,33 +460,20 @@ let isAntiViewOnce = chats && 'antiviewonce' in chats ? chats.antiviewonce : fal
 
 
 
-// ...
-
 // Anti Delete
 if (isAntiDelete && global.db.message && global.db.message[m.sender] && Object.keys(global.db.message[m.sender]).length > 0 && m.type == "protocolMessage") {
     if (Object.keys(global.db.message[m.sender]).includes("key") && global.db.message[m.sender].key.id == m.message[m.type].key.id) {
         if (!m.key.fromMe && !isAdmins) {
-            try {
-                let message = global.db.message[m.sender].message;
-                let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1];
-                let teks = "\`\`\`「  PESAN DITARIK TERDETEKSI  」\`\`\`\n\n";
-                teks += `› Dari : @${m.senderNumber}\n`;
-                m.reply(teks);
-                setTimeout(() => {
-                    gss.copyNForward(m.chat, global.db.message[m.sender]);
-                }, 2000);
-            } catch (error) {
-                // Send the actual error message
-                m.reply(`Error: ${error.message}`);
-            }
+            let message = global.db.message[m.sender].message;
+            let type = (!["senderKeyDistributionMessage", "messageContextInfo"].includes(Object.keys(message)[0]) && Object.keys(message)[0]) || (Object.keys(message).length >= 3 && Object.keys(message)[1] !== "messageContextInfo" && Object.keys(message)[1]) || Object.keys(message)[Object.keys(message).length - 1];
+            let teks = "\`\`\`「  PESAN DITARIK TERDETEKSI  」\`\`\`\n\n";
+            teks += `› Dari : @${m.senderNumber}\n`;
+            m.reply(teks);
+            setTimeout(() => {
+                gss.copyNForward(m.chat, global.db.message[m.sender]);
+            }, 2000);
         }
-    } else {
-        // Send an error message
-        m.reply("Error: Invalid key or sender");
     }
-} else {
-    // Send an error message
-    m.reply("Error: Anti-delete conditions not met");
 }
 
 
