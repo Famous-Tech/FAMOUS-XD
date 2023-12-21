@@ -1623,11 +1623,12 @@ case 'ytmp4':
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
+      await doReact("❌");
       return;
     }
-    await doReact("🕘");
-
+    
     m.reply(mess.wait);
+    await doReact("🕘");
 
     const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
 
@@ -1640,8 +1641,8 @@ case 'ytmp4':
 
     if (req.status === 404) {
       return m.reply('Video not found.');
+      await doReact("❌");
     }
-    await doReact("❌");
 
     if (contentType && contentType.includes('application/json')) {
       const result = await req.json().catch(async (error) => {
