@@ -1625,6 +1625,7 @@ case 'ytmp4':
       m.reply('Enter YouTube Video Link or Search Query!');
       return;
     }
+    await doReact("🕘");
 
     m.reply(mess.wait);
 
@@ -1640,6 +1641,7 @@ case 'ytmp4':
     if (req.status === 404) {
       return m.reply('Video not found.');
     }
+    await doReact("❌");
 
     if (contentType && contentType.includes('application/json')) {
       const result = await req.json().catch(async (error) => {
@@ -1674,6 +1676,7 @@ const stylishCaption = `
 
 // Send the video using gss.sendMessage with the modified stylish caption and saved video
 await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), caption: stylishCaption }, { quoted: m });
+await doReact("✅");
 
 // Delete the temporary file
 fs.unlinkSync(`./${randomName}`);
@@ -1682,14 +1685,17 @@ fs.unlinkSync(`./${randomName}`);
       } else {
         console.error('Invalid API response:', result);
         m.reply('Enter YouTube Video Link or Search Query!');
+        await doReact("❌");
       }
     } else {
       console.error('Invalid Content-Type:', contentType);
       m.reply('Unexpected response format.');
+      await doReact("❌");
     }
   } catch (error) {
     console.error('Error during :', error);
     m.reply('Unexpected error occurred.');
+    await doReact("❌");
   }
   break;
 
@@ -2031,6 +2037,7 @@ case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
+  await doReact("🕘");
 
   const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
 
@@ -2082,6 +2089,7 @@ case 'yts': {
 
       // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
+      await doReact("✅");
     } else {
       console.error('Invalid API response:', data);
       return m.reply('Error retrieving search results.');
@@ -2099,7 +2107,6 @@ case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
   }
-  await doReact("🕘");
 
   // Extract the option and sub-option numbers
   const [option, subOption] = text.split('.').map(parseFloat);
@@ -2145,17 +2152,15 @@ case '𝐩𝐥𝐚𝐲': {
         `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
         [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
       );
-      await doReact("✅");
+      
     } else {
       console.error('Invalid API response:', detailsData);
       return m.reply('Error retrieving video details.');
     }
-    await doReact("❌");
   } catch (error) {
     console.error('Error fetching video details:', error);
     return m.reply('Unexpected error occurred while fetching video details.');
   }
-  await doReact("❌");
   break;
 }
 
