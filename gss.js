@@ -3605,26 +3605,28 @@ case 'gtts': {
         return m.reply('Iɴᴠᴀʟɪᴅ ʟᴀɴɢᴜᴀɢᴇ ᴄᴏᴅᴇ. Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ʟᴀɴɢᴜᴀɢᴇ ᴄᴏᴅᴇ');
     }
 
-    // Generate the audio URL using the specified language code and text
-    const audioUrl = googleTTS.getAudioUrl(textToSpeak, {
-        lang: langCode,
-        slow: false,
-        host: "https://translate.google.com",
-    });
+    try {
+        // Generate the audio URL using the specified language code and text
+        const audioUrl = await googleTTS.tts(textToSpeak, langCode, 1); // 1 means slow, 0 means normal speed
 
-    // Send the audio message
-    return client.sendMessage(m.chat, {
-        audio: {
-            url: audioUrl,
-        },
-        mimetype: 'audio/mp4',
-        ptt: true,
-        fileName: `${textToSpeak}.mp3`,
-    }, {
-        quoted: m,
-    });
+        // Send the audio message
+        return gss.sendMessage(m.chat, {
+            audio: {
+                url: audioUrl,
+            },
+            mimetype: 'audio/mp4',
+            ptt: true,
+            fileName: `${textToSpeak}.mp3`,
+        }, {
+            quoted: m,
+        });
+    } catch (error) {
+        console.error('Error during TTS:', error);
+        return m.reply('Unexpected error occurred during TTS.');
+    }
 }
 break;
+
 
 
 case 'translate': case 'trt': {
