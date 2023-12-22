@@ -3770,65 +3770,6 @@ case 'addprem':
 break;
 
           
-case 'antitoxic': case 'antibadword': {
-if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-if (!isAdmins && !issCreator) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-if (args[0] === "on") {
-if (antiToxic) return m.reply('Already activated')
-nttoxic.push(from)
-fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
-m.reply('Success in turning on antitoxic in this group')
-var groupe = await gss.groupMetadata(from)
-var members = groupe['participants']
-var mems = []
-members.map(async adm => {
-mems.push(adm.id.replace('c.us', 's.whatsapp.net'))
-})
-gss.sendMessage(m.from, {text: `\`\`\`「 ⚠️Warning⚠️ 」\`\`\`\n\nNobody is allowed to use bad words in this group, one who uses will be kicked immediately!`, contextInfo: { mentionedJid : mems }}, {quoted:m})
-} else if (args[0] === "off") {
-if (!antiToxic) return m.reply('Already deactivated')
-let off = nttoxic.indexOf(m.from)
-nttoxic.splice(off, 1)
-fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
-m.reply('Success in turning off antitoxic in this group')
-} else {
-  await m.reply(`Please Type The Option\n\nExample: ${prefix + command} on\nExample: ${prefix + command} off\n\non to enable\noff to disable`)
-  }
-  }
-  break
-  
-  case 'addbadword':{
-  if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-    if (!isAdmins && !isCreator) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-if (args.length < 1) return m.reply('Whats the word?')
-if (Badgss.includes(q)) return m.reply("The word is already in use")
-Badgss.push(q)
-fs.writeFileSync('./database/bad.json', JSON.stringify(Badgss))
-m.reply(`Success Adding Bad Word\nCheck by typing ${prefix}listbadword`)
-}
-break
-case 'delbadword':{
-if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-  if (!isAdmins && !isCreator) return m reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-if (args.length < 1) return m.reply('Enter the word')
-if (!Badgss.includes(q)) return m.reply("The word does not exist in the database")
-let wanu = Badgss.indexOf(q)
-Badgss.splice(wanu, 1)
-fs.writeFileSync('./database/bad.json', JSON.stringify(Badgss))
-m.reply(`Success deleting bad word ${q}`)
-}
-break
-case 'listbadword':{
-if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-  if (!isAdmins && !isCreator) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-let teks = '┌──⭓「 *BadWord List* 」\n│\n'
-for (let x of Badgss) {
-teks += `│⭔ ${x}\n`
-}
-teks += `│\n└────────────⭓\n\n*Totally there are : ${Badgss.length}*`
-m.reply(teks)
-}
-break
 
           
           
