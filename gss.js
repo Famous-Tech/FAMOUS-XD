@@ -111,7 +111,7 @@ const isViewOnce = ["viewOnceMessageV2","viewOnceMessage"].includes(m.type)
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
 const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
-        const antiToxic = m.isGroup ? nttoxic.includes(m.sender) : false
+        const antiToxic = m.isGroup ? nttoxic.includes(from) : false
           const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
@@ -526,6 +526,28 @@ if (isBaileys && m.fromMe) {
     m.reply('anti bot working');
 }
 
+	    
+	    
+if (antiToxic)
+if (Badgss.includes(messagesD)) {
+if (m.text) {
+bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using bad word but you are an admin/owner that's why i won't kick you😇`
+if (isAdmins) return m.reply(bvl)
+if (m.key.fromMe) return m.reply(bvl)
+if (isCreator) return m.reply(bvl)
+        await gss.sendMessage(m.chat,
+			    {
+			        delete: {
+			            remoteJid: m.chat,
+			            fromMe: false,
+			            id: m.key.id,
+			            participant: m.key.participant
+			        }
+			    })
+			await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+			gss.sendMessage(m.from, {text:`\`\`\`「 Bad Word Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`, contextInfo:{mentionedJid:[m.sender]}}, {quoted:m})}
+}
+	    
 	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
