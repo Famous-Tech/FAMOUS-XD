@@ -1613,74 +1613,81 @@ case 'video':
 case 'ytmp4':
   try {
     if (!text) {
-      await Promise.all([m.reply('Enter YouTube Video Link or Search Query!'), doReact("❌")]);
+      m.reply('Enter YouTube Video Link or Search Query!');
+      await doReact("❌");
       return;
     }
-
-    await Promise.all([m.reply(mess.wait), doReact("🕘")]);
+    
+    m.reply(mess.wait);
+    await doReact("🕘");
 
     const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
+
     const req = await fetch(apiURL);
 
     console.log('Response Status:', req.status);
+
     const contentType = req.headers.get('content-type');
     console.log('Content-Type:', contentType);
 
     if (req.status === 404) {
-      await Promise.all([m.reply('Video not found.'), doReact("❌")]);
-      return;
+      return m.reply('Video not found.');
+      await doReact("❌");
     }
 
     if (contentType && contentType.includes('application/json')) {
       const result = await req.json().catch(async (error) => {
         console.error('Error parsing JSON:', await req.text());
-        await Promise.all([m.reply('Unexpected error occurred.'), doReact("❌")]);
+        m.reply('Unexpected error occurred.');
         throw error;
       });
 
       console.log('Full API Response:', result);
 
       if (result && result.downloadUrl) {
-        const videoBufferReq = await fetch(result.downloadUrl);
-        const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-        const videoBuffer = Buffer.from(videoArrayBuffer);
+// Fetch the video content
+const videoBufferReq = await fetch(result.downloadUrl);
+const videoArrayBuffer = await videoBufferReq.arrayBuffer();
+const videoBuffer = Buffer.from(videoArrayBuffer);
 
-        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
-        fs.writeFileSync(`./${randomName}`, videoBuffer);
+// Save the video to a temporary file
+const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
+fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-        const stylishCaption = `
-          🌟 *Title:* _${result.title}_
-          👀 *Views:* _${result.views}_
-          ⏱️ *Duration:* _${result.duration}_
-          📅 *Upload Date:* _${result.uploadDate}_
-          📺 *YouTube URL:* ${result.youtubeUrl}
-          📢 *Upload Channel:* _${result.uploadChannel}_
-          
-          🤖 Downloaded by *gss botwa*
-        `;
+// Stylish caption with markdown formatting
+const stylishCaption = `
+   *Title:* _${result.title}_
+   *Views:* _${result.views}_
+   *Duration:* _${result.duration}_
+   *Upload Date:* _${result.uploadDate}_
+   *YouTube URL:* ${result.youtubeUrl}
+   *Upload Channel:* _${result.uploadChannel}_
+`;
 
-        await Promise.all([
-          gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), caption: stylishCaption }, { quoted: m }),
-          doReact("✅")
-        ]);
+// Send the video using gss.sendMessage with the modified stylish caption and saved video
+await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), caption: stylishCaption }, { quoted: m });
+await doReact("✅");
 
-        fs.unlinkSync(`./${randomName}`);
+// Delete the temporary file
+fs.unlinkSync(`./${randomName}`);
       } else if (result && result.error) {
-        await Promise.all([m.reply(`Error: ${result.error}`), doReact("❌")]);
+        return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        await Promise.all([m.reply('Enter YouTube Video Link or Search Query!'), doReact("❌")]);
+        m.reply('Enter YouTube Video Link or Search Query!');
+        await doReact("❌");
       }
     } else {
       console.error('Invalid Content-Type:', contentType);
-      await Promise.all([m.reply('Unexpected response format.'), doReact("❌")]);
+      m.reply('Unexpected response format.');
+      await doReact("❌");
     }
   } catch (error) {
     console.error('Error during :', error);
-    await Promise.all([m.reply('Unexpected error occurred.'), doReact("❌")]);
+    m.reply('Unexpected error occurred.');
+    await doReact("❌");
   }
   break;
-
 
   
 case 'yta':
