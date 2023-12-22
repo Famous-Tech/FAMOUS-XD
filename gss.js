@@ -528,25 +528,34 @@ if (isBaileys && m.fromMe) {
 
 	    
 	    
-if (antiToxic)
-if (Badgss.includes(messagesD)) {
-if (m.text) {
-bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using bad word but you are an admin/owner that's why i won't kick you😇`
-if (isAdmins) return m.reply(bvl)
-if (m.key.fromMe) return m.reply(bvl)
-if (isCreator) return m.reply(bvl)
-        await gss.sendMessage(m.chat,
-			    {
-			        delete: {
-			            remoteJid: m.chat,
-			            fromMe: false,
-			            id: m.key.id,
-			            participant: m.key.participant
-			        }
-			    })
-			await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-			gss.sendMessage(m.from, {text:`\`\`\`「 Bad Word Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`, contextInfo:{mentionedJid:[m.sender]}}, {quoted:m})}
+if (antiToxic) {
+    if (Badgss.includes(messagesD)) {
+        if (m.text) {
+            const bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using a bad word, but as an admin/owner, you won't be kicked 😇`;
+            
+            if (isAdmin || m.key.fromMe || isCreator) {
+                return m.reply(bvl);
+            } else {
+                await gss.sendMessage(m.chat, {
+                    delete: {
+                        remoteJid: m.chat,
+                        fromMe: false,
+                        id: m.key.id,
+                        participant: m.key.participant
+                    }
+                });
+                
+                await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+                
+                await gss.sendMessage(m.from, {
+                    text: `\`\`\`「 Bad Word Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`,
+                    contextInfo: { mentionedJid: [m.sender] }
+                }, { quoted: m });
+            }
+        }
+    }
 }
+
 	    
 	    
 	  // Anti Link
