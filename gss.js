@@ -3283,8 +3283,6 @@ case 'tiktoknowmdoc':
 
     case "ai":
 case "gpt":
-  const aithink = await gss.sendMessage(m.chat, { text: 'Thinking...' });
-
   try {
     if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
@@ -3293,28 +3291,9 @@ case "gpt":
 
     if (response.status === 200) {
       const result = response.data.result;
-      const typingSpeed = 200; // Adjust the typing speed as needed (milliseconds per word)
 
-      const words = result.split(' ');
-      let i = 0;
-
-      const typewriterInterval = setInterval(() => {
-        if (i < words.length) {
-          const typedText = words.slice(0, i + 1).join(' ');
-          gss.relayMessage(m.chat, {
-            protocolMessage: {
-              key: aithink.key,
-              type: 14,
-              editedMessage: {
-                conversation: typedText,
-              },
-            },
-          }, {});
-          i++;
-        } else {
-          clearInterval(typewriterInterval); // Stop the typewriter effect
-        }
-      }, typingSpeed);
+      // Send the result without any additional effects
+      gss.sendMessage(m.chat, { text: result });
     } else {
       console.error(`HTTP request failed with status ${response.status}`);
       m.reply("Error: Unable to fetch data from the API.");
@@ -3324,6 +3303,7 @@ case "gpt":
     m.reply("Error: " + error.message);
   }
   break;
+
 
 
 
