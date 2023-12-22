@@ -3596,7 +3596,7 @@ for (let x of Badgss) {
 teks += `│⭔ ${x}\n`
 }
 teks += `│\n└────────────⭓\n\n*Totally there are : ${Badgss.length}*`
-m reply(teks)
+m.reply(teks)
 }
 break
 
