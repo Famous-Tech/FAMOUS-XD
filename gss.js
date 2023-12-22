@@ -526,7 +526,7 @@ if (isBaileys && m.fromMe) {
     m.reply('anti bot working');
 }
 
-	    
+	    /*
 	    
 if (antiToxic)
 if (Badgss.includes(messagesD)) {
@@ -547,7 +547,7 @@ if (isCreator) return m.reply(bvl)
 			await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
 			gss.sendMessage(m.from, {text:`\`\`\`「 Bad Word Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`, contextInfo:{mentionedJid:[m.sender]}}, {quoted:m})}
 }
-	    
+	    */
 	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
