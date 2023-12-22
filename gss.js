@@ -3588,9 +3588,6 @@ m.reply(`Success deleting bad word ${q}`)
 }
 break
 case 'listbadword':{
-  if (!m.isGroup) throw mess.group;
-  if (!isBotAdmins) throw mess.botAdmin;
-  if (!isAdmins) throw mess.admin;
 let teks = '┌──⭓「 *BadWord List* 」\n│\n'
 for (let x of Badgss) {
 teks += `│⭔ ${x}\n`
