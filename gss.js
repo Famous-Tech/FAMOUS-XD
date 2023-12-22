@@ -533,7 +533,7 @@ if (antiToxic) {
         if (m.text) {
             const bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using a bad word, but as an admin/owner, you won't be kicked 😇`;
             
-            if (isAdmin || m.key.fromMe || isCreator) {
+            if (isAdmins || m.key.fromMe || isCreator) {
                 return m.reply(bvl);
             } else {
                 await gss.sendMessage(m.chat, {
