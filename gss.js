@@ -1693,35 +1693,25 @@ fs.unlinkSync(`./${randomName}`);
 case 'yta':
 case 'song':
 case 'ytmp3':
-  case 'audio':
+case 'audio':
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
       await doReact("❌");
       return;
-      
     }
-    await doReact("🕘");
-
-    m.reply(mess.wait);
     
+    await doReact("🕘");
+    m.reply(mess.wait);
 
-    const ytaAPIURL = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
-    const apiURL = `${ytaAPIURL}${encodeURIComponent(text)}`;
+    const apiKey = 'haikalgans';
+    const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(text)}`;
 
-    const req = await fetch(apiURL);
+    const req = await fetch(ytaNewAPIURL);
 
     console.log('Response Status:', req.status);
 
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
-      return m.reply('Audio not found.');
-      await doReact("❌");
-    }
-
-    if (contentType && contentType.includes('application/json')) {
+    if (req.status === 200) {
       const result = await req.json().catch(async (error) => {
         console.error('Error parsing JSON:', await req.text());
         m.reply('Unexpected error occurred.');
@@ -1731,9 +1721,9 @@ case 'ytmp3':
 
       console.log('Full API Response:', result);
 
-      if (result && result.downloadURL) {
+      if (result && result.result && result.result.link) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.downloadURL);
+        const audioBufferReq = await fetch(result.result.link);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
@@ -1742,20 +1732,18 @@ case 'ytmp3':
         fs.writeFileSync(`./${randomName}`, audioBuffer);
 
         // Send the audio using gss.sendMessage with the saved audio and filename
-        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.title}.mp3` }, { quoted: m });
+        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.result.title}.mp3` }, { quoted: m });
         await doReact("✅");
 
         // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
+        m.reply('Audio not found.');
         await doReact("❌");
       }
     } else {
-      console.error('Invalid Content-Type:', contentType);
+      console.error('Invalid Response Status:', req.status);
       m.reply('Unexpected response format.');
       await doReact("❌");
     }
@@ -1850,36 +1838,30 @@ case 'ytmp3doc':
       await doReact("❌");
       return;
     }
-    await doReact("🕘");
 
+    await doReact("🕘");
     m.reply(mess.wait);
 
-    const ytaAPIURL = 'https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=';
-    const apiURL = `${ytaAPIURL}${encodeURIComponent(text)}`;
-    const req = await fetch(apiURL);
+    const apiKey = 'bf2d2cf29b3edc604b447983';
+    const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(text)}`;
+
+    const req = await fetch(ytaNewAPIURL);
 
     console.log('Response Status:', req.status);
 
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
-      return m.reply('Audio not found.');
-      await doReact("❌");
-    }
-
-    if (contentType && contentType.includes('application/json')) {
+    if (req.status === 200) {
       const result = await req.json().catch(async (error) => {
         console.error('Error parsing JSON:', await req.text());
         m.reply('Unexpected error occurred.');
+        await doReact("❌");
         throw error;
       });
 
       console.log('Full API Response:', result);
 
-      if (result && result.downloadURL) {
+      if (result && result.result && result.result.link) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.downloadURL);
+        const audioBufferReq = await fetch(result.result.link);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
@@ -1888,20 +1870,18 @@ case 'ytmp3doc':
         fs.writeFileSync(`./${randomName}`, audioBuffer);
 
         // Send the audio using gss.sendMessage with the saved audio as a document
-        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', fileName: `${result.title}.mp3`, caption: ' downloaded by gss botwa' }, { quoted: m });
+        await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', fileName: `${result.result.title}.mp3`, caption: 'Downloaded by gss botwa' }, { quoted: m });
         await doReact("✅");
 
         // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
+        m.reply('Audio not found.');
         await doReact("❌");
       }
     } else {
-      console.error('Invalid Content-Type:', contentType);
+      console.error('Invalid Response Status:', req.status);
       m.reply('Unexpected response format.');
       await doReact("❌");
     }
@@ -1911,6 +1891,7 @@ case 'ytmp3doc':
     await doReact("❌");
   }
   break;
+
 
 
 
@@ -2010,30 +1991,43 @@ case '𝗔𝗨𝗗𝗜𝗢': {
     const { url } = searchResults[0];
 
     try {
-      const downloadResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
-      const result = await downloadResponse.json();
+      const apiKey = 'bf2d2cf29b3edc604b447983';
+      const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(url)}`;
 
-      if (result && result.downloadURL) {
-        // Fetch the audio content
-        const audioBufferReq = await fetch(result.downloadURL);
-        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-        const audioBuffer = Buffer.from(audioArrayBuffer);
+      const req = await fetch(ytaNewAPIURL);
+      console.log('Response Status:', req.status);
 
-        // Save the audio to a temporary file
-        const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
-        fs.writeFileSync(`./${randomName}`, audioBuffer);
+      if (req.status === 200) {
+        const result = await req.json().catch(async (error) => {
+          console.error('Error parsing JSON:', await req.text());
+          m.reply('Unexpected error occurred. Please check the logs for more details.');
+          throw error;
+        });
 
-await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.title}.mp3` }, { quoted: m });
+        console.log('Full API Response:', result);
 
-        // Delete the temporary file
-        fs.unlinkSync(`./${randomName}`);
-      } else if (result && result.error) {
-        console.error('API response error:', result);
-        return m.reply(`Error: ${result.error}`);
+        if (result && result.result && result.result.link) {
+          // Fetch the audio content
+          const audioBufferReq = await fetch(result.result.link);
+          const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+          const audioBuffer = Buffer.from(audioArrayBuffer);
+
+          // Save the audio to a temporary file
+          const randomName = `temp_audio_${Math.floor(Math.random() * 10000)}.mp3`;
+          fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+          // Send the audio using gss.sendMessage with the saved audio
+          await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.result.title}.mp3` }, { quoted: m });
+
+          // Delete the temporary file
+          fs.unlinkSync(`./${randomName}`);
+        } else {
+          console.error('Invalid API response:', result);
+          m.reply('Audio not found.');
+        }
       } else {
-        console.error('Invalid API response:', result);
-        console.log('API response details:', JSON.stringify(result, null, 2)); // Add this line to log the response details
-        m.reply('Unexpected error occurred. Please check the logs for more details.');
+        console.error('Invalid Response Status:', req.status);
+        m.reply('Unexpected response format. Please check the logs for more details.');
       }
     } catch (error) {
       console.error(`Error during 𝗔𝗨𝗗𝗜𝗢:`, error);
@@ -2045,6 +2039,7 @@ await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimet
 
   break;
 }
+
 
 
 // Inside the 'yts' case:
@@ -2285,32 +2280,42 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   const uniqueKey = `play_${audioSubOption}`;
 
   try {
-    const audioDetailsResponse = await fetch(`https://ytdlv2-f2fb0f53f892.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const audioResult = await audioDetailsResponse.json();
+    const apiKey = 'bf2d2cf29b3edc604b447983';
+    const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(selectedVideo.url)}`;
 
-    if (audioResult && audioResult.downloadURL) {
-      const audioBufferReq = await fetch(audioResult.downloadURL);
+    const audioDetailsResponse = await fetch(ytaNewAPIURL);
+    console.log('Response Status:', audioDetailsResponse.status);
 
-      if (!audioBufferReq.ok) {
-        console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
-        return m.reply('Error fetching audio content.');
+    if (audioDetailsResponse.status === 200) {
+      const audioResult = await audioDetailsResponse.json();
+
+      if (audioResult && audioResult.result && audioResult.result.link) {
+        const audioBufferReq = await fetch(audioResult.result.link);
+
+        if (!audioBufferReq.ok) {
+          console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
+          return m.reply('Error fetching audio content.');
+        }
+
+        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
+        const audioBuffer = Buffer.from(audioArrayBuffer);
+
+        const randomName = `temp_audio_${audioSubOption}.mp3`;
+        fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.result.title}.mp3` }, { quoted: m });
+
+        fs.unlinkSync(`./${randomName}`);
+      } else if (audioResult && audioResult.error) {
+        console.error('API response error:', audioResult);
+        return m.reply(`Error: ${audioResult.error}`);
+      } else {
+        console.error('Invalid API response:', audioResult);
+        m.reply('Unexpected error occurred.');
       }
-
-      const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-      const audioBuffer = Buffer.from(audioArrayBuffer);
-
-      const randomName = `temp_audio_${audioSubOption}.mp3`;
-      fs.writeFileSync(`./${randomName}`, audioBuffer);
-
-      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.title}.mp3` }, { quoted: m });
-
-      fs.unlinkSync(`./${randomName}`);
-    } else if (audioResult && audioResult.error) {
-      console.error('API response error:', audioResult);
-      return m.reply(`Error: ${audioResult.error}`);
     } else {
-      console.error('Invalid API response:', audioResult);
-      m.reply('Unexpected error occurred.');
+      console.error('Invalid Response Status:', audioDetailsResponse.status);
+      m.reply('Unexpected response format.');
     }
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
@@ -2318,6 +2323,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
