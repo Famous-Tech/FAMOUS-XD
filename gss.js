@@ -111,7 +111,7 @@ const isViewOnce = ["viewOnceMessageV2","viewOnceMessage"].includes(m.type)
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
 const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
-        const antiToxic = m.isGroup ? nttoxic.includes(from) : false
+        const antiToxic = m.isGroup ? nttoxic.includes(m.from) : false
           const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
  
