@@ -1621,7 +1621,7 @@ case 'ytmp4':
     m.reply(mess.wait);
     await doReact("🕘");
 
-    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
+    const apiURL = `https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
 
     const req = await fetch(apiURL);
 
@@ -1782,7 +1782,7 @@ case 'ytmp4doc':
 
     m.reply(mess.wait);
 
-    const apiURL = `https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(text)}`;
+    const apiURL = `https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
     const req = await fetch(apiURL);
 
     console.log('Response Status:', req.status);
@@ -1959,7 +1959,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
     const { url } = searchResults[0];
 
     try {
-      const downloadResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(url)}`);
+      const downloadResponse = await fetch(`https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(url)}`);
       const result = await downloadResponse.json();
 
       if (result && result.downloadURL) {
@@ -2214,7 +2214,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     console.log('Fetching video details for URL:', selectedVideo.url);
 
     // Fetch details using the selectedVideo.url directly
-    const videoDetailsResponse = await fetch(`https://nextapi-2c1cf958de8a.herokuapp.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
+    const videoDetailsResponse = await fetch(`https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
     const videoResult = await videoDetailsResponse.json();
 
     console.log('Video details API response:', JSON.stringify(videoResult, null, 2));
