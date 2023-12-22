@@ -526,7 +526,7 @@ if (isBaileys && m.fromMe) {
     m.reply('anti bot working');
 }
 
-	    /*
+	    
 	    
 if (antiToxic)
 if (Badgss.includes(messagesD)) {
@@ -547,7 +547,7 @@ if (isCreator) return m.reply(bvl)
 			await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
 			gss.sendMessage(m.from, {text:`\`\`\`「 Bad Word Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`, contextInfo:{mentionedJid:[m.sender]}}, {quoted:m})}
 }
-	    */
+	    
 	    
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
@@ -3527,6 +3527,9 @@ if (!isCreator) throw mess.owner
 
 
 case 'antitoxic': case 'antibadword': {
+  if (!m.isGroup) throw mess.group;
+  if (!isBotAdmins) throw mess.botAdmin;
+  if (!isAdmins) throw mess.admin;
 if (args[0] === "on") {
 if (antiToxic) return m.reply('Already activated')
 nttoxic.push(m.from)
@@ -3550,6 +3553,43 @@ m.reply('Success in turning off antitoxic in this group')
   }
   }
   break
+  
+  
+case 'addbadword':{
+  if (!m.isGroup) throw mess.group;
+  if (!isBotAdmins) throw mess.botAdmin;
+  if (!isAdmins) throw mess.admin;
+if (args.length < 1) return m.reply('Whats the word?')
+if (Badgss.includes(q)) return m.reply("The word is already in use")
+Badgss.push(q)
+fs.writeFileSync('./database/bad.json', JSON.stringify(Badgss))
+m.reply(`Success Adding Bad Word\nCheck by typing ${prefix}listbadword`)
+}
+break
+case 'delbadword':{
+  if (!m.isGroup) throw mess.group;
+  if (!isBotAdmins) throw mess.botAdmin;
+  if (!isAdmins) throw mess.admin;
+if (args.length < 1) return m.reply('Enter the word')
+if (!Badgss.includes(q)) return m.reply("The word does not exist in the database")
+let wanu = Badgss.indexOf(q)
+Badgss.splice(wanu, 1)
+fs.writeFileSync('./database/bad.json', JSON.stringify(Badgss))
+m.reply(`Success deleting bad word ${q}`)
+}
+break
+case 'listbadword':{
+  if (!m.isGroup) throw mess.group;
+  if (!isBotAdmins) throw mess.botAdmin;
+  if (!isAdmins) throw mess.admin;
+let teks = '┌──⭓「 *BadWord List* 」\n│\n'
+for (let x of Badgss) {
+teks += `│⭔ ${x}\n`
+}
+teks += `│\n└────────────⭓\n\n*Totally there are : ${Badgss.length}*`
+m reply(teks)
+}
+break
 
 
 const languages = require('./lib/languages'); // Import the language codes module
