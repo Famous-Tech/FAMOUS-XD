@@ -1842,7 +1842,7 @@ case 'ytmp3doc':
     await doReact("🕘");
     m.reply(mess.wait);
 
-    const apiKey = 'bf2d2cf29b3edc604b447983';
+    const apiKey = 'haikalgans';
     const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(text)}`;
 
     const req = await fetch(ytaNewAPIURL);
@@ -1991,7 +1991,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
     const { url } = searchResults[0];
 
     try {
-      const apiKey = 'bf2d2cf29b3edc604b447983';
+      const apiKey = 'haikalgans';
       const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(url)}`;
 
       const req = await fetch(ytaNewAPIURL);
@@ -2280,7 +2280,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   const uniqueKey = `play_${audioSubOption}`;
 
   try {
-    const apiKey = 'bf2d2cf29b3edc604b447983';
+    const apiKey = 'haikalgans';
     const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(selectedVideo.url)}`;
 
     const audioDetailsResponse = await fetch(ytaNewAPIURL);
