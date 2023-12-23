@@ -3299,7 +3299,6 @@ case 'tiktoknowmdoc':
     case "ai":
 case "gpt":
   try {
-    if (!process.env.OPENAI_API_KEY) return reply("unable to fetch your API key");
     if (!text) return reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
     const apiUrl = `https://api.caliph.biz.id/api/ai/oai-gpt?q=${encodeURIComponent(text)}&apikey=lykoUzNh`;
