@@ -1680,7 +1680,7 @@ case 'audio':
 
       if (result && result.result && result.result.link) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.result.link);
+        const audioBufferReq = await fetch(result.result.link.link);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
@@ -1824,7 +1824,7 @@ case 'ytmp3doc':
 
       if (result && result.result && result.result.link) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.result.link);
+        const audioBufferReq = await fetch(result.result.link.link);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
@@ -1971,7 +1971,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
         if (result && result.result && result.result.link) {
           // Fetch the audio content
-          const audioBufferReq = await fetch(result.result.link);
+          const audioBufferReq = await fetch(result.result.link.link);
           const audioArrayBuffer = await audioBufferReq.arrayBuffer();
           const audioBuffer = Buffer.from(audioArrayBuffer);
 
@@ -2253,7 +2253,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
       const audioResult = await audioDetailsResponse.json();
 
       if (audioResult && audioResult.result && audioResult.result.link) {
-        const audioBufferReq = await fetch(audioResult.result.link);
+        const audioBufferReq = await fetch(result.result.link.link);
 
         if (!audioBufferReq.ok) {
           console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
