@@ -2671,49 +2671,70 @@ case 'apk': case 'app': case 'apkdl': {
 }
 
 
-async function handleAudioDownload(query, m) {
+// Define a function for handling audio download
+async function handleAudioDownload(text, m) {
   try {
     if (!text) {
-      return m.reply({ error: 'Query parameter or link is missing.' });
+      return m.reply("I need an audio name or URL for download");
     }
 
-    const isLink = ytdl.validateURL(text);
+    let data;
+    let tmpFilePath;
 
-    let videoInfo;
-    if (isLink) {
-      videoInfo = await ytdl.getInfo(text, { filter: 'audioonly' });
+    if (ytdl.validateURL(text)) {
+      // If the text is a valid URL, directly fetch audio information
+      const videoInfo = await ytdl.getInfo(text, { filter: 'audioonly' });
+      const audioFormat = ytdl.chooseFormat(videoInfo.formats, { quality: 'highestaudio', filter: 'audioonly' });
+
+      tmpFilePath = path.join(__dirname, 'tmp', `${Math.floor(Math.random() * 10000)}.mp3`);
+
+      await ytdl.downloadFromInfo(videoInfo, { format: audioFormat }).pipe(fs.createWriteStream(tmpFilePath));
     } else {
-      const searchResults = await ytSearch(text);
-      if (!searchResults.videos.length) {
-        return m.reply("No videos found for the given query.");
+      // If the text is a name, search for it and fetch audio information
+      const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
+      const randomName = getRandomName(".mp3");
+
+      tmpFilePath = path.join(__dirname, 'tmp', randomName);
+
+      let searchResults = await search(text);
+
+      if (!searchResults.length) {
+        return m.reply("Audio not found!");
       }
 
-      videoInfo = await ytdl.getInfo(searchResults.videos[0].url, { filter: 'audioonly' });
+      data = await download(searchResults[0].id);
+
+      const url = data.dllink;
+
+      await axios.get(url, { responseType: 'stream' })
+        .then(response => {
+          const writer = fs.createWriteStream(tmpFilePath);
+          response.data.pipe(writer);
+
+          return new Promise((resolve, reject) => {
+            writer.on('finish', resolve);
+            writer.on('error', reject);
+          });
+        });
     }
 
-    const audioFormat = ytdl.chooseFormat(videoInfo.formats, { quality: 'highestaudio', filter: 'audioonly' });
-    const downloadUrl = audioFormat.url;
-
-    // Download the audio and save in 'tmp' directory
-    const tmpFilePath = path.join(__dirname, 'tmp', `${Math.floor(Math.random() * 10000)}.mp3`);
-    await ytdl.downloadFromInfo(videoInfo, { format: audioFormat }).pipe(fs.createWriteStream(tmpFilePath));
-
-    // Send the audio using gss.sendMessage
+    // Send audio using gss.sendMessage
     await gss.sendMessage(m.chat, { audio: tmpFilePath }, { quoted: m });
 
     // Delete the temporary audio file
     await fs.unlink(tmpFilePath);
   } catch (error) {
-    console.error('Error during download:', error);
-    return m.reply({ error: 'An error occurred during download.' });
+    console.error('Error during audio download:', error);
+    return m.reply("An error occurred during audio download.");
   }
 }
 
-  case 'audio2':
+  case 'audio':
   case 'sound':
-  case 'music2':
+  case 'music':
     await handleAudioDownload(text, m);
     break;
+
 
 
 
