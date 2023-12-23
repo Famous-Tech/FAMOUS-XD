@@ -2712,7 +2712,7 @@ async function handleAudioDownload(query, m) {
   case 'audio2':
   case 'sound':
   case 'music2':
-    await handleAudioDownload(query, m);
+    await handleAudioDownload(text, m);
     break;
 
 
