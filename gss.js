@@ -2714,8 +2714,6 @@ async function handleAudioDownload(query, m) {
   case 'music2':
     await handleAudioDownload(query, m);
     break;
-  // other cases...
-}
 
 
 
