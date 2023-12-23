@@ -2690,7 +2690,7 @@ async function handleAudioDownload(text, m) {
 
       await ytdl.downloadFromInfo(videoInfo, { format: audioFormat }).pipe(fs.createWriteStream(tmpFilePath));
     } else {
-      // If the text is a name, search for it and fetch audio information
+      // If the text is not a URL, treat it as a name and search for it
       const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
       const randomName = getRandomName(".mp3");
 
@@ -2729,12 +2729,12 @@ async function handleAudioDownload(text, m) {
   }
 }
 
+
   case 'audio':
   case 'sound':
   case 'music':
     await handleAudioDownload(text, m);
     break;
-
 
 
 
