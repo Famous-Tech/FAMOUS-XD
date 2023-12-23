@@ -1690,63 +1690,63 @@ fs.unlinkSync(`./${randomName}`);
   break;
 
   
+
+
 case 'yta':
 case 'song':
 case 'ytmp3':
 case 'audio':
   try {
     if (!text) {
-      m.reply('Enter YouTube Video Link or Search Query!');
       await doReact("❌");
+      m.reply('Enter YouTube Video Link or Search Query!');
       return;
     }
-    
+
     await doReact("🕘");
     m.reply(mess.wait);
 
-    const apiKey = 'GataDios';
-    const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(text)}`;
+    let videoUrl;
 
-    const req = await fetch(ytaNewAPIURL);
-
-    console.log('Response Status:', req.status);
-
-    if (req.status === 200) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
-        await doReact("❌");
-        throw error;
-      });
-
-      console.log('Full API Response:', result);
-
-      if (result && result.result && result.result.link) {
-        // Fetch the audio content
-        const audioBufferReq = await fetch(result.result.link.link);
-        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-        const audioBuffer = Buffer.from(audioArrayBuffer);
-
-        // Save the audio to a temporary file
-        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp3`;
-        fs.writeFileSync(`./${randomName}`, audioBuffer);
-
-        // Send the audio using gss.sendMessage with the saved audio and filename
-        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.result.title}.mp3` }, { quoted: m });
-        await doReact("✅");
-
-        // Delete the temporary file
-        fs.unlinkSync(`./${randomName}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Audio not found.');
-        await doReact("❌");
-      }
+    // Check if the input is a valid YouTube link
+    if (ytdl.validateURL(text)) {
+      videoUrl = text;
     } else {
-      console.error('Invalid Response Status:', req.status);
-      m.reply('Unexpected response format.');
-      await doReact("❌");
+      // If it's not a link, search for the video
+      const searchResults = await ytSearch(text);
+      const firstVideo = searchResults.videos[0];
+
+      if (!firstVideo) {
+        m.reply('No search results found.');
+        await doReact("❌");
+        return;
+      }
+
+      videoUrl = firstVideo.url;
     }
+
+    const audioStream = ytdl(videoUrl, { filter: 'audioonly' });
+
+    // Use the title from the video or search result
+    const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp3`;
+
+    audioStream.pipe(fs.createWriteStream(`./${randomName}`));
+
+    audioStream.on('end', async () => {
+      // Send the audio using gss.sendMessage with the saved audio and filename
+      await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: 'audio.mp3' }, { quoted: m });
+      await doReact("✅");
+
+      // Delete the temporary file
+      fs.unlinkSync(`./${randomName}`);
+    });
+
+    audioStream.on('error', (error) => {
+      console.error('Error downloading audio:', error);
+      m.reply('Error downloading audio.');
+      await doReact("❌");
+    });
+
   } catch (error) {
     console.error('Error during yta:', error);
     m.reply('Unexpected error occurred.');
