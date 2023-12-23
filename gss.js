@@ -596,7 +596,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
     const translatedQuestion = await translate(question, { to: 'en' });
     console.log('Translated Question:', translatedQuestion);
 
-    var ini_url = `https://api.lolhuman.xyz/api/akinator/answer?apikey=haikalgans&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
+    var ini_url = `https://api.lolhuman.xyz/api/akinator/answer?apikey=GataDios&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
     var get_result = await fetchJson(ini_url);
     var get_result = get_result.result;
     if (get_result.hasOwnProperty("name")) {
@@ -625,7 +625,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
     ini_txt += "5 - Go Back to the Previous Question";
 
     if (args[0] === '5') {
-        var ini_url = `https://api.lolhuman.xyz/api/akinator/back?apikey=haikalgans&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
+        var ini_url = `https://api.lolhuman.xyz/api/akinator/back?apikey=GataDios&server=${server}&frontaddr=${frontaddr}&session=${session}&signature=${signature}&answer=${body}&step=${step}`;
         var get_result = await fetchJson(ini_url);
         var get_result = get_result.result;
         var {
@@ -1082,7 +1082,7 @@ case 'akinator':
     break;
 case 'akinatorstart':
     if (akinator.hasOwnProperty(m.sender.split('@')[0])) return m.reply("Finish the previous one first, please.")
-    get_result = await fetchJson(`https://api.lolhuman.xyz/api/akinator/start?apikey=haikalgans`);
+    get_result = await fetchJson(`https://api.lolhuman.xyz/api/akinator/start?apikey=GataDios`);
     let {
         server, frontaddr, session, signature, question, step
     } = get_result.result;
@@ -1704,7 +1704,7 @@ case 'audio':
     await doReact("🕘");
     m.reply(mess.wait);
 
-    const apiKey = 'haikalgans';
+    const apiKey = 'GataDios';
     const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(text)}`;
 
     const req = await fetch(ytaNewAPIURL);
@@ -1842,7 +1842,7 @@ case 'ytmp3doc':
     await doReact("🕘");
     m.reply(mess.wait);
 
-    const apiKey = 'haikalgans';
+    const apiKey = 'GataDios';
     const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(text)}`;
 
     const req = await fetch(ytaNewAPIURL);
@@ -1991,7 +1991,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
     const { url } = searchResults[0];
 
     try {
-      const apiKey = 'haikalgans';
+      const apiKey = 'GataDios';
       const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(url)}`;
 
       const req = await fetch(ytaNewAPIURL);
@@ -2280,7 +2280,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   const uniqueKey = `play_${audioSubOption}`;
 
   try {
-    const apiKey = 'haikalgans';
+    const apiKey = 'GataDios';
     const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(selectedVideo.url)}`;
 
     const audioDetailsResponse = await fetch(ytaNewAPIURL);
@@ -3201,7 +3201,7 @@ case 'tiktoknowm':
 
     m.reply(mess.wait);
 
-    let anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok2?apikey=haikalgans&url=${encodeURIComponent(text)}`);
+    let anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok2?apikey=GataDios&url=${encodeURIComponent(text)}`);
 
     console.log('TikTok API Response:', anu);
 
@@ -3238,7 +3238,7 @@ case 'tiktoknowmdoc':
 
     m.reply(mess.wait);
 
-    let anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok2?apikey=haikalgans&url=${encodeURIComponent(text)}`);
+    let anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok2?apikey=GataDios&url=${encodeURIComponent(text)}`);
 
     console.log('TikTok API Response:', anu);
 
@@ -3273,7 +3273,7 @@ case 'tiktoknowmdoc':
                 m.reply(mess.wait)
                 gss.sendMessage(m.chat, {
                     sticker: {
-                        url: `https://api.lolhuman.xyz/api/attp?apikey=haikalgans&text=${q}`
+                        url: `https://api.lolhuman.xyz/api/attp?apikey=GataDios&text=${q}`
                     }
                 }, {
                     quoted: m
