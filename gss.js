@@ -2673,17 +2673,17 @@ case 'apk': case 'app': case 'apkdl': {
 
 async function handleAudioDownload(query, m) {
   try {
-    if (!query) {
+    if (!text) {
       return m.reply({ error: 'Query parameter or link is missing.' });
     }
 
-    const isLink = ytdl.validateURL(query);
+    const isLink = ytdl.validateURL(text);
 
     let videoInfo;
     if (isLink) {
-      videoInfo = await ytdl.getInfo(query, { filter: 'audioonly' });
+      videoInfo = await ytdl.getInfo(text, { filter: 'audioonly' });
     } else {
-      const searchResults = await ytSearch(query);
+      const searchResults = await ytSearch(text);
       if (!searchResults.videos.length) {
         return m.reply("No videos found for the given query.");
       }
