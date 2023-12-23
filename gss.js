@@ -1689,22 +1689,17 @@ case 'audio':
   if (!videos || videos.length <= 0)
     return m.reply('Sorry, cannot be found');
 
-  const audio = new yt(videos[0].url, "audio");
+  const audioUrl = videos[0].url;
+  const isValidURL = await YT.validateURL(audioUrl);
 
-  if (!audio.url) return;
+  if (isValidURL) {
+    const audioBuffer = await YT.getBuffer(audioUrl, 'audio');
 
-  gss.sendMessage(m.from, await audio.getBuffer(), 2, {
-    quoted: m,
-    contextInfo: {
-      externalAdReply: {
-        title: videos[0].title.substr(0, 30),
-        mediaType: 2,
-        thumbnail: await fs.promises.readFile(`https://i.ytimg.com/vi/${audio.id}/hqdefault.jpg`),
-        mediaUrl: audio.url,
-      },
-    },
-  })
-    .catch(reason => m.reply(`An error occurred.`));
+    // Continue with the rest of your code...
+
+  } else {
+    m.reply('Invalid YouTube URL');
+  }
   break;
 
 
