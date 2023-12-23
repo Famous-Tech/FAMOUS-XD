@@ -2671,6 +2671,56 @@ case 'apk': case 'app': case 'apkdl': {
 }
 
 
+async function handleAudioDownload(query, m) {
+  try {
+    if (!query) {
+      return m.reply({ error: 'Query parameter or link is missing.' });
+    }
+
+    const isLink = ytdl.validateURL(query);
+
+    let videoInfo;
+    if (isLink) {
+      videoInfo = await ytdl.getInfo(query, { filter: 'audioonly' });
+    } else {
+      const searchResults = await ytSearch(query);
+      if (!searchResults.videos.length) {
+        return m.reply("No videos found for the given query.");
+      }
+
+      videoInfo = await ytdl.getInfo(searchResults.videos[0].url, { filter: 'audioonly' });
+    }
+
+    const audioFormat = ytdl.chooseFormat(videoInfo.formats, { quality: 'highestaudio', filter: 'audioonly' });
+    const downloadUrl = audioFormat.url;
+
+    // Download the audio and save in 'tmp' directory
+    const tmpFilePath = path.join(__dirname, 'tmp', `${Math.floor(Math.random() * 10000)}.mp3`);
+    await ytdl.downloadFromInfo(videoInfo, { format: audioFormat }).pipe(fs.createWriteStream(tmpFilePath));
+
+    // Send the audio using gss.sendMessage
+    await gss.sendMessage(m.chat, { audio: tmpFilePath }, { quoted: m });
+
+    // Delete the temporary audio file
+    await fs.unlink(tmpFilePath);
+  } catch (error) {
+    console.error('Error during download:', error);
+    return m.reply({ error: 'An error occurred during download.' });
+  }
+}
+
+  case 'audio2':
+  case 'sound':
+  case 'music2':
+    await handleAudioDownload(query, m);
+    break;
+  // other cases...
+}
+
+
+
+
+
 case 'mediafire': {
     // Check if the command has arguments
     if (args.length === 0) {
