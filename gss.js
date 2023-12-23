@@ -1762,10 +1762,12 @@ case 'videodoc':
 case 'ytmp4doc':
   try {
     if (!text) {
-      m.reply('Enter YouTube Video Link or Search Query!');
       await doReact("❌");
+      m.reply('Enter YouTube Video Link or Search Query!');
+      
       return;
     }
+    
     await doReact("🕘");
 
     m.reply(mess.wait);
@@ -1779,15 +1781,17 @@ case 'ytmp4doc':
     console.log('Content-Type:', contentType);
 
     if (req.status === 404) {
-      return m.reply('Video not found.');
       await doReact("❌");
+      return m.reply('Video not found.');
+      
     }
 
     if (contentType && contentType.includes('application/json')) {
       const result = await req.json().catch(async (error) => {
         console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
         await doReact("❌");
+        m.reply('Unexpected error occurred.');
+        
         throw error;
       });
 
@@ -1813,18 +1817,20 @@ case 'ytmp4doc':
         return m.reply(`Error: ${result.error}`);
       } else {
         console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
         await doReact("❌");
+        m.reply('Enter YouTube Video Link or Search Query!');
+        
       }
     } else {
       console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
       await doReact("❌");
+      m.reply('Unexpected response format.');
+      
     }
   } catch (error) {
     console.error('Error during :', error);
-    m.reply('Unexpected error occurred.');
     await doReact("❌");
+    m.reply('Unexpected error occurred.');
   }
   break;
 
