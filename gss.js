@@ -1693,14 +1693,23 @@ case 'audio':
   const isValidURL = await YT.validateURL(audioUrl);
 
   if (isValidURL) {
-    const audioBuffer = await YT.getBuffer(audioUrl, 'audio');
+            const audioBuffer = await YT.getBuffer(audioUrl, 'audio');
 
-    // Continue with the rest of your code...
-
-  } else {
-    m.reply('Invalid YouTube URL');
-  }
-  break;
+            vorterx.sendMessage(m.from, audioBuffer, 2, {
+                quoted: m,
+                contextInfo: {
+                    externalAdReply: {
+                        title: videos[0].title.substr(0, 30),
+                        mediaType: 2,
+                        thumbnail: await fs.promises.readFile(`https://i.ytimg.com/vi/${YT.parseId(audioUrl)}/hqdefault.jpg`),
+                        mediaUrl: audioUrl,
+                    },
+                },
+            }).catch(reason => m.reply(`An error occurred.`));
+        } else {
+            m.reply('Invalid YouTube URL');
+        }
+        break;
 
 
 
