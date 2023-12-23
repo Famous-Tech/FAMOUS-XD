@@ -2,7 +2,7 @@ require("dotenv").config();
 require('./config')
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
-const yt = require('./lib/YTModule.js');
+const YT = require('./lib/YTModule.js');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
@@ -1695,7 +1695,7 @@ case 'audio':
   if (isValidURL) {
             const audioBuffer = await YT.getBuffer(audioUrl, 'audio');
 
-            vorterx.sendMessage(m.from, audioBuffer, 2, {
+            gss.sendMessage(m.from, audioBuffer, 2, {
                 quoted: m,
                 contextInfo: {
                     externalAdReply: {
