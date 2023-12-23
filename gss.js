@@ -1604,6 +1604,8 @@ case 'ytmp4':
     
     m.reply(mess.wait);
     await doReact("🕘");
+    await doReact("🕘");
+    await doReact("🕘");
 
     const apiURL = `https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
 
@@ -3133,7 +3135,6 @@ case 'ping': {
   await doReact("🕘");
   const startTime = new Date();
   const pingMsg = await gss.sendMessage(m.chat, { text: '*cheking...*' });
-  await doReact("🕘");
 
  await gss.relayMessage(m.chat, {
       protocolMessage: {
