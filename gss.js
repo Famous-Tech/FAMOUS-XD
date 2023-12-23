@@ -2,7 +2,7 @@ require("dotenv").config();
 require('./config')
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
-const YT = require('./lib/YTModule.js');
+const yt = require('./lib/YTModule.js');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
@@ -1689,7 +1689,7 @@ case 'audio':
   if (!videos || videos.length <= 0)
     return m.reply('Sorry, cannot be found');
 
-  const audio = new YT(videos[0].url, "audio");
+  const audio = new yt(videos[0].url, "audio");
 
   if (!audio.url) return;
 
