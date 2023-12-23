@@ -3130,6 +3130,7 @@ break;
             
 
 case 'ping': {
+  await doReact("🕘");
   const startTime = new Date();
   const pingMsg = await gss.sendMessage(m.chat, { text: '*cheking...*' });
   await doReact("🕘");
@@ -3299,7 +3300,7 @@ case 'tiktoknowmdoc':
     case "ai":
 case "gpt":
   try {
-    if (!text) return reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
     const apiUrl = `https://api.caliph.biz.id/api/ai/oai-gpt?q=${encodeURIComponent(text)}&apikey=lykoUzNh`;
     const response = await axios.get(apiUrl);
