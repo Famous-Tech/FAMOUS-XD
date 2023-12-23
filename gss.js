@@ -2288,6 +2288,29 @@ case '𝐚𝐮𝐝𝐢𝐨': {
 }
 
 
+case 'fetch':
+  try {
+    if (!text) {
+      m.reply('Please provide the API URL.');
+      break;
+    }
+
+    const apiUrl = text.trim();
+    const apiResponse = await fetch(apiUrl);
+
+    if (apiResponse.ok) {
+      const result = await apiResponse.json();
+      console.log('API Response:', result);
+      m.reply(`API data fetched successfully. Result: ${JSON.stringify(result)}`);
+    } else {
+      console.error('Error fetching API data:', apiResponse.statusText);
+      m.reply(`Error fetching API data. Status: ${apiResponse.status}`);
+    }
+  } catch (error) {
+    console.error('Error during API fetch:', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
 
 
 
@@ -2335,7 +2358,7 @@ async function downloadInstagramMedia(url) {
 }
 
 
-// ...
+
 
 async function downloadAndSendMedia(m, text, isDocument) {
     const url = text;
