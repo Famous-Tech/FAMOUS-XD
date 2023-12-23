@@ -1723,7 +1723,7 @@ case 'audio':
 
       if (result && result.result && result.result.link) {
         // Fetch the audio content
-        const audioBufferReq = await fetch(result.result.link);
+        const audioBufferReq = await fetch(result.result.link.link);
         const audioArrayBuffer = await audioBufferReq.arrayBuffer();
         const audioBuffer = Buffer.from(audioArrayBuffer);
 
