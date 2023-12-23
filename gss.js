@@ -3406,7 +3406,7 @@ async function fetchImageData() {
         image: {
           url: randomImageLink,
         },
-        caption: text,
+        caption: genetd,
       }, {
         quoted: m,
       });
