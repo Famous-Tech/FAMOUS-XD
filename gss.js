@@ -2288,7 +2288,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
 }
 
 
-case 'fetch':
+case 'fetchapi':
   try {
     if (!text) {
       m.reply('Please provide the API URL.');
@@ -2301,7 +2301,42 @@ case 'fetch':
     if (apiResponse.ok) {
       const result = await apiResponse.json();
       console.log('API Response:', result);
-      m.reply(`API data fetched successfully. Result: ${JSON.stringify(result)}`);
+
+      // Check if the response has a downloadUrl
+      if (result.downloadUrl) {
+        // Determine the content type based on the downloadUrl
+        let contentType;
+        let fileExtension;
+
+        if (result.downloadUrl.endsWith('.mp3')) {
+          contentType = 'audio/mp3';
+          fileExtension = 'mp3';
+        } else if (result.downloadUrl.endsWith('.mp4')) {
+          contentType = 'video/mp4';
+          fileExtension = 'mp4';
+        } else if (result.downloadUrl.endsWith('.jpg') || result.downloadUrl.endsWith('.jpeg') || result.downloadUrl.endsWith('.png') || result.downloadUrl.endsWith('.gif')) {
+          contentType = 'image/jpeg'; // assuming it's a JPEG, change accordingly
+          fileExtension = 'jpg'; // assuming it's a JPEG, change accordingly
+        } else {
+          contentType = 'application/octet-stream'; // default to binary data
+          fileExtension = 'download';
+        }
+
+        // Fetch the content from the downloadUrl
+        const contentResponse = await fetch(result.downloadUrl);
+
+        if (contentResponse.ok) {
+          const content = await contentResponse.arrayBuffer();
+
+          // Send the content using gss.sendMessage with the downloaded content and appropriate filename
+          await gss.sendMessage(m.chat, { [contentType.startsWith('image') ? 'image' : contentType.startsWith('video') ? 'video' : 'audio']: content, mimetype: contentType, fileName: `downloaded.${fileExtension}` }, { quoted: m });
+        } else {
+          console.error('Error fetching content:', contentResponse.statusText);
+          m.reply(`Error fetching content. Status: ${contentResponse.status}`);
+        }
+      } else {
+        m.reply('No downloadUrl found in the API response.');
+      }
     } else {
       console.error('Error fetching API data:', apiResponse.statusText);
       m.reply(`Error fetching API data. Status: ${apiResponse.status}`);
@@ -2311,6 +2346,7 @@ case 'fetch':
     m.reply('Unexpected error occurred.');
   }
   break;
+
 
 
 
