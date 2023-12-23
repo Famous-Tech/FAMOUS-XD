@@ -317,7 +317,7 @@ const reactionMessage = {
   `);
 }
 
-
+/*
 const apiUrl = 'https://vihangayt.me/download/fmmods';
 
 try {
@@ -365,52 +365,7 @@ try {
 }
 
 
-
-const ytapiUrl = 'https://vihangayt.me/download/ytmp4?url=https://youtu.be/5C8yvJUVB-0';
-
-try {
-    const response = await axios.get(ytapiUrl); // Corrected variable name 'apiUrl' to 'ytapiUrl'
-    const data = response.data;
-
-    if (m.text) {
-        const lowerText = m.text.toLowerCase();
-
-        if (data.status === true && data.data) {
-            if (lowerText === '.ytv') {
-                let ytvList = 'Here is the ytv list:\n';
-                Object.keys(data.data).forEach((ytv, index) => {
-                    ytvList += `${index + 1}. ${ytv}\n`;
-                });
-                await m.reply(ytvList);
-            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the ytv list')) {
-                const selectedNumber = parseInt(lowerText);
-                const ytvNames = Object.keys(data.data);
-
-                if (selectedNumber >= 1 && selectedNumber <= ytvNames.length) {
-                    const ytv = data.data[ytvNames[selectedNumber - 1]]; // Corrected accessing the ytv object
-
-                    const videoBufferReq = await axios.get(ytv.url, { responseType: 'arraybuffer' });
-                    const videoBuffer = Buffer.from(videoBufferReq.data);
-
-                    await gss.sendMessage(m.chat, {
-                        video: videoBuffer, // Corrected sending video instead of document
-                        mimetype: 'video/mp4', // Set the correct mimetype for video
-                        caption: `${ytv.title}` // You may adjust the caption as needed
-                    });
-                } else {
-                    await m.reply('Invalid ytv number. Please select a number from the ytv list.');
-                }
-            }
-        }
-    }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
-    await m.reply('Error fetching data. Please try again later.');
-}
-
-
-
-
+*/
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
