@@ -1678,68 +1678,84 @@ fs.unlinkSync(`./${randomName}`);
   
 
 
-case 'yta':
 case 'song':
+case 'play':
 case 'ytmp3':
+case 'music':
 case 'audio':
-  try {
-    if (!text) {
-      m.reply('Enter YouTube Video Link or Search Query!');
-      await doReact("❌");
-      return;
-    }
-    
-    await doReact("🕘");
-    m.reply(mess.wait);
+  case 'yta':
+  if (!text) throw `Use example ${prefix + command} man meri jan`;
 
-    const apiKey = 'GataDios';
-    const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(text)}`;
-
-    const req = await fetch(ytaNewAPIURL);
-
-    console.log('Response Status:', req.status);
-
-    if (req.status === 200) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
-        await doReact("❌");
-        throw error;
-      });
-
-      console.log('Full API Response:', result);
-
-      if (result && result.result && result.result.link) {
-        // Fetch the audio content
-        const audioBufferReq = await fetch(result.result.link.link);
-        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-        const audioBuffer = Buffer.from(audioArrayBuffer);
-
-        // Save the audio to a temporary file
-        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp3`;
-        fs.writeFileSync(`./${randomName}`, audioBuffer);
-
-        // Send the audio using gss.sendMessage with the saved audio and filename
-        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${result.result.title}.mp3` }, { quoted: m });
-        await doReact("✅");
-
-        // Delete the temporary file
-        fs.unlinkSync(`./${randomName}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Audio not found.');
-        await doReact("❌");
-      }
-    } else {
-      console.error('Invalid Response Status:', req.status);
-      m.reply('Unexpected response format.');
-      await doReact("❌");
-    }
-  } catch (error) {
-    console.error('Error during yta:', error);
-    m.reply('Unexpected error occurred.');
-    await doReact("❌");
+  let searchAudio = await yts(text);
+  if (!searchAudio.videos || searchAudio.videos.length === 0) {
+    throw 'No videos found for the given search query';
   }
+
+  let vidAudio = searchAudio.videos[Math.floor(Math.random() * searchAudio.videos.length)];
+  if (!vidAudio) throw 'Video Not Found, Try Another Title';
+  let { title: titleAudio, thumbnail: thumbnailAudio, timestamp: timestampAudio, views: viewsAudio, ago: agoAudio, url: urlAudio } = vidAudio;
+  let wmAudio = 'Audio downloaded by Gss_botwa';
+
+  let captvidAudio = `
+╭─🎵 *Music Search Results*
+│
+├ 🎧 *Title*: ${titleAudio}
+├ 👀 *Views*: ${viewsAudio}
+├ ⏰ *Uploaded At*: ${agoAudio}
+├ ⏳ Duration: ${timestampAudio}
+│
+├─🔗 [Watch](${urlAudio}
+╰─────────⭑
+      `;
+  gss.sendMessage(m.chat, { image: { url: thumbnailAudio }, caption: captvidAudio }, { quoted: m });
+
+  const audioStream = ytdl(urlAudio, {
+    filter: 'audioonly',
+    quality: 'highestaudio',
+  });
+
+  const tmpDirAudio = os.tmpdir();
+  const writableStreamAudio = fs.createWriteStream(`${tmpDirAudio}/${titleAudio}.mp3`);
+
+  await streamPipeline(audioStream, writableStreamAudio);
+
+  let thumbnailDataAudio;
+  try {
+    const thumbnailResponseAudio = await client.getFile(thumbnailAudio);
+    thumbnailDataAudio = thumbnailResponseAudio.data;
+  } catch (error) {
+    console.error('Error fetching thumbnail:', error);
+    thumbnailDataAudio = '';
+  }
+
+  const docAudio = {
+    audio: {
+      url: `${tmpDirAudio}/${titleAudio}.mp3`,
+    },
+    mimetype: 'audio/mp4',
+    fileName: `${titleAudio}`,
+    contextInfo: {
+      externalAdReply: {
+        showAdAttribution: false,
+        mediaType: 2,
+        mediaUrl: urlAudio,
+        title: titleAudio,
+        body: wmAudio,
+        sourceUrl: global.link,
+        thumbnail: thumbnailDataAudio,
+      },
+    },
+  };
+
+  await gss.sendMessage(m.chat, docAudio, { quoted: m });
+
+  fs.unlink(`${tmpDirAudio}/${titleAudio}.mp3`, (err) => {
+    if (err) {
+      console.error(`Failed to delete audio file: ${err}`);
+    } else {
+      console.log(`Deleted audio file: ${tmpDirAudio}/${titleAudio}.mp3`);
+    }
+  });
   break;
 
 
