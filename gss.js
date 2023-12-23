@@ -146,6 +146,35 @@ async function doReact(emoji) {
     }
 
 
+async function sendTypingEffect(gss, m, message, typingSpeed) {
+  const gptthink = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+
+  const words = message.split(' ');
+
+  let i = 0;
+  const typewriterInterval = setInterval(() => {
+    if (i < words.length) {
+      const typedText = words.slice(0, i + 1).join(' ');
+      gss.relayMessage(m.chat, {
+        protocolMessage: {
+          key: gptthink.key,
+          type: 14,
+          editedMessage: {
+            conversation: typedText,
+          },
+        },
+      }, {});
+      i++;
+    } else {
+      clearInterval(typewriterInterval); // Stop the typewriter effect
+    }
+  }, typingSpeed);
+}
+
+
+
+
+
 async function generateProfilePicture(media) {
     return {
         img: 'placeholder_image_data'
@@ -3270,16 +3299,19 @@ case 'tiktoknowmdoc':
     case "ai":
 case "gpt":
   try {
-    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+    if (!process.env.OPENAI_API_KEY) return reply("unable to fetch your API key");
+    if (!text) return reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
-    const response = await axios.get(apiEndpoint);
+    const apiUrl = `https://api.caliph.biz.id/api/ai/oai-gpt?q=${encodeURIComponent(text)}&apikey=lykoUzNh`;
+    const response = await axios.get(apiUrl);
 
     if (response.status === 200) {
       const result = response.data.result;
+      const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
 
-      // Send the result without any additional effects
-      gss.sendMessage(m.chat, { text: result });
+      // Use the typing effect function
+      await sendTypingEffect(gss, m, result, typingSpeed);
+
     } else {
       console.error(`HTTP request failed with status ${response.status}`);
       m.reply("Error: Unable to fetch data from the API.");
