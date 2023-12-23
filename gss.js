@@ -2670,6 +2670,8 @@ case 'apk': case 'app': case 'apkdl': {
   break;
 }
 
+/*
+
 
 // Define a function for handling audio download
 async function handleAudioDownload(text, m) {
@@ -2737,7 +2739,7 @@ async function handleAudioDownload(text, m) {
     break;
 
 
-
+*/
 
 
 case 'mediafire': {
