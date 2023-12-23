@@ -1598,7 +1598,7 @@ case 'ytmp4':
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
-      await doReact("❌");
+       doReact("❌");
       return;
     }
     
