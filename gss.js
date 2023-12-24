@@ -345,16 +345,6 @@ const reactionMessage = {
 }
 
 
-async function doReact(✅) {
-      let react = {
-        react: {
-          text: ✅,
-          key: m.key,
-        },
-      };
-      await Matrix.sendMessage(from, react);
-    }
-    
     
     const apiUrl = 'https://vihangayt.me/download/fmmods';
 
