@@ -1244,7 +1244,7 @@ case 'fmmod': {
 
       Object.keys(data.data).forEach((fmmodName, index) => {
         fmmodList += `${index + 1}. ${fmmodName}\n`;
-        pollOptions.push(`${index + 1}`);
+        pollOptions.push(fmmodName);
       });
 
       const pollResult = await gss.sendPoll(m.chat, {
