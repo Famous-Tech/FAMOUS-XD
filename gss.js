@@ -2735,18 +2735,6 @@ case 'mediafire': {
             return m.reply('Oops, the file is too big...');
         }
 
-        // Prepare result message with available information and added spaces
-        const resultMessage = `*gss mediafire downloader*
-
-*✪ Name* : ${fileInfo[0].nama}
-*✪ Size* : ${fileInfo[0].size}
-*✪ Mime* : ${fileInfo[0].mime}
-*✪ Creator* : ${fileInfo[0].creator ? fileInfo[0].creator : 'Not available'} 
-*✪ Upload Date* : ${fileInfo[0].uploadDate ? fileInfo[0].uploadDate : 'Not available'}`;  // If upload date is not available, show 'Not available'
-
-        // Send the result message
-        m.reply(`${resultMessage}`);
-
         // Send the file to the user with a caption
         gss.sendMessage(
             m.chat,
