@@ -2670,76 +2670,7 @@ case 'apk': case 'app': case 'apkdl': {
   break;
 }
 
-/*
 
-
-// Define a function for handling audio download
-async function handleAudioDownload(text, m) {
-  try {
-    if (!text) {
-      return m.reply("I need an audio name or URL for download");
-    }
-
-    let data;
-    let tmpFilePath;
-
-    if (ytdl.validateURL(text)) {
-      // If the text is a valid URL, directly fetch audio information
-      const videoInfo = await ytdl.getInfo(text, { filter: 'audioonly' });
-      const audioFormat = ytdl.chooseFormat(videoInfo.formats, { quality: 'highestaudio', filter: 'audioonly' });
-
-      tmpFilePath = path.join(__dirname, 'tmp', `${Math.floor(Math.random() * 10000)}.mp3`);
-
-      await ytdl.downloadFromInfo(videoInfo, { format: audioFormat }).pipe(fs.createWriteStream(tmpFilePath));
-    } else {
-      // If the text is not a URL, treat it as a name and search for it
-      const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
-      const randomName = getRandomName(".mp3");
-
-      tmpFilePath = path.join(__dirname, 'tmp', randomName);
-
-      let searchResults = await search(text);
-
-      if (!searchResults.length) {
-        return m.reply("Audio not found!");
-      }
-
-      data = await download(searchResults[0].id);
-
-      const url = data.dllink;
-
-      await axios.get(url, { responseType: 'stream' })
-        .then(response => {
-          const writer = fs.createWriteStream(tmpFilePath);
-          response.data.pipe(writer);
-
-          return new Promise((resolve, reject) => {
-            writer.on('finish', resolve);
-            writer.on('error', reject);
-          });
-        });
-    }
-
-    // Send audio using gss.sendMessage
-    await gss.sendMessage(m.chat, { audio: tmpFilePath }, { quoted: m });
-
-    // Delete the temporary audio file
-    await fs.unlink(tmpFilePath);
-  } catch (error) {
-    console.error('Error during audio download:', error);
-    return m.reply("An error occurred during audio download.");
-  }
-}
-
-
-  case 'audio':
-  case 'sound':
-  case 'music':
-    await handleAudioDownload(text, m);
-    break;
-
-
-*/
 
 
 case 'mediafire': {
