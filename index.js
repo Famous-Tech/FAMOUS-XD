@@ -84,7 +84,7 @@ async function startgss() {
 
     store.bind(gss.ev)
     
-    
+    /*
 // auto reject call when user calls
 gss.ev.on("call", async (json) => {
     const botNumber = await gss.decodeJid(gss.user.id);
@@ -104,7 +104,7 @@ gss.ev.on("call", async (json) => {
     }
 });
 
-
+*/
 
 
     gss.ev.on('messages.upsert', async chatUpdate => {
