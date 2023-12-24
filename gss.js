@@ -1232,6 +1232,64 @@ break;
 break;
 
 
+case 'fmmods': {
+  try {
+    const apiUrl = 'https://vihangayt.me/download/fmmods';
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    if (data.status === true && data.data) {
+      let fmmodList = 'Here is the FMMod list:\n';
+      const pollOptions = [];
+
+      Object.keys(data.data).forEach((fmmodName, index) => {
+        fmmodList += `${index + 1}. ${fmmodName}\n`;
+        pollOptions.push(`${prefix}fmmod ${index + 1}`);
+      });
+
+      const pollResult = await gss.sendPoll(m.chat, {
+        question: 'Select an FMMod to download:',
+        options: pollOptions,
+      });
+
+      gss.ev.on('poll.update', async (pollUpdate) => {
+        if (pollUpdate.messageId === pollResult.messageID && pollUpdate.options && pollUpdate.options.length > 0) {
+          const selectedOptionIndex = pollUpdate.options.findIndex(option => option.votes > 0);
+
+          if (selectedOptionIndex !== -1) {
+            const selectedOption = selectedOptionIndex + 1;
+            const fmmodNames = Object.keys(data.data);
+
+            if (selectedOption >= 1 && selectedOption <= fmmodNames.length) {
+              const fmmodName = fmmodNames[selectedOption - 1];
+
+              const apkBufferReq = await fetch(data.data[fmmodName].link);
+              const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+              const apkBuffer = Buffer.from(apkArrayBuffer);
+
+              // Sending the APK as a document
+              await gss.sendMessage(m.chat, {
+                document: apkBuffer,
+                mimetype: 'application/vnd.android.package-archive',
+                fileName: `${fmmodName}.apk`,
+              });
+            } else {
+              await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
+            }
+          }
+        }
+      });
+    } else {
+      await m.reply('Error fetching FMMod data. Please try again later.');
+    }
+  } catch (error) {
+    console.error('Error fetching data from the API:', error);
+    await m.reply('Error fetching FMMod data. Please check the logs for more details.');
+  }
+}
+break;
+
+
 case 'antibot': {
     if (!m.isGroup) throw mess.group;
     if (!isBotAdmins) throw mess.botAdmin;
