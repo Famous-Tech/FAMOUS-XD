@@ -365,8 +365,6 @@ try {
                 });
             });
 
-            await m.reply(fmmodList);
-
             // Create a poll with FMMod options
             const pollMessage = await gss.sendPoll(m.chat, {
                 question: 'Select an FMMod to download:',
