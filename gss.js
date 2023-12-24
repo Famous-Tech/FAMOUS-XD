@@ -2670,8 +2670,65 @@ case 'apk': case 'app': case 'apkdl': {
   break;
 }
 
+const maxResults = 5; // Number of YouTube search results
 
+// Function to handle the command
+async function handlePlayCommand(m, text) {
+    // Extracting the search query from the command
+    const searchQuery = text.trim();
 
+    // Using yt-search to get top 5 results
+    const searchResults = await ytSearch(searchQuery, { limit: maxResults });
+
+    // Creating poll options
+    const pollOptions = searchResults.videos.map(video => {
+        return {
+            text: video.title,
+        };
+    });
+
+    // Sending the poll
+    const pollMessage = await gss.sendPoll(m.chat, {
+        question: `Select a video to play: ${searchQuery}`,
+        options: pollOptions,
+    });
+
+    // Wait for user response
+    const selectedOption = await waitForUserResponse(m.key, pollMessage.id);
+
+    // Download and send the selected audio
+    if (selectedOption !== undefined) {
+        const selectedVideo = searchResults.videos[selectedOption];
+        const audioBuffer = await downloadAudio(selectedVideo.url);
+
+        // Sending the audio as a message without a caption
+        await gss.sendMessage(m.chat, {
+            audio: audioBuffer,
+            filename: `${selectedVideo.title}.mp3`,
+        });
+    }
+}
+
+// Example usage
+gss.ev.on('messages.text', async (m, message) => {
+    const text = message.text.toLowerCase();
+    
+    // Check if the command is present
+    if (text.includes("play")) {
+        const additionalText = text.substring(text.indexOf("play") + "play".length).trim();
+        await handlePlayCommand(m, additionalText);
+    }
+});
+
+// Helper function to wait for user response in the poll
+async function waitForUserResponse(m, pollId) {
+    return new Promise(resolve => {
+        gss.ev.once('messages.pollUpdate', async pollUpdate => {
+            const selectedOption = pollUpdate.find(update => update.message.id === pollId)?.selectedOption;
+            resolve(selectedOption);
+        });
+    });
+}
 
 case 'mediafire': {
     // Check if the command has arguments
