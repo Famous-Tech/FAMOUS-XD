@@ -1232,7 +1232,7 @@ break;
 break;
 
 
-case 'fmmods': {
+case 'fmmod': {
   try {
     const apiUrl = 'https://vihangayt.me/download/fmmods';
     const response = await axios.get(apiUrl);
@@ -1244,7 +1244,7 @@ case 'fmmods': {
 
       Object.keys(data.data).forEach((fmmodName, index) => {
         fmmodList += `${index + 1}. ${fmmodName}\n`;
-        pollOptions.push(`${prefix}fmmod ${index + 1}`);
+        pollOptions.push(`${index + 1}`);
       });
 
       const pollResult = await gss.sendPoll(m.chat, {
@@ -1288,6 +1288,7 @@ case 'fmmods': {
   }
 }
 break;
+
 
 
 case 'antibot': {
