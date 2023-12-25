@@ -1689,8 +1689,9 @@ case 'ytmp3':
     const videoInfo = await getVideoInfo(text);
 
     if (!videoInfo) {
-      return m.reply('Audio not found.');
+      m.reply('Audio not found.');
       await doReact("❌");
+      return;
     }
 
     const audioStream = ytdl(videoInfo.url, { quality: 'highestaudio' });
@@ -1701,19 +1702,26 @@ case 'ytmp3':
     });
 
     audioStream.on('end', async () => {
-      // Concatenate the audio chunks
-      const finalAudioBuffer = Buffer.concat(audioBuffer);
+      try {
+        // Concatenate the audio chunks
+        const finalAudioBuffer = Buffer.concat(audioBuffer);
 
-      // Send the audio using gss.sendMessage without caption
-      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
-      await doReact("✅");
+        // Send the audio using gss.sendMessage without caption
+        await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
+        await doReact("✅");
+      } catch (err) {
+        console.error('Error sending audio:', err);
+        m.reply('Error sending audio.');
+        await doReact("❌");
+      }
     });
   } catch (error) {
-    console.error('Error during :', error);
+    console.error('Error during:', error);
     m.reply('Unexpected error occurred.');
     await doReact("❌");
   }
   break;
+
 
 
 
