@@ -2090,7 +2090,7 @@ case 'yts': {
 
 
 
-case 'play': {
+case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Please specify the video you want to play. Use the format: play [unique-key]');
   }
