@@ -1755,7 +1755,7 @@ case 'ytv2':
 │⿻ *Duration:* ${firstVideo.duration}
 │⿻ *Author:* ${firstVideo.author.name}
 │⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  
-│⿻ *Upload Date:* ${formatUploadDate(firstVideo.publishedAt)}
+│⿻ *Upload Date:* ${formatUploadDate(firstVideo.uploadDate)}
 ╰══•∞•═════════╯
 `;
 
