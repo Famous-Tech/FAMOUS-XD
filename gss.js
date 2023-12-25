@@ -1712,7 +1712,7 @@ case 'ytv2':
 │⿻ *Duration:* ${videoInfo.duration}
 │⿻ *Author:* ${videoInfo.author.name}
 │⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.publishedAt)} 
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)} 
 ╰══•∞•═════════╯
 `;
 
