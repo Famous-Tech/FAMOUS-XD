@@ -1944,7 +1944,7 @@ case 'ytmp3doc':
 
 
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', fileName: 'audio.mp3', quoted: m });
+          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', filename: `${videoInfo.title}.mp3`, quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio:', err);
@@ -1991,7 +1991,7 @@ case 'ytmp3doc':
 `,
 };
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', fileName: 'audio.mp3', quoted: m });
+          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', filename: `${firstVideo.title}.mp3`, quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio:', err);
