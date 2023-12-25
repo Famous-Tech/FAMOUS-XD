@@ -171,20 +171,18 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
 
 
 
-async function getVideoInfo(query) {
-  try {
-    const { videos } = await ytSearch(query);
-    if (videos.length > 0) {
-      return videos[0];
-    }
-    return null;
-  } catch (error) {
-    console.error('Error fetching video info:', error);
-    return null;
-  }
+function formatBytes(bytes) {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes === 0) return '0 Byte';
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
 
-
+// Helper function to format upload date
+function formatUploadDate(uploadDate) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(uploadDate).toLocaleDateString(undefined, options);
+}
 
 async function generateProfilePicture(media) {
     return {
