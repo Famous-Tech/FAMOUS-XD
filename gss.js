@@ -2188,6 +2188,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2198,28 +2199,32 @@ case 'yts': {
     const searchResults = await yts(text);
 
     if (searchResults && searchResults.videos.length > 0) {
-      const top5Results = searchResults.videos.slice(0, 5);
-
       let pollOptions = [];
+      let optionIndex = 1;
 
       // Iterate through the top 5 search results
-      for (let i = 0; i < top5Results.length; i++) {
-        const result = top5Results[i];
-        const uniqueKey = `yts_${i + 1}`;
-        const subOption = 1;
+      for (let i = 0; i < Math.min(searchResults.videos.length, 5); i++) {
+        const result = searchResults.videos[i];
 
-        // Save the video details in the Map
-        videoSearchResults.set(uniqueKey, [{
-          subOption,
-          title: result.title,
-          url: result.url,
-          uploadDate: result.uploadDate,
-          views: result.views,
-          duration: result.duration
-        }]);
+        // Generate sub-option numbers for each option
+        for (let subOption = 1; subOption <= 20; subOption++) {
+          const uniqueKey = `yts_${optionIndex}.${subOption}`;
 
-        // Update pollOptions accordingly (use i + 1 and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${i + 1}.${subOption} ${result.title}`);
+          // Save the video details in the Map
+          videoSearchResults.set(uniqueKey, [{
+            subOption,
+            title: result.title,
+            url: result.url,
+            uploadDate: result.uploadDate,
+            views: result.views,
+            duration: result.duration
+          }]);
+
+          // Update pollOptions accordingly (use optionIndex and sub-option number)
+          pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${subOption} ${result.title}`);
+        }
+
+        optionIndex += 1;
       }
 
       // Send the poll with titles as options
@@ -2235,6 +2240,7 @@ case 'yts': {
   }
   break;
 }
+
 
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
