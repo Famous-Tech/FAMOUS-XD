@@ -1598,8 +1598,6 @@ case 'ytmp4':
     
     m.reply(mess.wait);
     await doReact("🕘");
-    await doReact("🕘");
-    await doReact("🕘");
 
     const apiURL = `https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
 
@@ -1673,12 +1671,14 @@ fs.unlinkSync(`./${randomName}`);
 
 
 
+
+
 case 'yta':
 case 'song':
 case 'ytmp3':
   try {
     if (!text) {
-      m.reply('Enter YouTube Video Link or Search Query!');
+      m.reply('Enter YouTube Link or Search Query!');
       doReact("❌");
       return;
     }
@@ -1689,7 +1689,7 @@ case 'ytmp3':
     const videoInfo = await getVideoInfo(text);
 
     if (!videoInfo) {
-      return m.reply('Video not found.');
+      return m.reply('Audio not found.');
       await doReact("❌");
     }
 
@@ -1705,7 +1705,7 @@ case 'ytmp3':
       const finalAudioBuffer = Buffer.concat(audioBuffer);
 
       // Send the audio using gss.sendMessage without caption
-      await gss.sendMessage(m.chat, { audio: finalAudioBuffer }, { quoted: m });
+      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mp4' }, { quoted: m });
       await doReact("✅");
     });
   } catch (error) {
@@ -1714,7 +1714,6 @@ case 'ytmp3':
     await doReact("❌");
   }
   break;
-
 
 
 
