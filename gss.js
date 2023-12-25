@@ -2283,55 +2283,13 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
-case '𝐚𝐮𝐝𝐢𝐨':
-{
-  if (!text) {
-    return m.reply('Enter the index of the audio you want to play! (e.g., 1)');
-  }
-
-  const selectedIdx = parseInt(text);
-
-  // Check if the entered index is valid
-  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
-    return m.reply('Invalid index. Please enter a valid number.');
-  }
-
-  const selectedKey = `yts_${selectedIdx}`;
-
-  try {
-    // Check if the selected audio exists
-    if (!audioSearchResults.has(selectedKey)) {
-      return m.reply('Selected audio not found.');
-    }
-
-    const selectedAudio = audioSearchResults.get(selectedKey);
-
-    // Check if the selected audio has necessary properties
-    if (!selectedAudio || !selectedAudio.url) {
-      return m.reply('Selected audio details are incomplete.');
-    }
-
-    // Download the audio content using ytdl-core with audioonly filter
-    const audioStream = ytdl(selectedAudio.url, { quality: 'highestaudio', filter: 'audioonly' });
-
-    // Send the audio without a specific filename
-    await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp3' }, { quoted: m });
-  } catch (error) {
-    console.error(`Error during 𝐚𝐮𝐝𝐢𝐨:`, error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-}
-
-case '𝐯𝐢𝐝𝐞𝐨':
-{
+case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
     return m.reply('Enter the index of the video you want to play! (e.g., 1)');
   }
 
   const selectedIdx = parseInt(text);
 
-  // Check if the entered index is valid
   if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
     return m.reply('Invalid index. Please enter a valid number.');
   }
@@ -2339,30 +2297,89 @@ case '𝐯𝐢𝐝𝐞𝐨':
   const selectedKey = `yts_${selectedIdx}`;
 
   try {
-    // Check if the selected video exists
-    if (!videoSearchResults.has(selectedKey)) {
-      return m.reply('Selected video not found.');
-    }
-
     const selectedVideo = videoSearchResults.get(selectedKey);
 
-    // Check if the selected video has necessary properties
     if (!selectedVideo || !selectedVideo.url) {
-      return m.reply('Selected video details are incomplete.');
+      console.error('Error: Video details not available for the selected index.');
+      return m.reply('Error: Video details not available for the selected index.');
     }
 
-    // Download the video content using ytdl-core with audioandvideo filter
-    const videoStream = ytdl(selectedVideo.url, { quality: 'highest', filter: 'audioandvideo' });
+    const videoBufferReq = await ytdl(selectedVideo.url, { filter: 'audioandvideo', quality: 'highest' });
 
-    // Send the video without a specific filename
-    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4' }, { quoted: m });
+    if (!videoBufferReq) {
+      console.error('Failed to fetch video content.');
+      return m.reply('Error fetching video content.');
+    }
+
+    const videoBuffer = await getStream(videoBufferReq);
+    const randomName = `temp_video_${selectedIdx}.mp4`;
+
+    fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+    const videoDetailsCaption = `
+╭─📺 *Video Details*
+│
+├ 🎧 *Title*: ${selectedVideo.title}
+├ 👀 *Views*: ${selectedVideo.views}
+├ 📅 *Uploaded At*: ${selectedVideo.uploadDate}
+├ 👤 *Author*: ${selectedVideo.uploadChannel}
+│
+├─🔗 [Watch](${selectedVideo.url})
+╰─────────⭑
+    `;
+
+    await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
+
+    fs.unlinkSync(`./${randomName}`);
   } catch (error) {
-    console.error(`Error during 𝐯𝐢𝐝𝐞𝐨:`, error);
+    console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
 }
 
+case '𝐚𝐮𝐝𝐢𝐨': {
+  if (!text) {
+    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
+  }
+
+  const selectedIdx = parseInt(text);
+
+  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
+    return m.reply('Invalid index. Please enter a valid number.');
+  }
+
+  const selectedKey = `yts_${selectedIdx}`;
+
+  try {
+    const selectedVideo = audioSearchResults.get(selectedKey);
+
+    if (!selectedVideo || !selectedVideo.url) {
+      console.error('Error: Audio details not available for the selected index.');
+      return m.reply('Error: Audio details not available for the selected index.');
+    }
+
+    const audioBufferReq = await ytdl(selectedVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
+
+    if (!audioBufferReq) {
+      console.error('Failed to fetch audio content.');
+      return m.reply('Error fetching audio content.');
+    }
+
+    const audioBuffer = await getStream(audioBufferReq);
+    const randomName = `temp_audio_${selectedIdx}.mp3`;
+
+    fs.writeFileSync(`./${randomName}`, audioBuffer);
+
+    await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', fileName: `${selectedVideo.title}.mp3` }, { quoted: m });
+
+    fs.unlinkSync(`./${randomName}`);
+  } catch (error) {
+    console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
 
 
 
