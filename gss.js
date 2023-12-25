@@ -2064,9 +2064,9 @@ case 'yts': {
             subOption,
             title,
             url: videoUrl,
-            uploadDate: 'Upload date not available', // You can modify this based on available data
-            views: 'Views count not available', // You can modify this based on available data
-            duration: 'Duration not available' // You can modify this based on available data
+            uploadDate: 'Upload date not available',
+            views: 'Views count not available',
+            duration: 'Duration not available'
           });
         } else {
           // Key doesn't exist, create a new array with the current video details
@@ -2074,9 +2074,9 @@ case 'yts': {
             subOption: 1,
             title,
             url: videoUrl,
-            uploadDate: 'Upload date not available', // You can modify this based on available data
-            views: 'Views count not available', // You can modify this based on available data
-            duration: 'Duration not available' // You can modify this based on available data
+            uploadDate: 'Upload date not available',
+            views: 'Views count not available',
+            duration: 'Duration not available'
           }]);
         }
 
