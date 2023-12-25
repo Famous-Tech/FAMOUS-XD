@@ -2195,7 +2195,7 @@ case 'yts': {
   await doReact("🕘");
 
   try {
-    const searchResults = await ytSearch(text);
+    const searchResults = await yts(text);
 
     if (searchResults && searchResults.videos.length > 0) {
       const top5Results = searchResults.videos.slice(0, 5);
