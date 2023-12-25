@@ -1686,7 +1686,9 @@ case 'ytmp3':
     m.reply(mess.wait);
     await doReact("🕘");
 
-    const videoInfo = await getVideoInfo(text);
+    // Check if the input is a valid YouTube URL
+    const isUrl = ytdl.validateURL(text);
+    const videoInfo = isUrl ? await getVideoInfo(text) : await searchVideo(text);
 
     if (!videoInfo) {
       m.reply('Audio not found.');
@@ -1706,16 +1708,14 @@ case 'ytmp3':
         // Concatenate the audio chunks
         const finalAudioBuffer = Buffer.concat(audioBuffer);
 
+        const thumbnailMessage = {
+          image: {
+            url: videoInfo.thumbnail,
+          },
+          caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author}`,
+        };
 
-const thumbnailMessage = {
-  image: {
-    url: videoInfo.thumbnail,
-  },
-  caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author}`,
-};
-
-await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-
+        await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
 
         // Send the audio using gss.sendMessage without caption
         await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
