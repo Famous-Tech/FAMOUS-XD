@@ -2282,10 +2282,9 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
-
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
-    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
   }
 
   const [videoOption, videoSubOption] = text.split('.').map(parseFloat);
@@ -2310,62 +2309,18 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     return m.reply('Error: Video details not available for the selected sub-option.');
   }
 
-  const uniqueKey = `yts_${videoSubOption}`;
-
   try {
-    console.log('Fetching video details for URL:', selectedVideo.url);
-
-    // Fetch details using the selectedVideo.url directly
-    const videoDetailsResponse = await fetch(`https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(selectedVideo.url)}`);
-    const videoResult = await videoDetailsResponse.json();
-
-    console.log('Video details API response:', JSON.stringify(videoResult, null, 2));
-
-    if (!videoResult || !videoResult.downloadUrl) {
-      console.error('Error: Download URL not available in the API response.');
-      return m.reply('Error: Download URL not available in the API response.');
-    }
-
-    // Fetch the video content
-    const videoBufferReq = await fetch(videoResult.downloadUrl);
-
-    if (!videoBufferReq.ok) {
-      console.error('Failed to fetch video content. Status:', videoBufferReq.status);
-      return m.reply('Error fetching video content.');
-    }
-
-    const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-    const videoBuffer = Buffer.from(videoArrayBuffer);
-
-    const randomName = `temp_video_${videoSubOption}.mp4`;
-    fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-    // Create a stylish caption with video details
-    const infoCaption = `
-╭─📺 *Video Search Results*
-│
-├ 🎧 *Title*: ${videoResult.title}
-├ 👀 *Views*: ${videoResult.views}
-├ 📅 *Uploaded At*: ${videoResult.uploadDate}
-├ 👤 *Author*: ${videoResult.uploadChannel}
-│
-├─🔗 [Watch](${videoResult.youtubeUrl})
-╰─────────⭑
-      `;
-
-    // Send the video with the stylish caption
-    await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
-
-    // Delete the temporary file
-    fs.unlinkSync(`./${randomName}`);
+    // Download the video using ytdl-core
+    const videoStream = ytdl(selectedVideo.url, { filter: 'videoandaudio', quality: 'highestvideo' });
+    
+    // Send the video stream
+    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
 }
-
-
 
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
@@ -2394,46 +2349,12 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     return m.reply('Error: Video details not available for the selected sub-option.');
   }
 
-  const uniqueKey = `play_${audioSubOption}`;
-
   try {
-    const apiKey = 'GataDios';
-    const ytaNewAPIURL = `https://api.lolhuman.xyz/api/ytaudio?apikey=${apiKey}&url=${encodeURIComponent(selectedVideo.url)}`;
+    // Download the audio using ytdl-core
+    const audioStream = ytdl(selectedVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
 
-    const audioDetailsResponse = await fetch(ytaNewAPIURL);
-    console.log('Response Status:', audioDetailsResponse.status);
-
-    if (audioDetailsResponse.status === 200) {
-      const audioResult = await audioDetailsResponse.json();
-
-      if (audioResult && audioResult.result && audioResult.result.link) {
-        const audioBufferReq = await fetch(result.result.link.link);
-
-        if (!audioBufferReq.ok) {
-          console.error('Failed to fetch audio content. Status:', audioBufferReq.status);
-          return m.reply('Error fetching audio content.');
-        }
-
-        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-        const audioBuffer = Buffer.from(audioArrayBuffer);
-
-        const randomName = `temp_audio_${audioSubOption}.mp3`;
-        fs.writeFileSync(`./${randomName}`, audioBuffer);
-
-        await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioResult.result.title}.mp3` }, { quoted: m });
-
-        fs.unlinkSync(`./${randomName}`);
-      } else if (audioResult && audioResult.error) {
-        console.error('API response error:', audioResult);
-        return m.reply(`Error: ${audioResult.error}`);
-      } else {
-        console.error('Invalid API response:', audioResult);
-        m.reply('Unexpected error occurred.');
-      }
-    } else {
-      console.error('Invalid Response Status:', audioDetailsResponse.status);
-      m.reply('Unexpected response format.');
-    }
+    // Send the audio stream with a filename
+    await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName: `${selectedVideo.title}.mp3` }, { quoted: m });
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
     m.reply('Unexpected error occurred.');
