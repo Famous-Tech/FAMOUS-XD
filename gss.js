@@ -2239,6 +2239,8 @@ case 'yts': {
 
 
 
+// ...
+
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Enter the index of the video you want to play! (e.g., 1)');
@@ -2267,15 +2269,16 @@ case '𝐩𝐥𝐚𝐲': {
     subOption: selectedIdx // Adding subOption for filename uniqueness
   });
 
-  // Send the video details within the poll options with the unique key
+  // Send the video details within the poll options with the selected index (without 'play_')
   await gss.sendPoll(
     m.chat,
     `Video Details (Index ${selectedIdx}):\nTitle: ${selectedVideo.title}\nViews: ${selectedVideo.views}\nDuration: ${selectedVideo.duration}\nUpload Date: ${selectedVideo.uploadDate}\nURL: ${selectedVideo.url}`,
-    [`.𝐚𝐮𝐝𝐢𝐨 ${uniqueKey}`, `.𝐯𝐢𝐝𝐞𝐨 ${uniqueKey}`]
+    [`.𝐚𝐮𝐝𝐢𝐨 ${selectedIdx}`, `.𝐯𝐢𝐝𝐞𝐨 ${selectedIdx}`]
   );
 
   break;
 }
+
 
 
 
