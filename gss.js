@@ -180,9 +180,15 @@ function formatBytes(bytes) {
 
 // Helper function to format upload date
 function formatUploadDate(uploadDate) {
+  const formattedDate = new Date(uploadDate);
+  if (isNaN(formattedDate.getTime())) {
+    // If the date is invalid, return a message
+    return 'Invalid Date';
+  }
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(uploadDate).toLocaleDateString(undefined, options);
+  return formattedDate.toLocaleDateString(undefined, options);
 }
+
 
 async function generateProfilePicture(media) {
     return {
@@ -1705,8 +1711,8 @@ case 'ytv2':
 │⿻ *Title:* ${videoInfo.title}
 │⿻ *Duration:* ${videoInfo.duration}
 │⿻ *Author:* ${videoInfo.author.name}
-│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  // Add size information
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.publishedAt)}  // Add upload date information
+│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.publishedAt)} 
 ╰══•∞•═════════╯
 `;
 
@@ -1745,11 +1751,11 @@ case 'ytv2':
 ╭═════════•∞•══╮
 │⿻ *GSS BOTWA*
 │  *Youtube Player* ✨
-│⿻ *Title:* ${videoInfo.title}
-│⿻ *Duration:* ${videoInfo.duration}
-│⿻ *Author:* ${videoInfo.author.name}
+│⿻ *Title:* ${firstVideo.title}
+│⿻ *Duration:* ${firstVideo.duration}
+│⿻ *Author:* ${firstVideo.author.name}
 │⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.publishedAt)} 
+│⿻ *Upload Date:* ${formatUploadDate(firstVideo.publishedAt)}
 ╰══•∞•═════════╯
 `;
 
