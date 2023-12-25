@@ -2282,7 +2282,6 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
-
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
     return m.reply('Enter the index of the video you want to play! (e.g., 1)');
@@ -2304,18 +2303,6 @@ case '𝐯𝐢𝐝𝐞𝐨': {
       return m.reply('Error: Video details not available for the selected index.');
     }
 
-    const videoBufferReq = await ytdl(selectedVideo.url, { filter: 'audioandvideo', quality: 'highest' });
-
-    if (!videoBufferReq) {
-      console.error('Failed to fetch video content.');
-      return m.reply('Error fetching video content.');
-    }
-
-    const videoBuffer = await getStream(videoBufferReq);
-    const randomName = `temp_video_${selectedIdx}.mp4`;
-
-    fs.writeFileSync(`./${randomName}`, videoBuffer);
-
     const videoDetailsCaption = `
 ╭─📺 *Video Details*
 │
@@ -2328,9 +2315,7 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 ╰─────────⭑
     `;
 
-    await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
-
-    fs.unlinkSync(`./${randomName}`);
+    await gss.sendMessage(m.chat, { video: selectedVideo.url, caption: videoDetailsCaption }, { quoted: m });
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
     m.reply('Unexpected error occurred.');
@@ -2367,19 +2352,15 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     }
 
     const audioBuffer = await getStream(audioBufferReq);
-    const randomName = `temp_audio_${selectedIdx}.mp3`;
 
-    fs.writeFileSync(`./${randomName}`, audioBuffer);
-
-    await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', fileName: `${selectedVideo.title}.mp3` }, { quoted: m });
-
-    fs.unlinkSync(`./${randomName}`);
+    await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mp3', fileName: `${selectedVideo.title}.mp3` }, { quoted: m });
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
 }
+
 
 
 
