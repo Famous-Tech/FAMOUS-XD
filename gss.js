@@ -1707,7 +1707,7 @@ case 'ytv2':
           const captionText = `
 ╭═════════•∞•══╮
 │⿻ *GSS BOTWA*
-│  *Youtube Player* ✨
+│  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${videoInfo.title}
 │⿻ *Duration:* ${videoInfo.duration}
 │⿻ *Author:* ${videoInfo.author.name}
@@ -1750,7 +1750,7 @@ case 'ytv2':
           const captionText = `
 ╭═════════•∞•══╮
 │⿻ *GSS BOTWA*
-│  *Youtube Player* ✨
+│  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${firstVideo.title}
 │⿻ *Duration:* ${firstVideo.duration}
 │⿻ *Author:* ${firstVideo.author.name}
@@ -1849,12 +1849,21 @@ case 'ytmp3':
           const finalAudioBuffer = Buffer.concat(audioBuffer);
 
           const thumbnailMessage = {
-            image: {
-              url: firstVideo.thumbnail,
-            },
-            caption: `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`,
-          };
-
+  image: {
+    url: firstVideo.thumbnail,
+  },
+  caption: `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Mp3 Player* ✨
+│⿻ *Title:* ${firstVideo.title}
+│⿻ *Duration:* ${firstVideo.timestamp}
+│⿻ *Uploader:* ${firstVideo.author.name}
+│⿻ *Size:* ${formatBytes(thumbnailSize)}
+│⿻ *Upload Date:* ${formatUploadDate(firstVideo.uploadDate)}
+╰══•∞•═════════╯
+`,
+};
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
           await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
           await doReact("✅");
