@@ -2032,7 +2032,6 @@ case 'ytmp3doc':
 
 
 
-
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2040,7 +2039,7 @@ case 'yts': {
   await doReact("🕘");
 
   try {
-    const results = await yts(text);
+    const results = await search(text);
 
     if (results.videos.length > 0) {
       let pollOptions = [];
@@ -2049,6 +2048,9 @@ case 'yts': {
       // Use a unique key for each poll session
       const uniqueKey = `yts_${optionIndex}`;
 
+      // Create an object to store URLs for each sub-option
+      const urlObject = {};
+
       // Iterate through the top 5 search results
       for (let i = 0; i < Math.min(5, results.videos.length); i++) {
         const result = results.videos[i];
@@ -2056,19 +2058,25 @@ case 'yts': {
         const title = result.title;
 
         // Save the YouTube URL in the corresponding index of the unique key
-        if (!videoSearchResults.has(uniqueKey)) {
-          videoSearchResults.set(uniqueKey, {});
-        }
-
-        videoSearchResults.get(uniqueKey)[`${optionIndex}.${i + 1}`] = videoUrl;
+        urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
 
         // Update pollOptions accordingly (use optionIndex and sub-option number)
         pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
       }
 
+      // Save the URL object in the videoSearchResults Map
+      if (!videoSearchResults.has(uniqueKey)) {
+        videoSearchResults.set(uniqueKey, {});
+      }
+
+      videoSearchResults.get(uniqueKey) = urlObject;
+
       // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
       await doReact("✅");
+
+      // Increment the optionIndex for the next poll session
+      optionIndex += 1;
     } else {
       return m.reply('No search results found.');
     }
@@ -2078,6 +2086,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
