@@ -1686,7 +1686,7 @@ case 'ytv2':
 
     if (isUrl) {
       // If it's a URL, directly use ytdl-core for audio and video
-      const combinedStream = ytdl(text, { filter: 'audiandvideo', quality: 'highest' });
+      const combinedStream = ytdl(text, { filter: 'videoandaudio', quality: 'highest' });
 
       const combinedBuffer = [];
 
@@ -1722,9 +1722,9 @@ case 'ytv2':
       }
 
       // Get the desired video quality based on the provided argument (e.g., 144, 240, 360)
-      const videoQuality = args[0] || 'highest';
+      const videoQuality = args[0] || '360';
 
-      const combinedStream = ytdl(firstVideo.url, { filter: 'audiandvideo', quality: videoQuality });
+      const combinedStream = ytdl(firstVideo.url, { filter: 'videoandaudio', quality: videoQuality });
 
       const combinedBuffer = [];
 
@@ -1753,7 +1753,6 @@ case 'ytv2':
     await doReact("❌");
   }
   break;
-
 
 
 
