@@ -2032,6 +2032,72 @@ case 'ytmp3doc':
 
 
 
+case 'yts': {
+  if (!text) {
+    return m.reply('Enter YouTube Video Link or Search Query!');
+  }
+  await doReact("🕘");
+
+  try {
+    const results = await yts(text);
+
+    if (results.videos.length > 0) {
+      let pollOptions = [];
+      let optionIndex = 1;
+
+      // Iterate through the search results
+      for (const result of results.videos) {
+        const videoUrl = result.url;
+        const title = result.title;
+
+        // Check if the key already exists in the Map
+        const uniqueKey = `yts_${optionIndex}`;
+        if (videoSearchResults.has(uniqueKey)) {
+          // Key exists, find the next available sub-option number
+          let subOption = 1;
+          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
+            subOption += 1;
+          }
+
+          // Add the new video details with the updated sub-option number
+          videoSearchResults.get(uniqueKey).push({
+            subOption,
+            title,
+            url: videoUrl,
+            uploadDate: 'Upload date not available', // You can modify this based on available data
+            views: 'Views count not available', // You can modify this based on available data
+            duration: 'Duration not available' // You can modify this based on available data
+          });
+        } else {
+          // Key doesn't exist, create a new array with the current video details
+          videoSearchResults.set(uniqueKey, [{
+            subOption: 1,
+            title,
+            url: videoUrl,
+            uploadDate: 'Upload date not available', // You can modify this based on available data
+            views: 'Views count not available', // You can modify this based on available data
+            duration: 'Duration not available' // You can modify this based on available data
+          }]);
+        }
+
+        // Update pollOptions accordingly (use optionIndex and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${subOption} ${title} - ${videoUrl}`);
+        optionIndex += 1;
+      }
+
+      // Send the poll with titles as options
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
+      await doReact("✅");
+    } else {
+      return m.reply('No search results found.');
+    }
+  } catch (error) {
+    console.error('Error during yts:', error);
+    return m.reply('Unexpected error occurred.');
+  }
+  break;
+}
+
 
 case 'fetch':
   try {
