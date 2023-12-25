@@ -2069,7 +2069,8 @@ case 'yts': {
         videoSearchResults.set(uniqueKey, {});
       }
 
-      videoSearchResults.get(uniqueKey) = urlObject;
+      // Use Object.assign to update the Map's value
+      videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
 
       // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
@@ -2086,6 +2087,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
