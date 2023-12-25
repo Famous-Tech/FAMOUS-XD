@@ -2326,7 +2326,17 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   const selectedKey = `yts_${selectedIdx}`;
 
   try {
+    // Check if the selected video exists
+    if (!videoSearchResults.has(selectedKey)) {
+      return m.reply('Selected video not found.');
+    }
+
     const selectedVideo = videoSearchResults.get(selectedKey);
+
+    // Check if the selected video has necessary properties
+    if (!selectedVideo || !selectedVideo.url || !selectedVideo.title) {
+      return m.reply('Selected video details are incomplete.');
+    }
 
     // Download the audio using ytdl-core
     const audioStream = ytdl(selectedVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
@@ -2339,6 +2349,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
