@@ -1709,15 +1709,10 @@ case 'ytv2':
           const finalVideoBuffer = Buffer.concat(videoBuffer);
 
           const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
-          const thumbnailMessage = {
-            image: {
-              url: videoInfo.thumbnail,
-            },
-            caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`,
-          };
 
-          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, video: finalVideoBuffer, mimetype: 'video/mp4' });
+          const captionText = `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`;
+
+          await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio and video:', err);
@@ -1758,15 +1753,9 @@ case 'ytv2':
           const finalAudioBuffer = Buffer.concat(audioBuffer);
           const finalVideoBuffer = Buffer.concat(videoBuffer);
 
-          const thumbnailMessage = {
-            image: {
-              url: firstVideo.thumbnail,
-            },
-            caption: `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`,
-          };
+          const captionText = `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`;
 
-          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, video: finalVideoBuffer, mimetype: 'video/mp4' });
+          await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio and video:', err);
@@ -1781,6 +1770,7 @@ case 'ytv2':
     await doReact("❌");
   }
   break;
+
 
 
 
