@@ -2032,6 +2032,7 @@ case 'ytmp3doc':
 
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2043,7 +2044,6 @@ case 'yts': {
 
     if (results.videos.length > 0) {
       let pollOptions = [];
-      let optionIndex = 1;
 
       // Use a unique key for each poll session
       const uniqueKey = `yts_${optionIndex}`;
