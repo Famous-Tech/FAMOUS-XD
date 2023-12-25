@@ -2032,6 +2032,7 @@ case 'ytmp3doc':
 
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2041,7 +2042,7 @@ case 'yts': {
   try {
     const results = await search(text);
 
-    if (results.videos.length > 0) {
+    if (results && results.videos && results.videos.length > 0) {
       let pollOptions = [];
       let optionIndex = 1;
 
@@ -2086,6 +2087,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
