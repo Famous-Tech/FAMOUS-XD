@@ -2237,7 +2237,7 @@ case 'yts': {
   break;
 }
 
-// ...
+
 
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
@@ -2263,10 +2263,11 @@ case '𝐩𝐥𝐚𝐲': {
 
   // Set the 'selectedUrl' key to the unique key
   videoSearchResults.set('selectedUrl', {
-    url: selectedVideo.url
+    url: selectedVideo.url,
+    subOption: selectedIdx // Adding subOption for filename uniqueness
   });
 
-  // Send the video details within the poll options with the URL option number
+  // Send the video details within the poll options with the unique key
   await gss.sendPoll(
     m.chat,
     `Video Details (Index ${selectedIdx}):\nTitle: ${selectedVideo.title}\nViews: ${selectedVideo.views}\nDuration: ${selectedVideo.duration}\nUpload Date: ${selectedVideo.uploadDate}\nURL: ${selectedVideo.url}`,
@@ -2275,6 +2276,7 @@ case '𝐩𝐥𝐚𝐲': {
 
   break;
 }
+
 
 
 
