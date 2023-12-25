@@ -2090,6 +2090,46 @@ case 'yts': {
 
 
 
+case 'play': {
+  if (!text) {
+    return m.reply('Please specify the video you want to play. Use the format: play [unique-key]');
+  }
+
+  const match = text.match(/(\d+)\.(\d+)/);
+
+  if (!match) {
+    return m.reply('Invalid format. Please provide a valid unique key (e.g., 1.1)');
+  }
+
+  const optionIndex = parseInt(match[1]);
+  const subOption = parseInt(match[2]);
+
+  // Generate the corresponding unique key
+  const uniqueKey = `yts_${optionIndex}`;
+
+  // Check if the unique key exists in the videoSearchResults Map
+  if (videoSearchResults.has(uniqueKey)) {
+    // Get the URL for the selected sub-option
+    const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
+
+    if (selectedUrl) {
+      // Use ytdl-core to get information about the video
+      const videoInfo = await ytdl.getInfo(selectedUrl);
+
+      // Send the poll with options for Audio and Video including video information
+      await gss.sendPoll(m.chat, `Choose an option for "${videoInfo.title}":`, [
+        `.𝐀𝐮𝐝𝐢𝐨 ${uniqueKey} - Audio only`,
+        `.𝐕𝐢𝐝𝐞𝐨 ${uniqueKey} - Video only `
+      ]);
+      await doReact("✅");
+    } else {
+      return m.reply('Invalid sub-option. Please choose a valid sub-option.');
+    }
+  } else {
+    return m.reply('Invalid unique key. Please provide a valid unique key.');
+  }
+  break;
+}
 
 
 
