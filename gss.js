@@ -1670,6 +1670,118 @@ fs.unlinkSync(`./${randomName}`);
   break;
 
 
+case 'ytv2':
+  try {
+    if (!text) {
+      m.reply('Enter YouTube Link or Search Query!');
+      doReact("❌");
+      return;
+    }
+
+    m.reply(mess.wait);
+    await doReact("🕘");
+
+    // Check if the input is a valid YouTube URL
+    const isUrl = ytdl.validateURL(text);
+
+    if (isUrl) {
+      // If it's a URL, directly use ytdl-core for audio and video
+      const audioStream = ytdl(text, { filter: 'audioonly', quality: 'highestaudio' });
+      const videoStream = ytdl(text, { quality: 'highestvideo' });
+
+      const audioBuffer = [];
+      const videoBuffer = [];
+
+      audioStream.on('data', (chunk) => {
+        audioBuffer.push(chunk);
+      });
+
+      videoStream.on('data', (chunk) => {
+        videoBuffer.push(chunk);
+      });
+
+      Promise.all([
+        new Promise((resolve) => audioStream.on('end', resolve)),
+        new Promise((resolve) => videoStream.on('end', resolve))
+      ]).then(async () => {
+        try {
+          const finalAudioBuffer = Buffer.concat(audioBuffer);
+          const finalVideoBuffer = Buffer.concat(videoBuffer);
+
+          const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
+          const thumbnailMessage = {
+            image: {
+              url: videoInfo.thumbnail,
+            },
+            caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`,
+          };
+
+          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
+          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, video: finalVideoBuffer, mimetype: 'video/mp4' });
+          await doReact("✅");
+        } catch (err) {
+          console.error('Error sending audio and video:', err);
+          m.reply('Error sending audio and video.');
+          await doReact("❌");
+        }
+      });
+    } else {
+      // If it's a search query, use yt-search for video
+      const searchResult = await yts(text);
+      const firstVideo = searchResult.videos[0];
+
+      if (!firstVideo) {
+        m.reply('Video not found.');
+        await doReact("❌");
+        return;
+      }
+
+      const audioStream = ytdl(firstVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
+      const videoStream = ytdl(firstVideo.url, { quality: 'highestvideo' });
+
+      const audioBuffer = [];
+      const videoBuffer = [];
+
+      audioStream.on('data', (chunk) => {
+        audioBuffer.push(chunk);
+      });
+
+      videoStream.on('data', (chunk) => {
+        videoBuffer.push(chunk);
+      });
+
+      Promise.all([
+        new Promise((resolve) => audioStream.on('end', resolve)),
+        new Promise((resolve) => videoStream.on('end', resolve))
+      ]).then(async () => {
+        try {
+          const finalAudioBuffer = Buffer.concat(audioBuffer);
+          const finalVideoBuffer = Buffer.concat(videoBuffer);
+
+          const thumbnailMessage = {
+            image: {
+              url: firstVideo.thumbnail,
+            },
+            caption: `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`,
+          };
+
+          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
+          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, video: finalVideoBuffer, mimetype: 'video/mp4' });
+          await doReact("✅");
+        } catch (err) {
+          console.error('Error sending audio and video:', err);
+          m.reply('Error sending audio and video.');
+          await doReact("❌");
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error during:', error);
+    m.reply('Unexpected error occurred.');
+    await doReact("❌");
+  }
+  break;
+
 
 
 
