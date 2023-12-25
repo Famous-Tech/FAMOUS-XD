@@ -1705,7 +1705,7 @@ case 'ytmp3':
       const finalAudioBuffer = Buffer.concat(audioBuffer);
 
       // Send the audio using gss.sendMessage without caption
-      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mp4' }, { quoted: m });
+      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
       await doReact("✅");
     });
   } catch (error) {
