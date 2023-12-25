@@ -8,7 +8,7 @@ const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser,getAggregateVotesInPollMessage, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 const fsx = require('fs-extra')
-const ytSearch = require('yt-search');
+const yts = require('yt-search');
 const ytsr = require('ytsr');
 const ytdl = require('ytdl-core');
 const util = require('util')
@@ -1688,50 +1688,83 @@ case 'ytmp3':
 
     // Check if the input is a valid YouTube URL
     const isUrl = ytdl.validateURL(text);
-    const videoInfo = isUrl ? await getVideoInfo(text) : await searchVideo(text);
 
-    if (!videoInfo) {
-      m.reply('Audio not found.');
-      await doReact("❌");
-      return;
-    }
+    if (isUrl) {
+      // If it's a URL, directly use ytdl-core
+      const audioStream = ytdl(text, { filter: 'audioonly', quality: 'highestaudio' });
+      const audioBuffer = [];
 
-    const audioStream = ytdl(videoInfo.url, { filter: 'audioonly', quality: 'highestaudio' });
+      audioStream.on('data', (chunk) => {
+        audioBuffer.push(chunk);
+      });
 
-    const audioBuffer = [];
-    audioStream.on('data', (chunk) => {
-      audioBuffer.push(chunk);
-    });
+      audioStream.on('end', async () => {
+        try {
+          const finalAudioBuffer = Buffer.concat(audioBuffer);
 
-    audioStream.on('end', async () => {
-      try {
-        // Concatenate the audio chunks
-        const finalAudioBuffer = Buffer.concat(audioBuffer);
+          const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
+          const thumbnailMessage = {
+            image: {
+              url: videoInfo.thumbnail,
+            },
+            caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`,
+          };
 
-        const thumbnailMessage = {
-          image: {
-            url: videoInfo.thumbnail,
-          },
-          caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author}`,
-        };
+          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
+          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
+          await doReact("✅");
+        } catch (err) {
+          console.error('Error sending audio:', err);
+          m.reply('Error sending audio.');
+          await doReact("❌");
+        }
+      });
+    } else {
+      // If it's a search query, use yt-search
+      const searchResult = await yts(text);
+      const firstVideo = searchResult.videos[0];
 
-        await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-
-        // Send the audio using gss.sendMessage without caption
-        await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
-        await doReact("✅");
-      } catch (err) {
-        console.error('Error sending audio:', err);
-        m.reply('Error sending audio.');
+      if (!firstVideo) {
+        m.reply('Audio not found.');
         await doReact("❌");
+        return;
       }
-    });
+
+      const audioStream = ytdl(firstVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
+      const audioBuffer = [];
+
+      audioStream.on('data', (chunk) => {
+        audioBuffer.push(chunk);
+      });
+
+      audioStream.on('end', async () => {
+        try {
+          const finalAudioBuffer = Buffer.concat(audioBuffer);
+
+          const thumbnailMessage = {
+            image: {
+              url: firstVideo.thumbnail,
+            },
+            caption: `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`,
+          };
+
+          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
+          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
+          await doReact("✅");
+        } catch (err) {
+          console.error('Error sending audio:', err);
+          m.reply('Error sending audio.');
+          await doReact("❌");
+        }
+      });
+    }
   } catch (error) {
     console.error('Error during:', error);
     m.reply('Unexpected error occurred.');
     await doReact("❌");
   }
   break;
+
 
 
 
