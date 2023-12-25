@@ -1738,7 +1738,7 @@ case 'ytvdoc':
 ╰══•∞•═════════╯
 `;
 
-          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${firstVideo.title}.mp4`, caption: captionText, quoted: m });
+          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${firstVideo.title}.mp4`, caption: captionText, { quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending video:', err);
@@ -1781,7 +1781,7 @@ case 'ytvdoc':
 ╰══•∞•═════════╯
 `;
 
-          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${firstVideo.title}.mp4`, caption: captionText, quoted: m });
+          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${firstVideo.title}.mp4`, caption: captionText, { quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending video:', err);
@@ -1849,7 +1849,7 @@ case 'ytmp3':
 
 
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg', quoted: m });
+          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg',{ quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio:', err);
@@ -1896,7 +1896,7 @@ case 'ytmp3':
 `,
 };
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg', quoted: m });
+          await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg', { quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio:', err);
@@ -1964,7 +1964,7 @@ case 'ytmp3doc':
 
 
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', fileName: `${videoInfo.title}.mp3`, quoted: m });
+          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', fileName: `${videoInfo.title}.mp3`, { quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio:', err);
@@ -2011,7 +2011,7 @@ case 'ytmp3doc':
 `,
 };
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', fileName: `${firstVideo.title}.mp3`, quoted: m });
+          await gss.sendMessage(m.chat, { document: finalAudioBuffer, mimetype: 'audio/mpeg', fileName: `${firstVideo.title}.mp3`, { quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio:', err);
