@@ -66,6 +66,7 @@ let akinator = global.db.data.game.akinator = []
 
 let props;
 let optionIndex = 1;
+let index = 1;
 const reportedMessages = {};
 const videoSearchResults = new Map();
 let titleUrlMap = {}; 
@@ -2185,6 +2186,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
   break;
 }
+
 
 
 
