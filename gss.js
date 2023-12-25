@@ -1694,7 +1694,7 @@ case 'ytmp3':
       return;
     }
 
-    const audioStream = ytdl(videoInfo.url, { quality: 'highestaudio' });
+    const audioStream = ytdl(videoInfo.url, { filter: 'audioonly', quality: 'highestaudio' });
 
     const audioBuffer = [];
     audioStream.on('data', (chunk) => {
@@ -1706,8 +1706,11 @@ case 'ytmp3':
         // Concatenate the audio chunks
         const finalAudioBuffer = Buffer.concat(audioBuffer);
 
+        // Send thumbnail
+        await gss.sendMessage(m.chat, { image: videoInfo.thumbnail, caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author}` }, { quoted: m });
+
         // Send the audio using gss.sendMessage without caption
-        await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
+        await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
         await doReact("✅");
       } catch (err) {
         console.error('Error sending audio:', err);
@@ -1721,6 +1724,7 @@ case 'ytmp3':
     await doReact("❌");
   }
   break;
+
 
 
 
