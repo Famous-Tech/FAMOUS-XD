@@ -2282,9 +2282,10 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
-case '𝐚𝐮𝐝𝐢𝐨': {
+case '𝐚𝐮𝐝𝐢𝐨':
+{
   if (!text) {
-    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
+    return m.reply('Enter the index of the audio you want to play! (e.g., 1)');
   }
 
   const selectedIdx = parseInt(text);
@@ -2297,32 +2298,32 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   const selectedKey = `yts_${selectedIdx}`;
 
   try {
-    // Check if the selected video exists
-    if (!videoSearchResults.has(selectedKey)) {
-      return m.reply('Selected video not found.');
+    // Check if the selected audio exists
+    if (!audioSearchResults.has(selectedKey)) {
+      return m.reply('Selected audio not found.');
     }
 
-    const selectedVideo = videoSearchResults.get(selectedKey);
+    const selectedAudio = audioSearchResults.get(selectedKey);
 
-    // Check if the selected video has necessary properties
-    if (!selectedVideo || !selectedVideo.url || !selectedVideo.title) {
-      return m.reply('Selected video details are incomplete.');
+    // Check if the selected audio has necessary properties
+    if (!selectedAudio || !selectedAudio.url) {
+      return m.reply('Selected audio details are incomplete.');
     }
 
-    // Download the audio using ytdl-core
-    const audioStream = ytdl(selectedVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
+    // Download the audio content using ytdl-core with audioonly filter
+    const audioStream = ytdl(selectedAudio.url, { quality: 'highestaudio', filter: 'audioonly' });
 
-    // Send the audio stream with a filename
-    const fileName = selectedVideo.title ? `${selectedVideo.title}.mp3` : 'audio.mp3';
-    await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName }, { quoted: m });
+    // Send the audio without a specific filename
+    await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp3' }, { quoted: m });
   } catch (error) {
-    console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
+    console.error(`Error during 𝐚𝐮𝐝𝐢𝐨:`, error);
     m.reply('Unexpected error occurred.');
   }
   break;
 }
 
-case '𝐯𝐢𝐝𝐞𝐨': {
+case '𝐯𝐢𝐝𝐞𝐨':
+{
   if (!text) {
     return m.reply('Enter the index of the video you want to play! (e.g., 1)');
   }
@@ -2345,18 +2346,17 @@ case '𝐯𝐢𝐝𝐞𝐨': {
     const selectedVideo = videoSearchResults.get(selectedKey);
 
     // Check if the selected video has necessary properties
-    if (!selectedVideo || !selectedVideo.url || !selectedVideo.title) {
+    if (!selectedVideo || !selectedVideo.url) {
       return m.reply('Selected video details are incomplete.');
     }
 
-    // Download the video using ytdl-core
-    const videoStream = ytdl(selectedVideo.url, { quality: 'highest' });
+    // Download the video content using ytdl-core with audioandvideo filter
+    const videoStream = ytdl(selectedVideo.url, { quality: 'highest', filter: 'audioandvideo' });
 
-    // Send the video stream with a filename
-    const fileName = selectedVideo.title ? `${selectedVideo.title}.mp4` : 'video.mp4';
-    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', fileName }, { quoted: m });
+    // Send the video without a specific filename
+    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4' }, { quoted: m });
   } catch (error) {
-    console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
+    console.error(`Error during 𝐯𝐢𝐝𝐞𝐨:`, error);
     m.reply('Unexpected error occurred.');
   }
   break;
