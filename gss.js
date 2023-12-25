@@ -2187,6 +2187,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2194,14 +2195,16 @@ case 'yts': {
   await doReact("🕘");
 
   try {
-    const searchResults = await ytdl.search(text, { limit: 5 });
+    const searchResults = await ytSearch(text);
 
     if (searchResults && searchResults.videos.length > 0) {
+      const top5Results = searchResults.videos.slice(0, 5);
+
       let pollOptions = [];
 
       // Iterate through the top 5 search results
-      for (let i = 0; i < searchResults.videos.length; i++) {
-        const result = searchResults.videos[i];
+      for (let i = 0; i < top5Results.length; i++) {
+        const result = top5Results[i];
         const uniqueKey = `yts_${i + 1}`;
         const subOption = 1;
 
@@ -2232,8 +2235,6 @@ case 'yts': {
   }
   break;
 }
-
-
 
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
@@ -2267,32 +2268,39 @@ case '𝐩𝐥𝐚𝐲': {
     subOption
   });
 
-  // Fetch details using the selectedUrl
-  const apiDetailsURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(selectedVideo.url)}`;
+  // Send the video details within the poll options with the URL option number
+  await gss.sendPoll(
+    m.chat,
+    `Video Details (Option ${option}.${subOption}):\nTitle: ${selectedVideo.title}\nViews: ${selectedVideo.views}\nDuration: ${selectedVideo.duration}\nUpload Date: ${selectedVideo.uploadDate}\nURL: ${selectedVideo.url}`,
+    [`.𝐯𝐢𝐝𝐞𝐨 ${uniqueKey}`, `.𝐚𝐮𝐝𝐢𝐨 ${uniqueKey}`]
+  );
 
-  try {
-    const detailsResponse = await fetch(apiDetailsURL);
-    const detailsData = await detailsResponse.json();
+  break;
+}
 
-    // Check if data is available and it's an array
-    if (detailsData && Array.isArray(detailsData.data) && detailsData.data.length > 0) {
-      const videoDetails = detailsData.data[0];
+case '𝐯𝐢𝐝𝐞𝐨': {
+  // Retrieve the selected URL and sub-option
+  const { url, subOption } = videoSearchResults.get('selectedUrl');
 
-      // Send the video details within the poll options with the URL option number
-      await gss.sendPoll(
-        m.chat,
-        `Video Details (Option ${option}.${subOption}):\nTitle: ${videoDetails.title}\nViews: ${videoDetails.views}\nDuration: ${videoDetails.duration}\nUpload Date: ${videoDetails.uploadDate}\nURL: ${selectedVideo.url}`,
-        [`.𝐯𝐢𝐝𝐞𝐨 ${option}.${subOption}`, `.𝐚𝐮𝐝𝐢𝐨 ${option}.${subOption}`]
-      );
-      
-    } else {
-      console.error('Invalid API response:', detailsData);
-      return m.reply('Error retrieving video details.');
-    }
-  } catch (error) {
-    console.error('Error fetching video details:', error);
-    return m.reply('Unexpected error occurred while fetching video details.');
-  }
+  // Download and send the video using ytdl-core
+  const stream = ytdl(url, { filter: 'audioonly' });
+  gss.sendMessage(m.chat, stream, { quoted: m, mimetype: 'audio/mpeg', ptt: false, filename: `${subOption}_${url.split('=')[1]}.mp3` });
+
+  // Clear temporary data
+  videoSearchResults.delete('selectedUrl');
+  break;
+}
+
+case '𝐚𝐮𝐝𝐢𝐨': {
+  // Retrieve the selected URL and sub-option
+  const { url, subOption } = videoSearchResults.get('selectedUrl');
+
+  // Download and send the video using ytdl-core
+  const stream = ytdl(url, { filter: 'videoonly' });
+  gss.sendMessage(m.chat, stream, { quoted: m, mimetype: 'video/mp4', ptt: false, filename: `${subOption}_${url.split('=')[1]}.mp4` });
+
+  // Clear temporary data
+  videoSearchResults.delete('selectedUrl');
   break;
 }
 
