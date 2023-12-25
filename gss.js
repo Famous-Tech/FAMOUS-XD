@@ -2276,40 +2276,13 @@ case '𝐩𝐥𝐚𝐲': {
   await gss.sendPoll(
     m.chat,
     `Video Details (Option ${option}.${subOption}):\nTitle: ${selectedVideo.title}\nViews: ${selectedVideo.views}\nDuration: ${selectedVideo.duration}\nUpload Date: ${selectedVideo.uploadDate}\nURL: ${selectedVideo.url}`,
-    [`.𝐯𝐢𝐝𝐞𝐨 ${uniqueKey}`, `.𝐚𝐮𝐝𝐢𝐨 ${uniqueKey}`]
+    [`.𝐚𝐮𝐝𝐢𝐨 ${uniqueKey}`, `.𝐯𝐢𝐝𝐞𝐨 ${uniqueKey}`]
   );
 
   break;
 }
 
-case '𝐯𝐢𝐝𝐞𝐨': {
-  // Retrieve the selected URL and sub-option
-  const { url, subOption } = videoSearchResults.get('selectedUrl');
 
-  // Download and send the video using ytdl-core
-  const stream = ytdl(url, { filter: 'audioonly' });
-  gss.sendMessage(m.chat, stream, { quoted: m, mimetype: 'audio/mpeg', ptt: false, filename: `${subOption}_${url.split('=')[1]}.mp3` });
-
-  // Clear temporary data
-  videoSearchResults.delete('selectedUrl');
-  break;
-}
-
-case '𝐚𝐮𝐝𝐢𝐨': {
-  // Retrieve the selected URL and sub-option
-  const { url, subOption } = videoSearchResults.get('selectedUrl');
-
-  // Download and send the video using ytdl-core
-  const stream = ytdl(url, { filter: 'videoonly' });
-  gss.sendMessage(m.chat, stream, { quoted: m, mimetype: 'video/mp4', ptt: false, filename: `${subOption}_${url.split('=')[1]}.mp4` });
-
-  // Clear temporary data
-  videoSearchResults.delete('selectedUrl');
-  break;
-}
-
-
-// Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
     return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
