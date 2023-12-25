@@ -1700,7 +1700,17 @@ case 'ytv2':
 
           const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
 
-          const captionText = `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`;
+          const captionText = `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Player* ✨
+│⿻ *Title:* ${videoInfo.title}
+│⿻ *Duration:* ${videoInfo.duration}
+│⿻ *Author:* ${videoInfo.author.name}
+│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  // Add size information
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.publishedAt)}  // Add upload date information
+╰══•∞•═════════╯
+`;
 
           await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
@@ -1733,7 +1743,17 @@ case 'ytv2':
         try {
           const finalVideoBuffer = Buffer.concat(videoBuffer);
 
-          const captionText = `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`;
+          const captionText = `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Player* ✨
+│⿻ *Title:* ${videoInfo.title}
+│⿻ *Duration:* ${videoInfo.duration}
+│⿻ *Author:* ${videoInfo.author.name}
+│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.publishedAt)} 
+╰══•∞•═════════╯
+`;
 
           await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
