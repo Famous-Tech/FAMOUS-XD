@@ -2282,47 +2282,6 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
-case '𝐯𝐢𝐝𝐞𝐨': {
-  if (!text) {
-    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
-  }
-
-  const selectedIdx = parseInt(text);
-
-  // Check if the entered index is valid
-  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
-    return m.reply('Invalid index. Please enter a valid number.');
-  }
-
-  const selectedKey = `yts_${selectedIdx}`;
-
-  try {
-    // Check if the selected video exists
-    if (!videoSearchResults.has(selectedKey)) {
-      return m.reply('Selected video not found.');
-    }
-
-    const selectedVideo = videoSearchResults.get(selectedKey);
-
-    // Check if the selected video has necessary properties
-    if (!selectedVideo || !selectedVideo.url || !selectedVideo.title) {
-      return m.reply('Selected video details are incomplete.');
-    }
-
-    // Download the video using ytdl-core
-    const videoStream = ytdl(selectedVideo.url, { quality: 'highest' });
-
-    // Send the video stream with a filename
-    const fileName = selectedVideo.title ? `${selectedVideo.title}.mp4` : 'video.mp4';
-    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', fileName }, { quoted: m });
-  } catch (error) {
-    console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-}
-
-
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
     return m.reply('Enter the index of the video you want to play! (e.g., 1)');
@@ -2358,6 +2317,46 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName }, { quoted: m });
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
+
+case '𝐯𝐢𝐝𝐞𝐨': {
+  if (!text) {
+    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
+  }
+
+  const selectedIdx = parseInt(text);
+
+  // Check if the entered index is valid
+  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
+    return m.reply('Invalid index. Please enter a valid number.');
+  }
+
+  const selectedKey = `yts_${selectedIdx}`;
+
+  try {
+    // Check if the selected video exists
+    if (!videoSearchResults.has(selectedKey)) {
+      return m.reply('Selected video not found.');
+    }
+
+    const selectedVideo = videoSearchResults.get(selectedKey);
+
+    // Check if the selected video has necessary properties
+    if (!selectedVideo || !selectedVideo.url || !selectedVideo.title) {
+      return m.reply('Selected video details are incomplete.');
+    }
+
+    // Download the video using ytdl-core
+    const videoStream = ytdl(selectedVideo.url, { quality: 'highest' });
+
+    // Send the video stream with a filename
+    const fileName = selectedVideo.title ? `${selectedVideo.title}.mp4` : 'video.mp4';
+    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', fileName }, { quoted: m });
+  } catch (error) {
+    console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
