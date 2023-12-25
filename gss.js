@@ -2041,52 +2041,44 @@ case 'yts': {
   try {
     const results = await yts(text);
 
-    if (results && results.videos) {
-      console.log('Search Results:', results);
+    if (results.videos.length > 0) {
+      let pollOptions = [];
+      let optionIndex = 1;
 
-      if (results.videos.length > 0) {
-        let pollOptions = [];
-        let optionIndex = 1;
+      // Use a unique key for each poll session
+      const uniqueKey = `yts_${optionIndex}`;
 
-        // Use a unique key for each poll session
-        const uniqueKey = `yts_${optionIndex}`;
+      // Create an object to store URLs for each sub-option
+      const urlObject = {};
 
-        // Create an object to store URLs for each sub-option
-        const urlObject = {};
+      // Iterate through the top 5 search results
+      for (let i = 0; i < Math.min(5, results.videos.length); i++) {
+        const result = results.videos[i];
+        const videoUrl = result.url;
+        const title = result.title;
 
-        // Iterate through the top 5 search results
-        for (let i = 0; i < Math.min(5, results.videos.length); i++) {
-          const result = results.videos[i];
-          const videoUrl = result.url;
-          const title = result.title;
+        // Save the YouTube URL in the corresponding index of the unique key
+        urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
 
-          // Save the YouTube URL in the corresponding index of the unique key
-          urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
-
-          // Update pollOptions accordingly (use optionIndex and sub-option number)
-          pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
-        }
-
-        // Save the URL object in the videoSearchResults Map
-        if (!videoSearchResults.has(uniqueKey)) {
-          videoSearchResults.set(uniqueKey, {});
-        }
-
-        videoSearchResults.get(uniqueKey) = urlObject;
-
-        // Send the poll with titles as options
-        await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
-        await doReact("✅");
-
-        // Increment the optionIndex for the next poll session
-        optionIndex += 1;
-      } else {
-        console.log('No videos found in search results:', results);
-        return m.reply('No search results found.');
+        // Update pollOptions accordingly (use optionIndex and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
       }
+
+      // Save the URL object in the videoSearchResults Map
+      if (!videoSearchResults.has(uniqueKey)) {
+        videoSearchResults.set(uniqueKey, {});
+      }
+
+      videoSearchResults.get(uniqueKey) = urlObject;
+
+      // Send the poll with titles as options
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
+      await doReact("✅");
+
+      // Increment the optionIndex for the next poll session
+      optionIndex += 1;
     } else {
-      console.log('Invalid response from search:', results);
-      return m.reply('Error retrieving search results.');
+      return m.reply('No search results found.');
     }
   } catch (error) {
     console.error('Error during yts:', error);
