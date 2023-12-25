@@ -1686,27 +1686,27 @@ case 'ytv2':
 
     if (isUrl) {
       // If it's a URL, directly use ytdl-core for audio and video
-      const combinedStream = ytdl(text, { filter: 'videoandaudio', quality: 'highest' });
+      const videoStream = ytdl(text, { filter: 'audioandvideo', quality: 'highest' });
 
-      const combinedBuffer = [];
+      const videoBuffer = [];
 
-      combinedStream.on('data', (chunk) => {
-        combinedBuffer.push(chunk);
+      videoStream.on('data', (chunk) => {
+        videoBuffer.push(chunk);
       });
 
-      combinedStream.on('end', async () => {
+      videoStream.on('end', async () => {
         try {
-          const finalCombinedBuffer = Buffer.concat(combinedBuffer);
+          const finalVideoBuffer = Buffer.concat(videoBuffer);
 
           const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
 
           const captionText = `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`;
 
-          await gss.sendMessage(m.chat, { video: finalCombinedBuffer, mimetype: 'video/mp4', caption: captionText });
+          await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
-          console.error('Error sending audio and video:', err);
-          m.reply('Error sending audio and video.');
+          console.error('Error sending video:', err);
+          m.reply('Error sending video.');
           await doReact("❌");
         }
       });
@@ -1721,28 +1721,25 @@ case 'ytv2':
         return;
       }
 
-      // Get the desired video quality based on the provided argument (e.g., 144, 240, 360)
-      const videoQuality = args[0] || '360';
+      const videoStream = ytdl(firstVideo.url, { filter: 'audioandvideo', quality: 'highest' });
 
-      const combinedStream = ytdl(firstVideo.url, { filter: 'videoandaudio', quality: videoQuality });
+      const videoBuffer = [];
 
-      const combinedBuffer = [];
-
-      combinedStream.on('data', (chunk) => {
-        combinedBuffer.push(chunk);
+      videoStream.on('data', (chunk) => {
+        videoBuffer.push(chunk);
       });
 
-      combinedStream.on('end', async () => {
+      videoStream.on('end', async () => {
         try {
-          const finalCombinedBuffer = Buffer.concat(combinedBuffer);
+          const finalVideoBuffer = Buffer.concat(videoBuffer);
 
           const captionText = `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`;
 
-          await gss.sendMessage(m.chat, { video: finalCombinedBuffer, mimetype: 'video/mp4', caption: captionText });
+          await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
-          console.error('Error sending audio and video:', err);
-          m.reply('Error sending audio and video.');
+          console.error('Error sending video:', err);
+          m.reply('Error sending video.');
           await doReact("❌");
         }
       });
@@ -1753,6 +1750,7 @@ case 'ytv2':
     await doReact("❌");
   }
   break;
+
 
 
 
