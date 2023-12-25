@@ -2249,7 +2249,7 @@ case '𝐩𝐥𝐚𝐲': {
   const [option, subOption] = text.split('.').map(parseFloat);
 
   // Check if the entered option and sub-option numbers are valid
-  if (!option || !subOption || option < 1 || subOption < 1) {
+  if (!Number.isInteger(option) || !Number.isInteger(subOption) || option < 1 || subOption < 1) {
     return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
