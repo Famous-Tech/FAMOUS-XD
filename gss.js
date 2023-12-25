@@ -2284,35 +2284,24 @@ case '𝐩𝐥𝐚𝐲': {
 
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
-    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1)');
+    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
   }
 
-  const [videoOption, videoSubOption] = text.split('.').map(parseFloat);
+  const selectedIdx = parseInt(text);
 
-  // Check if the entered option and sub-option numbers are valid
-  if (!videoOption || !videoSubOption || videoOption < 1 || videoSubOption < 1) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  // Check if the entered index is valid
+  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
+    return m.reply('Invalid index. Please enter a valid number.');
   }
 
-  const selectedKey = Array.from(videoSearchResults.keys())[videoOption - 1];
-
-  // Check if the selected key exists in the Map
-  if (!videoSearchResults.has(selectedKey) || videoSubOption > videoSearchResults.get(selectedKey).length) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
-  }
-
-  const selectedVideo = videoSearchResults.get(selectedKey)[videoSubOption - 1];
-
-  // Check if the selectedVideo object is defined and has a 'url' property
-  if (!selectedVideo || !selectedVideo.url) {
-    console.error('Error: Video details not available for the selected sub-option.');
-    return m.reply('Error: Video details not available for the selected sub-option.');
-  }
+  const selectedKey = `yts_${selectedIdx}`;
 
   try {
+    const selectedVideo = videoSearchResults.get(selectedKey);
+
     // Download the video using ytdl-core
     const videoStream = ytdl(selectedVideo.url, { filter: 'videoandaudio', quality: 'highestvideo' });
-    
+
     // Send the video stream
     await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
   } catch (error) {
@@ -2324,32 +2313,21 @@ case '𝐯𝐢𝐝𝐞𝐨': {
 
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
-    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
+    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
   }
 
-  const [audioOption, audioSubOption] = text.split('.').map(parseFloat);
+  const selectedIdx = parseInt(text);
 
-  // Check if the entered option and sub-option numbers are valid
-  if (!audioOption || !audioSubOption || audioOption < 1 || audioSubOption < 1) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  // Check if the entered index is valid
+  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
+    return m.reply('Invalid index. Please enter a valid number.');
   }
 
-  const selectedKey = Array.from(videoSearchResults.keys())[audioOption - 1];
-
-  // Check if the selected key exists in the Map
-  if (!videoSearchResults.has(selectedKey) || audioSubOption > videoSearchResults.get(selectedKey).length) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
-  }
-
-  const selectedVideo = videoSearchResults.get(selectedKey)[audioSubOption - 1];
-
-  // Check if the selectedVideo object is defined and has a 'url' property
-  if (!selectedVideo || !selectedVideo.url) {
-    console.error('Error: Video details not available for the selected sub-option.');
-    return m.reply('Error: Video details not available for the selected sub-option.');
-  }
+  const selectedKey = `yts_${selectedIdx}`;
 
   try {
+    const selectedVideo = videoSearchResults.get(selectedKey);
+
     // Download the audio using ytdl-core
     const audioStream = ytdl(selectedVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
 
@@ -2361,6 +2339,7 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 case 'fetch':
