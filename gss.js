@@ -742,7 +742,7 @@ during ${clockString(new Date - user.afkTime)}`)
         const cmdTool = ["tempmail","checkmail","info","trt","tts"]
         const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke"]
  const cmdDown = ["facebook","apk","mediafire","gdrive","insta","pinterestdl","ytmp3","ytmp4","gitclone"]
- const cmdSearch = ["play","yts","imdb","google","gimage","pinterest","wallpaper","wikimedia","ytsearch","ringtone","weather","lyrics"]
+ const cmdSearch = ["play","yts","imdb","google","gimage","pinterest","wallpaper","wikimedia","","ringtone","weather","lyrics"]
         const cmdFun = ["delttt","tictactoe"]
    const cmdConv = ["removebg","sticker","emojimix","tovideo","togif","tourl","tovn","tomp3","toaudio","ebinary","dbinary","styletext","fontchange","fancy","upscale","hd"]
         const cmdMain = ["ping","owner","menu","delete","infochat","quoted","listpc","listgc","listonline"]
@@ -2036,7 +2036,7 @@ case 'ytmp3doc':
 case 'play': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
-  const apiURL = `https://ytsearch-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
+  const apiURL = `https://-4rtb.onrender.com/api?search=${encodeURIComponent(text)}`;
 
   // Fetch data from the API
   const response = await fetch(apiURL);
@@ -2190,7 +2190,6 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 
 
 
-
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2198,37 +2197,48 @@ case 'yts': {
   await doReact("🕘");
 
   try {
-    const searchResults = await yts(text);
+    const searchResults = await (text);
 
-    if (searchResults && searchResults.videos.length > 0) {
+    if (searchResults && searchResults.videos && searchResults.videos.length > 0) {
       let pollOptions = [];
+      let optionIndex = 1;
 
-      // Iterate through the top 5 search results
-      for (let i = 0; i < Math.min(searchResults.videos.length, 5); i++) {
-        const result = searchResults.videos[i];
+      for (const result of searchResults.videos) {
+        const uniqueKey = `yts_${optionIndex}`;
 
-        // Generate unique key for each result using index
-        const uniqueKey = `yts_${index}`;
+        if (videoSearchResults.has(uniqueKey)) {
+          let subOption = 1;
+          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
+            subOption += 1;
+          }
 
-        // Save the video details in the Map
-        videoSearchResults.set(uniqueKey, {
-          title: result.title,
-          url: result.url,
-          uploadDate: result.uploadDate,
-          views: result.views,
-          duration: result.duration
-        });
+          videoSearchResults.get(uniqueKey).push({
+            subOption,
+            title: result.title,
+            url: result.url,
+            uploadDate: result.date,
+            views: result.views,
+            duration: result.duration.toString(),
+          });
+        } else {
+          videoSearchResults.set(uniqueKey, [{
+            subOption: 1,
+            title: result.title,
+            url: result.url,
+            uploadDate: result.date,
+            views: result.views,
+            duration: result.duration.toString(),
+          }]);
+        }
 
-        // Update pollOptions accordingly (use index)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${index} ${result.title}`);
-        index += 1;
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${videoSearchResults.get(uniqueKey).length} ${result.title}`);
+        optionIndex += 1;
       }
 
-      // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
       await doReact("✅");
     } else {
-      console.error('Invalid or empty search results');
+      console.error('Invalid search results:', searchResults);
       return m.reply('Error retrieving search results.');
     }
   } catch (error) {
@@ -2238,100 +2248,45 @@ case 'yts': {
   break;
 }
 
-
-
-// ...
-
-case '𝐩𝐥𝐚𝐲': {
-  if (!text) {
-    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
-  }
-
-  // Extract the index
-  const selectedIdx = parseInt(text);
-
-  // Check if the entered index is valid
-  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
-    return m.reply('Invalid index. Please enter a valid number.');
-  }
-
-  // Construct the key based on the index
-  const selectedKey = `yts_${selectedIdx}`;
-
-  // Retrieve the selected video details from the Map
-  const selectedVideo = videoSearchResults.get(selectedKey);
-
-  // Store the selected URL and details for later use
-  const uniqueKey = `play_${selectedVideo.url}`;
-
-  // Set the 'selectedUrl' key to the unique key
-  videoSearchResults.set('selectedUrl', {
-    url: selectedVideo.url,
-    subOption: selectedIdx // Adding subOption for filename uniqueness
-  });
-
-  // Send the video details within the poll options with the selected index (without 'play_')
-  await gss.sendPoll(
-    m.chat,
-    `Video Details (Index ${selectedIdx}):\nTitle: ${selectedVideo.title}\nViews: ${selectedVideo.views}\nDuration: ${selectedVideo.duration}\nUpload Date: ${selectedVideo.uploadDate}\nURL: ${selectedVideo.url}`,
-    [`.𝐚𝐮𝐝𝐢𝐨 ${selectedIdx}`, `.𝐯𝐢𝐝𝐞𝐨 ${selectedIdx}`]
-  );
-
-  break;
-}
-
-
-
+// Inside the '𝐯𝐢𝐝𝐞𝐨' case:
 case '𝐯𝐢𝐝𝐞𝐨': {
   if (!text) {
-    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
+    return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
   }
 
-  const selectedIdx = parseInt(text);
+  const [option, subOption] = text.split('.').map(parseFloat);
 
-  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
-    return m.reply('Invalid index. Please enter a valid number.');
+  if (!option || !subOption || option < 1 || subOption < 1) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  const selectedKey = `yts_${selectedIdx}`;
+  const selectedKey = Array.from(videoSearchResults.keys())[option - 1];
+
+  if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  }
+
+  const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
+
+  const uniqueKey = `play_${selectedVideo.url}`;
+
+  videoSearchResults.set('selectedUrl', {
+    url: selectedVideo.url,
+    subOption,
+  });
 
   try {
-    const selectedVideo = videoSearchResults.get(selectedKey);
+    const videoInfo = await ytdl.getInfo(selectedVideo.url);
+    const videoReadableStream = ytdl(selectedVideo.url, { quality: 'highestvideo' });
+    const videoBuffer = await streamToBuffer(videoReadableStream);
 
-    if (!selectedVideo || !selectedVideo.url) {
-      console.error('Error: Video details not available for the selected index.');
-      return m.reply('Error: Video details not available for the selected index.');
-    }
-
-    const videoBufferReq = await ytdl(selectedVideo.url, { filter: 'audioandvideo', quality: 'highest' });
-
-    if (!videoBufferReq) {
-      console.error('Failed to fetch video content.');
-      return m.reply('Error fetching video content.');
-    }
-
-    const videoBuffer = await getStream(videoBufferReq);
-
-    // Save the video content to a temporary file
-    const randomName = `temp_video_${selectedIdx}.mp4`;
+    const randomName = `temp_video_${subOption}.mp4`;
     fs.writeFileSync(`./${randomName}`, videoBuffer);
 
-    const videoDetailsCaption = `
-╭─📺 *Video Details*
-│
-├ 🎧 *Title*: ${selectedVideo.title}
-├ 👀 *Views*: ${selectedVideo.views}
-├ 📅 *Uploaded At*: ${selectedVideo.uploadDate}
-├ 👤 *Author*: ${selectedVideo.uploadChannel}
-│
-├─🔗 [Watch](${selectedVideo.url})
-╰─────────⭑
-    `;
+    const videoDetailsCaption = ` 🌟 *Title:* _${videoInfo.videoDetails.title}_\n 👀 *Views:* _${videoInfo.videoDetails.viewCount}_\n ⏱️ *Duration:* _${videoInfo.videoDetails.lengthSeconds}_\n 📅 *Upload Date:* _${videoInfo.videoDetails.uploadDate}_\n 📺 *YouTube URL:* ${videoInfo.videoDetails.video_url}\n 📢 *Upload Channel:* _${videoInfo.videoDetails.author.name}_\n 🤖 Downloaded by *gss botwa*`;
 
-    // Send the video with the stylish caption
     await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
 
-    // Delete the temporary file
     fs.unlinkSync(`./${randomName}`);
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
@@ -2340,44 +2295,43 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   break;
 }
 
-
+// Inside the '𝐚𝐮𝐝𝐢𝐨' case:
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
-    return m.reply('Enter the index of the audio you want to play! (e.g., 1)');
+    return m.reply('Enter the sub-option number of the video you want to play! (e.g., 1.1)');
   }
 
-  const selectedIdx = parseInt(text);
+  const [audioOption, audioSubOption] = text.split('.').map(parseFloat);
 
-  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
-    return m.reply('Invalid index. Please enter a valid number.');
+  if (!audioOption || !audioSubOption || audioOption < 1 || audioSubOption < 1) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  const selectedKey = `yts_${selectedIdx}`;
+  const selectedKey = Array.from(videoSearchResults.keys())[audioOption - 1];
+
+  if (!videoSearchResults.has(selectedKey) || audioSubOption > videoSearchResults.get(selectedKey).length) {
+    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  }
+
+  const selectedVideo = videoSearchResults.get(selectedKey)[audioSubOption - 1];
+
+  if (!selectedVideo || !selectedVideo.url) {
+    console.error('Error: Video details not available for the selected sub-option.');
+    return m.reply('Error: Video details not available for the selected sub-option.');
+  }
+
+  const uniqueKey = `play_${audioSubOption}`;
 
   try {
-    const selectedAudio = audioSearchResults.get(selectedKey);
+    const audioInfo = await ytdl.getInfo(selectedVideo.url, { filter: 'audioonly' });
+    const audioReadableStream = ytdl(selectedVideo.url, { quality: 'highestaudio' });
+    const audioBuffer = await streamToBuffer(audioReadableStream);
 
-    if (!selectedAudio || !selectedAudio.url) {
-      console.error('Error: Audio details not available for the selected index.');
-      return m.reply('Error: Audio details not available for the selected index.');
-    }
-
-    const audioBufferReq = await ytdl(selectedAudio.url, { filter: 'audioonly', quality: 'highestaudio' });
-
-    if (!audioBufferReq) {
-      console.error('Failed to fetch audio content.');
-      return m.reply('Error fetching audio content.');
-    }
-
-    const audioBuffer = await getStream(audioBufferReq);
-
-    // Save the audio content to a temporary file
-    const randomName = `temp_audio_${selectedIdx}.mp3`;
+    const randomName = `temp_audio_${audioSubOption}.mp3`;
     fs.writeFileSync(`./${randomName}`, audioBuffer);
 
-    await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp3', fileName: `${selectedAudio.title}.mp3` }, { quoted: m });
+    await gss.sendMessage(m.chat, { audio: fs.readFileSync(`./${randomName}`), mimetype: 'audio/mp4', fileName: `${audioInfo.videoDetails.title}.mp3` }, { quoted: m });
 
-    // Delete the temporary file
     fs.unlinkSync(`./${randomName}`);
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
@@ -2386,7 +2340,15 @@ case '𝐚𝐮𝐝𝐢𝐨': {
   break;
 }
 
-
+// Add the following helper function for converting streams to buffers:
+async function streamToBuffer(stream) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    stream.on('data', (chunk) => chunks.push(chunk));
+    stream.on('end', () => resolve(Buffer.concat(chunks)));
+    stream.on('error', reject);
+  });
+}
 
 
 
