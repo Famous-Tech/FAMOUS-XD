@@ -1706,8 +1706,16 @@ case 'ytmp3':
         // Concatenate the audio chunks
         const finalAudioBuffer = Buffer.concat(audioBuffer);
 
-        // Send thumbnail
-        await gss.sendMessage(m.chat, { image: videoInfo.thumbnail, caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author}` }, { quoted: m });
+
+const thumbnailMessage = {
+  image: {
+    url: videoInfo.thumbnail,
+  },
+  caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author}`,
+};
+
+await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
+
 
         // Send the audio using gss.sendMessage without caption
         await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
