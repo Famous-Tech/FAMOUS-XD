@@ -1673,9 +1673,9 @@ fs.unlinkSync(`./${randomName}`);
 
 
 
-case 'ytv':
-case 'video':
-case 'ytmp4':
+case 'yta':
+case 'song':
+case 'ytmp3':
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
