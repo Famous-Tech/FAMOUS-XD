@@ -2253,15 +2253,15 @@ case '𝐩𝐥𝐚𝐲': {
     return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  // Find the selected video details based on the option and sub-option numbers
-  const selectedKey = Array.from(videoSearchResults.keys())[option - 1];
+  // Construct the key based on option and sub-option
+  const selectedKey = `${option}.${subOption}`;
 
   // Check if the selected key exists in the Map
-  if (!videoSearchResults.has(selectedKey) || subOption > videoSearchResults.get(selectedKey).length) {
+  if (!videoSearchResults.has(selectedKey)) {
     return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
   }
 
-  const selectedVideo = videoSearchResults.get(selectedKey)[subOption - 1];
+  const selectedVideo = videoSearchResults.get(selectedKey);
 
   // Store the selected URL and details for later use
   const uniqueKey = `play_${selectedVideo.url}`;
@@ -2281,6 +2281,7 @@ case '𝐩𝐥𝐚𝐲': {
 
   break;
 }
+
 
 
 case '𝐯𝐢𝐝𝐞𝐨': {
