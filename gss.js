@@ -2187,6 +2187,7 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 }
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2203,25 +2204,22 @@ case 'yts': {
       for (let i = 0; i < Math.min(searchResults.videos.length, 5); i++) {
         const result = searchResults.videos[i];
 
-        // Generate unique key for each result using optionIndex and subOption
-        const uniqueKey = `yts_${optionIndex}.${i + 1}`;
+        // Generate unique key for each result using index
+        const uniqueKey = `yts_${index}`;
 
         // Save the video details in the Map
-        videoSearchResults.set(uniqueKey, [{
-          subOption: i + 1,
+        videoSearchResults.set(uniqueKey, {
           title: result.title,
           url: result.url,
           uploadDate: result.uploadDate,
           views: result.views,
           duration: result.duration
-        }]);
+        });
 
-        // Update pollOptions accordingly (use optionIndex and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${result.title}`);
+        // Update pollOptions accordingly (use index)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${index} ${result.title}`);
+        index += 1;
       }
-
-      // Increment optionIndex for the next usage
-      optionIndex += 1;
 
       // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
@@ -2237,30 +2235,25 @@ case 'yts': {
   break;
 }
 
-
-
+// ...
 
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
-    return m.reply('Enter the option and sub-option number of the video you want to play! (e.g., 1.1)');
+    return m.reply('Enter the index of the video you want to play! (e.g., 1)');
   }
 
-  // Extract the option and sub-option numbers
-  const [option, subOption] = text.split('.').map(parseFloat);
+  // Extract the index
+  const selectedIdx = parseInt(text);
 
-  // Check if the entered option and sub-option numbers are valid
-  if (!Number.isInteger(option) || !Number.isInteger(subOption) || option < 1 || subOption < 1) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
+  // Check if the entered index is valid
+  if (!Number.isInteger(selectedIdx) || selectedIdx < 1 || selectedIdx > index - 1) {
+    return m.reply('Invalid index. Please enter a valid number.');
   }
 
-  // Construct the key based on option and sub-option
-  const selectedKey = `${option}.${subOption}`;
+  // Construct the key based on the index
+  const selectedKey = `yts_${selectedIdx}`;
 
-  // Check if the selected key exists in the Map
-  if (!videoSearchResults.has(selectedKey)) {
-    return m.reply('Invalid option and sub-option numbers. Please enter valid numbers.');
-  }
-
+  // Retrieve the selected video details from the Map
   const selectedVideo = videoSearchResults.get(selectedKey);
 
   // Store the selected URL and details for later use
@@ -2268,14 +2261,13 @@ case '𝐩𝐥𝐚𝐲': {
 
   // Set the 'selectedUrl' key to the unique key
   videoSearchResults.set('selectedUrl', {
-    url: selectedVideo.url,
-    subOption
+    url: selectedVideo.url
   });
 
   // Send the video details within the poll options with the URL option number
   await gss.sendPoll(
     m.chat,
-    `Video Details (Option ${option}.${subOption}):\nTitle: ${selectedVideo.title}\nViews: ${selectedVideo.views}\nDuration: ${selectedVideo.duration}\nUpload Date: ${selectedVideo.uploadDate}\nURL: ${selectedVideo.url}`,
+    `Video Details (Index ${selectedIdx}):\nTitle: ${selectedVideo.title}\nViews: ${selectedVideo.views}\nDuration: ${selectedVideo.duration}\nUpload Date: ${selectedVideo.uploadDate}\nURL: ${selectedVideo.url}`,
     [`.𝐚𝐮𝐝𝐢𝐨 ${uniqueKey}`, `.𝐯𝐢𝐝𝐞𝐨 ${uniqueKey}`]
   );
 
