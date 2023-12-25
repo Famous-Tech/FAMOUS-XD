@@ -1590,91 +1590,10 @@ break;
 
 
 
+
 case 'ytv':
-case 'video':
-case 'ytmp4':
-  try {
-    if (!text) {
-      m.reply('Enter YouTube Video Link or Search Query!');
-       doReact("❌");
-      return;
-    }
-    
-    m.reply(mess.wait);
-    await doReact("🕘");
-
-    const apiURL = `https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
-
-    const req = await fetch(apiURL);
-
-    console.log('Response Status:', req.status);
-
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
-      return m.reply('Video not found.');
-      await doReact("❌");
-    }
-
-    if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
-        throw error;
-      });
-
-      console.log('Full API Response:', result);
-
-      if (result && result.downloadUrl) {
-// Fetch the video content
-const videoBufferReq = await fetch(result.downloadUrl);
-const videoArrayBuffer = await videoBufferReq.arrayBuffer();
-const videoBuffer = Buffer.from(videoArrayBuffer);
-
-// Save the video to a temporary file
-const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
-fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-const stylishCaption = `
-╭─📺 *Video Search Results*
-│
-├ 🎧 *Title*: ${result.title}
-├ 👀 *Views*: ${result.views}
-├ 📅 *Uploaded At*: ${result.uploadDate}
-├ 👤 *Author*: ${result.uploadChannel}
-│
-├─🔗 [Watch](${result.youtubeUrl})
-╰─────────⭑
-      `;
-
-// Send the video using gss.sendMessage with the modified stylish caption and saved video
-await gss.sendMessage(m.chat, { video: fs.readFileSync(`./${randomName}`), caption: stylishCaption }, { quoted: m });
-await doReact("✅");
-
-// Delete the temporary file
-fs.unlinkSync(`./${randomName}`);
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
-        await doReact("❌");
-      }
-    } else {
-      console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
-      await doReact("❌");
-    }
-  } catch (error) {
-    console.error('Error during :', error);
-    m.reply('Unexpected error occurred.');
-    await doReact("❌");
-  }
-  break;
-
-
-case 'ytv2':
+  case 'video': 
+    case 'ytmp4':
   try {
     if (!text) {
       m.reply('Enter YouTube Link or Search Query!');
@@ -1776,6 +1695,107 @@ case 'ytv2':
   break;
 
 
+case 'ytvdoc':
+  case 'ytmp4doc':
+  try {
+    if (!text) {
+      m.reply('Enter YouTube Link or Search Query!');
+      doReact("❌");
+      return;
+    }
+
+    m.reply(mess.wait);
+    await doReact("🕘");
+
+    // Check if the input is a valid YouTube URL
+    const isUrl = ytdl.validateURL(text);
+
+    if (isUrl) {
+      // If it's a URL, directly use ytdl-core for audio and video
+      const videoStream = ytdl(text, { filter: 'audioandvideo', quality: 'highest' });
+
+      const videoBuffer = [];
+
+      videoStream.on('data', (chunk) => {
+        videoBuffer.push(chunk);
+      });
+
+      videoStream.on('end', async () => {
+        try {
+          const finalVideoBuffer = Buffer.concat(videoBuffer);
+
+          const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
+
+          const captionText = `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Mp4 Player* ✨
+│⿻ *Title:* ${videoInfo.title}
+│⿻ *Duration:* ${videoInfo.duration}
+│⿻ *Author:* ${videoInfo.author.name}
+│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)} 
+╰══•∞•═════════╯
+`;
+
+          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${firstVideo.title}.mp4`, caption: captionText, quoted: m });
+          await doReact("✅");
+        } catch (err) {
+          console.error('Error sending video:', err);
+          m.reply('Error sending video.');
+          await doReact("❌");
+        }
+      });
+    } else {
+      // If it's a search query, use yt-search for video
+      const searchResult = await yts(text);
+      const firstVideo = searchResult.videos[0];
+
+      if (!firstVideo) {
+        m.reply('Video not found.');
+        await doReact("❌");
+        return;
+      }
+
+      const videoStream = ytdl(firstVideo.url, { filter: 'audioandvideo', quality: 'highest' });
+
+      const videoBuffer = [];
+
+      videoStream.on('data', (chunk) => {
+        videoBuffer.push(chunk);
+      });
+
+      videoStream.on('end', async () => {
+        try {
+          const finalVideoBuffer = Buffer.concat(videoBuffer);
+
+          const captionText = `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Mp4 Player* ✨
+│⿻ *Title:* ${firstVideo.title}
+│⿻ *Duration:* ${firstVideo.duration}
+│⿻ *Author:* ${firstVideo.author.name}
+│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  
+│⿻ *Upload Date:* ${formatUploadDate(firstVideo.uploadDate)}
+╰══•∞•═════════╯
+`;
+
+          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${firstVideo.title}.mp4`, caption: captionText, quoted: m });
+          await doReact("✅");
+        } catch (err) {
+          console.error('Error sending video:', err);
+          m.reply('Error sending video.');
+          await doReact("❌");
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error during:', error);
+    m.reply('Unexpected error occurred.');
+    await doReact("❌");
+  }
+  break;
 
 
 
