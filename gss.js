@@ -2206,25 +2206,21 @@ case 'yts': {
       for (let i = 0; i < Math.min(searchResults.videos.length, 5); i++) {
         const result = searchResults.videos[i];
 
-        // Generate sub-option numbers for each option
-        for (let subOption = 1; subOption <= 20; subOption++) {
-          const uniqueKey = `yts_${optionIndex}.${subOption}`;
+        // Generate unique key for each result
+        const uniqueKey = `yts_${optionIndex}_${i + 1}`;
 
-          // Save the video details in the Map
-          videoSearchResults.set(uniqueKey, [{
-            subOption,
-            title: result.title,
-            url: result.url,
-            uploadDate: result.uploadDate,
-            views: result.views,
-            duration: result.duration
-          }]);
+        // Save the video details in the Map
+        videoSearchResults.set(uniqueKey, [{
+          subOption: i + 1,
+          title: result.title,
+          url: result.url,
+          uploadDate: result.uploadDate,
+          views: result.views,
+          duration: result.duration
+        }]);
 
-          // Update pollOptions accordingly (use optionIndex and sub-option number)
-          pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${subOption} ${result.title}`);
-        }
-
-        optionIndex += 1;
+        // Update pollOptions accordingly (use optionIndex and sub-option number)
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${result.title}`);
       }
 
       // Send the poll with titles as options
@@ -2240,6 +2236,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 case '𝐩𝐥𝐚𝐲': {
