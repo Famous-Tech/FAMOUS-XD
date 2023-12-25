@@ -1811,11 +1811,22 @@ case 'ytmp3':
 
           const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
           const thumbnailMessage = {
-            image: {
-              url: videoInfo.thumbnail,
-            },
-            caption: `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`,
-          };
+  image: {
+    url: videoInfo.thumbnail,
+  },
+  caption: `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Player* ✨
+│⿻ *Title:* ${videoInfo.title}
+│⿻ *Duration:* ${videoInfo.timestamp}
+│⿻ *Uploader:* ${videoInfo.author.name}
+│⿻ *Size:* ${formatBytes(finalAudioBuffer.length)}
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
+╰══•∞•═════════╯
+`, 
+};
+
 
           await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
           await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
@@ -1859,7 +1870,7 @@ case 'ytmp3':
 │⿻ *Title:* ${firstVideo.title}
 │⿻ *Duration:* ${firstVideo.timestamp}
 │⿻ *Uploader:* ${firstVideo.author.name}
-│⿻ *Size:* ${formatBytes(thumbnailSize)}
+│⿻ *Size:* ${formatBytes(finalAudioBuffer.length)}
 │⿻ *Upload Date:* ${formatUploadDate(firstVideo.uploadDate)}
 ╰══•∞•═════════╯
 `,
