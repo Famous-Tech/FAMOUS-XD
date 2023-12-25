@@ -2133,6 +2133,54 @@ case '𝐩𝐥𝐚𝐲': {
 
 
 
+case '𝐀𝐮𝐝𝐢𝐨': {
+  if (!text) {
+    return m.reply('Please specify the unique key for audio playback. Use the format: audio [unique-key]');
+  }
+
+  const match = text.match(/(\d+)\.(\d+)/);
+
+  if (!match) {
+    return m.reply('Invalid format. Please provide a valid unique key (e.g., 1.1)');
+  }
+
+  const optionIndex = parseInt(match[1]);
+  const subOption = parseInt(match[2]);
+
+  // Generate the corresponding unique key
+  const uniqueKey = `yts_${optionIndex}`;
+
+  // Check if the unique key exists in the videoSearchResults Map
+  if (videoSearchResults.has(uniqueKey)) {
+    // Get the URL for the selected sub-option
+    const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
+
+    if (selectedUrl) {
+      // Use ytdl-core to get information about the video
+      const videoInfo = await ytdl.getInfo(selectedUrl);
+
+      // Get the video thumbnail
+      const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
+
+      // Send the thumbnail as an image along with audio info
+      const thumbnailMessage = await gss.prepareMessageFromURL(m.chat, thumbnailUrl, 'image');
+      await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
+
+      // Use ytdl-core to download audio-only
+      const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
+      const finalAudioBuffer = await audioStreamToBuffer(audioStream);
+
+      // Send the audio file
+      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
+    } else {
+      return m.reply('Invalid sub-option. Please choose a valid sub-option.');
+    }
+  } else {
+    return m.reply('Invalid unique key. Please provide a valid unique key.');
+  }
+  break;
+}
+
 
 
 case 'fetch':
