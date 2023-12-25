@@ -2297,19 +2297,31 @@ case '𝐯𝐢𝐝𝐞𝐨': {
   const selectedKey = `yts_${selectedIdx}`;
 
   try {
+    // Check if the selected video exists
+    if (!videoSearchResults.has(selectedKey)) {
+      return m.reply('Selected video not found.');
+    }
+
     const selectedVideo = videoSearchResults.get(selectedKey);
 
-    // Download the video using ytdl-core
-    const videoStream = ytdl(selectedVideo.url, { filter: 'videoandaudio', quality: 'highestvideo' });
+    // Check if the selected video has necessary properties
+    if (!selectedVideo || !selectedVideo.url || !selectedVideo.title) {
+      return m.reply('Selected video details are incomplete.');
+    }
 
-    // Send the video stream
-    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: videoDetailsCaption }, { quoted: m });
+    // Download the video using ytdl-core
+    const videoStream = ytdl(selectedVideo.url, { quality: 'highest' });
+
+    // Send the video stream with a filename
+    const fileName = selectedVideo.title ? `${selectedVideo.title}.mp4` : 'video.mp4';
+    await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', fileName }, { quoted: m });
   } catch (error) {
     console.error('Error during 𝐯𝐢𝐝𝐞𝐨:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
 }
+
 
 case '𝐚𝐮𝐝𝐢𝐨': {
   if (!text) {
@@ -2342,13 +2354,15 @@ case '𝐚𝐮𝐝𝐢𝐨': {
     const audioStream = ytdl(selectedVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
 
     // Send the audio stream with a filename
-    await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName: `${selectedVideo.title}.mp3` }, { quoted: m });
+    const fileName = selectedVideo.title ? `${selectedVideo.title}.mp3` : 'audio.mp3';
+    await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName }, { quoted: m });
   } catch (error) {
     console.error('Error during 𝐚𝐮𝐝𝐢𝐨:', error);
     m.reply('Unexpected error occurred.');
   }
   break;
 }
+
 
 
 
