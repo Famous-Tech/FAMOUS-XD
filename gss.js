@@ -65,10 +65,8 @@ let ANTICALL_MODE = false; // added
 let akinator = global.db.data.game.akinator = []
 
 let props;
+let optionIndex = 1;
 const reportedMessages = {};
-const videoSearchResults = new Map();
-let titleUrlMap = {}; 
-const userContextMap = new Map();
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -2186,9 +2184,6 @@ case '𝗔𝗨𝗗𝗜𝗢': {
 }
 
 
-
-
-
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2200,14 +2195,13 @@ case 'yts': {
 
     if (searchResults && searchResults.videos.length > 0) {
       let pollOptions = [];
-      let optionIndex = 1;
 
       // Iterate through the top 5 search results
       for (let i = 0; i < Math.min(searchResults.videos.length, 5); i++) {
         const result = searchResults.videos[i];
 
-        // Generate unique key for each result
-        const uniqueKey = `yts_${optionIndex}_${i + 1}`;
+        // Generate unique key for each result using optionIndex and subOption
+        const uniqueKey = `yts_${optionIndex}.${i + 1}`;
 
         // Save the video details in the Map
         videoSearchResults.set(uniqueKey, [{
@@ -2223,6 +2217,9 @@ case 'yts': {
         pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${result.title}`);
       }
 
+      // Increment optionIndex for the next usage
+      optionIndex += 1;
+
       // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
       await doReact("✅");
@@ -2236,6 +2233,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 
