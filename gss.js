@@ -1686,33 +1686,23 @@ case 'ytv2':
 
     if (isUrl) {
       // If it's a URL, directly use ytdl-core for audio and video
-      const audioStream = ytdl(text, { filter: 'audioonly', quality: 'highestaudio' });
-      const videoStream = ytdl(text, { quality: 'highestvideo' });
+      const combinedStream = ytdl(text, { filter: 'audiandvideo', quality: 'highest' });
 
-      const audioBuffer = [];
-      const videoBuffer = [];
+      const combinedBuffer = [];
 
-      audioStream.on('data', (chunk) => {
-        audioBuffer.push(chunk);
+      combinedStream.on('data', (chunk) => {
+        combinedBuffer.push(chunk);
       });
 
-      videoStream.on('data', (chunk) => {
-        videoBuffer.push(chunk);
-      });
-
-      Promise.all([
-        new Promise((resolve) => audioStream.on('end', resolve)),
-        new Promise((resolve) => videoStream.on('end', resolve))
-      ]).then(async () => {
+      combinedStream.on('end', async () => {
         try {
-          const finalAudioBuffer = Buffer.concat(audioBuffer);
-          const finalVideoBuffer = Buffer.concat(videoBuffer);
+          const finalCombinedBuffer = Buffer.concat(combinedBuffer);
 
           const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
 
           const captionText = `*Title:* ${videoInfo.title}\n*Duration:* ${videoInfo.duration}\n*Uploader:* ${videoInfo.author.name}`;
 
-          await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
+          await gss.sendMessage(m.chat, { video: finalCombinedBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio and video:', err);
@@ -1731,31 +1721,24 @@ case 'ytv2':
         return;
       }
 
-      const audioStream = ytdl(firstVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
-      const videoStream = ytdl(firstVideo.url, { quality: 'highestvideo' });
+      // Get the desired video quality based on the provided argument (e.g., 144, 240, 360)
+      const videoQuality = args[0] || 'highest';
 
-      const audioBuffer = [];
-      const videoBuffer = [];
+      const combinedStream = ytdl(firstVideo.url, { filter: 'audiandvideo', quality: videoQuality });
 
-      audioStream.on('data', (chunk) => {
-        audioBuffer.push(chunk);
+      const combinedBuffer = [];
+
+      combinedStream.on('data', (chunk) => {
+        combinedBuffer.push(chunk);
       });
 
-      videoStream.on('data', (chunk) => {
-        videoBuffer.push(chunk);
-      });
-
-      Promise.all([
-        new Promise((resolve) => audioStream.on('end', resolve)),
-        new Promise((resolve) => videoStream.on('end', resolve))
-      ]).then(async () => {
+      combinedStream.on('end', async () => {
         try {
-          const finalAudioBuffer = Buffer.concat(audioBuffer);
-          const finalVideoBuffer = Buffer.concat(videoBuffer);
+          const finalCombinedBuffer = Buffer.concat(combinedBuffer);
 
           const captionText = `*Title:* ${firstVideo.title}\n*Duration:* ${firstVideo.timestamp}\n*Uploader:* ${firstVideo.author.name}`;
 
-          await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
+          await gss.sendMessage(m.chat, { video: finalCombinedBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending audio and video:', err);
@@ -1770,6 +1753,7 @@ case 'ytv2':
     await doReact("❌");
   }
   break;
+
 
 
 
