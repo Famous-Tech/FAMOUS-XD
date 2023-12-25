@@ -2032,6 +2032,7 @@ case 'ytmp3doc':
 
 
 
+
 case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2045,44 +2046,24 @@ case 'yts': {
       let pollOptions = [];
       let optionIndex = 1;
 
-      // Iterate through the search results
-      for (const result of results.videos) {
+      // Use a unique key for each poll session
+      const uniqueKey = `yts_${optionIndex}`;
+
+      // Iterate through the top 5 search results
+      for (let i = 0; i < Math.min(5, results.videos.length); i++) {
+        const result = results.videos[i];
         const videoUrl = result.url;
         const title = result.title;
 
-        // Check if the key already exists in the Map
-        const uniqueKey = `yts_${optionIndex}`;
-        if (videoSearchResults.has(uniqueKey)) {
-          // Key exists, find the next available sub-option number
-          let subOption = 1;
-          while (videoSearchResults.get(uniqueKey).find((item) => item.subOption === subOption)) {
-            subOption += 1;
-          }
-
-          // Add the new video details with the updated sub-option number
-          videoSearchResults.get(uniqueKey).push({
-            subOption,
-            title,
-            url: videoUrl,
-            uploadDate: 'Upload date not available',
-            views: 'Views count not available',
-            duration: 'Duration not available'
-          });
-        } else {
-          // Key doesn't exist, create a new array with the current video details
-          videoSearchResults.set(uniqueKey, [{
-            subOption: 1,
-            title,
-            url: videoUrl,
-            uploadDate: 'Upload date not available',
-            views: 'Views count not available',
-            duration: 'Duration not available'
-          }]);
+        // Save the YouTube URL in the corresponding index of the unique key
+        if (!videoSearchResults.has(uniqueKey)) {
+          videoSearchResults.set(uniqueKey, {});
         }
 
+        videoSearchResults.get(uniqueKey)[`${optionIndex}.${i + 1}`] = videoUrl;
+
         // Update pollOptions accordingly (use optionIndex and sub-option number)
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${subOption} ${title} - ${videoUrl}`);
-        optionIndex += 1;
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
       }
 
       // Send the poll with titles as options
@@ -2097,6 +2078,7 @@ case 'yts': {
   }
   break;
 }
+
 
 
 case 'fetch':
