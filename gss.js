@@ -66,7 +66,6 @@ let akinator = global.db.data.game.akinator = []
 
 let props;
 const audioSearchResults = new Map();
-const videoSearchResults = new Map();
 let optionIndex = 1;
 let index = 1;
 const reportedMessages = {};
