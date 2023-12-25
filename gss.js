@@ -1738,7 +1738,7 @@ case 'ytvdoc':
 ╰══•∞•═════════╯
 `;
 
-          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${firstVideo.title}.mp4`, caption: captionText, quoted: m });
+          await gss.sendMessage(m.chat, { document: finalVideoBuffer, mimetype: 'video/mp4', fileName: `${videoInfo.title}.mp4`, caption: captionText, quoted: m });
           await doReact("✅");
         } catch (err) {
           console.error('Error sending video:', err);
