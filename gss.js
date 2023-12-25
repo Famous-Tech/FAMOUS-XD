@@ -8,7 +8,7 @@ const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser,getAggregateVotesInPollMessage, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 const fsx = require('fs-extra')
-const yts = require('yt-search');
+const ytSearch = require('yt-search');
 const ytsr = require('ytsr');
 const ytdl = require('ytdl-core');
 const util = require('util')
@@ -170,6 +170,19 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
 }
 
 
+
+async function getVideoInfo(query) {
+  try {
+    const { videos } = await ytSearch(query);
+    if (videos.length > 0) {
+      return videos[0];
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching video info:', error);
+    return null;
+  }
+}
 
 
 
@@ -1658,9 +1671,11 @@ fs.unlinkSync(`./${randomName}`);
   }
   break;
 
-case 'yta':
-case 'song':
-case 'ytmp3':
+
+
+case 'ytv':
+case 'video':
+case 'ytmp4':
   try {
     if (!text) {
       m.reply('Enter YouTube Video Link or Search Query!');
@@ -1671,55 +1686,35 @@ case 'ytmp3':
     m.reply(mess.wait);
     await doReact("🕘");
 
-    const apiURL = `https://videodl.onrender.com/downloadurl?query=${encodeURIComponent(text)}`;
-    const req = await fetch(apiURL);
+    const videoInfo = await getVideoInfo(text);
 
-    console.log('Response Status:', req.status);
-
-    const contentType = req.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    if (req.status === 404) {
+    if (!videoInfo) {
       return m.reply('Video not found.');
       await doReact("❌");
     }
 
-    if (contentType && contentType.includes('application/json')) {
-      const result = await req.json().catch(async (error) => {
-        console.error('Error parsing JSON:', await req.text());
-        m.reply('Unexpected error occurred.');
-        throw error;
-      });
+    const audioStream = ytdl(videoInfo.url, { quality: 'highestaudio' });
 
-      console.log('Full API Response:', result);
+    const audioBuffer = [];
+    audioStream.on('data', (chunk) => {
+      audioBuffer.push(chunk);
+    });
 
-      if (result && result.downloadUrl) {
-        // Fetch the audio content
-        const audioBufferReq = await fetch(result.downloadUrl);
-        const audioArrayBuffer = await audioBufferReq.arrayBuffer();
-        const audioBuffer = Buffer.from(audioArrayBuffer);
+    audioStream.on('end', async () => {
+      // Concatenate the audio chunks
+      const finalAudioBuffer = Buffer.concat(audioBuffer);
 
-        // Send the audio using gss.sendMessage without caption
-        await gss.sendMessage(m.chat, { audio: audioBuffer }, { quoted: m });
-        await doReact("✅");
-      } else if (result && result.error) {
-        return m.reply(`Error: ${result.error}`);
-      } else {
-        console.error('Invalid API response:', result);
-        m.reply('Enter YouTube Video Link or Search Query!');
-        await doReact("❌");
-      }
-    } else {
-      console.error('Invalid Content-Type:', contentType);
-      m.reply('Unexpected response format.');
-      await doReact("❌");
-    }
+      // Send the audio using gss.sendMessage without caption
+      await gss.sendMessage(m.chat, { audio: finalAudioBuffer }, { quoted: m });
+      await doReact("✅");
+    });
   } catch (error) {
     console.error('Error during :', error);
     m.reply('Unexpected error occurred.');
     await doReact("❌");
   }
   break;
+
 
 
 
