@@ -2114,6 +2114,15 @@ case '𝐩𝐥𝐚𝐲': {
 }
 
 
+async function streamToBuffer(stream) {
+  const chunks = [];
+  for await (const chunk of stream) {
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks);
+}
+
+
 case '𝐀𝐮𝐝𝐢𝐨': {
   if (!text) {
     return m.reply('Please specify the unique key for audio playback. Use the format: audio [unique-key]');
@@ -2134,9 +2143,19 @@ case '𝐀𝐮𝐝𝐢𝐨': {
     const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
 
     if (selectedUrl) {
-      const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
+      try {
+        // Fetch audio stream directly
+        const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
 
-      await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mpeg' });
+        // Convert the stream to base64 to send as media
+        const base64Audio = (await streamToBuffer(audioStream)).toString('base64');
+
+        // Send the audio as a voice message
+        await gss.sendMessage(m.chat, { audio: base64Audio, mimetype: 'audio/ogg; codecs=opus' });
+      } catch (error) {
+        console.error('Error during audio playback:', error);
+        return m.reply('Unexpected error occurred during audio playback.');
+      }
     } else {
       return m.reply('Invalid sub-option. Please choose a valid sub-option.');
     }
@@ -2145,6 +2164,7 @@ case '𝐀𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
