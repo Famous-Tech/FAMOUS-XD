@@ -2147,11 +2147,11 @@ case '𝐀𝐮𝐝𝐢𝐨': {
         // Fetch audio stream directly
         const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
 
-        // Convert the stream to base64 to send as media
-        const base64Audio = (await streamToBuffer(audioStream)).toString('base64');
+        // Convert the stream to buffer for sending
+        const audioBuffer = await streamToBuffer(audioStream);
 
         // Send the audio as a voice message
-        await gss.sendMessage(m.chat, { audio: base64Audio, mimetype: 'audio/ogg; codecs=opus' });
+        await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mpeg' });
       } catch (error) {
         console.error('Error during audio playback:', error);
         return m.reply('Unexpected error occurred during audio playback.');
