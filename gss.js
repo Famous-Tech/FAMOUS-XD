@@ -4211,6 +4211,7 @@ function getRandomSymbol() {
     const randomIndex = Math.floor(Math.random() * symbols.length);
     return symbols[randomIndex];
 }
+const randomSymbol = getRandomSymbol();
 
 case 'menuall':
 case 'allmenu': {
@@ -4510,12 +4511,12 @@ case 'gcmenu':
 case 'grupmenu':
 case 'groupmenu': {
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
     const introText = `
 ╭───〈 *𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨* 〉───◆
 ┃╭─────────────···▸
-┃│ ${cmdList}
+${cmdList}
 ┃╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
 `;
