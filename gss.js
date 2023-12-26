@@ -4437,7 +4437,7 @@ ${readmore}┗────────────⊰
 
     if (typemenu === 'v1') {
     gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./allmenu.jpg'),
+        image: fs.readFileSync('./menuimage/allmenu.jpg'),
         caption: introText,
         contextInfo: {
             externalAdReply: {
@@ -4522,7 +4522,7 @@ ${cmdList}
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/menu.jpg'),
         caption: introText,
         contextInfo: {
             externalAdReply: {
@@ -4540,18 +4540,19 @@ break;
             case 'downloadmenu':
 case 'dlmenu':
 case 'downmenu': {
-    let cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-╭───〈 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥 〉───◆
-▯╭─────────────···▸
-▯│ ${cmdList}
-▯╰──────────────
+    const introText = `
+╭───〈 *𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥* 〉───◆
+┃╭─────────────···▸
+${cmdList}
+┃╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/download.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
@@ -4566,18 +4567,19 @@ case 'downmenu': {
 break;
 
 case 'searchmenu': {
-    let cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-✪━ 乂 *Search Menu* 乂 ━✪
-│
+    const introText = `
+╭───〈 𝗦𝗘𝗔𝗥𝗖𝗛 〉───◆
+┃╭─────────────···▸
 ${cmdList}
-│
-└───────✪
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/searchmenu.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
@@ -4592,18 +4594,19 @@ ${cmdList}
 break;
 
 case 'funmenu': {
-    let cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-✪━ 乂 *Fun Menu* 乂 ━✪
-│
+    const introText = `
+╭───〈 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 〉───◆
+┃╭─────────────···▸
 ${cmdList}
-│
-└───────✪
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷✪
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menu/fun.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
@@ -4618,18 +4621,19 @@ ${cmdList}
 break;
 
 case 'convertmenu': {
-    let cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-✪━ 乂 *Convert Menu* 乂 ━✪
-│
+    const introText = `
+╭───〈 𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥 〉───◆
+┃╭─────────────···▸
 ${cmdList}
-│
-└───────✪
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/menu.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
@@ -4644,18 +4648,19 @@ ${cmdList}
 break;
 
 case 'mainmenu': {
-    let cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-✪━ 乂 *Main Menu* 乂 ━✪
-│
+    const introText = `
+╭───〈 𝗚𝗘𝗡𝗘𝗥𝗔𝗟 〉───◆
+┃╭─────────────···▸
 ${cmdList}
-│
-└───────✪
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/mainmenu.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
@@ -4670,18 +4675,19 @@ ${cmdList}
 break;
 
 case 'ownermenu': {
-    let cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-✪━ 乂 *Owner Menu* 乂 ━✪
-│
+    const introText = `
+╭───〈 𝗢𝗪𝗡𝗘𝗥 〉───◆
+┃╭─────────────···▸
 ${cmdList}
-│
-└───────✪
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/menu.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
@@ -4696,18 +4702,19 @@ ${cmdList}
 break;
 
 case 'aimenu': {
-    let cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-✪━ 乂 *Ai Menu* 乂 ━✪
-│
+    const introText = `
+╭───〈 𝗔𝗜 𝗠𝗘𝗡𝗨 〉───◆
+┃╭─────────────···▸
 ${cmdList}
-│
-└───────✪
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/aimenu.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
@@ -4721,45 +4728,22 @@ ${cmdList}
 }
 break;
 
-case 'bugmenu': {
-    let cmdList = cmdBug.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
-    
-    const pollText = `
-✪━ 乂 *Bug Menu* 乂 ━✪
-│
-${cmdList}
-│
-└───────✪
-`;
 
-    await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
-        caption: pollText,
-        contextInfo: {
-            externalAdReply: {
-                showAdAttribution: false,
-                title: botname,
-                sourceUrl: global.link,
-                body: `Bot Created By ${global.owner}`
-            }
-        }
-    }, { quoted: m });
-}
-break;
 
 case 'toolmenu': {
-    let cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
+    let cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
-    const pollText = `
-✪━ 乂 *Tool Menu* 乂 ━✪
-│
+    const introText = `
+╭───〈 𝗧𝗢𝗢𝗟 𝗠𝗘𝗡𝗨〉───◆
+┃╭─────────────···▸
 ${cmdList}
-│
-└───────✪
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/tool.jpg'),
         caption: pollText,
         contextInfo: {
             externalAdReply: {
