@@ -2111,7 +2111,6 @@ Choose an option for "${videoInfo.title}":
  Likes: ${videoInfo.likes}
  Dislikes: ${videoInfo.dislikes}
  Duration: ${videoInfo.videoDetails.lengthSeconds}s
- Author: ${videoInfo.author.name}
  Upload Date: ${formatUploadDate(videoInfo.videoDetails.uploadDate)}
 `;
 
