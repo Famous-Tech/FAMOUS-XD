@@ -2167,6 +2167,47 @@ case '𝐀𝐮𝐝𝐢𝐨': {
 
 
 
+case '𝐕𝐢𝐝𝐞𝐨': {
+  if (!text) {
+    return m.reply('Please specify the unique key for video playback. Use the format: video [unique-key]');
+  }
+
+  const match = text.match(/(\d+)\.(\d+)/);
+
+  if (!match) {
+    return m.reply('Invalid format. Please provide a valid unique key (e.g., 1.1)');
+  }
+
+  const optionIndex = parseInt(match[1]);
+  const subOption = parseInt(match[2]);
+
+  const uniqueKey = `yts_${optionIndex}`;
+
+  if (videoSearchResults.has(uniqueKey)) {
+    const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
+
+    if (selectedUrl) {
+      try {
+        // Download audio and video together using 'videoandaudio' filter
+        const videoAndAudioStream = ytdl(selectedUrl, { quality: 'highest', filter: 'audioandvideo' });
+
+        // Send the video and audio as a media message
+        await gss.sendMessage(m.chat, { video: videoAndAudioStream, mimetype: 'video/mp4' });
+      } catch (error) {
+        console.error('Error during video playback:', error);
+        return m.reply('Unexpected error occurred during video playback.');
+      }
+    } else {
+      return m.reply('Invalid sub-option. Please choose a valid sub-option.');
+    }
+  } else {
+    return m.reply('Invalid unique key. Please provide a valid unique key.');
+  }
+  break;
+}
+
+
+
 
 case 'fetch':
   try {
