@@ -2118,8 +2118,8 @@ case '𝐩𝐥𝐚𝐲': {
 
       // Send the poll with options for Audio and Video including video information
       await gss.sendPoll(m.chat, `Choose an option for "${videoInfo.title}":`, [
-        `.𝐀𝐮𝐝𝐢𝐨 ${uniqueKey} - Audio only`,
-        `.𝐕𝐢𝐝𝐞𝐨 ${uniqueKey} - Video only `
+        `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex} - Audio only`,
+        `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex} - Video only `
       ]);
       await doReact("✅");
     } else {
