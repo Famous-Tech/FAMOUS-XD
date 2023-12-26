@@ -2077,6 +2077,12 @@ case 'yts': {
   break;
 }
 
+// Add this function to format upload date
+function formatUploadDate(uploadDate) {
+  const date = new Date(uploadDate);
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Please specify the video you want to play. Use the format: play [unique-key]');
@@ -2099,7 +2105,17 @@ case '𝐩𝐥𝐚𝐲': {
     if (selectedUrl) {
       const videoInfo = await ytdl.getInfo(selectedUrl);
 
-      await gss.sendPoll(m.chat, `Choose an option for "${videoInfo.title}":`, [
+      const pollMessage = `
+Choose an option for "${videoInfo.title}":
+ Link: ${selectedUrl}
+ Likes: ${videoInfo.likes}
+ Dislikes: ${videoInfo.dislikes}
+ Duration: ${videoInfo.videoDetails.lengthSeconds}s
+ Author: ${videoInfo.author.name}
+ Upload Date: ${formatUploadDate(videoInfo.videoDetails.uploadDate)}
+`;
+
+      await gss.sendPoll(m.chat, pollMessage, [
         `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex}.${subOption}`,
         `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${subOption}`
       ]);
@@ -2112,6 +2128,7 @@ case '𝐩𝐥𝐚𝐲': {
   }
   break;
 }
+
 
 
 async function streamToBuffer(stream) {
