@@ -2118,8 +2118,8 @@ case '𝐩𝐥𝐚𝐲': {
 
       // Send the poll with options for Audio and Video including video information
       await gss.sendPoll(m.chat, `Choose an option for "${videoInfo.title}":`, [
-        `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex} - Audio only`,
-        `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex} - Video only `
+        `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex}.${i + 1}`,
+        `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${i + 1}`
       ]);
       await doReact("✅");
     } else {
@@ -2163,8 +2163,7 @@ case '𝐀𝐮𝐝𝐢𝐨': {
       const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
 
       // Send the thumbnail as an image along with audio info
-      const thumbnailMessage = await gss.prepareMessageFromURL(m.chat, thumbnailUrl, 'image');
-      await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
+      await gss.sendImage(m.chat, thumbnailUrl, 'thumbnail.jpg', `Now playing audio for "${uniqueKey}".`, { quoted: m });
 
       // Use ytdl-core to download audio-only
       const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
