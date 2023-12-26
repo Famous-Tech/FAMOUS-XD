@@ -4514,10 +4514,9 @@ case 'groupmenu': {
     
     const introText = `
 ╭───〈 *𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨* 〉───◆
-▯╭─────────────···▸
-┴│▸
-${cmdList}
-┃✵╰──────────────
+┃╭─────────────···▸
+┃│ ${cmdList}
+┃╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷
 `;
 
@@ -4537,99 +4536,243 @@ ${cmdList}
 break;
 
 
-            case 'downloadmenu': case 'dlmenu': case 'downmenu': {
-              const randomSymbol = getRandomSymbol();
-                let anu = `✪━ 乂 *Downloader Menu* 乂 ━✪
-│
-${cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `│  ${randomSymbol} ${prefix}`+ v).join('\n')}
-│
-└───────✪`
-                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
+            case 'downloadmenu':
+case 'dlmenu':
+case 'downmenu': {
+    let cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+╭───〈 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥 〉───◆
+▯╭─────────────···▸
+▯│ ${cmdList}
+▯╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
-            break 
-            case 'searchmenu': {
-              const randomSymbol = getRandomSymbol();
-                let anu = `✪━乂*Search Menu*乂 ━✪
+        }
+    }, { quoted: m });
+}
+break;
+
+case 'searchmenu': {
+    let cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Search Menu* 乂 ━✪
 │
-${cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
+${cmdList}
 │
-└───────✪`
-                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
-            break
-            
-            
-            case 'funmenu': {
-              const randomSymbol = getRandomSymbol();
-                let anu = `✪━ 乂 *Fun Menu* 乂 ━✪
+        }
+    }, { quoted: m });
+}
+break;
+
+case 'funmenu': {
+    let cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Fun Menu* 乂 ━✪
 │
-${cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
+${cmdList}
 │
-└───────✪`
-                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
-            break 
-            case 'convertmenu': {
-              const randomSymbol = getRandomSymbol();
-               let anu = `✪━ 乂 *Convert Menu* 乂 ━✪
+        }
+    }, { quoted: m });
+}
+break;
+
+case 'convertmenu': {
+    let cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Convert Menu* 乂 ━✪
 │
-${cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
+${cmdList}
 │
-└───────✪`
-                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
-            break 
-            case 'mainmenu': {
-              const randomSymbol = getRandomSymbol();
-                let anu = `✪━ 乂 *Main Menu* 乂 ━✪
+        }
+    }, { quoted: m });
+}
+break;
+
+case 'mainmenu': {
+    let cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Main Menu* 乂 ━✪
 │
-${cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
+${cmdList}
 │
-└───────✪`
-                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
-            break 
-            case 'ownermenu': {
-              const randomSymbol = getRandomSymbol();
-                let anu = `✪━ 乂 *Owner Menu* 乂 ━✪
+        }
+    }, { quoted: m });
+}
+break;
+
+case 'ownermenu': {
+    let cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Owner Menu* 乂 ━✪
 │
-${cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `│  ${randomSymbol} ${prefix}`+ v).join('\n')}
+${cmdList}
 │
-└───────✪`
-                gss.sendPoll(m.chat, anu, ['.Owner','.Ping'])
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
-            break
+        }
+    }, { quoted: m });
+}
+break;
+
 case 'aimenu': {
-    const randomSymbol = getRandomSymbol();
-    let anu = `✪━乂 *Ai Menu* 乂 ━✪
+    let cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Ai Menu* 乂 ━✪
 │
-${cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}` + v).join('\n')}
+${cmdList}
 │
-└───────✪`;
-    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, { quoted: m });
 }
 break;
 
 case 'bugmenu': {
-    const randomSymbol = getRandomSymbol();
-    let anu = `✪━ 乂 *Bug Menu* 乂 ━✪
+    let cmdList = cmdBug.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Bug Menu* 乂 ━✪
 │
-${cmdBug.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}` + v).join('\n')}
+${cmdList}
 │
-└───────✪`;
-    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, { quoted: m });
 }
 break;
+
 case 'toolmenu': {
-    const randomSymbol = getRandomSymbol();
-    let anu = `✪━ 乂 *Tool Menu* 乂 ━✪
+    let cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const pollText = `
+✪━ 乂 *Tool Menu* 乂 ━✪
 │
-${cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}` + v).join('\n')}
+${cmdList}
 │
-└───────✪`;
-    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
+└───────✪
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: pollText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, { quoted: m });
 }
 break;
+
+
 
 
             
