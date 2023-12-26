@@ -2231,14 +2231,37 @@ case '𝐕𝐢𝐝𝐞𝐨': {
 
     if (selectedUrl) {
       try {
+        // Fetch video info for additional details
+        const videoInfo = await ytdl.getInfo(selectedUrl);
+
+        // Get the video thumbnail
+        const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
+
+        // Construct caption with video details
+        const captionText = `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Mp4 Player* ✨
+│⿻ *Title:* ${videoInfo.title}
+│⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+│⿻ *Author:* ${videoInfo.author.name}
+│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
+╰══•∞•═════════╯
+`;
+
         // Download audio and video together using 'videoandaudio' filter
         const videoAndAudioStream = ytdl(selectedUrl, { quality: 'highest', filter: 'audioandvideo' });
 
         // Convert the stream to buffer
         const videoAndAudioBuffer = await streamToBuffer(videoAndAudioStream);
 
-        // Send the video and audio as a media message
-        await gss.sendMessage(m.chat, { video: videoAndAudioBuffer, mimetype: 'video/mp4' });
+        // Send the video and audio as a media message with caption
+        await gss.sendMessage(m.chat, {
+          video: videoAndAudioBuffer,
+          mimetype: 'video/mp4',
+          caption: captionText,
+        }, { quoted: m });
       } catch (error) {
         console.error('Error during video playback:', error);
         return m.reply('Unexpected error occurred during video playback.');
@@ -2251,6 +2274,7 @@ case '𝐕𝐢𝐝𝐞𝐨': {
   }
   break;
 }
+
 
 
 case 'fetch':
