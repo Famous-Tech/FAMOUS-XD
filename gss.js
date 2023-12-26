@@ -1607,7 +1607,7 @@ case 'ytv':
 
     // Check if the input is a valid YouTube URL
     const isUrl = ytdl.validateURL(text);
-
+await doReact("⬇️");
     if (isUrl) {
       // If it's a URL, directly use ytdl-core for audio and video
       const videoStream = ytdl(text, { filter: 'audioandvideo', quality: 'highest' });
@@ -1649,7 +1649,7 @@ case 'ytv':
       // If it's a search query, use yt-search for video
       const searchResult = await yts(text);
       const firstVideo = searchResult.videos[0];
-
+await doReact("⬇️");
       if (!firstVideo) {
         m.reply('Video not found.');
         await doReact("❌");
@@ -2085,12 +2085,14 @@ function formatUploadDate(uploadDate) {
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
     return m.reply('Please specify the video you want to play. Use the format: play [unique-key]');
+    doReact("❌");
   }
 
   const match = text.match(/(\d+)\.(\d+)/);
 
   if (!match) {
     return m.reply('Invalid format. Please provide a valid unique key (e.g., 1.1)');
+    doReact("❌");
   }
 
   const optionIndex = parseInt(match[1]);
@@ -2130,6 +2132,7 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
       } catch (error) {
         console.error('Error during poll creation:', error);
         return m.reply('Unexpected error occurred during poll creation.');
+        doReact("❌");
       }
     } else {
       return m.reply('Invalid sub-option. Please choose a valid sub-option.');
@@ -2153,12 +2156,14 @@ async function streamToBuffer(stream) {
 case '𝐀𝐮𝐝𝐢𝐨': {
   if (!text) {
     return m.reply('Please specify the unique key for audio playback. Use the format: audio [unique-key]');
+    doReact("❌");
   }
 
   const match = text.match(/(\d+)\.(\d+)/);
 
   if (!match) {
     return m.reply('Invalid format. Please provide a valid unique key (e.g., 1.1)');
+    doReact("❌");
   }
 
   const optionIndex = parseInt(match[1]);
@@ -2210,6 +2215,7 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
 
         // Send the audio as a voice message
         await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mpeg' });
+        await doReact("✅");
       } catch (error) {
         console.error('Error during audio playback:', error);
         return m.reply('Unexpected error occurred during audio playback.');
@@ -2289,6 +2295,7 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
   mimetype: 'audio/mpeg',
   fileName: `${title}.mp3`,
 }, { quoted: m });
+await doReact("✅");
       } catch (error) {
         console.error('Error during audio playback:', error);
         return m.reply('Unexpected error occurred during audio playback.');
@@ -2360,6 +2367,7 @@ const captionText = `
           mimetype: 'video/mp4',
           caption: captionText,
         }, { quoted: m });
+        
       } catch (error) {
         console.error('Error during video playback:', error);
         return m.reply('Unexpected error occurred during video playback.');
@@ -4213,7 +4221,7 @@ const randomSymbol = getRandomSymbol();
 
 case 'menuall':
 case 'allmenu': {
-
+await doReact("📁");
     let a = db.data.users[m.sender];
     let introText = `Hello ${pushname}!👋 I'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*
     
@@ -4508,6 +4516,7 @@ ${readmore}┗────────────⊰
 case 'gcmenu':
 case 'grupmenu':
 case 'groupmenu': {
+  await doReact("📁");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4538,6 +4547,7 @@ break;
             case 'downloadmenu':
 case 'dlmenu':
 case 'downmenu': {
+  await doReact("⬇️");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4565,6 +4575,7 @@ ${cmdList}
 break;
 
 case 'searchmenu': {
+  await doReact("🔍");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4592,6 +4603,7 @@ ${cmdList}
 break;
 
 case 'funmenu': {
+  await doReact("📁");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4619,6 +4631,7 @@ ${cmdList}
 break;
 
 case 'convertmenu': {
+  await doReact("📁");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4646,6 +4659,7 @@ ${cmdList}
 break;
 
 case 'mainmenu': {
+  await doReact("📁");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4673,6 +4687,7 @@ ${cmdList}
 break;
 
 case 'ownermenu': {
+  await doReact("📁");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4700,6 +4715,7 @@ ${cmdList}
 break;
 
 case 'aimenu': {
+  await doReact("📁");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
@@ -4729,6 +4745,7 @@ break;
 
 
 case 'toolmenu': {
+  await doReact("📁");
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
     
