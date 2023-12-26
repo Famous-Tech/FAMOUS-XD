@@ -2103,22 +2103,26 @@ case '𝐩𝐥𝐚𝐲': {
     const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
 
     if (selectedUrl) {
-      const videoInfo = await ytdl.getInfo(selectedUrl);
+      try {
+        const videoInfo = await ytdl.getInfo(selectedUrl);
 
-      const pollMessage = `
+        const pollMessage = `
 Choose an option for "${videoInfo.title}":
- Link: ${selectedUrl}
- Likes: ${videoInfo.likes}
- Dislikes: ${videoInfo.dislikes}
- Duration: ${videoInfo.videoDetails.lengthSeconds}s
- Upload Date: ${formatUploadDate(videoInfo.videoDetails.uploadDate)}
+ *Link:* ${selectedUrl}
+ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+ *Author:* ${videoInfo.author ? videoInfo.author.name : 'Not available'}
+ *Upload Date:* ${formatUploadDate(videoInfo.videoDetails.uploadDate)}
 `;
 
-      await gss.sendPoll(m.chat, pollMessage, [
-        `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex}.${subOption}`,
-        `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${subOption}`
-      ]);
-      await doReact("✅");
+        await gss.sendPoll(m.chat, pollMessage, [
+          `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex}.${subOption}`,
+          `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${subOption}`
+        ]);
+        await doReact("✅");
+      } catch (error) {
+        console.error('Error during poll creation:', error);
+        return m.reply('Unexpected error occurred during poll creation.');
+      }
     } else {
       return m.reply('Invalid sub-option. Please choose a valid sub-option.');
     }
@@ -2127,7 +2131,6 @@ Choose an option for "${videoInfo.title}":
   }
   break;
 }
-
 
 
 async function streamToBuffer(stream) {
