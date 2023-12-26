@@ -2179,7 +2179,7 @@ case '𝐀𝐮𝐝𝐢𝐨': {
 const title = videoInfo.title || (videoInfo.videoDetails && videoInfo.videoDetails.title) || 'N/A';
 const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A'; 
         // Construct caption with audio details
-        const captionText = `
+        const caption = `
 ╭═════════•∞•══╮
 │⿻ *GSS BOTWA*
 │  *Youtube Mp4 Player* ✨
@@ -2255,6 +2255,7 @@ case '𝐕𝐢𝐝𝐞𝐨': {
 
         // Construct caption with video details
         const title = videoInfo.title || (videoInfo.videoDetails && videoInfo.videoDetails.title) || 'N/A';
+        const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A'; 
 
 const captionText = `
 ╭═════════•∞•══╮
