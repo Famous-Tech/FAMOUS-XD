@@ -2173,7 +2173,6 @@ case '𝐀𝐮𝐝𝐢𝐨': {
         const caption = `
 Title: ${videoInfo.title}
 Duration: ${videoInfo.videoDetails.lengthSeconds}s
-Uploader: ${videoInfo.author.name}
 `;
 
         // Fetch audio stream directly
