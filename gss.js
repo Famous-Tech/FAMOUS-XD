@@ -2123,7 +2123,9 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
 
         await gss.sendPoll(m.chat, pollMessage, [
           `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex}.${subOption}`,
-          `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${subOption}`
+          `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${subOption}`,
+          `.𝐀𝐮𝐝𝐢𝐨𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭 ${optionIndex}.${subOption}`,
+          `.𝐕𝐢𝐝𝐞𝐨𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭 ${optionIndex}.${subOption}`
         ]);
         await doReact("✅");
       } catch (error) {
@@ -2224,6 +2226,83 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
 
 
 
+case '𝐀𝐮𝐝𝐢𝐨𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭': {
+  if (!text) {
+    return m.reply('Please specify the unique key for audio playback. Use the format: audio [unique-key]');
+  }
+
+  const match = text.match(/(\d+)\.(\d+)/);
+
+  if (!match) {
+    return m.reply('Invalid format. Please provide a valid unique key (e.g., 1.1)');
+  }
+
+  const optionIndex = parseInt(match[1]);
+  const subOption = parseInt(match[2]);
+
+  const uniqueKey = `yts_${optionIndex}`;
+
+  if (videoSearchResults.has(uniqueKey)) {
+    const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
+
+    if (selectedUrl) {
+      try {
+        // Fetch video info for additional details
+        const videoInfo = await ytdl.getInfo(selectedUrl);
+
+        // Get the video thumbnail
+        const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
+
+const title = videoInfo.title || (videoInfo.videoDetails && videoInfo.videoDetails.title) || 'N/A';
+const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A'; 
+        // Construct caption with audio details
+        const caption = `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Mp4 Player* ✨
+│⿻ *Title:* ${title}
+│⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
+│⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString() || 'N/A'}
+│⿻ *Upload Date:* ${uploadDate}
+╰══•∞•═════════╯
+`;
+
+        // Fetch audio stream directly
+        const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
+
+        // Convert the stream to buffer for sending
+        const audioBuffer = await streamToBuffer(audioStream);
+
+        // Send the thumbnail as an image along with audio info
+        await gss.sendMessage(m.chat, {
+          image: {
+            url: thumbnailUrl,
+          },
+          caption: caption,
+        }, {
+          quoted: m,
+        });
+
+        // Send the audio as a voice message
+        await gss.sendMessage(m.chat, {
+  document: audioBuffer,
+  mimetype: 'audio/mpeg',
+  fileName: `${title}.mp3`,
+}, { quoted: m });
+      } catch (error) {
+        console.error('Error during audio playback:', error);
+        return m.reply('Unexpected error occurred during audio playback.');
+      }
+    } else {
+      return m.reply('Invalid sub-option. Please choose a valid sub-option.');
+    }
+  } else {
+    return m.reply('Invalid unique key. Please provide a valid unique key.');
+  }
+  break;
+}
+
 
 
 case '𝐕𝐢𝐝𝐞𝐨': {
@@ -2282,6 +2361,73 @@ const captionText = `
           mimetype: 'video/mp4',
           caption: captionText,
         }, { quoted: m });
+      } catch (error) {
+        console.error('Error during video playback:', error);
+        return m.reply('Unexpected error occurred during video playback.');
+      }
+    } else {
+      return m.reply('Invalid sub-option. Please choose a valid sub-option.');
+    }
+  } else {
+    return m.reply('Invalid unique key. Please provide a valid unique key.');
+  }
+  break;
+}
+
+case '𝐕𝐢𝐝𝐞𝐨𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭': {
+  if (!text) {
+    return m.reply('Please specify the unique key for video playback. Use the format: video [unique-key]');
+  }
+
+  const match = text.match(/(\d+)\.(\d+)/);
+
+  if (!match) {
+    return m.reply('Invalid format. Please provide a valid unique key (e.g., 1.1)');
+  }
+
+  const optionIndex = parseInt(match[1]);
+  const subOption = parseInt(match[2]);
+
+  const uniqueKey = `yts_${optionIndex}`;
+
+  if (videoSearchResults.has(uniqueKey)) {
+    const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
+
+    if (selectedUrl) {
+      try {
+        // Fetch video info for additional details
+        const videoInfo = await ytdl.getInfo(selectedUrl);
+
+        // Get the video thumbnail
+        const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
+
+        // Construct caption with video details
+        const title = videoInfo.title || (videoInfo.videoDetails && videoInfo.videoDetails.title) || 'N/A';
+        const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A'; 
+
+const captionText = `
+ *Video In Document* ✨
+ *Title:* ${title}
+ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
+ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString() || 'N/A'}
+*Upload Date:* ${uploadDate}
+`;
+
+
+        // Download audio and video together using 'videoandaudio' filter
+        const videoAndAudioStream = ytdl(selectedUrl, { quality: 'highest', filter: 'audioandvideo' });
+
+        // Convert the stream to buffer
+        const videoAndAudioBuffer = await streamToBuffer(videoAndAudioStream);
+
+        // Send the video and audio as a media message with caption
+        await gss.sendMessage(m.chat, {
+  document: videoAndAudioBuffer,
+  mimetype: 'video/mp4',
+  fileName: `${title}.mp4`,
+  caption: captionText,
+}, { quoted: m });
       } catch (error) {
         console.error('Error during video playback:', error);
         return m.reply('Unexpected error occurred during video playback.');
