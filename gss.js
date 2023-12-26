@@ -1625,6 +1625,7 @@ case 'ytv':
           const finalVideoBuffer = Buffer.concat(videoBuffer);
 
           const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
+          
 
           const captionText = `
 ╭═════════•∞•══╮
@@ -4505,18 +4506,37 @@ ${readmore}┗────────────⊰
 
 
 
-            case 'gcmenu':
+case 'gcmenu':
 case 'grupmenu':
 case 'groupmenu': {
     const randomSymbol = getRandomSymbol();
-    let anu = `✪━ 乂 *group Menu* 乂 ━✪
-│
-${cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `│ ${randomSymbol} ${prefix}`+ v).join('\n')}
-│
-╰──────✪`;
-    gss.sendPoll(m.chat, anu, ['.Owner', '.Ping']);
+    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol} ${prefix}${v}`).join('\n');
+    
+    const introText = `
+╭───〈 *𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨* 〉───◆
+▯╭─────────────···▸
+┴│▸
+${cmdList}
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+`;
+
+    await gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menu.jpg'),
+        caption: introText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, { quoted: m });
 }
 break;
+
+
             case 'downloadmenu': case 'dlmenu': case 'downmenu': {
               const randomSymbol = getRandomSymbol();
                 let anu = `✪━ 乂 *Downloader Menu* 乂 ━✪
