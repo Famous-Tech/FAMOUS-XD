@@ -2542,7 +2542,7 @@ async function downloadAndSendMedia(m, text, isDocument) {
 
         // Send the media using gss.sendMessage with the saved file
         if (isDocument) {
-            await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `application/octet-stream`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/mp4`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else {
             if (media.type === 'image') {
                 await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
