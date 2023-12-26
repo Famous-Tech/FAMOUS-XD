@@ -3934,7 +3934,7 @@ case 'infobot':
 ╰━━🔥─━─◈─━🔥─━╯`;
 
     gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menu.jpg'),
+        image: fs.readFileSync('./menuimage/menu.jpg'),
         caption: tod,
         contextInfo: {
             externalAdReply: {
