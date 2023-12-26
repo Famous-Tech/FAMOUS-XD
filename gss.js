@@ -2244,7 +2244,6 @@ case '𝐕𝐢𝐝𝐞𝐨': {
 │  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${videoInfo.title}
 │⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
-│⿻ *Author:* ${videoInfo.author.name}
 │⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  
 │⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
 ╰══•∞•═════════╯
