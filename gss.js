@@ -1631,11 +1631,10 @@ case 'ytv':
 │⿻ *GSS BOTWA*
 │  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${videoInfo.title}
-│⿻ *Author:* ${videoInfo.videoDetails.author.name}
-│⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
-│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString()}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
-│⿻ *Description:* ${videoInfo.description.slice(0, 200)}... (truncated)
+│⿻ *Duration:* ${videoInfo.duration}
+│⿻ *Author:* ${videoInfo.author.name}
+│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)} 
 ╰══•∞•═════════╯
 `;
 
@@ -2244,8 +2243,11 @@ case '𝐕𝐢𝐝𝐞𝐨': {
 │⿻ *GSS BOTWA*
 │  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${videoInfo.title}
+│⿻ *Author:* ${videoInfo.videoDetails.author.name}
 │⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString()}
 │⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
+│⿻ *Description:* ${videoInfo.description.slice(0, 200)}... (truncated)
 ╰══•∞•═════════╯
 `;
 
