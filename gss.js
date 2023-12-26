@@ -2238,17 +2238,20 @@ case '𝐕𝐢𝐝𝐞𝐨': {
         const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
 
         // Construct caption with video details
-        const captionText = `
+        const title = videoInfo.title || (videoInfo.videoDetails && videoInfo.videoDetails.title) || 'N/A';
+
+const captionText = `
 ╭═════════•∞•══╮
 │⿻ *GSS BOTWA*
 │  *Youtube Mp4 Player* ✨
-│⿻ *Title:* ${videoInfo.title}
-│⿻ *Author:* ${videoInfo.videoDetails.author.name}
+│⿻ *Title:* ${title}
+│⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
 │⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
-│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString()}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
+│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString() || 'N/A'}
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate) || 'N/A'}
 ╰══•∞•═════════╯
 `;
+
 
         // Download audio and video together using 'videoandaudio' filter
         const videoAndAudioStream = ytdl(selectedUrl, { quality: 'highest', filter: 'audioandvideo' });
