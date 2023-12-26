@@ -173,6 +173,15 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
 }
 
 
+async function audioStreamToBuffer(stream) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    stream.on('data', (chunk) => chunks.push(chunk));
+    stream.on('end', () => resolve(Buffer.concat(chunks)));
+    stream.on('error', (error) => reject(error));
+  });
+}
+
 
 function formatBytes(bytes) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
