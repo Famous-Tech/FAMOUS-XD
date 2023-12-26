@@ -2045,38 +2045,27 @@ case 'yts': {
     if (results.videos.length > 0) {
       let pollOptions = [];
 
-      // Use a unique key for each poll session
       const uniqueKey = `yts_${optionIndex}`;
-
-      // Create an object to store URLs for each sub-option
       const urlObject = {};
 
-      // Iterate through the top 5 search results
       for (let i = 0; i < Math.min(5, results.videos.length); i++) {
         const result = results.videos[i];
         const videoUrl = result.url;
         const title = result.title;
 
-        // Save the YouTube URL in the corresponding index of the unique key
         urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
-
-        // Update pollOptions accordingly (use optionIndex and sub-option number)
         pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
       }
 
-      // Save the URL object in the videoSearchResults Map
       if (!videoSearchResults.has(uniqueKey)) {
         videoSearchResults.set(uniqueKey, {});
       }
 
-      // Use Object.assign to update the Map's value
       videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
 
-      // Send the poll with titles as options
       await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
       await doReact("✅");
 
-      // Increment the optionIndex for the next poll session
       optionIndex += 1;
     } else {
       return m.reply('No search results found.');
@@ -2087,8 +2076,6 @@ case 'yts': {
   }
   break;
 }
-
-
 
 case '𝐩𝐥𝐚𝐲': {
   if (!text) {
@@ -2104,23 +2091,17 @@ case '𝐩𝐥𝐚𝐲': {
   const optionIndex = parseInt(match[1]);
   const subOption = parseInt(match[2]);
 
-  // Generate the corresponding unique key
   const uniqueKey = `yts_${optionIndex}`;
 
-
-  // Check if the unique key exists in the videoSearchResults Map
   if (videoSearchResults.has(uniqueKey)) {
-    // Get the URL for the selected sub-option
-    const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}.${i + 1}`];
+    const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
 
     if (selectedUrl) {
-      // Use ytdl-core to get information about the video
       const videoInfo = await ytdl.getInfo(selectedUrl);
 
-      // Send the poll with options for Audio and Video including video information
       await gss.sendPoll(m.chat, `Choose an option for "${videoInfo.title}":`, [
-        `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex}.${i + 1}`,
-        `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${i + 1}`
+        `.𝐀𝐮𝐝𝐢𝐨 ${optionIndex}.${subOption}`,
+        `.𝐕𝐢𝐝𝐞𝐨 ${optionIndex}.${subOption}`
       ]);
       await doReact("✅");
     } else {
@@ -2131,8 +2112,6 @@ case '𝐩𝐥𝐚𝐲': {
   }
   break;
 }
-
-
 
 case '𝐀𝐮𝐝𝐢𝐨': {
   if (!text) {
@@ -2148,30 +2127,18 @@ case '𝐀𝐮𝐝𝐢𝐨': {
   const optionIndex = parseInt(match[1]);
   const subOption = parseInt(match[2]);
 
-  // Generate the corresponding unique key
   const uniqueKey = `yts_${optionIndex}`;
 
-  // Check if the unique key exists in the videoSearchResults Map
   if (videoSearchResults.has(uniqueKey)) {
-    // Get the URL for the selected sub-option
     const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
 
     if (selectedUrl) {
-      // Use ytdl-core to get information about the video
       const videoInfo = await ytdl.getInfo(selectedUrl);
 
-      // Get the video thumbnail
-      const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
-
-      // Send the thumbnail as an image along with audio info
-      await gss.sendImage(m.chat, thumbnailUrl, 'thumbnail.jpg', `Now playing audio for "${uniqueKey}".`, { quoted: m });
-
-      // Use ytdl-core to download audio-only
       const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
       const finalAudioBuffer = await audioStreamToBuffer(audioStream);
 
-      // Send the audio file
-      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
+      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
     } else {
       return m.reply('Invalid sub-option. Please choose a valid sub-option.');
     }
