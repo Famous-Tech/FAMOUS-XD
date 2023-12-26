@@ -737,17 +737,16 @@ during ${clockString(new Date - user.afkTime)}`)
             user.afkReason = ''
         }
         
-        const cmdBug = ["bug","report"]
-        const cmdAi = ["ai","gpt","dalle","bard","remini"]
-        const cmdTool = ["tempmail","checkmail","info","trt","tts"]
-        const cmdGrup = ["linkgroup","setppgc","setname","setdesc","group","editinfo","add","kick","hidetag","tagall","totag","antilink","antiToxic","mute","promote","demote","revoke"]
- const cmdDown = ["facebook","apk","mediafire","gdrive","insta","pinterestdl","ytmp3","ytmp4","gitclone"]
- const cmdSearch = ["play","yts","imdb","google","gimage","pinterest","wallpaper","wikimedia","","ringtone","weather","lyrics"]
-        const cmdFun = ["delttt","tictactoe"]
-   const cmdConv = ["removebg","sticker","emojimix","tovideo","togif","tourl","tovn","tomp3","toaudio","ebinary","dbinary","styletext","fontchange","fancy","upscale","hd"]
-        const cmdMain = ["ping","owner","menu","delete","infochat","quoted","listpc","listgc","listonline"]
-        const cmdOwner = ["react","chat","join","leave","block","unblock","bcgroup","bcall","setppbot","setexif","anticall","setstatus","setnamebot","sleep","autotyping","alwaysonline","autoread"]
-        const allCmd = [...cmdGrup,...cmdDown,...cmdAi,...cmdTool,...cmdBug,...cmdSearch,...cmdFun,...cmdConv,...cmdMain,...cmdOwner]
+        const cmdAi = ["ai", "voiceai", "bug", "report", "gpt", "dalle", "remini"];
+const cmdTool = ["calculator", "tempmail", "checkmail", "info", "trt", "tts"];
+const cmdGrup = ["linkgroup", "setppgc", "setname", "setdesc", "group", "gcsetting", "welcome", "left", "setwelcome", "setleft", "editinfo", "add", "kick", "hidetag", "tagall", "totag", "tagadmin", "antilink", "antiToxic", "mute", "promote", "demote", "revoke", "poll", "getbio", "revoke"];
+const cmdDown = ["apk", "ytvideo", "ytaudio", "getaudio", "getvideo", "facebook", "mediafire", "pinterestdl", "xnxxsearch", "xnxxdownload", "gitclone", "gdrive", "insta", "ytmp3", "ytmp4", "tiktok"];
+const cmdSearch = ["play", "yts", "imdb", "google", "gimage", "pinterest", "wallpaper", "wikimedia", "ytsearch", "ringtone", "weather", "lyrics"];
+const cmdFun = ["delttt", "tictactoe"];
+const cmdConv = ["removebg", "sticker", "emojimix", "tovideo", "togif", "tourl", "tovn", "tomp3", "toaudio", "ebinary", "dbinary", "styletext", "fontchange", "fancy", "upscale", "hd", "attp", "qc"];
+const cmdMain = ["ping", "alive", "owner", "menu", "infochat", "quoted", "listpc", "listgc", "listonline", "infobot", "buypremium"];
+const cmdOwner = ["react", "chat", "join", "leave", "block", "unblock", "bcgroup", "bcall", "setppbot", "setexif", "anticall", "setstatus", "setnamebot", "sleep", "autotyping", "alwaysonline", "autoread"];
+const allCmd = [...cmdGrup, ...cmdDown, ...cmdAi, ...cmdTool, ...cmdSearch, ...cmdFun, ...cmdConv, ...cmdMain, ...cmdOwner];
 	    
         switch(isCommand) {
 	    case 'afk': {
