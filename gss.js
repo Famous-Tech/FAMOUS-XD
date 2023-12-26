@@ -1473,36 +1473,36 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 }
 
         case 'gemini':
-        case 'pro':
-        case 'vision': {
-            if (!quoted) return m.reply(`Where is the picture?`);
-            if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
-            m.reply(mess.wait);
+          {
+    if (!quoted) return m.reply(`Where is the picture?`);
+    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+    m.reply(mess.wait);
 
-            try {
-              const prompt = `${text}`;
-                const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
-                const media = await quoted.download();
+    try {
+        const prompt = `${text}`;
+        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+        const media = await quoted.download();
 
-                const imagePart = {
-                    inlineData: {
-                        data: Buffer.from(media).toString("base64"),
-                        mimeType: mime
-                    },
-                };
+        const imagePart = {
+            inlineData: {
+                data: Buffer.from(media).toString("base64"),
+                mimeType: mime
+            },
+        };
 
-                const result = await model.generateContent([prompt, imagePart]);
-                const response = await result.response;
-                const textt = response.textt();
+        const result = await model.generateContent([prompt, imagePart]);
+        const response = await result.response;
+        const textt = response.text(); // Fix the typo here
 
-                // Send the generated text as the reply
-                m.reply(`${textt}`);
-            } catch (error) {
-                console.error('Error in Gemini Pro Vision:', error);
-                m.reply(`An error occurred: ${error.message}`);
-            }
-            break;
-        }
+        // Send the generated text as the reply
+        m.reply(`${textt}`);
+    } catch (error) {
+        console.error('Error in Gemini Pro Vision:', error);
+        m.reply(`An error occurred: ${error.message}`);
+    }
+    break;
+}
+
 
   
 
