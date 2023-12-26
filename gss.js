@@ -1631,10 +1631,11 @@ case 'ytv':
 │⿻ *GSS BOTWA*
 │  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${videoInfo.title}
-│⿻ *Duration:* ${videoInfo.duration}
-│⿻ *Author:* ${videoInfo.author.name}
-│⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)} 
+│⿻ *Author:* ${videoInfo.videoDetails.author.name}
+│⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString()}
+│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
+│⿻ *Description:* ${videoInfo.description.slice(0, 200)}... (truncated)
 ╰══•∞•═════════╯
 `;
 
