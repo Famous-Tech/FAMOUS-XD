@@ -2167,6 +2167,7 @@ case '𝐀𝐮𝐝𝐢𝐨': {
 
 
 
+
 case '𝐕𝐢𝐝𝐞𝐨': {
   if (!text) {
     return m.reply('Please specify the unique key for video playback. Use the format: video [unique-key]');
@@ -2191,8 +2192,11 @@ case '𝐕𝐢𝐝𝐞𝐨': {
         // Download audio and video together using 'videoandaudio' filter
         const videoAndAudioStream = ytdl(selectedUrl, { quality: 'highest', filter: 'audioandvideo' });
 
+        // Convert the stream to buffer
+        const videoAndAudioBuffer = await streamToBuffer(videoAndAudioStream);
+
         // Send the video and audio as a media message
-        await gss.sendMessage(m.chat, { video: videoAndAudioStream, mimetype: 'video/mp4' });
+        await gss.sendMessage(m.chat, { video: videoAndAudioBuffer, mimetype: 'video/mp4' });
       } catch (error) {
         console.error('Error during video playback:', error);
         return m.reply('Unexpected error occurred during video playback.');
@@ -2205,8 +2209,6 @@ case '𝐕𝐢𝐝𝐞𝐨': {
   }
   break;
 }
-
-
 
 
 case 'fetch':
