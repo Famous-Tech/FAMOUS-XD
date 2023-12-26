@@ -3830,7 +3830,7 @@ function convertToFontStyle(text, style) {
 case 'runtime': case 'alive':
                 let pinga = ` ${uptimeMessage}`
                 gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./alive.jpg'),
+        image: fs.readFileSync('./menuimage/alive.jpg'),
         caption: pinga,
         contextInfo: {
             externalAdReply: {
