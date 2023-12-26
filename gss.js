@@ -36,11 +36,16 @@ const { performance } = require('perf_hooks')
 const { Primbon } = require('scrape-primbon')
 const primbon = new Primbon()
 const osu = require("node-os-utils");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const translate = require('translate-google-api');
   const { cpus, totalmem, freemem } = require("os");
   const {  sizeFormatter } = require("human-readable");
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
+
+
+const apiKey = "AIzaSyAlvaQ_Jv86iNnQlcyHYH0S3XXoqBw0HKs";
+const genAI = new GoogleGenerativeAI(apiKey);
 
 const {
     addPremiumUser,
@@ -1466,6 +1471,38 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
     }
     break;
 }
+
+        case 'gemini':
+        case 'pro':
+        case 'vision': {
+            if (!quoted) return m.reply(`Where is the picture?`);
+            if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+            m.reply(mess.wait);
+
+            try {
+              const prompt = `${text}`;
+                const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+                const media = await quoted.download();
+
+                const imagePart = {
+                    inlineData: {
+                        data: Buffer.from(media).toString("base64"),
+                        mimeType: mime
+                    },
+                };
+
+                const result = await model.generateContent([prompt, imagePart]);
+                const response = await result.response;
+                const textt = response.textt();
+
+                // Send the generated text as the reply
+                m.reply(`${textt}`);
+            } catch (error) {
+                console.error('Error in Gemini Pro Vision:', error);
+                m.reply(`An error occurred: ${error.message}`);
+            }
+            break;
+        }
 
   
 
