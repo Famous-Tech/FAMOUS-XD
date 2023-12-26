@@ -2247,7 +2247,6 @@ case '𝐕𝐢𝐝𝐞𝐨': {
 │⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
 │⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString()}
 │⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
-│⿻ *Description:* ${videoInfo.description ? videoInfo.description.slice(0, 200) + '...' : 'N/A'}
 ╰══•∞•═════════╯
 `;
 
