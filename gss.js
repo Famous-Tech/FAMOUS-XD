@@ -173,15 +173,6 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
 }
 
 
-async function audioStreamToBuffer(stream) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    stream.on('data', (chunk) => chunks.push(chunk));
-    stream.on('end', () => resolve(Buffer.concat(chunks)));
-    stream.on('error', (error) => reject(error));
-  });
-}
-
 
 function formatBytes(bytes) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -2122,6 +2113,7 @@ case '𝐩𝐥𝐚𝐲': {
   break;
 }
 
+
 case '𝐀𝐮𝐝𝐢𝐨': {
   if (!text) {
     return m.reply('Please specify the unique key for audio playback. Use the format: audio [unique-key]');
@@ -2142,12 +2134,9 @@ case '𝐀𝐮𝐝𝐢𝐨': {
     const selectedUrl = videoSearchResults.get(uniqueKey)[`${optionIndex}.${subOption}`];
 
     if (selectedUrl) {
-      const videoInfo = await ytdl.getInfo(selectedUrl);
-
       const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
-      const finalAudioBuffer = await audioStreamToBuffer(audioStream);
 
-      await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' });
+      await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mpeg' });
     } else {
       return m.reply('Invalid sub-option. Please choose a valid sub-option.');
     }
