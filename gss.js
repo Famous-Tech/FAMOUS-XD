@@ -2107,6 +2107,7 @@ case '𝐩𝐥𝐚𝐲': {
   // Generate the corresponding unique key
   const uniqueKey = `yts_${optionIndex}`;
 
+urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
   // Check if the unique key exists in the videoSearchResults Map
   if (videoSearchResults.has(uniqueKey)) {
     // Get the URL for the selected sub-option
