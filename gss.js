@@ -746,7 +746,6 @@ const cmdFun = ["delttt", "tictactoe"];
 const cmdConv = ["removebg", "sticker", "emojimix", "tovideo", "togif", "tourl", "tovn", "tomp3", "toaudio", "ebinary", "dbinary", "styletext", "fontchange", "fancy", "upscale", "hd", "attp", "qc"];
 const cmdMain = ["ping", "alive", "owner", "menu", "infochat", "quoted", "listpc", "listgc", "listonline", "infobot", "buypremium"];
 const cmdOwner = ["react", "chat", "join", "leave", "block", "unblock", "bcgroup", "bcall", "setppbot", "setexif", "anticall", "setstatus", "setnamebot", "sleep", "autotyping", "alwaysonline", "autoread"];
-const allCmd = [...cmdGrup, ...cmdDown, ...cmdAi, ...cmdTool, ...cmdSearch, ...cmdFun, ...cmdConv, ...cmdMain, ...cmdOwner];
 	    
         switch(isCommand) {
 	    case 'afk': {
