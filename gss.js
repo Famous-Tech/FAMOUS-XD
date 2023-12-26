@@ -2265,7 +2265,7 @@ const captionText = `
 │⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
 │⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
 │⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString() || 'N/A'}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate) || 'N/A'}
+│⿻ *Upload Date:* ${uploadDate}
 ╰══•∞•═════════╯
 `;
 
