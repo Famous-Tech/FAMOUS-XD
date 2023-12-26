@@ -4553,7 +4553,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/download.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
@@ -4580,7 +4580,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/searchmenu.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
@@ -4607,7 +4607,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menu/fun.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
@@ -4634,7 +4634,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/menu.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
@@ -4661,7 +4661,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/mainmenu.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
@@ -4688,7 +4688,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/menu.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
@@ -4715,7 +4715,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/aimenu.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
@@ -4744,7 +4744,7 @@ ${cmdList}
 
     await gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/tool.jpg'),
-        caption: pollText,
+        caption: introText,
         contextInfo: {
             externalAdReply: {
                 showAdAttribution: false,
