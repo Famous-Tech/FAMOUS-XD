@@ -2163,11 +2163,34 @@ case '𝐀𝐮𝐝𝐢𝐨': {
 
     if (selectedUrl) {
       try {
+        // Fetch video info for additional details
+        const videoInfo = await ytdl.getInfo(selectedUrl);
+
+        // Get the video thumbnail
+        const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
+
+        // Construct caption with audio details
+        const caption = `
+Title: ${videoInfo.title}
+Duration: ${videoInfo.videoDetails.lengthSeconds}s
+Uploader: ${videoInfo.author.name}
+`;
+
         // Fetch audio stream directly
         const audioStream = ytdl(selectedUrl, { quality: 'highestaudio', filter: 'audioonly' });
 
         // Convert the stream to buffer for sending
         const audioBuffer = await streamToBuffer(audioStream);
+
+        // Send the thumbnail as an image along with audio info
+        await gss.sendMessage(m.chat, {
+          image: {
+            url: thumbnailUrl,
+          },
+          caption: caption,
+        }, {
+          quoted: m,
+        });
 
         // Send the audio as a voice message
         await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mpeg' });
@@ -2183,6 +2206,7 @@ case '𝐀𝐮𝐝𝐢𝐨': {
   }
   break;
 }
+
 
 
 
