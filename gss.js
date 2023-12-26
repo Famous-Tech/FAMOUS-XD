@@ -2106,12 +2106,19 @@ case '𝐩𝐥𝐚𝐲': {
       try {
         const videoInfo = await ytdl.getInfo(selectedUrl);
 
+        const title = videoInfo.title || (videoInfo.videoDetails && videoInfo.videoDetails.title) || 'N/A';
+const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A'; 
+        // Construct caption with audio details
         const pollMessage = `
-Choose an option for "${videoInfo.title}":
- *Link:* ${selectedUrl}
- *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
- *Author:* ${videoInfo.author ? videoInfo.author.name : 'Not available'}
- *Upload Date:* ${formatUploadDate(videoInfo.videoDetails.uploadDate)}
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Mp4 Player* ✨
+│⿻ *Title:* ${title}
+│⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
+│⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString() || 'N/A'}
+│⿻ *Upload Date:* ${uploadDate}
+╰══•∞•═════════╯
 `;
 
         await gss.sendPoll(m.chat, pollMessage, [
@@ -2169,10 +2176,19 @@ case '𝐀𝐮𝐝𝐢𝐨': {
         // Get the video thumbnail
         const thumbnailUrl = videoInfo.videoDetails.thumbnails[0].url;
 
+const title = videoInfo.title || (videoInfo.videoDetails && videoInfo.videoDetails.title) || 'N/A';
+const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A'; 
         // Construct caption with audio details
-        const caption = `
-Title: ${videoInfo.title}
-Duration: ${videoInfo.videoDetails.lengthSeconds}s
+        const captionText = `
+╭═════════•∞•══╮
+│⿻ *GSS BOTWA*
+│  *Youtube Mp4 Player* ✨
+│⿻ *Title:* ${title}
+│⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
+│⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
+│⿻ *Views:* ${videoInfo.videoDetails.viewCount.toLocaleString() || 'N/A'}
+│⿻ *Upload Date:* ${uploadDate}
+╰══•∞•═════════╯
 `;
 
         // Fetch audio stream directly
