@@ -448,7 +448,7 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
-	    if (!('anticall' in setting)) setting.anticall = true
+	    if (!('anticall' in setting)) setting.anticall = false
 		if (!isNumber(setting.status)) setting.status = 0
 if (!('autobio' in setting)) setting.autobio = false
 	    } else global.db.data.settings[botNumber] = {
