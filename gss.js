@@ -1473,7 +1473,6 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 }
 
         case 'gemini':
-          case 'ai':
 {
     if (!text) {
         if (!quoted) return m.reply(`Where is the picture?`);
@@ -1483,7 +1482,7 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 
         try {
             // For vision-based generation
-            const visionPrompt = `${text}`;
+            let visionPrompt = quoted.text || '';
             const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
             const media = await quoted.download();
             const visionImagePart = {
@@ -1492,12 +1491,18 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
                     mimeType: mime
                 },
             };
+
+            // If there is additional text with the quoted image, append it to visionPrompt
+            if (text) {
+                visionPrompt += ` ${text}`;
+            }
+
             const visionResult = await visionModel.generateContent([visionPrompt, visionImagePart]);
             const visionResponse = await visionResult.response;
             const visionGenerated = visionResponse.text();
 
             // Send the vision-generated content as the reply
-            m.reply(`${visionGenerated}`);
+            m.reply(`Vision: ${visionGenerated}`);
         } catch (error) {
             console.error('Error in Gemini Pro Vision:', error);
             m.reply(`An error occurred: ${error.message}`);
@@ -1510,10 +1515,11 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
         const textGenerated = textResponse.text();
 
         // Send the text-generated content as the reply
-        m.reply(` ${textGenerated}`);
+        m.reply(`Text: ${textGenerated}`);
     }
     break;
 }
+
 
 
 
