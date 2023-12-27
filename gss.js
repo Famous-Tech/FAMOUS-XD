@@ -2565,20 +2565,16 @@ case 'next': {
 
   switch (pollOption) {
     
-    const streamToBuffer = async (stream) => {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    stream.on('data', (chunk) => chunks.push(chunk));
-    stream.on('end', () => resolve(Buffer.concat(chunks)));
-    stream.on('error', (error) => reject(error));
-  });
-};
-
     case '𝗔𝗨𝗗𝗜𝗢': {
   try {
     // Audio download with audio only
     const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
-    const audioBuffer = await streamToBuffer(audioStream);
+    const audioBuffer = await new Promise((resolve, reject) => {
+      const chunks = [];
+      audioStream.on('data', (chunk) => chunks.push(chunk));
+      audioStream.on('end', () => resolve(Buffer.concat(chunks)));
+      audioStream.on('error', (error) => reject(error));
+    });
 
     await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mp4', fileName: `${currentResult.title}.mp3` }, { quoted: m });
   } catch (error) {
@@ -2592,7 +2588,12 @@ case '𝗩𝗜𝗗𝗘𝗢': {
   try {
     // Video download with audio and video
     const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
-    const videoBuffer = await streamToBuffer(videoStream);
+    const videoBuffer = await new Promise((resolve, reject) => {
+      const chunks = [];
+      videoStream.on('data', (chunk) => chunks.push(chunk));
+      videoStream.on('end', () => resolve(Buffer.concat(chunks)));
+      videoStream.on('error', (error) => reject(error));
+    });
 
     await gss.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4', caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
   } catch (error) {
@@ -2601,6 +2602,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
   }
   break;
 }
+
 
     case 'next': {
       // Increment the current poll index for the next search result
