@@ -1519,8 +1519,8 @@ m.reply(`
 *🔗 Url:* ${result.link}
 
 *📝 Lyrics:*\n\n ${result.lyrics}
-await doReact("🗨");
 `.trim())
+await doReact("🗨");
 }
 break;
 
