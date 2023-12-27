@@ -2537,7 +2537,7 @@ case 'play': {
     currentPollIndex = 0;
 
     // Add 'audio', 'video', and 'next' options to the poll
-    const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.next'];
+    const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.𝗡𝗘𝗫𝗧'];
 
     gss.sendPoll(
       m.chat,
@@ -2554,7 +2554,7 @@ case 'play': {
 
 case '𝗔𝗨𝗗𝗜𝗢':
 case '𝗩𝗜𝗗𝗘𝗢':
-case 'next': {
+case '𝗡𝗘𝗫𝗧': {
   const pollOption = command.toLowerCase();
 
   if (!videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
@@ -2604,7 +2604,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 }
 
 
-    case 'next': {
+    case '𝗡𝗘𝗫𝗧': {
       // Increment the current poll index for the next search result
       currentPollIndex++;
 
@@ -2613,7 +2613,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
         const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
         // Add 'audio', 'video', and 'next' options to the poll
-        const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.next'];
+        const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.𝗡𝗘𝗫𝗧'];
 
         await gss.sendPoll(
           m.chat,
