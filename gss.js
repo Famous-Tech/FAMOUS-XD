@@ -68,7 +68,7 @@ let PUBLIC_MODE = false; // added
 let ANTICALL_MODE = false; // added
 
 let akinator = global.db.data.game.akinator = []
-
+let currentPollIndex = 0;
 let props;
 const audioSearchResults = new Map();
 let optionIndex = 1;
@@ -2514,7 +2514,9 @@ const captionText = `
 }
 
 
-  case 'play': {
+
+
+case 'play': {
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
   try {
@@ -2524,30 +2526,22 @@ const captionText = `
       return m.reply('No search results found.');
     }
 
-    const resultsArray = searchResults.videos.slice(0, 5).map((result) => {
+    const resultsArray = searchResults.videos.slice(0, 5).map((result, index) => {
       const { url, title, duration, views, author, timestamp } = result;
       const uniqueKey = title.toLowerCase().replace(/\s/g, '_');
-      return { uniqueKey, url, title, duration, views, author, timestamp };
+      videoSearchResults.set(`${m.chat}_${index}`, { uniqueKey, url, title, duration, views, author, timestamp });
+      return { index, title, duration, views, author, timestamp };
     });
 
-    resultsArray.forEach((result, index) => {
-      if (!videoSearchResults.has(`${m.chat}_${index}`)) {
-        videoSearchResults.set(`${m.chat}_${index}`, [result]);
-      } else {
-        const existingResults = videoSearchResults.get(`${m.chat}_${index}`);
-        existingResults.push(result);
-        videoSearchResults.set(`${m.chat}_${index}`, existingResults);
-      }
-    });
-
-    const pollOptions = resultsArray.map((result, index) => `.${index + 1}`);
+    // Reset the current poll index
+    currentPollIndex = 0;
 
     // Add 'audio', 'video', and 'next' options to the poll
-    pollOptions.push('.audio', '.video', '.next');
+    const pollOptions = ['audio', 'video', 'next'];
 
     gss.sendPoll(
       m.chat,
-      `Choose an option:\n\n${resultsArray.map((result, index) => `${index + 1}. "${result.title}":\nDuration: ${result.duration}\n Views: ${result.views}\n Author: ${result.author}\n Upload Date: ${result.timestamp}\n\n[YouTube Link](${result.url})`).join('\n')}`,
+      `Choose an option:\n\n"${resultsArray[currentPollIndex].title}":\nDuration: ${resultsArray[currentPollIndex].duration}\n Views: ${resultsArray[currentPollIndex].views}\n Author: ${resultsArray[currentPollIndex].author}\n Upload Date: ${resultsArray[currentPollIndex].timestamp}`,
       pollOptions
     );
   } catch (error) {
@@ -2563,19 +2557,18 @@ case 'video':
 case 'next': {
   const pollOption = command.toLowerCase();
 
-  if (!videoSearchResults.has(`${m.chat}_0`)) {
+  if (!videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
     return m.reply('No search results found.');
   }
 
-  const currentResults = videoSearchResults.get(`${m.chat}_0`);
-  const selectedResult = currentResults[0];
+  const currentResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
   switch (pollOption) {
     case 'audio': {
       try {
         // Audio download with audio only
-        const audioStream = ytdl(selectedResult.url, { quality: 'highestaudio', filter: 'audioonly' });
-        await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName: `${selectedResult.title}.mp3` }, { quoted: m });
+        const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
+        await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName: `${currentResult.title}.mp3` }, { quoted: m });
       } catch (error) {
         console.error(`Error during audio download:`, error);
         m.reply('Unexpected error occurred.');
@@ -2586,8 +2579,8 @@ case 'next': {
     case 'video': {
       try {
         // Video download with audio and video
-        const videoStream = ytdl(selectedResult.url, { quality: 'highest', filter: 'audioandvideo' });
-        await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: `Downloading video: ${selectedResult.title}` }, { quoted: m });
+        const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
+        await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
       } catch (error) {
         console.error(`Error during video download:`, error);
         m.reply('Unexpected error occurred.');
@@ -2596,21 +2589,19 @@ case 'next': {
     }
 
     case 'next': {
-      // Handle the 'next' option to show the next set of search results
-      const nextResults = videoSearchResults.get(`${m.chat}_1`);
+      // Increment the current poll index for the next search result
+      currentPollIndex++;
 
-      if (nextResults) {
-        videoSearchResults.set(`${m.chat}_0`, nextResults);
-        videoSearchResults.delete(`${m.chat}_1`);
-
-        const pollOptions = nextResults.map((result, index) => `.${index + 1}`);
+      // Check if there are more search results
+      if (videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
+        const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
         // Add 'audio', 'video', and 'next' options to the poll
-        pollOptions.push('.audio', '.video', '.next');
+        const pollOptions = ['audio', 'video', 'next'];
 
         await gss.sendPoll(
           m.chat,
-          `Choose an option:\n\n${nextResults.map((result, index) => `${index + 1}. "${result.title}":\nDuration: ${result.duration}\n Views: ${result.views}\n Author: ${result.author}\n Upload Date: ${result.timestamp}\n\n[YouTube Link](${result.url})`).join('\n')}`,
+          `Choose an option:\n\n"${nextResult.title}":\nDuration: ${nextResult.duration}\n Views: ${nextResult.views}\n Author: ${nextResult.author}\n Upload Date: ${nextResult.timestamp}`,
           pollOptions
         );
       } else {
@@ -2627,6 +2618,7 @@ case 'next': {
 
   break;
 }
+
 
 
 
