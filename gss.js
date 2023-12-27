@@ -1471,7 +1471,6 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
         case 'gemini':
 case 'vision': {
     if (!quoted) return m.reply(`Where is the picture?`);
-    await doReact("❌");
     if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
     
     m.reply(mess.wait);
