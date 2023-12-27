@@ -1472,15 +1472,15 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
     break;
 }
 
-        case 'gemini': {
+        case 'gemini': case 'ai':
+{
     if (!text) {
-        return m.reply(`Where is the picture?`);
-    }
+        if (!quoted) return m.reply(`Where is the picture?`);
+        if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
 
-    m.reply(mess.wait);
+        m.reply(mess.wait);
 
-    try {
-        if (quoted && quoted.type === 'image') {
+        try {
             // For vision-based generation
             const visionPrompt = `${text}`;
             const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
@@ -1496,25 +1496,24 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
             const visionGenerated = visionResponse.text();
 
             // Send the vision-generated content as the reply
-            m.reply(`Vision: ${visionGenerated}`);
-        } else {
-            // For text-based generation
-            const textPrompt = `${text}`;
-            const textModel = genAI.getGenerativeModel({ model: "gemini-pro" });
-            const textResult = await textModel.generateContent([textPrompt]);
-            const textResponse = await textResult.response;
-            const textGenerated = textResponse.text();
-
-            // Send the text-generated content as the reply
-            m.reply(`Text: ${textGenerated}`);
+            m.reply(`${visionGenerated}`);
+        } catch (error) {
+            console.error('Error in Gemini Pro Vision:', error);
+            m.reply(`An error occurred: ${error.message}`);
         }
-    } catch (error) {
-        console.error('Error in Gemini Pro:', error);
-        m.reply(`An error occurred: ${error.message}`);
-    }
+    } else {
+        const textPrompt = `${text}`;
+        const textModel = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const textResult = await textModel.generateContent([textPrompt]);
+        const textResponse = await textResult.response;
+        const textGenerated = textResponse.text();
 
+        // Send the text-generated content as the reply
+        m.reply(`${textGenerated}`);
+    }
     break;
 }
+
 
 
 
