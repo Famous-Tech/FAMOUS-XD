@@ -2639,7 +2639,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 
 
 
-case 'yts': {
+case 'yts1': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
