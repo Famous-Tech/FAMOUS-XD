@@ -2639,7 +2639,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 
 
 
-case 'yts1': {
+case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
@@ -2656,11 +2656,14 @@ case 'yts1': {
         const result = results.videos[i];
         const { title } = result;
 
-        // Save title and url in ytsSearchResults map
-        ytsSearchResults.set(title, { url: result.url });
+        // Create a unique key using the title
+        const uniqueKey = title.toLowerCase().replace(/\s/g, '_');
 
-        // Add .play command with title and index to poll options
-        pollOptions.push(`.play ${ytsOptionIndex}.${i + 1} ${title}`);
+        // Save title and url in ytsSearchResults map
+        ytsSearchResults.set(uniqueKey, { url: result.url });
+
+        // Add .play command with unique key to poll options
+        pollOptions.push(`.play ${uniqueKey} ${title}`);
       }
 
       await gss.sendPoll(m.chat, 'Choose which video you want to download:', [...pollOptions]);
@@ -2676,6 +2679,7 @@ case 'yts1': {
 
   break;
 }
+
 
 
 
