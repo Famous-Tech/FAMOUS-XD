@@ -1516,7 +1516,23 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 
 
 
+case 'lyrics': {
+  
+    m.reply(mess.wait);
+    
+if (!text) return m.reply(`Comand usage: ${prefix}lyrics Thunder`)
+const { lyrics, lyricsv2 } = require('@bochilteam/scraper')
+const result = await lyricsv2(text).catch(async _ => await lyrics(text))
+m.reply(`
+*Title:* ${result.title}
+*Author:* ${result.author}
+*Url:* ${result.link}
 
+*Lyrics:* ${result.lyrics}
+
+`.trim())
+}
+break;
 
 
 case 'ebinary': {
