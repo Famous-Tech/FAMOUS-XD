@@ -1471,8 +1471,9 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
         case 'gemini':
 case 'vision': {
     if (!quoted) return m.reply(`Where is the picture?`);
-    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
     await doReact("❌");
+    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+    
     m.reply(mess.wait);
 
     try {
@@ -1496,6 +1497,7 @@ case 'vision': {
     } catch (error) {
         console.error('Error in Gemini Pro Vision:', error);
         m.reply(`An error occurred: ${error.message}`);
+        await doReact("❌");
     }
     break;
 }
@@ -1504,9 +1506,10 @@ case 'vision': {
 
 
 case 'lyrics': {
-    await doReact("🔎");
 if (!text) return m.reply(`Comand usage: ${prefix}lyrics Thunder`)
+await doReact("❌");
 m.reply(mess.wait);
+await doReact("🔎");
 const { lyrics, lyricsv2 } = require('@bochilteam/scraper')
 const result = await lyricsv2(text).catch(async _ => await lyrics(text))
 m.reply(`
