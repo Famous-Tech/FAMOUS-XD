@@ -1569,7 +1569,7 @@ case 'whatmusic': case 'find': case 'shazame':
     break;
 
 
-case 'someCommand':
+case 'fetch': case 'get':
     if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
     const _url = new URL(text);
     const url = `${_url.origin}${_url.pathname}?${_url.searchParams.toString()}`;
