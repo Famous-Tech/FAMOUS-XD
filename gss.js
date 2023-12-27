@@ -33,6 +33,7 @@ const streamPipeline = promisify(pipeline);
 const imageSize = require('image-size');
 const { PDFDocument, rgb } = require('pdf-lib');
 const speed = require('performance-now')
+const acrcloud = require ('acrcloud');
 const { performance } = require('perf_hooks')
 const { Primbon } = require('scrape-primbon')
 const primbon = new Primbon()
@@ -45,6 +46,12 @@ const translate = require('translate-google-api');
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 
+
+const acr = new acrcloud({
+    host: 'identify-eu-west-1.acrcloud.com',
+    access_key: 'c33c767d683f78bd17d4bd4991955d81',
+    access_secret: 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
+});
 const apiKey = "AIzaSyAlvaQ_Jv86iNnQlcyHYH0S3XXoqBw0HKs";
 const genAI = new GoogleGenerativeAI(apiKey);
 
@@ -1521,6 +1528,44 @@ m.reply(`
 await doReact("🗨");
 }
 break;
+
+
+
+case 'whatmusic':
+    m.reply('You asked about music. Please provide an audio or video file for identification.');
+
+    if (/audio|video/.test(mime)) {
+        try {
+            let media = await q.download();
+            const ext = mime.split('/')[1];
+            fs.writeFileSync(`./tmp/${m.sender}.${ext}`, media);
+
+            const res = await acr.identify(fs.readFileSync(`./tmp/${m.sender}.${ext}`));
+            const { code, msg } = res.status;
+
+            if (code !== 0) {
+                throw msg;
+            }
+
+            const { title, artists, album, genres, release_date } = res.metadata.music[0];
+            const txt = `
+                𝚁𝙴𝚂𝚄𝙻𝚃
+                • 📌 *TITLE*: ${title}
+                • 👨‍🎤 𝙰𝚁𝚃𝙸𝚂𝚃: ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
+                • 💾 𝙰𝙻𝙱𝚄𝙼: ${album.name || 'NOT FOUND'}
+                • 🌐 𝙶𝙴𝙽𝙴𝚁: ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
+                • 📆 RELEASE DATE: ${release_date || 'NOT FOUND'}
+            `.trim();
+
+            fs.unlinkSync(`./tmp/${m.sender}.${ext}`);
+            m.reply(txt);
+        } catch (error) {
+            console.error(error);
+            m.reply('An error occurred during music identification.');
+        }
+    }
+    break;
+
 
 
 case 'ebinary': {
