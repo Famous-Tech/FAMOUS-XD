@@ -1470,9 +1470,7 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 
         case 'gemini':
 case 'vision': {
-  await doReact("🔎");
     if (!quoted) return m.reply(`Where is the picture?`);
-    await doReact("❌");
     if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
     await doReact("❌");
     m.reply(mess.wait);
@@ -1495,7 +1493,6 @@ case 'vision': {
 
         // Send the generated text as the reply
         m.reply(`${textt}`);
-        await doReact("🗨");
     } catch (error) {
         console.error('Error in Gemini Pro Vision:', error);
         m.reply(`An error occurred: ${error.message}`);
