@@ -2539,7 +2539,7 @@ case 'play': {
     currentPollIndex = 0;
 
     // Add 'audio', 'video', and 'next' options to the poll
-    const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.𝗡𝗘𝗫𝗧'];
+    const pollOptions = ['𝗔𝗨𝗗𝗜𝗢', '𝗩𝗜𝗗𝗘𝗢', '𝗡𝗘𝗫𝗧'];
 
     gss.sendPoll(
       m.chat,
@@ -2565,7 +2565,7 @@ case '𝗡𝗘𝗫𝗧': {
 
   const currentResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
-  switch (pollOption) {
+  switch (isCmd) {
     
     case '𝗔𝗨𝗗𝗜𝗢': {
   try {
@@ -2615,7 +2615,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
         const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
         // Add 'audio', 'video', and 'next' options to the poll
-        const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.𝗡𝗘𝗫𝗧'];
+        const pollOptions = ['𝗔𝗨𝗗𝗜𝗢', '𝗩𝗜𝗗𝗘𝗢', '𝗡𝗘𝗫𝗧'];
 
         await gss.sendPoll(
           m.chat,
@@ -2636,53 +2636,6 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 
   break;
 }
-
-
-
-case 'yts1': {
-  if (!text) {
-    return m.reply('Enter YouTube Video Link or Search Query!');
-  }
-
-  await doReact("🕘");
-
-  try {
-    const results = await yts(text);
-
-    if (results.videos.length > 0) {
-      const pollOptions = [];
-
-      for (let i = 0; i < Math.min(5, results.videos.length); i++) {
-        const result = results.videos[i];
-        const { title } = result;
-
-        // Create a unique key using the title
-        const uniqueKey = title.toLowerCase().replace(/\s/g, '_');
-
-        // Save title and url in ytsSearchResults map
-        ytsSearchResults.set(uniqueKey, { url: result.url });
-
-        // Add .play command with unique key to poll options
-        pollOptions.push(`.play ${uniqueKey} ${title}`);
-      }
-
-      await gss.sendPoll(m.chat, 'Choose which video you want to download:', [...pollOptions]);
-      ytsOptionIndex += 1;
-      await doReact("✅");
-    } else {
-      return m.reply('No search results found.');
-    }
-  } catch (error) {
-    console.error('Error during yts:', error);
-    return m.reply('Unexpected error occurred.');
-  }
-
-  break;
-}
-
-
-
-
 
 
 
