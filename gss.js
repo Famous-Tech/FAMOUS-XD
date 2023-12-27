@@ -2514,6 +2514,107 @@ const captionText = `
 }
 
 
+  case 'play': {
+  if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
+
+  try {
+    const searchResults = await yts(text);
+
+    if (!searchResults.videos || searchResults.videos.length === 0) {
+      return m.reply('No search results found.');
+    }
+
+    const resultsArray = searchResults.videos.map((result) => {
+      const { url, title, duration, views, uploadDate } = result;
+      const uniqueKey = title.toLowerCase().replace(/\s/g, '_');
+      return { uniqueKey, url, title, duration, views, uploadDate };
+    });
+
+    resultsArray.forEach((result) => {
+      if (!videoSearchResults.has(result.uniqueKey)) {
+        videoSearchResults.set(result.uniqueKey, [result]);
+      } else {
+        const existingResults = videoSearchResults.get(result.uniqueKey);
+        existingResults.push(result);
+        videoSearchResults.set(result.uniqueKey, existingResults);
+      }
+    });
+
+    const pollOptions = resultsArray.map((result, index) => `.${index + 1}`);
+
+    // Add '𝗩𝗜𝗗𝗘𝗢' and '𝗔𝗨𝗗𝗜𝗢' options to the poll
+    pollOptions.push('𝗩𝗜𝗗𝗘𝗢', '𝗔𝗨𝗗𝗜𝗢');
+
+    gss.sendPoll(
+      m.chat,
+      `Choose an option:\n\n${resultsArray.map((result, index) => `${index + 1}. "${result.title}":\nDuration: ${result.duration}\n Views: ${result.views}\n Upload Date: ${result.uploadDate}\n\n[YouTube Link](${result.url})`).join('\n')}`,
+      pollOptions
+    );
+  } catch (error) {
+    console.error('Error during play:', error);
+    m.reply('Unexpected error occurred.');
+  }
+
+  break;
+}
+
+case '𝗩𝗜𝗗𝗘𝗢': {
+  const searchResults = videoSearchResults.get(m.chat);
+
+  if (!searchResults || searchResults.length === 0) {
+    return m.reply('No search results found.');
+  }
+
+  const optionIndex = parseInt(command.substr(-1)) - 1; // Extract the option index from the command
+
+  if (!isNaN(optionIndex) && optionIndex >= 0 && optionIndex < searchResults.length) {
+    const selectedResult = searchResults[optionIndex];
+    const { url, title } = selectedResult;
+
+    try {
+      // Video download with audio and video
+      const videoStream = ytdl(url, { quality: 'highest', filter: 'audioandvideo' });
+      await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: `Downloading video: ${title}` }, { quoted: m });
+    } catch (error) {
+      console.error(`Error during 𝗩𝗜𝗗𝗘𝗢:`, error);
+      m.reply('Unexpected error occurred.');
+    }
+  } else {
+    return m.reply('Invalid option index.');
+  }
+
+  break;
+}
+
+case '𝗔𝗨𝗗𝗜𝗢': {
+  const searchResults = videoSearchResults.get(m.chat);
+
+  if (!searchResults || searchResults.length === 0) {
+    return m.reply('No search results found.');
+  }
+
+  const optionIndex = parseInt(command.substr(-1)) - 1; // Extract the option index from the command
+
+  if (!isNaN(optionIndex) && optionIndex >= 0 && optionIndex < searchResults.length) {
+    const selectedResult = searchResults[optionIndex];
+    const { url, title } = selectedResult;
+
+    try {
+      // Audio download with audio only
+      const audioStream = ytdl(url, { quality: 'highestaudio', filter: 'audioonly' });
+      await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName: `${title}.mp3` }, { quoted: m });
+    } catch (error) {
+      console.error(`Error during 𝗔𝗨𝗗𝗜𝗢:`, error);
+      m.reply('Unexpected error occurred.');
+    }
+  } else {
+    return m.reply('Invalid option index.');
+  }
+
+  break;
+}
+
+
 
 case 'fetch':
   try {
