@@ -1536,7 +1536,7 @@ case 'whatmusic':
 
     if (/audio|video/.test(mime)) {
         try {
-            let media = await q.download();
+            let media = await quoted.download();
             const ext = mime.split('/')[1];
             fs.writeFileSync(`./tmp/${m.sender}.${ext}`, media);
 
