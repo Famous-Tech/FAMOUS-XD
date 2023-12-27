@@ -69,6 +69,8 @@ let ANTICALL_MODE = false; // added
 
 let akinator = global.db.data.game.akinator = []
 let currentPollIndex = 0;
+let ytsOptionIndex = 1;
+const ytsSearchResults = new Map();
 let props;
 const audioSearchResults = new Map();
 let optionIndex = 1;
@@ -2630,6 +2632,50 @@ case '𝗩𝗜𝗗𝗘𝗢': {
     default:
       m.reply('Invalid option.');
       break;
+  }
+
+  break;
+}
+
+
+
+
+// 'yts' command
+case 'yts1': {
+  if (!text) {
+    return m.reply('Enter YouTube Video Link or Search Query!');
+  }
+
+  await doReact("🕘");
+
+  try {
+    const results = await yts(text);
+
+    if (results.videos.length > 0) {
+      // Create a poll with both .play option and titles of top 5 search results
+      const pollOptions = ['.play'];
+      const titlesPollOptions = [];
+
+      for (let i = 0; i < Math.min(5, results.videos.length); i++) {
+        const result = results.videos[i];
+        const { title } = result;
+
+        // Save title and url in ytsSearchResults map
+        ytsSearchResults.set(`.play ${ytsOptionIndex}.${i + 1}`, { title, url: result.url });
+
+        pollOptions.push(`.play ${ytsOptionIndex}.${i + 1}`);
+        titlesPollOptions.push(title);
+      }
+
+      await gss.sendPoll(m.chat, 'Choose a video to play:', [...pollOptions, ...titlesPollOptions.map(title => `.play ${ytsOptionIndex}.${titlesPollOptions.indexOf(title) + 1}`)]);
+      ytsOptionIndex += 1;
+      await doReact("✅");
+    } else {
+      return m.reply('No search results found.');
+    }
+  } catch (error) {
+    console.error('Error during yts:', error);
+    return m.reply('Unexpected error occurred.');
   }
 
   break;
