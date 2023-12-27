@@ -48,14 +48,7 @@ const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, 
 const apiKey = "AIzaSyAlvaQ_Jv86iNnQlcyHYH0S3XXoqBw0HKs";
 const genAI = new GoogleGenerativeAI(apiKey);
 
-const {
-    addPremiumUser,
-    getPremiumExpired,
-    getPremiumPosition,
-    expiredPremiumCheck,
-    checkPremiumUser,
-    getAllPremiumUser,
-} = require('./lib/premiun');
+const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
 
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
@@ -1475,52 +1468,45 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
     break;
 }
 
-        case 'gemini': case 'ai':
-{
-    if (!text) {
-        if (!quoted) return m.reply(`Where is the picture?`);
-        if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+        case 'gemini':
+case 'vision': {
+  await doReact("🔎");
+    if (!quoted) return m.reply(`Where is the picture?`);
+    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+    m.reply(mess.wait);
 
-        m.reply(mess.wait);
+    try {
+        const prompt = `${text}`;
+        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+        const media = await quoted.download();
 
-        try {
-            // For vision-based generation
-            const visionPrompt = `${text}`;
-            const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
-            const media = await quoted.download();
-            const visionImagePart = {
-                inlineData: {
-                    data: Buffer.from(media).toString("base64"),
-                    mimeType: mime
-                },
-            };
-            const visionResult = await visionModel.generateContent([visionPrompt, visionImagePart]);
-            const visionResponse = await visionResult.response;
-            const visionGenerated = visionResponse.text();
+        const imagePart = {
+            inlineData: {
+                data: Buffer.from(media).toString("base64"),
+                mimeType: mime
+            },
+        };
 
-            // Send the vision-generated content as the reply
-            m.reply(`${visionGenerated}`);
-        } catch (error) {
-            console.error('Error in Gemini Pro Vision:', error);
-            m.reply(`An error occurred: ${error.message}`);
-        }
-    } else {
-        const textPrompt = `${text}`;
-        const textModel = genAI.getGenerativeModel({ model: "gemini-pro" });
-        const textResult = await textModel.generateContent([textPrompt]);
-        const textResponse = await textResult.response;
-        const textGenerated = textResponse.text();
+        const result = await model.generateContent([prompt, imagePart]);
+        const response = await result.response;
+        const textt = response.text(); // Fix the typo here
 
-        // Send the text-generated content as the reply
-        m.reply(`${textGenerated}`);
+        // Send the generated text as the reply
+        m.reply(`${textt}`);
+        await doReact("🗨");
+    } catch (error) {
+        console.error('Error in Gemini Pro Vision:', error);
+        m.reply(`An error occurred: ${error.message}`);
+        await doReact("❌");
     }
     break;
 }
 
 
 
+
 case 'lyrics': {
-    
+    await doReact("🔎");
 if (!text) return m.reply(`Comand usage: ${prefix}lyrics Thunder`)
 m.reply(mess.wait);
 const { lyrics, lyricsv2 } = require('@bochilteam/scraper')
@@ -1531,7 +1517,7 @@ m.reply(`
 *🔗 Url:* ${result.link}
 
 *📝 Lyrics:*\n\n ${result.lyrics}
-
+await doReact("🗨");
 `.trim())
 }
 break;
@@ -4365,7 +4351,7 @@ case 'readmore':
     let [l, r] = text.split('|');
     if (!l) l = '';
     if (!r) r = '';
-    m.reply(m.from, l + readMore + r);
+    m.reply(m.chat, l + readMore + r);
     break;
 
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
