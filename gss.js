@@ -1473,35 +1473,48 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 }
 
         case 'gemini':
-          {
-    if (!quoted) return m.reply(`Where is the picture?`);
-    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
-    m.reply(mess.wait);
+          case 'ai':
+{
+    if (!text) {
+        if (!quoted) return m.reply(`Where is the picture?`);
+        if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
 
-    try {
-        const prompt = `${text}`;
-        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
-        const media = await quoted.download();
+        m.reply(mess.wait);
 
-        const imagePart = {
-            inlineData: {
-                data: Buffer.from(media).toString("base64"),
-                mimeType: mime
-            },
-        };
+        try {
+            // For vision-based generation
+            const visionPrompt = `${text}`;
+            const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+            const media = await quoted.download();
+            const visionImagePart = {
+                inlineData: {
+                    data: Buffer.from(media).toString("base64"),
+                    mimeType: mime
+                },
+            };
+            const visionResult = await visionModel.generateContent([visionPrompt, visionImagePart]);
+            const visionResponse = await visionResult.response;
+            const visionGenerated = visionResponse.text();
 
-        const result = await model.generateContent([prompt, imagePart]);
-        const response = await result.response;
-        const textt = response.text(); // Fix the typo here
+            // Send the vision-generated content as the reply
+            m.reply(`${visionGenerated}`);
+        } catch (error) {
+            console.error('Error in Gemini Pro Vision:', error);
+            m.reply(`An error occurred: ${error.message}`);
+        }
+    } else {
+        const textPrompt = `${text}`;
+        const textModel = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const textResult = await textModel.generateContent([textPrompt]);
+        const textResponse = await textResult.response;
+        const textGenerated = textResponse.text();
 
-        // Send the generated text as the reply
-        m.reply(`${textt}`);
-    } catch (error) {
-        console.error('Error in Gemini Pro Vision:', error);
-        m.reply(`An error occurred: ${error.message}`);
+        // Send the text-generated content as the reply
+        m.reply(` ${textGenerated}`);
     }
     break;
 }
+
 
 
 
