@@ -1496,7 +1496,6 @@ case 'vision': {
     } catch (error) {
         console.error('Error in Gemini Pro Vision:', error);
         m.reply(`An error occurred: ${error.message}`);
-        await doReact("❌");
     }
     break;
 }
