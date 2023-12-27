@@ -4,6 +4,7 @@ const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
+const readMore = more.repeat(4001);
 const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser,getAggregateVotesInPollMessage, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
