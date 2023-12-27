@@ -1539,6 +1539,8 @@ case 'whatmusic': case 'find': case 'shazame':
             let media = await m.quoted.download();
             const ext = mime.split('/')[1];
             fs.writeFileSync(`./tmp/${m.sender}.${ext}`, media);
+            
+            m.reply(mess.wait);
 
             const res = await acr.identify(fs.readFileSync(`./tmp/${m.sender}.${ext}`));
             const { code, msg } = res.status;
