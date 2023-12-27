@@ -1581,7 +1581,7 @@ case 'fetch': case 'get':
     }
 
     if (!/text|json/.test(res.headers.get('content-type'))) {
-        return gss.sendFile(m.chat, url, 'file', text, m);
+        return gss.sendMedia(m.chat, url, 'file', text, m);
     }
 
     let content = await res.buffer();
