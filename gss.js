@@ -1473,17 +1473,15 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 }
 
         case 'gemini':
-          case 'ai':
 {
     if (!text) {
         if (!quoted) return m.reply(`Where is the picture?`);
         if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
-
+        
         m.reply(mess.wait);
-
+        
         try {
-            // For vision-based generation
-            const visionPrompt = `${text}`;
+            const visionPrompt = quoted.text;
             const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
             const media = await quoted.download();
             const visionImagePart = {
@@ -1510,10 +1508,11 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
         const textGenerated = textResponse.text();
 
         // Send the text-generated content as the reply
-        m.reply(` ${textGenerated}`);
+        m.reply(`${textGenerated}`);
     }
     break;
 }
+
 
 
 
