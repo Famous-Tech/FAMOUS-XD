@@ -1569,15 +1569,15 @@ case 'whatmusic': case 'find': case 'shazame':
     break;
 
 
-case 'fetch1':
-    if (!/^https?:\/\//.test(text)) throw 'Awali *URL* dengan http:// atau https://';
+case 'someCommand':
+    if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
     const _url = new URL(text);
-    const url = global.API(_url.origin, _url.pathname, Object.fromEntries(_url.searchParams.entries()), 'APIKEY');
+    const url = `${_url.origin}${_url.pathname}?${_url.searchParams.toString()}`;
     const res = await fetch(url);
-    
+
     if (res.headers.get('content-length') > 100 * 1024 * 1024 * 1024) {
         // delete res
-        throw `Content-Length: ${res.headers.get('content-length')}`;
+        throw `Content-Length exceeds the limit: ${res.headers.get('content-length')}`;
     }
 
     if (!/text|json/.test(res.headers.get('content-type'))) {
