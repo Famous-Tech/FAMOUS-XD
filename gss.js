@@ -2086,7 +2086,7 @@ case 'ytmp3doc':
 
 
 
-case 'yts': {
+case 'yts': case 'ytsearch': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
