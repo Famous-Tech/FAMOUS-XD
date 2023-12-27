@@ -1584,16 +1584,17 @@ case 'fetch1':
         return gss.sendFile(m.chat, url, 'file', text, m);
     }
 
-    let txt = await res.buffer();
+    let content = await res.buffer();
 
     try {
-        txt = format(JSON.parse(txt + ''));
+        content = format(JSON.parse(content + ''));
     } catch (e) {
-        txt = txt + '';
+        content = content + '';
     } finally {
-        m.reply(txt.slice(0, 65536) + '');
+        m.reply(content.slice(0, 65536) + '');
     }
     break;
+
 
 
 
