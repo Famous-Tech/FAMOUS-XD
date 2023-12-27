@@ -2651,7 +2651,6 @@ case 'yts1': {
 
     if (results.videos.length > 0) {
       const pollOptions = [];
-      const titlesPollOptions = [];
 
       for (let i = 0; i < Math.min(5, results.videos.length); i++) {
         const result = results.videos[i];
@@ -2660,13 +2659,11 @@ case 'yts1': {
         // Save title and url in ytsSearchResults map
         ytsSearchResults.set(title, { url: result.url });
 
-        titlesPollOptions.push(`.playy ${ytsOptionIndex}.${i + 1} ${title}`);
+        // Add .play command with title and index to poll options
+        pollOptions.push(`.play ${ytsOptionIndex}.${i + 1} ${title}`);
       }
 
-      pollOptions.push('Choose which video you want to download:');
-      pollOptions.push(...titlesPollOptions);
-
-      await gss.sendPoll(m.chat, pollOptions.join('\n'));
+      await gss.sendPoll(m.chat, 'Choose which video you want to download:', [...pollOptions]);
       ytsOptionIndex += 1;
       await doReact("✅");
     } else {
@@ -2679,6 +2676,7 @@ case 'yts1': {
 
   break;
 }
+
 
 
 
