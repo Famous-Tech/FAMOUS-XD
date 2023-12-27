@@ -4365,7 +4365,7 @@ case 'readmore':
     let [l, r] = text.split('|');
     if (!l) l = '';
     if (!r) r = '';
-    m.reply(m.chat, l + readMore + r);
+    m.reply(m.from, l + readMore + r);
     break;
 
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
