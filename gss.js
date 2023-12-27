@@ -2639,7 +2639,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 
 
 
-case 'yts1': {
+case 'yts': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
@@ -2650,8 +2650,7 @@ case 'yts1': {
     const results = await yts(text);
 
     if (results.videos.length > 0) {
-      // Create a poll with both .play option and titles of top 5 search results
-      const pollOptions = ['.playy'];
+      const pollOptions = [];
       const titlesPollOptions = [];
 
       for (let i = 0; i < Math.min(5, results.videos.length); i++) {
@@ -2661,11 +2660,13 @@ case 'yts1': {
         // Save title and url in ytsSearchResults map
         ytsSearchResults.set(title, { url: result.url });
 
-        pollOptions.push(`.play ${ytsOptionIndex}.${i + 1}`);
-        titlesPollOptions.push(title);
+        titlesPollOptions.push(`.playy ${ytsOptionIndex}.${i + 1} ${title}`);
       }
 
-      await gss.sendPoll(m.chat, `Choose a video to play:\n${titlesPollOptions.join('\n')}`, pollOptions);
+      pollOptions.push('Choose which video you want to download:');
+      pollOptions.push(...titlesPollOptions);
+
+      await gss.sendPoll(m.chat, pollOptions.join('\n'));
       ytsOptionIndex += 1;
       await doReact("✅");
     } else {
@@ -2678,6 +2679,7 @@ case 'yts1': {
 
   break;
 }
+
 
 
 
