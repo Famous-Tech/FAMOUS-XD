@@ -2574,7 +2574,7 @@ case 'next': {
   });
 };
 
-    case 'audio': {
+    case '𝗔𝗨𝗗𝗜𝗢': {
   try {
     // Audio download with audio only
     const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
@@ -2588,7 +2588,7 @@ case 'next': {
   break;
 }
 
-case 'video': {
+case '𝗩𝗜𝗗𝗘𝗢': {
   try {
     // Video download with audio and video
     const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
