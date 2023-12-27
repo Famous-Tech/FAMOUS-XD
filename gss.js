@@ -1549,11 +1549,11 @@ case 'whatmusic': case 'find': case 'shazame':
 
             const { title, artists, album, genres, release_date } = res.metadata.music[0];
             const txt = `
-                𝚁𝙴𝚂𝚄𝙻𝚃
+                        𝚁𝙴𝚂𝚄𝙻𝚃
                 • 📌 *TITLE*: ${title}
                 • 👨‍🎤 𝙰𝚁𝚀𝚃𝙸𝚂𝚃: ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
                 • 💾 𝙰𝙻𝙱𝚄𝙼: ${album.name || 'NOT FOUND'}
-                • 🌐 𝙶𝙴𝙽𝙴𝚁: ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
+                • 🌐 𝙶𝙴𝙽𝙴𝚁𝙾: ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
                 • 📆 RELEASE DATE: ${release_date || 'NOT FOUND'}
             `.trim();
 
