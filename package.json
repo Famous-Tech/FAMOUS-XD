@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
+    "@bochilteam/scraper": "^4.2.4",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@google/generative-ai": "^0.1.3",
     "@hapi/boom": "^10.0.1",
