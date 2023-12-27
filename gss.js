@@ -1531,12 +1531,12 @@ break;
 
 
 
-case 'whatmusic':
-    m.reply('You asked about music. Please provide an audio or video file for identification.');
-
-    if (/audio|video/.test(mime)) {
+case 'whatmusic': case 'find': case 'shazame':
+    if (!m.quoted) {
+        m.reply('You asked about music. Please provide a quoted audio or video message for identification.');
+    } else if (/audio|video/.test(mime)) {
         try {
-            let media = await quoted.download();
+            let media = await m.quoted.download();
             const ext = mime.split('/')[1];
             fs.writeFileSync(`./tmp/${m.sender}.${ext}`, media);
 
@@ -1551,7 +1551,7 @@ case 'whatmusic':
             const txt = `
                 𝚁𝙴𝚂𝚄𝙻𝚃
                 • 📌 *TITLE*: ${title}
-                • 👨‍🎤 𝙰𝚁𝚃𝙸𝚂𝚃: ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
+                • 👨‍🎤 𝙰𝚁𝚀𝚃𝙸𝚂𝚃: ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
                 • 💾 𝙰𝙻𝙱𝚄𝙼: ${album.name || 'NOT FOUND'}
                 • 🌐 𝙶𝙴𝙽𝙴𝚁: ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
                 • 📆 RELEASE DATE: ${release_date || 'NOT FOUND'}
@@ -1565,6 +1565,7 @@ case 'whatmusic':
         }
     }
     break;
+
 
 
 
