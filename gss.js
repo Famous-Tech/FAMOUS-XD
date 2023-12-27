@@ -2564,29 +2564,43 @@ case 'next': {
   const currentResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
   switch (pollOption) {
-    case '𝗔𝗨𝗗𝗜𝗢': {
-      try {
-        // Audio download with audio only
-        const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
-        await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mp4', fileName: `${currentResult.title}.mp3` }, { quoted: m });
-      } catch (error) {
-        console.error(`Error during audio download:`, error);
-        m.reply('Unexpected error occurred.');
-      }
-      break;
-    }
+    
+    const streamToBuffer = async (stream) => {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    stream.on('data', (chunk) => chunks.push(chunk));
+    stream.on('end', () => resolve(Buffer.concat(chunks)));
+    stream.on('error', (error) => reject(error));
+  });
+};
 
-    case '𝗩𝗜𝗗𝗘𝗢': {
-      try {
-        // Video download with audio and video
-        const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
-        await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
-      } catch (error) {
-        console.error(`Error during video download:`, error);
-        m.reply('Unexpected error occurred.');
-      }
-      break;
-    }
+    case 'audio': {
+  try {
+    // Audio download with audio only
+    const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
+    const audioBuffer = await streamToBuffer(audioStream);
+
+    await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mp4', fileName: `${currentResult.title}.mp3` }, { quoted: m });
+  } catch (error) {
+    console.error(`Error during audio download:`, error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
+
+case 'video': {
+  try {
+    // Video download with audio and video
+    const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
+    const videoBuffer = await streamToBuffer(videoStream);
+
+    await gss.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4', caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
+  } catch (error) {
+    console.error(`Error during video download:`, error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
 
     case 'next': {
       // Increment the current poll index for the next search result
