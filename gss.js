@@ -2,6 +2,7 @@ require("dotenv").config();
 require('./config')
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
+const DB = require('./lib/scraper')
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const readMore = more.repeat(4001);
@@ -3635,6 +3636,30 @@ case 'attp3':
   }, {
     quoted: m
   });
+  break;
+
+case 'update':
+  if (!isCreator) return m.reply('This command is only for my owner');
+  
+  try {
+    let commits = await DB.syncgit();
+
+    if (commits.total === 0) {
+      m.reply(`Hey ${m.pushName}. You have the latest version installed.`);
+    } else {
+      let update = await DB.sync();
+      let buttonMessaged = {
+        text: update,
+        footer: 'UPDATER',
+        headerType: 4
+      };
+      await m.sendMessage(m.chat, buttonMessaged);
+    }
+  } catch (error) {
+    // Handle errors if necessary
+    console.error(error);
+    m.reply('An error occurred while processing the command.');
+  }
   break;
 
 
