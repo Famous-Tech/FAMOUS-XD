@@ -1570,31 +1570,33 @@ case 'whatmusic': case 'find': case 'shazame':
     break;
 
 
-case 'fetch': case 'get':
-    if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
-    const _url = new URL(text);
-    const url = `${_url.origin}${_url.pathname}?${_url.searchParams.toString()}`;
-    const res = await fetch(url);
+case 'fetch':
+case 'get':
+  if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
+  const _url = new URL(text);
+  const url = `${_url.origin}${_url.pathname}?${_url.searchParams.toString()}`;
+  const res = await fetch(url);
 
-    if (res.headers.get('content-length') > 100 * 1024 * 1024 * 1024) {
-        // delete res
-        throw `Content-Length exceeds the limit: ${res.headers.get('content-length')}`;
-    }
+  if (res.headers.get('content-length') > 100 * 1024 * 1024 * 1024) {
+    throw `Content-Length exceeds the limit: ${res.headers.get('content-length')}`;
+  }
 
-    if (!/text|json/.test(res.headers.get('content-type'))) {
-        return gss.sendMedia(m.chat, url, 'file', 'API FETCHED FROM GSS_BOTWA', m);
-    }
+  if (!/text|json/.test(res.headers.get('content-type'))) {
+    return gss.sendMedia(m.chat, url, 'file', 'API FETCHED FROM GSS_BOTWA', m);
+  }
 
-    let content = await res.buffer();
 
-    try {
-        content = format(JSON.parse(content + ''));
-    } catch (e) {
-        content = content + '';
-    } finally {
-        m.reply(content.slice(0, 65536) + '');
-    }
-    break;
+  let content = Buffer.from(await res.arrayBuffer());
+
+  try {
+    content = format(JSON.parse(content + ''));
+  } catch (e) {
+    content = content + '';
+  } finally {
+    m.reply(content.slice(0, 65536) + '');
+  }
+  break;
+
 
 
 
