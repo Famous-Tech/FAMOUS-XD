@@ -1597,24 +1597,7 @@ case 'fetch': case 'get':
 
 
 
-case 'fake': 
-    if (!text) return m.reply(`*[❗𝐈𝐍𝐅𝐎❗] 𝚄𝚂𝙾 𝙳𝙴𝙻 𝙲𝙾𝙼𝙰𝙽𝙳𝙾*\n\n*${prefix + command}* hola @${m.sender.split`@`[0]} a`, null, {mentions: [m.sender]});
-    const cm = copy(m);
-    let who;
-    if (text.includes('@0')) who = '0@s.whatsapp.net';
-    else if (m.isGroup) who = cm.participant = m.mentionedJid[0];
-    else who = m.chat;
-    if (!who) return m.reply(`*[❗𝐈𝐍𝐅𝐎❗] 𝚄𝚂𝙾 𝙳𝙴𝙻 𝙲𝙾𝙼𝙰𝙽𝙳𝙾*\n\n*${prefix + command}* hola @${m.sender.split`@`[0]} a`, null, {mentions: [m.sender]});
-    cm.key.fromMe = false;
-    cm.message[m.mtype] = copy(m.msg);
-    const sp = '@' + who.split`@`[0];
-    const [fake, ...real] = text.split(sp);
-    gss.fakeReply(m.chat, real.join(sp).trimStart(), who, fake.trimEnd(), m.isGroup ? m.chat : false, {
-      contextInfo: {
-        mentionedJid: gss.parseMention(real.join(sp).trim()),
-      },
-    });
-    break;
+
 
 
 case 'ebinary': {
@@ -3603,17 +3586,57 @@ case 'tiktoknowmdoc':
 
 
 
- case 'attp':
-                if (!q) return m.reply('Give Me Text')
-                m.reply(mess.wait)
-                gss.sendMessage(m.chat, {
-                    sticker: {
-                        url: `https://api.lolhuman.xyz/api/attp?apikey=GataDios&text=${q}`
-                    }
-                }, {
-                    quoted: m
-                })
-            break
+ case 'ttp':
+   case 'ttp3': 
+     case 'ttp4':
+       case 'ttp5':
+case 'attp':
+case 'ttp2':
+case 'attp2':
+case 'attp3':
+  if (!q) return m.reply('Give me text');
+  m.reply(mess.wait);
+
+  let apiUrl;
+
+  switch (command) {
+    case 'attp':
+      apiUrl = 'https://api.lolhuman.xyz/api/attp?apikey=GataDios&text=';
+      break;
+    case 'attp2':
+      apiUrl = 'https://api.lolhuman.xyz/api/attp2?apikey=GataDios&text=';
+      break;
+    case 'attp3':
+      apiUrl = 'https://api.lolhuman.xyz/api/attp3?apikey=GataDios&text=';
+      break;
+    case 'ttp4':
+      apiUrl = 'https://api.lolhuman.xyz/api/ttp4?apikey=GataDios&text=';
+      break;
+      case 'ttp3':
+      apiUrl = 'https://api.lolhuman.xyz/api/ttp3?apikey=GataDios&text=';
+      break;
+      case 'ttp5':
+      apiUrl = 'https://api.lolhuman.xyz/api/ttp5?apikey=GataDios&text=';
+      break;
+    case 'ttp':
+      apiUrl = 'https://api.lolhuman.xyz/api/ttp?apikey=GataDios&text=';
+      break;
+    case 'ttp2':
+      apiUrl = 'https://api.lolhuman.xyz/api/ttp2?apikey=GataDios&text=';
+      break;
+    default:
+      return; // handle other cases or commands
+  }
+
+  gss.sendMessage(m.chat, {
+    sticker: {
+      url: apiUrl + encodeURIComponent(q)
+    }
+  }, {
+    quoted: m
+  });
+  break;
+
 
 
     case "ai":
