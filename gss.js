@@ -1601,7 +1601,7 @@ case 'get':
   break;
 
 case 'updatenow':
-    if (global.herokuConfig && global.herokuConfig.heroku) {
+  if (global.herokuConfig && global.herokuConfig.heroku) {
     const DB = require('./lib');
     try {
       let commits = await DB.syncgit();
@@ -1617,13 +1617,8 @@ case 'updatenow':
       m.reply('An error occurred while updating the database.');
     }
   }
-
-  let check = await get_deployments();
-  if (check === 'true') return m.reply('_Please wait..._\n_Currently 2 instances are running in Koyeb, wait to stop one of them._');
-  
-  let dataa = await redeploy();
-  return m.reply(dataa);
   break;
+
 
 
 
