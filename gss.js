@@ -1570,6 +1570,7 @@ case 'whatmusic': case 'find': case 'shazame':
     break;
 
 
+
 case 'fetch':
 case 'get':
   if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
@@ -1585,12 +1586,13 @@ case 'get':
     return gss.sendMedia(m.chat, url, 'file', 'API FETCHED FROM GSS_BOTWA', m);
   }
 
-
   let content = Buffer.from(await res.arrayBuffer());
 
   try {
+    console.log('Parsed JSON:', JSON.parse(content));
     content = format(JSON.parse(content));
   } catch (e) {
+    console.error('Error parsing JSON:', e);
     content = content + '';
   } finally {
     m.reply(content.slice(0, 65536) + '');
