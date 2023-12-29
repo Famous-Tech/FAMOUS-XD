@@ -3652,7 +3652,7 @@ case 'update':
         footer: 'UPDATER',
         headerType: 4
       };
-      await m.sendMessage(m.chat, buttonMessaged);
+      await gss.sendMessage(m.chat, buttonMessaged);
     }
   } catch (error) {
     // Handle errors if necessary
