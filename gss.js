@@ -1601,6 +1601,32 @@ case 'get':
   break;
 
 
+case 'updatenow':
+  if (global.herokuConfig.heroku) {
+    const DB = require('./lib');
+    try {
+      let commits = await DB.syncgit();
+      if (commits.total === 0) {
+        m.reply(`Hey ${m.pushName}. You have the latest version installed.`);
+      } else {
+        m.reply('Build Started...');
+        let update = await DB.updatedb();
+        m.reply(update);
+      }
+    } catch (error) {
+      console.error('Error updating database:', error);
+      m.reply('An error occurred while updating the database.');
+    }
+  }
+
+  let check = await get_deployments();
+  if (check === 'true') return m.reply('_Please wait..._\n_Currently 2 instances are running in Koyeb, wait to stop one of them._');
+  
+  let data = await redeploy();
+  return m.reply(data);
+  break;
+
+
 
 case 'ebinary': {
   if (!text) throw `Example: ${prefix + command} text`;
