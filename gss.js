@@ -1598,8 +1598,6 @@ case 'get':
   break;
 
 
-
-
 case 'ebinary': {
   if (!text) throw `Example: ${prefix + command} text`;
   let { eBinary } = require('./lib/binary');
