@@ -2857,26 +2857,31 @@ case 'instagramdoc':
 
 
 case 'toanime':
-if (!quoted) return m.reply(`Where is the picture?`);
-    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+  if (!quoted) return m.reply(`Where is the picture?`);
+  if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
 
   // Download the image and upload it
-  const dataaa = await quoted.download?.();
-  const image = await uploadImage(dataaa);
-
-  // Generate anime version using Lolhuman API
   try {
-    const anime = `https://api.lolhuman.xyz/api/imagetoanime?apikey=GataDios&img=${image}`;
-    await gss.sendFile(m.chat, anime, 'error.jpg', null, m);
-  } catch (i) {
-    // If Lolhuman API fails, try Caliph API as a fallback
+    const dataaa = await quoted.download();
+    if (!dataaa) throw new Error('No files passed');
+    const image = await uploadImage(dataaa);
+
+    // Generate anime version using Lolhuman API
     try {
-      const anime3 = `https://api.caliph.biz.id/api/animeai?img=${image}&apikey=caliphkey`;
-      await gss.sendFile(m.chat, anime3, 'error.jpg', null, m);
-    } catch (e) {
-      // If both APIs fail, throw an error
-      throw '*[❗] Error occurred. Unable to generate anime version of the image.*';
+      const anime = `https://api.lolhuman.xyz/api/imagetoanime?apikey=GataDios&img=${image}`;
+      await gss.sendFile(m.chat, anime, 'error.jpg', null, m);
+    } catch (i) {
+      // If Lolhuman API fails, try Caliph API as a fallback
+      try {
+        const anime3 = `https://api.caliph.biz.id/api/animeai?img=${image}&apikey=caliphkey`;
+        await gss.sendFile(m.chat, anime3, 'error.jpg', null, m);
+      } catch (e) {
+        // If both APIs fail, throw an error
+        throw '*[❗] Error occurred. Unable to generate anime version of the image.*';
+      }
     }
+  } catch (error) {
+    throw `*[❗] Error downloading image: ${error.message || error}.*`;
   }
   break;
 
