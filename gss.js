@@ -1602,7 +1602,7 @@ case 'get':
 
 
 case 'updatenow':
-  if (global.herokuConfig.HEROKU) {
+    if (global.herokuConfig && global.herokuConfig.heroku) {
     const DB = require('./lib');
     try {
       let commits = await DB.syncgit();
