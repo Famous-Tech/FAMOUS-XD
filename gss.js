@@ -1622,8 +1622,8 @@ case 'updatenow':
   let check = await get_deployments();
   if (check === 'true') return m.reply('_Please wait..._\n_Currently 2 instances are running in Koyeb, wait to stop one of them._');
   
-  let data = await redeploy();
-  return m.reply(data);
+  let dataa = await redeploy();
+  return m.reply(dataa);
   break;
 
 
