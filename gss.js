@@ -1589,7 +1589,7 @@ case 'get':
   let content = Buffer.from(await res.arrayBuffer());
 
   try {
-    content = format(JSON.parse(content + ''));
+    content = format(JSON.parse(content));
   } catch (e) {
     content = content + '';
   } finally {
