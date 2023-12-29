@@ -2861,7 +2861,7 @@ case 'toanime':
   const mime = (q.msg || q).mimetype || q.mediaType || '';
   if (!/image/g.test(mime)) throw '*[❗] Invalid Image Format. Please reply with a valid image.*';
   m.reply('*[❗] Analyzing the image and generating an anime version, please wait...*');
-
+let { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader');
   // Download the image and upload it
   const daataa = await q.download?.();
   const image = await TelegraPh(daataa);
