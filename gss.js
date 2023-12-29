@@ -1571,6 +1571,7 @@ case 'whatmusic': case 'find': case 'shazame':
 
 
 
+
 case 'fetch':
 case 'get':
   if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
@@ -1590,7 +1591,7 @@ case 'get':
 
   try {
     console.log('Parsed JSON:', JSON.parse(content));
-    content = format(JSON.parse(content));
+    content = JSON.stringify(JSON.parse(content));
   } catch (e) {
     console.error('Error parsing JSON:', e);
     content = content + '';
@@ -1598,6 +1599,7 @@ case 'get':
     m.reply(content.slice(0, 65536) + '');
   }
   break;
+
 
 
 case 'ebinary': {
