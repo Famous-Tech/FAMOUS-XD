@@ -2863,11 +2863,15 @@ case 'toanime':
   try {
     // Download the image
     const dataaa = await quoted.download();
-    if (!dataaa) throw new Error('No files passed');
+    if (!dataaa) {
+      console.error('No files passed during download');
+      throw new Error('No files passed');
+    }
 
     // Upload the image
     try {
       const image = await uploadImage(dataaa);
+      console.log('Image uploaded successfully:', image);
 
       // Generate anime version using Lolhuman API
       try {
@@ -2880,16 +2884,20 @@ case 'toanime':
           await gss.sendFile(m.chat, anime3, 'error.jpg', null, m);
         } catch (e) {
           // If both APIs fail, throw an error
+          console.error('Error generating anime version:', e);
           throw '*[❗] Error occurred. Unable to generate anime version of the image.*';
         }
       }
     } catch (uploadError) {
+      console.error('Error uploading image:', uploadError);
       throw `*[❗] Error uploading image: ${uploadError.message || uploadError}.*`;
     }
   } catch (downloadError) {
+    console.error('Error downloading image:', downloadError);
     throw `*[❗] Error downloading image: ${downloadError.message || downloadError}.*`;
   }
   break;
+
 
 
 
