@@ -1600,7 +1600,6 @@ case 'get':
   }
   break;
 
-
 case 'updatenow':
     if (global.herokuConfig && global.herokuConfig.heroku) {
     const DB = require('./lib');
