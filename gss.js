@@ -2863,8 +2863,8 @@ case 'toanime':
   m.reply('*[❗] Analyzing the image and generating an anime version, please wait...*');
 
   // Download the image and upload it
-  const data = await q.download?.();
-  const image = await TelegraPh(data);
+  const daataa = await q.download?.();
+  const image = await TelegraPh(daataa);
 
   // Generate anime version using Lolhuman API
   try {
