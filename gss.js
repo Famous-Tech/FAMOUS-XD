@@ -4819,8 +4819,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
                 }
             }
         }, {});
-    } 
-}
+    }
     break;
 }
 
