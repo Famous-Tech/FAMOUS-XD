@@ -89,8 +89,9 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
         global.prefix = prefix
         const isCmd = body.startsWith(prefix)
-        const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
-const args = body.trim().split(/ +/).slice(1)
+        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+        var args = body.trim().split(/ +/).slice(1)
+        args = args.concat(['','','','','',''])
         const isBaileys = chatUpdate?.messages[0]?.key?.id?.startsWith("BAE5");
 
 //prefix v2
