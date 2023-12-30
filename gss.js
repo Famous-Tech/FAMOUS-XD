@@ -1784,8 +1784,6 @@ break;
 
 
 
-const truecallerjs = require("truecallerjs");
-
 async function performTruecallerSearch(fullNumber) {
   let number = fullNumber.replace(/\D/g, ''); // Remove non-numeric characters
   const countryCode = "91"; // Assume India's country code
