@@ -4188,7 +4188,7 @@ function convertToFontStyle(text, style) {
 case 'fancy': {
     if (args.length === 0) {
         const availableStylesPreview = availableStyles.map(style => {
-            const previewText = convertToFontStyle("gss_botwa",style);
+            const previewText = convertToFontStyle("gss botwa", style);
             return `${style}: ${previewText}`;
         }).join('\n');
 
@@ -4203,11 +4203,15 @@ case 'fancy': {
         } else {
             const styledText = convertToFontStyle(inputText, style);
 
+            console.log(`Input: ${inputText}`);
+            console.log(`Styled: ${styledText}`);
+            
             m.reply(`${styledText}`);
         }
     }
 }
 break;
+
 
 
 
