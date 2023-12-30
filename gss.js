@@ -4192,22 +4192,23 @@ case 'fancy': {
             return `${style}: ${previewText}`;
         }).join('\n');
 
-        await gss.sendMessage(m.chat, `Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${availableStylesPreview}`, MessageType.text, { quoted: m });
+        m.reply(`Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${availableStylesPreview}`);
     } else {
         const style = parseInt(args[0]);
 
         const inputText = args.slice(1).join(" ");
 
         if (style < 0 || style > 34) {
-            await gss.sendMessage(m.chat, `Style number should be between 0 and 34. Please choose a valid style.`, MessageType.text, { quoted: m });
+            m.reply(`Style number should be between 0 and 34. Please choose a valid style.`);
         } else {
             const styledText = convertToFontStyle(inputText, style);
 
-            await gss.sendMessage(m.chat, `${styledText}`, MessageType.text, { quoted: m });
+            m.reply(`${styledText}`);
         }
     }
 }
 break;
+
 
         
 
