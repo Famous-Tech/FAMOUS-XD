@@ -526,27 +526,30 @@ const today = moment.tz('Asia/Kolkata').format('dddd, DD MMMM YYYY');
 const wibTime = moment.tz('Asia/Kolkata').format('HH:mm:ss');
 const currentTime = moment().tz('Asia/Kolkata').format('HH:mm:ss');
 
-if (time < "23:59:00") {
+let time; 
+
+if (currentTime < "23:59:00") {
     var greetingTime = 'Good Night 🏙️';
 }
-if (time < "19:00:00") {
+if (currentTime < "19:00:00") {
     var greetingTime = 'Good Evening 🌆';
 }
-if (time < "18:00:00") {
+if (currentTime < "18:00:00") {
     var greetingTime = 'Good Afternoon 🌇';
 }
-if (time < "15:00:00") {
+if (currentTime < "15:00:00") {
     var greetingTime = 'Good Day 🌤️';
 }
-if (time < "10:00:00") {
+if (currentTime < "10:00:00") {
     var greetingTime = 'Good Morning 🌄';
 }
-if (time < "05:00:00") {
+if (currentTime < "05:00:00") {
     var greetingTime = 'Good Dawn 🌆';
 }
-if (time < "03:00:00") {
+if (currentTime < "03:00:00") {
     var greetingTime = 'Good Midnight 🌃';
 }
+
 
 	    
 if (antiToxic) {
