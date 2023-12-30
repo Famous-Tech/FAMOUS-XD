@@ -4188,7 +4188,7 @@ function convertToFontStyle(text, style) {
 case 'fancy': {
     if (args.length === 0) {
         const availableStylesPreview = availableStyles.map(style => {
-            const previewText = convertToFontStyle("gss botwa", style);
+            const previewText = convertToFontStyle("gss_botwa",style);
             return `${style}: ${previewText}`;
         }).join('\n');
 
@@ -4198,7 +4198,7 @@ case 'fancy': {
 
         const inputText = args.slice(1).join(" ");
 
-        if (style < 0 || style > 34) {
+        if (isNaN(style) || style < 0 || style > 34) {
             m.reply(`Style number should be between 0 and 34. Please choose a valid style.`);
         } else {
             const styledText = convertToFontStyle(inputText, style);
@@ -4208,6 +4208,7 @@ case 'fancy': {
     }
 }
 break;
+
 
 
 
