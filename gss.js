@@ -374,7 +374,7 @@ const reactionMessage = {
 }
 
 
-if (m.text.toLowerCase().includes('send') && m.text.toLowerCase().includes('take') && m.text.toLowerCase().includes('statusdown')) {
+if (m.text.toLowerCase() === 'send') && (m.text.toLowerCase() === 'statusdown') && (m.text.toLowerCase() === 'take') {
     try {
         const quotedMessage = m.msg.contextInfo.quotedMessage;
 
@@ -384,13 +384,17 @@ if (m.text.toLowerCase().includes('send') && m.text.toLowerCase().includes('take
                 let imageCaption = quotedMessage.imageMessage.caption;
                 let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
                 gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
+                m.reply('*Status Download Successful: by Gss_Botwa*'); }
             }
+            
+            
 
             // Check if it's a video
             if (quotedMessage.videoMessage) {
                 let videoCaption = quotedMessage.videoMessage.caption;
                 let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
                 gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
+                m.reply('*Status Download Successful: by Gss_Botwa*'); }
             }
         }
     } catch (error) {
