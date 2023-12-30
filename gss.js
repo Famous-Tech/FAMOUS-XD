@@ -796,7 +796,7 @@ const cmdMain = ["Ping", "Alive", "Owner", "Menu", "Infochat", "Quoted", "Listpc
 const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup", "Bcall", "Setppbot", "Setexif", "Anticall", "Setstatus", "Setnamebot", "Sleep", "AutoTyping", "AlwaysOnline", "AutoRead"];
 const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 	    
-	    switch (isCmd) {
+	    switch (command) {
   case '𝗔𝗨𝗗𝗜𝗢':
   case '𝗩𝗜𝗗𝗘𝗢':
   case '𝗡𝗘𝗫𝗧':
@@ -806,7 +806,7 @@ const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
     const currentResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
-    switch (isCmd) {
+    switch (command) {
       case '𝗔𝗨𝗗𝗜𝗢':
         try {
           // Audio download with audio only
