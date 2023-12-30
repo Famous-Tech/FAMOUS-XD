@@ -6,7 +6,6 @@ const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
-const readMore = more.repeat(4001);
 const availableStyles = Object.keys(fonts);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser,getAggregateVotesInPollMessage, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
@@ -4141,7 +4140,16 @@ case 'translate': case 'trt': {
   break; // Case break statement
 }
 
-  
+case 'readmore': {
+    if (!text) return m.reply( 'give me text');
+
+    const continuationMessage = `
+    ${text}${readmore}`;
+
+    m.reply(continuationMessage);
+    break;
+}
+
   
 case 'poll': {
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
@@ -4573,12 +4581,6 @@ case 'emojimix': {
 break;
 
 
-case 'readmore':
-    let [l, r] = text.split('|');
-    if (!l) l = '';
-    if (!r) r = '';
-    m.reply(m.chat, l + readMore + r);
-    break;
 
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
                 try {
