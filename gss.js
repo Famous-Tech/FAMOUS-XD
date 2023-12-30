@@ -4652,7 +4652,7 @@ case 'allmenu': {
 ╭──═❮ *Users Info* ❯═─┈•
 │✑ *Name* : *${pushname}*
 │✑ *Number* : *${m.sender.split('@')[0]}*
-│✑ *Premium* : *${isPremium ? '✅' : '❌'}*
+│✑ *Premium* : *${isPremium ? '✅' : '❌'}* ${readmore}
 ╰────────────────❃ `;
 
     const randomSymbol = getRandomSymbol();
