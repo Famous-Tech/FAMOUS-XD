@@ -520,6 +520,34 @@ if (isBaileys && m.fromMe) {
 }
 
 	    
+moment.tz.setDefault("Asia/Kolkata").locale("id");
+
+const today = moment.tz('Asia/Kolkata').format('dddd, DD MMMM YYYY');
+const wibTime = moment.tz('Asia/Kolkata').format('HH:mm:ss');
+const currentTime = moment().tz('Asia/Kolkata').format('HH:mm:ss');
+
+if (time < "23:59:00") {
+    var greetingTime = 'Good Night 🏙️';
+}
+if (time < "19:00:00") {
+    var greetingTime = 'Good Evening 🌆';
+}
+if (time < "18:00:00") {
+    var greetingTime = 'Good Afternoon 🌇';
+}
+if (time < "15:00:00") {
+    var greetingTime = 'Good Day 🌤️';
+}
+if (time < "10:00:00") {
+    var greetingTime = 'Good Morning 🌄';
+}
+if (time < "05:00:00") {
+    var greetingTime = 'Good Dawn 🌆';
+}
+if (time < "03:00:00") {
+    var greetingTime = 'Good Midnight 🌃';
+}
+
 	    
 if (antiToxic) {
     if (Badgss.includes(messagesD)) {
@@ -4604,29 +4632,25 @@ case 'menuall':
 case 'allmenu': {
     await doReact("📁");
     let a = db.data.users[m.sender];
-    let introText = `Hello ${pushname}!👋 I'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*
-    
-┏────▷ *sᴏᴍᴇ ɪɴғᴏ 4 ʏᴏᴜ* ◁⊰
-│ 
-│ *✪ ᴜsᴇʀɪɴғᴏ ✪*
-│  
-│ *✪ ʏᴏᴜʀɴᴀᴍᴇ:* ${pushname}   
-│ *✪ ʟɪᴍɪᴛ:* ${a.limit}
-│ *✪ ᴘʀᴇᴍɪᴜᴍ:* ${isPremium ? '✅' : '❌'}
-│ *✪ ᴛɪᴛʟᴇ:* ${a.title ? a.title : '-'}
-│ 
-│ *✪ ʙᴏᴛɪɴғᴏ ✪*    
-│
-│ *✪ᴘʟᴀᴛғᴏʀᴍ: ${os.platform()}     
-│ *✪ Sᴛᴀᴛᴜs: Pᴜʙʟɪᴄ*
-│ *✪ Lᴀɴɢᴜᴀɢᴇ: Nᴏᴅᴇ.ᴊs*
-│ *✪ Bᴀɪʟᴇʏ: @ᴀᴅɪᴡᴀᴊsʜɪɴɢ*
-│ *✪ Sᴜᴘᴘᴏʀᴛ: @ᴡʜɪsᴋᴇʏsᴏᴄᴋᴇᴛs*
-│ *✪ Bᴏᴛ Nᴀᴍᴇ:* ${botname}
-│ *✪ Dᴇᴠᴇʟᴏᴘᴇʀ:* ${devlopernumber}  
-│ *✪ ᴛᴏᴛᴀʟᴜsᴇʀ:* ${Object.keys(global.db.data.users).length} ᴜsᴇʀs
-│ *✪ ᴛᴏᴛᴀʟᴄʜᴀᴛ:* ${Object.keys(global.db.data.chats).length} ɢʀᴏᴜᴘ/ᴄʜᴀᴛ
-${readmore}┗────────────⊰\n`;
+    let introText = `
+╭──═❮ *GssBotwa* ❯═─┈•
+│ Hi *${pushname}* 👋  
+╰–❖ *${greetingTime}* 😄 
+
+╭──═❮ *Bot Info* ❯═─┈•
+│ *Bot Name* : *${botname}*
+│ *Owner Name* : *${ownername}*
+│ *Prefix* :  *[ . ]*
+│ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
+│ *Mode* : *Public*
+│ *TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
+│ *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
+╰────────────────❃ 
+╭──═❮ *Users Info* ❯═─┈•
+│✑*Name* : *${pushname}*
+│✑*Number* : *${m.sender}*
+│✑*Premium* : *${isPremium ? '✅' : '❌'}*
+╰────────────────❃ `;
 
     const randomSymbol = getRandomSymbol();
     let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
