@@ -1,7 +1,6 @@
 require("dotenv").config();  
 require('./config')
 const Func = ('./lib/function.js');
-const { generateMenu } = require('./menu');
 const fonts = require('./lib/font.js');
 const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
@@ -3548,6 +3547,14 @@ case 'system': case 'info': case 'ram': case 'usage':
 mainSys();
 break;
 
+case 'setmenu': {
+    if (!isCreator) return m.reply(mess.owner);
+    if (!text) return m.reply('setmenu has 5 views');
+
+    process.env.TYPEMENU = text; // Set the environment variable
+    m.reply(mess.success);
+}
+break;
 
 case 'onlygroup': {
     if (!isCreator) return m.reply(mess.owner);
@@ -4177,30 +4184,31 @@ function convertToFontStyle(text, style) {
 }
 
 
-    case 'fontchange': case 'fancy':
+    case 'fontchange':
+case 'fancy': {
+    if (args.length === 0) {
+        const availableStylesPreview = availableStyles.map(style => {
+            const previewText = convertToFontStyle("gss botwa", parseInt(style));
+            return `${style}: ${previewText}`;
+        }).join('\n');
 
-        if (args.length === 0) {
-            const availableStylesPreview = availableStyles.map(style => {
-                const previewText = convertToFontStyle("gss botwa", parseInt(style));
-                return `${style}: ${previewText}`;
-            }).join('\n');
+        await gss.sendMessage(m.chat, `Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${availableStylesPreview}`, MessageType.text, { quoted: m });
+    } else {
+        const style = parseInt(args[0]);
 
-            m.reply(`Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${availableStylesPreview}`);
+        const inputText = args.slice(1).join(" ");
+
+        if (style < 0 || style > 34) {
+            await gss.sendMessage(m.chat, `Style number should be between 0 and 34. Please choose a valid style.`, MessageType.text, { quoted: m });
         } else {
-            const style = parseInt(args[0]); 
-            
-            const inputText = args.slice(1).join(" "); 
+            const styledText = convertToFontStyle(inputText, style);
 
-            if (style < 0 || style > 34) {
-                m.reply(`Style number should be between 0 and 34. Please choose a valid style.`);
-            } else {
-
-                const styledText = convertToFontStyle(inputText, style);
-
-                m.reply(`${styledText}`);
-            }
+            await gss.sendMessage(m.chat, `${styledText}`, MessageType.text, { quoted: m });
         }
-        break;
+    }
+}
+break;
+
         
 
         
@@ -4594,45 +4602,305 @@ case 'listmenu':
 }
 break;
 
-
-
-
-case 'setmenu': {
-    if (!text) return m.reply('setmenu has 5 views');
-
-    process.env.TYPEMENU = text; // Set the environment variable
-
-    const menuText = generateMenu(pushname, isPremium, botname, devlopernumber); // Call generateMenu with appropriate arguments
-    fs.writeFileSync('./menu.js', menuText);
-
-    m.reply(mess.success);
+          // Assuming you have a getRandomSymbol function to generate a random symbol
+function getRandomSymbol() {
+    const symbols = ['◉', '★', '◎', '✯','✯','✰','◬','✵','✦']; // Add more symbols as needed
+    const randomIndex = Math.floor(Math.random() * symbols.length);
+    return symbols[randomIndex];
 }
-break;
+const randomSymbol = getRandomSymbol();
 
-case 'allmenu':
-case 'menuall': {
-    try {
-        const menuModule = require('./menu');
-        const menuText = menuModule.getMenu(pushname, isPremium, botname, devlopernumber);
+case 'menuall':
+case 'allmenu': {
+await doReact("📁");
+    let a = db.data.users[m.sender];
+    let introText = `Hello ${pushname}!👋 I'm *𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫*
+    
+┏────▷ *sᴏᴍᴇ ɪɴғᴏ 4 ʏᴏᴜ* ◁⊰
+│ 
+│ *✪ ᴜsᴇʀɪɴғᴏ ✪*
+│  
+│ *✪ ʏᴏᴜʀɴᴀᴍᴇ:* ${pushname}   
+│ *✪ ʟɪᴍɪᴛ:* ${a.limit}
+│ *✪ ᴘʀᴇᴍɪᴜᴍ:* ${isPremium ? '✅' : '❌'}
+│ *✪ ᴛɪᴛʟᴇ:* ${a.title ? a.title : '-'}
+│ 
+│ *✪ ʙᴏᴛɪɴғᴏ ✪*    
+│
+│ *✪ᴘʟᴀᴛғᴏʀᴍ: ${os.platform()}     
+│ *✪ Sᴛᴀᴛᴜs: Pᴜʙʟɪᴄ*
+│ *✪ Lᴀɴɢᴜᴀɢᴇ: Nᴏᴅᴇ.ᴊs*
+│ *✪ Bᴀɪʟᴇʏ: @ᴀᴅɪᴡᴀᴊsʜɪɴɢ*
+│ *✪ Sᴜᴘᴘᴏʀᴛ: @ᴡʜɪsᴋᴇʏsᴏᴄᴋᴇᴛs*
+│ *✪ Bᴏᴛ Nᴀᴍᴇ:* ${botname}
+│ *✪ Dᴇᴠᴇʟᴏᴘᴇʀ:* ${devlopernumber}  
+│ *✪ ᴛᴏᴛᴀʟᴜsᴇʀ:* ${Object.keys(global.db.data.users).length} ᴜsᴇʀs
+│ *✪ ᴛᴏᴛᴀʟᴄʜᴀᴛ:* ${Object.keys(global.db.data.chats).length} ɢʀᴏᴜᴘ/ᴄʜᴀᴛ
+${readmore}┗────────────⊰
 
-        gss.sendMessage(m.chat, {
-            text: menuText,
-            contextInfo: {
-                externalAdReply: {
-                    showAdAttribution: false,
-                    title: botname,
-                    sourceUrl: global.link,
-                    body: `Bot Created By ${global.owner}`
-                }
+
+╭───〈 𝗔𝗜 𝗠𝗘𝗡𝗨 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ᴀɪ*
+▮➣ *ᴠᴏɪᴄᴇᴀɪ*
+▮➣ *ʙᴜɢ*
+▮➣ *ʀᴇᴘᴏʀᴛ*
+▮➣ *ɢᴘᴛ*
+▮➣ *ᴅᴀʟʟᴇ*
+▮➣ *ʀᴇᴍɪɴɪ*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+
+╭───〈 𝗧𝗢𝗢𝗟 𝗠𝗘𝗡𝗨〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ᴄᴀʟᴄᴜʟᴀᴛᴏʀ*
+▮➣ *ᴛᴇᴍᴘᴍᴀɪʟ*
+▮➣ *ᴄʜᴇᴄᴋᴍᴀɪʟ*
+▮➣ *ɪɴꜰᴏ*
+▮➣ *ᴛʀᴛ*
+▮➣ *ᴛᴛs*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+
+╭───〈 𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ʟɪɴᴋɢʀᴏᴜᴘ*
+▮➣ *sᴇᴛᴘᴘɢᴄ*
+▮➣ *sᴇᴛɴᴀᴍᴇ*
+▮➣ *sᴇᴛᴅᴇsᴄ*
+▮➣ *ɢʀᴏᴜᴘ*
+▮➣ *ɢᴄsᴇᴛᴛɪɴɢ*
+▮➣ *ᴡᴇʟᴄᴏᴍᴇ* <ᴇɴᴀʙʟᴇ/ᴅɪsᴀʙʟᴇ>
+▮➣ *ʟᴇғᴛ* <ᴇɴᴀʙʟᴇ/ᴅɪsᴀʙʟᴇ>
+▮➣ *sᴇᴛᴡᴇʟᴄᴏᴍᴇ*
+▮➣ *sᴇᴛʟᴇғᴛ*
+▮➣ *ᴇᴅɪᴛɪɴꜰᴏ*
+▮➣ *ᴀᴅᴅ*
+▮➣ *ᴋɪᴄᴋ*
+▮➣ *ʜɪᴅᴇᴛᴀɢ*
+▮➣ *ᴛᴀɢᴀʟʟ*
+▮➣ *ᴛᴏᴛᴀɢ*
+▮➣ *ᴛᴀɢᴀᴅᴍɪɴ*
+▮➣ *ᴀɴᴛɪʟɪɴᴋ*
+▮➣ *ᴀɴᴛɪTᴏxɪᴄ*
+▮➣ *ᴍᴜᴛᴇ*
+▮➣ *ᴘʀᴏᴍᴏᴛᴇ*
+▮➣ *ᴅᴇᴍᴏᴛᴇ*
+▮➣ *ʀᴇᴠᴏᴋᴇ*
+▮➣ *ᴘᴏʟʟ*
+▮➣ *ɢᴇᴛʙɪᴏ*
+▮➣ *ʀᴇᴠᴏᴋᴇ*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+
+╭───〈 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ᴀᴘᴋ*
+▮➣ *ʏᴛᴠ*
+▮➣ *ʏᴛᴀ*
+▮➣ *ɢᴇᴛᴀᴜᴅɪᴏ*
+▮➣ *ɢᴇᴛᴠɪᴅᴇᴏ*
+▮➣ *ꜰᴀᴄᴇʙᴏᴏᴋ*
+▮➣ *ᴍᴇᴅɪᴀꜰɪʀᴇ*
+▮➣ *ᴘɪɴᴛᴇʀᴇsᴛᴅʟ*
+▮➣ *xɴxxsᴇᴀʀᴄʜ*
+▮➣ *xɴxxᴅʟ*
+▮➣ *ɢɪᴛᴄʟᴏɴᴇ*
+▮➣ *ɢᴅʀɪᴠᴇ*
+▮➣ *ɪɴsᴛᴀ*
+▮➣ *ʏᴛᴍᴘ3*
+▮➣ *ʏᴛᴍᴘ4*
+▮➣ *ᴛɪᴋᴛᴏᴋ*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+
+╭───〈 𝗦𝗘𝗔𝗥𝗖𝗛 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ᴘʟᴀʏ*
+▮➣ *ʏᴛs*
+▮➣ *ɪᴍᴅʙ*
+▮➣ *ɢᴏᴏɢʟᴇ*
+▮➣ *ɢɪᴍᴀɢᴇ*
+▮➣ *ᴘɪɴᴛᴇʀᴇsᴛ*
+▮➣ *ᴡᴀʟʟᴘᴀᴘᴇʀ*
+▮➣ *ᴡɪᴋɪᴍᴇᴅɪᴀ*
+▮➣ *ʀɪɴɢᴛᴏɴᴇ*
+▮➣ *ᴡᴇᴀᴛʜᴇʀ*
+▮➣ *ʟʏʀɪᴄs*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+╭───〈 𝗦𝗧𝗔𝗟𝗞 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ɴᴏᴡᴀ*
+▮➣ *ᴛʀᴜᴇᴄᴀʟʟᴇʀ*
+▮➣ *ɪɴsᴛᴀsᴛᴀʟᴋ*
+▮➣ *ɢɪᴛʜᴜʙsᴛᴀʟᴋ*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+╭───〈 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ᴅᴇʟᴛᴛᴛ*
+▮➣ *ᴛɪᴄᴛᴀᴄᴛᴏᴇ*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+
+╭───〈 𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ʀᴇᴍᴏᴠᴇʙɢ*
+▮➣ *sᴛɪᴄᴋᴇʀ*
+▮➣ *ᴇᴍᴏᴊɪᴍɪx*
+▮➣ *ᴛᴏᴠɪᴅᴇᴏ*
+▮➣ *ᴛᴏɢɪꜰ*
+▮➣ *ᴛᴏᴜʀʟ*
+▮➣ *ᴛᴏᴠɴ*
+▮➣ *ᴛᴏᴍᴘ3*
+▮➣ *ᴛᴏᴀᴜᴅɪᴏ*
+▮➣ *ᴇʙɪɴᴀʀʏ*
+▮➣ *ᴅʙɪɴᴀʀʏ*
+▮➣ *sᴛʏʟᴇᴛᴇxᴛ*
+▮➣ *ꜰᴏɴᴛᴄʜᴀɴɢᴇ*
+▮➣ *ꜰᴀɴᴄʏ*
+▮➣ *ᴜᴘsᴄᴀʟᴇ*
+▮➣ *ʜᴅ*
+▮➣ *ᴀᴛᴛᴘ*
+▮➣ *ǫᴄ*
+▮➣ 
+▮➣ *ʀᴇᴘʟʏ ᴛᴏ ᴛʜᴇ ᴀᴜᴅɪᴏ*
+▮➣ *ʙᴀsᴇ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ʙʟᴏᴡɴ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ᴅᴇᴇᴘ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ᴇᴀʀʀᴀᴘᴇ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ғᴀsᴛ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ғᴀᴛ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ɴɪɢʜᴛᴄᴏʀᴇ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ʀᴇᴠᴇʀsᴇ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ʀᴏʙᴏᴛ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *sʟᴏᴡ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *sᴍᴏᴏᴛʜ* _<ᴀᴜᴅɪᴏ>_
+▮➣ *ᴛᴜᴘᴀɪ* _<ᴀᴜᴅɪᴏ>_
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+
+╭───〈 𝗚𝗘𝗡𝗘𝗥𝗔𝗟 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ᴘɪɴɢ*
+▮➣ *ᴀʟɪᴠᴇ*
+▮➣ *ᴏᴡɴᴇʀ*
+▮➣ *ᴍᴇɴᴜ*
+▮➣ *ɪɴꜰᴏᴄʜᴀᴛ*
+▮➣ *ǫᴜᴏᴛᴇᴅ*
+▮➣ *ʟɪsᴛᴘᴄ*
+▮➣ *ʟɪsᴛɢᴄ*
+▮➣ *ʟɪsᴛᴏɴʟɪɴᴇ*
+▮➣ *ɪɴғᴏʙᴏᴛ*
+▮➣ *ʙᴜʏᴘʀᴇᴍɪᴜᴍ*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+
+╭───〈 𝗢𝗪𝗡𝗘𝗥 〉───◆
+▯╭─────────────···▸
+┴│▸
+▮➣ *ᴊᴏɪɴ*
+▮➣ *ʟᴇᴀᴠᴇ*
+▮➣ *ʙʟᴏᴄᴋ*
+▮➣ *ᴜɴʙʟᴏᴄᴋ*
+▮➣ *ʙᴄɢʀᴏᴜᴘ*
+▮➣ *ʙᴄᴀʟʟ*
+▮➣ *sᴇᴛᴘᴘʙᴏᴛ*
+▮➣ *sᴇᴛɪᴍɢᴍᴇɴᴜ*
+▮➣ *ᴍᴏᴅᴇ*
+▮➣ *sᴇᴛᴛɪɴɢ*
+▮➣ *sᴇᴛᴍᴇɴᴜ*
+▮➣ *sᴇᴛᴇxɪꜰ*
+▮➣ *ᴀɴᴛɪᴄᴀʟʟ*
+▮➣ *sᴇᴛɴᴀᴍᴇʙᴏᴛ*
+▮➣ *ᴀᴅᴅᴘʀᴇᴍ*
+▮➣ *ᴅᴇʟᴘʀᴇᴍ*
+▮➣ *ʟɪsᴛᴘʀᴇᴍ*
+▮➣ *ᴀᴜᴛᴏᴛʏᴘɪɴɢ*
+▮➣ *ᴀʟᴡᴀʏsᴏɴʟɪɴᴇ*
+▮➣ *ᴀᴜᴛᴏʀᴇᴀᴅ*
+┃✵╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+`
+
+    if (typemenu === 'v1') {
+    gss.sendMessage(m.chat, {
+        image: fs.readFileSync('./menuimage/allmenu.jpg'),
+        caption: introText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
+        }
+    }, {
+        quoted: m
+    });
+} else if (typemenu === 'v2') {
+    gss.sendMessage(m.chat, {
+        text: introText,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+        }
+    }, {
+            quoted: m
+        });
+    } else if (typemenu === 'v3') {
+        gss.sendMessage(m.chat, {
+            video: fs.readFileSync('./gss.mp4'),
+            caption: introText,
+            sourceUrl: global.link,
+            gifPlayback: true
         }, {
             quoted: m
         });
-    } catch (error) {
-        m.reply('You have not set a menu yet. Use setmenu command to set your menu.');
-    }
+    } else if (typemenu === 'v4') {
+        gss.relayMessage(m.chat, {
+            scheduledCallCreationMessage: {
+                callType: "AUDIO",
+                scheduledTimestampMs: 1200,
+                title: introText
+            }
+        }, {});
+    } else if (typemenu === 'v5') {
+        gss.relayMessage(m.chat, {
+    requestPaymentMessage: {
+        currencyCodeIso4217: 'INR', // Set to INR for Indian Rupees
+        amount1000: '9999999', // Adjust the amount to the desired value in paise (100 paise = 1 INR)
+        requestFrom: m.sender,
+        noteMessage: {
+            extendedTextMessage: {
+                text: introText,
+                sourceUrl: global.link,
+                contextInfo: {
+                    externalAdReply: {
+                        showAdAttribution: false
+                            }
+                        }
+                    }
+                }
+            }
+        }, {});
+    } 
+    break;
 }
-break;
 
 
 
