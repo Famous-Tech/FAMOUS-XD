@@ -89,9 +89,8 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
         global.prefix = prefix
         const isCmd = body.startsWith(prefix)
-        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
-        var args = body.trim().split(/ +/).slice(1)
-        args = args.concat(['','','','','',''])
+        const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
+const args = body.trim().split(/ +/).slice(1)
         const isBaileys = chatUpdate?.messages[0]?.key?.id?.startsWith("BAE5");
 
 //prefix v2
@@ -2774,7 +2773,7 @@ case 'play': {
     currentPollIndex = 0;
 
     // Add 'audio', 'video', and 'next' options to the poll
-    const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '️.𝗡𝗘𝗫𝗧'];
+    const pollOptions = ['🎵𝗔𝗨𝗗𝗜𝗢', '📽️𝗩𝗜𝗗𝗘𝗢', '⏭️𝗡𝗘𝗫𝗧'];
 
     gss.sendPoll(
       m.chat,
