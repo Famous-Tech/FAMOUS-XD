@@ -402,11 +402,7 @@ if (m.text.toLowerCase() === 'send') {
     
     
 
-if (ALWAYS_ONLINE) {
-  gss.sendPresenceUpdate('available', m.chat);
-} else {
-  gss.sendPresenceUpdate('unavailable', m.chat);
-}
+
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
@@ -527,6 +523,12 @@ if (!isCreator && global.onlypc && m.isGroup) {
 if (TYPING_ENABLED && command) {
   // Execute code when REACODING is enabled
   gss.sendPresenceUpdate('composing');
+}
+
+if (ALWAYS_ONLINE) {
+  gss.sendPresenceUpdate('available', m.chat);
+} else {
+  gss.sendPresenceUpdate('unavailable', m.chat);
 }
 
 // 212 auto block using cmd
