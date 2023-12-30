@@ -747,15 +747,16 @@ during ${clockString(new Date - user.afkTime)}`)
             user.afkReason = ''
         }
         
-        const cmdAi = ["ai", "voiceai", "bug", "report", "gpt", "dalle", "remini"];
-const cmdTool = ["calculator", "tempmail", "checkmail", "info", "trt", "tts"];
-const cmdGrup = ["linkgroup", "setppgc", "setname", "setdesc", "group", "gcsetting", "welcome", "left", "setwelcome", "setleft", "editinfo", "add", "kick", "hidetag", "tagall", "totag", "tagadmin", "antilink", "antiToxic", "mute", "promote", "demote", "revoke", "poll", "getbio", "revoke"];
-const cmdDown = ["apk", "ytvideo", "ytaudio", "getaudio", "getvideo", "facebook", "mediafire", "pinterestdl", "xnxxsearch", "xnxxdownload", "gitclone", "gdrive", "insta", "ytmp3", "ytmp4", "tiktok"];
-const cmdSearch = ["play", "yts", "imdb", "google", "gimage", "pinterest", "wallpaper", "wikimedia", "ytsearch", "ringtone", "weather", "lyrics"];
-const cmdFun = ["delttt", "tictactoe"];
-const cmdConv = ["removebg", "sticker", "emojimix", "tovideo", "togif", "tourl", "tovn", "tomp3", "toaudio", "ebinary", "dbinary", "styletext", "fontchange", "fancy", "upscale", "hd", "attp", "qc"];
-const cmdMain = ["ping", "alive", "owner", "menu", "infochat", "quoted", "listpc", "listgc", "listonline", "infobot", "buypremium"];
-const cmdOwner = ["react", "chat", "join", "leave", "block", "unblock", "bcgroup", "bcall", "setppbot", "setexif", "anticall", "setstatus", "setnamebot", "sleep", "autotyping", "alwaysonline", "autoread"];
+        const cmdAi = ["Ai", "Voiceai", "Bug", "Report", "Gpt", "Dalle", "Remini"];
+const cmdTool = ["Calculator", "Tempmail", "Checkmail", "Info", "Trt", "Tts"];
+const cmdGrup = ["LinkGroup", "Setppgc", "Setname", "Setdesc", "Group", "Gcsetting", "Welcome", "Left", "SetWelcome", "SetLeft", "Editinfo", "Add", "Kick", "HideTag", "Tagall", "Totag", "Tagadmin", "AntiLink", "AntiToxic", "Mute", "Promote", "Demote", "Revoke", "Poll", "Getbio"];
+const cmdDown = ["Apk", "Facebook", "Mediafire", "Pinterestdl", "XnxxSearch", "Xnxxdl", "Gitclone", "Gdrive", "Insta", "Instadoc", "Ytmp3", "Ytmp4", "Play", "Song", "Video", "Ytmp3doc", "Ytmp4doc", "Tiktok", "Tiktokdoc"];
+const cmdSearch = ["Play", "Yts", "Imdb", "Google", "Gimage", "Pinterest", "Wallpaper", "Wikimedia", "Ytsearch", "Ringtone", "Lyrics"];
+const cmdFun = ["Delttt", "Tictactoe"];
+const cmdConv = ["Removebg", "Sticker", "Emojimix", "Tovideo", "Togif", "Tourl", "Tovn", "Tomp3", "Toaudio", "Ebinary", "dbinary", "Styletext", "Fontchange", "Fancy", "Upscale", "hd", "attp", "attp2", "attp3", "ttp", "ttp2", "ttp3", "ttp4", "ttp5", "qc"];
+const cmdMain = ["Ping", "Alive", "Owner", "Menu", "Infochat", "Quoted", "Listpc", "Listgc", "Listonline", "Infobot", "Buypremium"];
+const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup", "Bcall", "Setppbot", "Setexif", "Anticall", "Setstatus", "Setnamebot", "Sleep", "AutoTyping", "AlwaysOnline", "AutoRead"];
+const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 	    
         switch(isCommand) {
 	    case 'afk': {
