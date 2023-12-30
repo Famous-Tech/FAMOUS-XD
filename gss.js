@@ -4162,29 +4162,18 @@ case 'gdrive':
 function convertToFontStyle(text, style) {
     let styledText = '';
 
-   
     if (fonts[style]) {
-
         for (const char of text) {
-
-            if (fonts[style][char]) {
-              
-                styledText += fonts[style][char];
-            } else {
-
-                styledText += char;
-            }
+            styledText += fonts[style][char] || char;
         }
     } else {
-      
         styledText = text;
     }
 
     return styledText;
 }
 
-
-    case 'fontchange':
+case 'fontchange':
 case 'fancy': {
     if (args.length === 0) {
         const availableStylesPreview = availableStyles.map(style => {
@@ -4202,14 +4191,13 @@ case 'fancy': {
             const inputText = args.slice(1).join(" ");
             const styledText = convertToFontStyle(inputText, style);
 
-            console.log(`Input: ${inputText}`);
-            console.log(`Styled: ${styledText}`);
-            
+
             m.reply(`${styledText}`);
         }
     }
 }
 break;
+
 
 
 
