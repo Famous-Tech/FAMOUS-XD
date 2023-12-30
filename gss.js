@@ -1784,11 +1784,15 @@ break;
 
 
 
+const truecallerjs = require("truecallerjs");
+
 async function performTruecallerSearch(fullNumber) {
   let number = fullNumber.replace(/\D/g, ''); // Remove non-numeric characters
+  const countryCode = "91"; // Assume India's country code
 
   const searchData = {
     number: number,
+    countryCode: countryCode,
     installationId: "a1i0g--k3toNiVP-9swCenahQhhokTiqfXRFw2LossLOsZLDh3P-fLD0b75S8iF7",
   };
 
@@ -1801,7 +1805,7 @@ async function performTruecallerSearch(fullNumber) {
   }
 }
 
-  case 'true2': {
+  case 'true': {
     if (!text) return m.reply(`Please provide a valid number for Truecaller search.`);
 
     try {
