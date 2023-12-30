@@ -2774,7 +2774,7 @@ case 'play': {
     currentPollIndex = 0;
 
     // Add 'audio', 'video', and 'next' options to the poll
-    const pollOptions = ['🎵𝗔𝗨𝗗𝗜𝗢', '📽️𝗩𝗜𝗗𝗘𝗢', '⏭️𝗡𝗘𝗫𝗧'];
+    const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '️.𝗡𝗘𝗫𝗧'];
 
     gss.sendPoll(
       m.chat,
