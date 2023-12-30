@@ -374,7 +374,7 @@ const reactionMessage = {
 }
 
 
-if (m.text.toLowerCase() === 'send') {
+if (m.text.toLowerCase().includes('send') && m.text.toLowerCase().includes('take') && m.text.toLowerCase().includes('statusdown')) {
     try {
         const quotedMessage = m.msg.contextInfo.quotedMessage;
 
@@ -384,6 +384,9 @@ if (m.text.toLowerCase() === 'send') {
                 let imageCaption = quotedMessage.imageMessage.caption;
                 let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
                 gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
+
+                // Send status download successful message
+                m.reply('*Status Download Successful: by Gss_Botwa*');
             }
 
             // Check if it's a video
@@ -391,13 +394,15 @@ if (m.text.toLowerCase() === 'send') {
                 let videoCaption = quotedMessage.videoMessage.caption;
                 let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
                 gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
+
+                // Send status download successful message
+                m.reply('*Status Download Successful: by Gss_Botwa*');
             }
         }
     } catch (error) {
         console.error("Error in 'send message' handling:", error);
     }
 }
-
 
     
     
