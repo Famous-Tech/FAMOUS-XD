@@ -484,30 +484,6 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
-let fstatus = { 
-            key: { 
-               fromMe: false, 
-               participant: `0@s.whatsapp.net`,  
-               ...(m.chat ? {  remoteJid: "status@broadcast"  } : {}) 
-            }, 
-               message: {  
-                  "imageMessage": { 
-                     "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", 
-                     "mimetype": "image/jpeg", 
-                     "caption": botname,
-                     "fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", 
-                     "fileLength": "28777",
-                     "height": 1080,
-                     "width": 1079,
-                     "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=",
-                     "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=",
-                     "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69",
-                     "mediaKeyTimestamp": "1610993486",
-                     "jpegThumbnail": await reSize(thumb, 100, 100),
-                     "scansSidecar": "1W0XhfaAcDwc7xh1R8lca6Qg/1bB4naFCSngM2LKO2NoP5RI7K+zLw=="
-                  }
-               }
-            }
 
 
 if (isCommand) {
@@ -4843,30 +4819,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
                 }
             }
         }, {});
-    } else if (typemenu === 'v6') {
-                    gss.sendMessage(m.chat, {
-                        document: {
-                           url: 'https://telegra.ph/file/9bef2d8c6757d0e2b6423.jpg'
-                        },
-                        caption: introText,
-                        mimetype: 'application/zip',
-                        fileName: botname,
-                        fileLength: "99999999999",
-                        contextInfo: {
-                            externalAdReply: {
-                                showAdAttribution: false,
-                                title: botname,
-                                body: `Bot Created By ${ownername}`,
-                                thumbnail: fs.readFileSync('./menuimage/menu.jpg'),
-                                sourceUrl: global.link,
-                                mediaType: 1,
-                                renderLargerThumbnail: false
-                            }
-                        }
-                    }, {
-                        quoted: fstatus 
-                    })
-                }
+    } 
+}
     break;
 }
 
