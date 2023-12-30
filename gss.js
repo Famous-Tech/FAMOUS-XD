@@ -1,6 +1,7 @@
 require("dotenv").config();  
 require('./config')
 const Func = ('./lib/function.js');
+const { generateMenu } = require('./menu');
 const fonts = require('./lib/font.js');
 const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
@@ -4597,12 +4598,11 @@ break;
 
 
 case 'setmenu': {
-    if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('setmenu has 5 views');
 
     process.env.TYPEMENU = text; // Set the environment variable
 
-    const menuText = generateMenu(text);
+    const menuText = generateMenu(pushname, isPremium, botname, devlopernumber); // Call generateMenu with appropriate arguments
     fs.writeFileSync('./menu.js', menuText);
 
     m.reply(mess.success);
@@ -4633,6 +4633,7 @@ case 'menuall': {
     }
 }
 break;
+
 
 
 
