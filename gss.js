@@ -4144,7 +4144,7 @@ case 'readmore': {
     if (!text) return m.reply( 'give me text');
 
     const continuationMessage = `
-    ${text}${readmore}`;
+    ${readmore}${text}`;
 
     m.reply(continuationMessage);
     break;
