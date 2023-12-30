@@ -44,7 +44,7 @@ const translate = require('translate-google-api');
   const { cpus, totalmem, freemem } = require("os");
   const {  sizeFormatter } = require("human-readable");
  const pingSt = new Date();
-const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
+const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, reSize, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
 
 
