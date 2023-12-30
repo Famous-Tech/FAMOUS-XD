@@ -4650,9 +4650,9 @@ case 'allmenu': {
 │ *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰────────────────❃ 
 ╭──═❮ *Users Info* ❯═─┈•
-│✑*Name* : *${pushname}*
-│✑*Number* : *${m.sender}*
-│✑*Premium* : *${isPremium ? '✅' : '❌'}*
+│✑ *Name* : *${pushname}*
+│✑ *Number* : *${m.sender.split('@')[0]}*
+│✑ *Premium* : *${isPremium ? '✅' : '❌'}*
 ╰────────────────❃ `;
 
     const randomSymbol = getRandomSymbol();
