@@ -374,34 +374,33 @@ const reactionMessage = {
 }
 
 
-if (m.text.toLowerCase() === 'send') && (m.text.toLowerCase() === 'statusdown') && (m.text.toLowerCase() === 'take') {
-    try {
-        const quotedMessage = m.msg.contextInfo.quotedMessage;
+try {
+  const textLower = m.text.toLowerCase();
 
-        if (quotedMessage) {
-            // Check if it's an image
-            if (quotedMessage.imageMessage) {
-                let imageCaption = quotedMessage.imageMessage.caption;
-                let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
-                gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
-                m.reply('*Status Download Successful: by Gss_Botwa*'); }
-            }
-            
-            
+  if (textLower === 'send' || textLower === 'statusdown' || textLower === 'take') {
+    const quotedMessage = m.msg.contextInfo.quotedMessage;
 
-            // Check if it's a video
-            if (quotedMessage.videoMessage) {
-                let videoCaption = quotedMessage.videoMessage.caption;
-                let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
-                gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
-                m.reply('*Status Download Successful: by Gss_Botwa*'); }
-            }
-        }
-    } catch (error) {
-        console.error("Error in 'send message' handling:", error);
+    if (quotedMessage) {
+      // Check if it's an image
+      if (quotedMessage.imageMessage) {
+        let imageCaption = quotedMessage.imageMessage.caption;
+        let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
+        gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
+        m.reply('*Status Download Successful: by Gss_Botwa*');
+      }
+
+      // Check if it's a video
+      if (quotedMessage.videoMessage) {
+        let videoCaption = quotedMessage.videoMessage.caption;
+        let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
+        gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
+        m.reply('*Status Download Successful: by Gss_Botwa*');
+      }
     }
+  }
+} catch (error) {
+  console.error("Error in 'send message' handling:", error);
 }
-
 
     
     
