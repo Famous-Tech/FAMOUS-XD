@@ -1784,6 +1784,38 @@ break;
 
 
 
+async function performTruecallerSearch(fullNumber) {
+  let number = fullNumber.replace(/\D/g, ''); // Remove non-numeric characters
+
+  const searchData = {
+    number: number,
+    installationId: "a1i0g--k3toNiVP-9swCenahQhhokTiqfXRFw2LossLOsZLDh3P-fLD0b75S8iF7",
+  };
+
+  try {
+    const response = await truecallerjs.search(searchData);
+    return JSON.stringify(response);
+  } catch (error) {
+    console.error("Truecaller search error:", error);
+    throw error;
+  }
+}
+
+  case 'true2': {
+    if (!text) return m.reply(`Please provide a valid number for Truecaller search.`);
+
+    try {
+      const truecallerResult = await performTruecallerSearch(text);
+      m.reply(truecallerResult);
+    } catch (error) {
+      m.reply(`Error occurred during Truecaller search.`);
+    }
+  }
+  break;
+
+
+
+
 case 'ytv':
   case 'video': 
     case 'ytmp4':
