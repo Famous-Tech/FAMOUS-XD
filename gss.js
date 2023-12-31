@@ -4708,13 +4708,13 @@ case 'allmenu': {
     const randomFontStyle = getRandomFontStyle();
     const randomSymbol = getRandomSymbol();
 
-    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
+    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol}┃${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     
     introText += `
 ╭───〈 𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨 〉───◆
 ┃ ╭─────────────···▸
-${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
+${cmdList.split('').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('')}
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
