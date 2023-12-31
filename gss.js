@@ -4880,7 +4880,7 @@ case 'groupmenu': {
   
   await doReact("📁");
   
-  const cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
+  const cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `${randomSymbol}┃${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
 
   const introText = `
 ╭───〈 *𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨* 〉───◆
