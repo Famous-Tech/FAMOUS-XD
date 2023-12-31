@@ -4266,7 +4266,7 @@ case 'fancy': {
             return `${style}: ${previewText}`;
         }).join('\n');
 
-        m.reply(`Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${previewText}`);
+        m.reply(`Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${availableStylesPreview}`);
     } else {
         const style = parseInt(args[0]);
 
