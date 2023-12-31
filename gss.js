@@ -2,11 +2,13 @@ require("dotenv").config();
 require('./config')
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
+consr menufont = require('./lib/menufont.js');
 const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
+const availableFontStyles = Object.keys(menufont);
 const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser,getAggregateVotesInPollMessage, getContentType } = require('@whiskeysockets/baileys')
 const fs = require('fs')
 const fsx = require('fs-extra')
@@ -4674,9 +4676,9 @@ function getRandomSymbol() {
     return symbols[randomIndex];
 }
 function getRandomFontStyle() {
-  const availableStyles = Object.keys(fonts);
-  const randomIndex = Math.floor(Math.random() * availableStyles.length);
-  return availableStyles[randomIndex];
+  const availableFontStyles = Object.keys(menufont);
+  const randomIndex = Math.floor(Math.random() * availableFontStyles.length);
+  return availableFontStyles[randomIndex];
 }
 
 const randomSymbol = getRandomSymbol();
