@@ -4668,12 +4668,17 @@ case 'listmenu':
 }
 break;
 
-          // Assuming you have a getRandomSymbol function to generate a random symbol
 function getRandomSymbol() {
     const symbols = ['◉', '★', '◎', '✯','✯','✰','◬','✵','✦']; // Add more symbols as needed
     const randomIndex = Math.floor(Math.random() * symbols.length);
     return symbols[randomIndex];
 }
+function getRandomFontStyle() {
+  const availableStyles = Object.keys(fonts);
+  const randomIndex = Math.floor(Math.random() * availableStyles.length);
+  return availableStyles[randomIndex];
+}
+
 const randomSymbol = getRandomSymbol();
 
 case 'menuall':
@@ -4700,8 +4705,10 @@ case 'allmenu': {
 │✑ *Premium* : *${isPremium ? '✅' : '❌'}* ${readmore}
 ╰────────────────❃ `;
 
-    const randomSymbol = getRandomSymbol();
-    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+
+    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
+    
     
     introText += `
 ╭───〈 𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨 〉───◆
@@ -4710,7 +4717,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-    cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗧𝗢𝗢𝗟 𝗠𝗘𝗡𝗨〉───◆
@@ -4719,7 +4726,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-    cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗔𝗜 𝗠𝗘𝗡𝗨 〉───◆
@@ -4728,7 +4735,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-    cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗢𝗪𝗡𝗘𝗥 〉───◆
@@ -4737,7 +4744,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-    cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗚𝗘𝗡𝗘𝗥𝗔𝗟 〉───◆
@@ -4746,7 +4753,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-    cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥 〉───◆
@@ -4755,7 +4762,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-    cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 〉───◆
@@ -4764,7 +4771,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷✪`;
 
-cmdList = cmdStalk.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+cmdList = cmdStalk.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗦𝗧𝗔𝗟𝗞 〉───◆
@@ -4773,7 +4780,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷✪`;
 
-    cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗦𝗘𝗔𝗥𝗖𝗛 〉───◆
@@ -4782,7 +4789,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ┃ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-    cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     introText += `
 ╭───〈 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥 〉───◆
@@ -4862,11 +4869,6 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 
 
 
-function getRandomFontStyle() {
-  const availableStyles = Object.keys(fonts);
-  const randomIndex = Math.floor(Math.random() * availableStyles.length);
-  return availableStyles[randomIndex];
-}
 
 // Modify your gcmenu code
 case 'gcmenu':
@@ -4875,9 +4877,9 @@ case 'groupmenu': {
   const randomFontStyle = getRandomFontStyle();
   const randomSymbol = getRandomSymbol();
   
-  await doReact(randomSymbol);
+  await doReact("📁");
   
-  const cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${convertToFontStyle(v, randomFontStyle)}`).join('\n');
+  const cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
 
   const introText = `
 ╭───〈 *𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨* 〉───◆
@@ -4910,7 +4912,9 @@ case 'dlmenu':
 case 'downmenu': {
   await doReact("⬇️");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdDown.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 *𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥* 〉───◆
@@ -4938,7 +4942,9 @@ break;
 case 'searchmenu': {
   await doReact("🔍");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdSearch.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 𝗦𝗘𝗔𝗥𝗖𝗛 〉───◆
@@ -4966,7 +4972,9 @@ break;
 case 'funmenu': {
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdFun.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 〉───◆
@@ -4994,7 +5002,9 @@ break;
 case 'convertmenu': {
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdConv.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥 〉───◆
@@ -5022,7 +5032,9 @@ break;
 case 'mainmenu': {
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdMain.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 𝗚𝗘𝗡𝗘𝗥𝗔𝗟 〉───◆
@@ -5050,7 +5062,9 @@ break;
 case 'ownermenu': {
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdOwner.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 𝗢𝗪𝗡𝗘𝗥 〉───◆
@@ -5078,7 +5092,9 @@ break;
 case 'aimenu': {
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdAi.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 𝗔𝗜 𝗠𝗘𝗡𝗨 〉───◆
@@ -5108,7 +5124,9 @@ break;
 case 'toolmenu': {
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
-    let cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
+    const randomFontStyle = getRandomFontStyle();
+    
+    let cmdList = cmdTool.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
     const introText = `
 ╭───〈 𝗧𝗢𝗢𝗟 𝗠𝗘𝗡𝗨〉───◆
