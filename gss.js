@@ -4862,14 +4862,24 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 
 
 
+function getRandomFontStyle() {
+  const availableStyles = Object.keys(fonts);
+  const randomIndex = Math.floor(Math.random() * availableStyles.length);
+  return availableStyles[randomIndex];
+}
+
+// Modify your gcmenu code
 case 'gcmenu':
 case 'grupmenu':
 case 'groupmenu': {
-  await doReact("📁");
-    const randomSymbol = getRandomSymbol();
-    let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${prefix}${v}`).join('\n');
-    
-    const introText = `
+  const randomFontStyle = getRandomFontStyle();
+  const randomSymbol = getRandomSymbol();
+  
+  await doReact(randomSymbol);
+  
+  const cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${convertToFontStyle(v, randomFontStyle)}`).join('\n');
+
+  const introText = `
 ╭───〈 *𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨* 〉───◆
 ┃ ╭─────────────···▸
 ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
@@ -4877,20 +4887,22 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 ╰━━━━━━━━━━━━━━━┈⊷
 `;
 
-    await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menuimage/menu.jpg'),
-        caption: introText,
-        contextInfo: {
-            externalAdReply: {
-                showAdAttribution: false,
-                title: botname,
-                sourceUrl: global.link,
-                body: `Bot Created By ${global.owner}`
-            }
-        }
-    }, { quoted: m });
+  await gss.sendMessage(m.chat, {
+    image: fs.readFileSync('./menuimage/menu.jpg'),
+    caption: introText,
+    contextInfo: {
+      externalAdReply: {
+        showAdAttribution: false,
+        title: botname,
+        sourceUrl: global.link,
+        body: `Bot Created By ${global.owner}`
+      }
+    }
+  }, { quoted: m });
 }
 break;
+
+
 
 
             case 'downloadmenu':
