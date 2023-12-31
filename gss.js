@@ -4700,12 +4700,13 @@ case 'allmenu': {
 │ *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰────────────────❃ 
 ╭──═❮ *Users Info* ❯═─┈•
-│✑ *Name* : *${pushname}*
-│✑ *Number* : *${m.sender.split('@')[0]}*
-│✑ *Premium* : *${isPremium ? '✅' : '❌'}* ${readmore}
+│ *Name* : *${pushname}*
+│ *Number* : *${m.sender.split('@')[0]}*
+│ *Premium* : *${isPremium ? '✅' : '❌'}* ${readmore}
 ╰────────────────❃ `;
 
     const randomFontStyle = getRandomFontStyle();
+    const randomSymbol = getRandomSymbol();
 
     let cmdList = cmdGrup.sort((a, b) => a.localeCompare(b)).map((v, i) => `┃ ${randomSymbol} ${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
     
