@@ -2,7 +2,7 @@ require("dotenv").config();
 require('./config')
 const Func = ('./lib/function.js');
 const fonts = require('./lib/font.js');
-consr menufont = require('./lib/menufont.js');
+const menufont = require('./lib/menufont.js');
 const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
 const more = String.fromCharCode(8206)
