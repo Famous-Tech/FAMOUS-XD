@@ -4266,11 +4266,11 @@ case 'fancy': {
             return `${style}: ${previewText}`;
         }).join('\n');
 
-        m.reply(`Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${availableStylesPreview}`);
+        m.reply(`Usage:\n${prefix}fontchange <style> <text>\nAvailable font styles with previews:\n${previewText}`);
     } else {
         const style = parseInt(args[0]);
 
-        if (isNaN(style) || style < 0 || style > 50) {
+        if (isNaN(style) || style < 0 || style > 34) {
             m.reply(`Style number should be between 0 and 34. Please choose a valid style.`);
         } else {
             const inputText = args.slice(1).join(" ");
