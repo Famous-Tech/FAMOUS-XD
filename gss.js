@@ -4270,7 +4270,7 @@ case 'fancy': {
     } else {
         const style = parseInt(args[0]);
 
-        if (isNaN(style) || style < 0 || style > 34) {
+        if (isNaN(style) || style < 0 || style > 50) {
             m.reply(`Style number should be between 0 and 34. Please choose a valid style.`);
         } else {
             const inputText = args.slice(1).join(" ");
