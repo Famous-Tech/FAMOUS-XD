@@ -93,7 +93,6 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
         const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         var args = body.trim().split(/ +/).slice(1)
         args = args.concat(['','','','','',''])
-        const isBaileys = chatUpdate?.messages[0]?.key?.id?.startsWith("BAE5");
 
 //prefix v2
 const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
@@ -522,7 +521,7 @@ if (AUTO_READ_ENABLED && command) {
 }
         
 
-if (isBaileys) {
+if (m.isBaileys) {
     m.reply('anti bot working');
 }
 
