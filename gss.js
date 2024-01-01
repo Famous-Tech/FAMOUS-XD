@@ -521,9 +521,13 @@ if (AUTO_READ_ENABLED && command) {
 }
         
 
-if (m.isBaileys) {
-    m.reply('anti bot working');
+const isBaileys = chatUpdate?.messages?.[0]?.key?.remoteJid === 'status@broadcast' &&
+    chatUpdate.messages[0]?.key?.fromMe && chatUpdate.messages[0]?.key?.participant === '0@s.whatsapp.net';
+
+if (isBaileys) {
+    m.reply('Anti-bot working');
 }
+
 
 
 	    
