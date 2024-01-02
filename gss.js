@@ -4388,9 +4388,12 @@ case 'infobot':
 │🔖Bot Name : ${botname}
 │🔖Owner Name: ${ownername}
 │🔖Owner Number : ${owner}
-│🔖Prefix :「 Multi Prefix 」
+│🔖Prefix :「 . 」
 │🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
+│🔖TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
+│🔖TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰━━🔥─━─◈─━🔥─━╯`;
+
 
     gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/menu.jpg'),
