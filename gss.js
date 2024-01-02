@@ -2283,7 +2283,7 @@ case 'ytsearch': {
         const title = result.title;
 
         urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
-        pollOptions.push(`.play ${optionIndex}.${i + 1} ${title}`);
+        pollOptions.push(title);
       }
 
       if (!videoSearchResults.has(uniqueKey)) {
@@ -2292,7 +2292,7 @@ case 'ytsearch': {
 
       videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
 
-      await gss.sendPoll(m.chat, 'Choose a video to play:', [...pollOptions]);
+      await gss.sendPoll(m.chat, 'Choose a video to play:', [...pollOptions], { isReply: false });
       await doReact("✅");
 
       optionIndex += 1;
@@ -2305,6 +2305,7 @@ case 'ytsearch': {
   }
   break;
 }
+
 
 
 // Add this function to format upload date
