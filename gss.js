@@ -1104,7 +1104,7 @@ case 'sc':
             {
                 if (!isCreator) return m.reply(mess.owner)
                 let delb = await gss.downloadAndSaveMediaMessage(quoted)
-                await fsx.copy(delb, './allmenu.jpg')
+                await fsx.copy(delb, './menuimage/allmenu.jpg')
                 fs.unlinkSync(delb)
                 m.reply(mess.success)
             }
