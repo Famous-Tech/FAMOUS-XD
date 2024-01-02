@@ -4385,13 +4385,13 @@ case 'tempmail': case 'mail': {
 case 'infobot':
     const tod = `
 ╭━🔥──━─◈─━🔥─━╮
-│🔖Bot Name : ${botname}
-│🔖Owner Name: ${ownername}
-│🔖Owner Number : ${owner}
-│🔖Prefix :「 . 」
-│🔖Runtime : _*${hours}h ${minutes}m ${seconds}s*_
-│🔖TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
-│🔖TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
+│🔖*Bot Name* : ${botname}
+│🔖*Owner Name* : ${ownername}
+│🔖*Owner Number* : ${owner}
+│🔖*Prefix* :「 . 」
+│🔖*Runtime* : _*${hours}h ${minutes}m ${seconds}s*_
+│🔖*TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
+│🔖*TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰━━🔥─━─◈─━🔥─━╯`;
 
 
