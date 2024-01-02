@@ -1806,7 +1806,7 @@ async function performTruecallerSearch(fullNumber) {
   }
 }
 
-  case 'true': {
+  case 'true2': {
     if (!text) return m.reply(`Please provide a valid number for Truecaller search.`);
 
     try {
