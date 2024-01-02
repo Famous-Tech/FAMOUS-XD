@@ -2261,8 +2261,7 @@ case 'ytmp3doc':
 
 
 
-case 'yts':
-case 'ytsearch': {
+case 'yts': case 'ytsearch': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
@@ -2283,7 +2282,7 @@ case 'ytsearch': {
         const title = result.title;
 
         urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
-        pollOptions.push(title);
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
       }
 
       if (!videoSearchResults.has(uniqueKey)) {
@@ -2292,7 +2291,7 @@ case 'ytsearch': {
 
       videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
 
-      await gss.sendPoll(m.chat, 'Choose a video to play:', [...pollOptions], { isReply: false });
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
       await doReact("✅");
 
       optionIndex += 1;
@@ -2305,8 +2304,6 @@ case 'ytsearch': {
   }
   break;
 }
-
-
 
 // Add this function to format upload date
 function formatUploadDate(uploadDate) {
