@@ -4391,7 +4391,7 @@ case 'infobot':
 │🔖 *Prefix* :「 . 」
 │🔖 *Runtime* : _*${hours}h ${minutes}m ${seconds}s*_
 │🔖 *TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
-│🔖*TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
+│🔖 *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰━━─━─◈─━─━╯`;
 
 
