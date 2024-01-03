@@ -134,15 +134,6 @@ let format = sizeFormatter({
  })
  
  
-//// Add a variable to track the state
-let groupUpdatesEnabled = true;
-
-// Toggle group updates
-const toggleGroupUpdates = () => {
-  groupUpdatesEnabled = !groupUpdatesEnabled;
-  return groupUpdatesEnabled;
-};
- 
 
 //  Bot Prosess Time
   const uptime = process.uptime();
