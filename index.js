@@ -160,15 +160,7 @@ gss.ev.on('messages.update', async chatUpdate => {
 });
 
 
-//// Add a variable to track the state
-let groupUpdatesEnabled = false;
 
-// Toggle group updates
-const toggleGroupUpdates = () => {
-  groupUpdatesEnabled = !groupUpdatesEnabled;
-  return groupUpdatesEnabled;
-};
- 
 
 // group updates
 gss.ev.on('group-participants.update', async (anu) => {
