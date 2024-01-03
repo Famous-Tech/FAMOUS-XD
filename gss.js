@@ -134,15 +134,7 @@ let format = sizeFormatter({
  })
  
  
-//// Add a variable to track the state
-let groupUpdatesEnabled = true;
 
-// Toggle group updates
-const toggleGroupUpdates = () => {
-  groupUpdatesEnabled = !groupUpdatesEnabled;
-  return groupUpdatesEnabled;
-};
- 
 
 //  Bot Prosess Time
   const uptime = process.uptime();
@@ -3968,10 +3960,10 @@ case 'groupupdates':
   if (!isCreator) throw mess.owner;
   if (args[0] === 'on') {
     groupUpdatesEnabled = true;
-    m.reply('*AUTO TYPING turned on.*');
+    m.reply('*group updates turned on.*');
   } else if (args[0] === 'off') {
     groupUpdatesEnabled = false;
-    m.reply('*AUTO TYPING turned off.*');
+    m.reply('*group updates turned off.*');
   } else {
     gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
