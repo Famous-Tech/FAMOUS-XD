@@ -3962,6 +3962,22 @@ if (!isCreator) throw mess.owner
   }
   break;
   
+
+
+case 'groupupdates':
+  if (!isCreator) throw mess.owner;
+  if (args[0] === 'on') {
+    groupUpdatesEnabled = true;
+    m.reply('*AUTO TYPING turned on.*');
+  } else if (args[0] === 'off') {
+    groupUpdatesEnabled = false;
+    m.reply('*AUTO TYPING turned off.*');
+  } else {
+    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
+  }
+  break;
+
+  
   
 case 'gcsetting':
 if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
