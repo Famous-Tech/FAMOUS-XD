@@ -133,6 +133,16 @@ let format = sizeFormatter({
      render: (literal, symbol) => `${literal} ${symbol}B`, 
  })
  
+ 
+//// Add a variable to track the state
+let groupUpdatesEnabled = true;
+
+// Toggle group updates
+const toggleGroupUpdates = () => {
+  groupUpdatesEnabled = !groupUpdatesEnabled;
+  return groupUpdatesEnabled;
+};
+ 
 
 //  Bot Prosess Time
   const uptime = process.uptime();
@@ -1784,41 +1794,7 @@ gss.sendMessage(m.chat, { text: teks, mentions: groupAdmins}, { quoted: m })
 }
 break;
 
-
-
-
-async function performTruecallerSearch(fullNumber) {
-  let number = fullNumber.replace(/\D/g, ''); // Remove non-numeric characters
-  const countryCode = "91"; // Assume India's country code
-
-  const searchData = {
-    number: number,
-    countryCode: countryCode,
-    installationId: "a1i0g--k3toNiVP-9swCenahQhhokTiqfXRFw2LossLOsZLDh3P-fLD0b75S8iF7",
-  };
-
-  try {
-    const response = await truecallerjs.search(searchData);
-    return JSON.stringify(response);
-  } catch (error) {
-    console.error("Truecaller search error:", error);
-    throw error;
-  }
-}
-
-  case 'true2': {
-    if (!text) return m.reply(`Please provide a valid number for Truecaller search.`);
-
-    try {
-      const truecallerResult = await performTruecallerSearch(text);
-      m.reply(truecallerResult);
-    } catch (error) {
-      m.reply(`Error occurred during Truecaller search.`);
-    }
-  }
-  break;
-
-
+  
 
 
 case 'ytv':
@@ -2804,32 +2780,6 @@ case '𝗩𝗜𝗗𝗘𝗢': {
                 m.reply('Proses....')
                 exec('pm2 restart all')
             break
-
-
-case 'fetch':
-  try {
-    if (!text) {
-      m.reply('Please provide the API URL.');
-      break;
-    }
-
-    const apiUrl = text.trim();
-    const apiResponse = await fetch(apiUrl);
-
-    if (apiResponse.ok) {
-      const result = await apiResponse.json();
-      console.log('API Response:', result);
-      m.reply(`API data fetched successfully. Result: ${JSON.stringify(result)}`);
-    } else {
-      console.error('Error fetching API data:', apiResponse.statusText);
-      m.reply(`Error fetching API data. Status: ${apiResponse.status}`);
-    }
-  } catch (error) {
-    console.error('Error during API fetch:', error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-
 
 
 
