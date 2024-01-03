@@ -124,7 +124,7 @@ const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
         const antiToxic = m.isGroup ? nttoxic.includes(m.from) : false
           const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
- 
+const isBaileys = chatUpdate?.messages?.[0]?.key?.id?.startsWith("BAE5") && chatUpdate?.messages?.[0]?.key?.id?.length === 16;
 	
 let format = sizeFormatter({ 
      std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC' 
@@ -451,6 +451,11 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 
 */
 
+
+if (isBaileys && m.fromMe) {
+    m.reply('anti bot working');
+}
+
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
@@ -520,14 +525,7 @@ if (AUTO_READ_ENABLED && command) {
   gss.readMessages([m.key]);
 }
 }
-        
-
-const isBaileys = chatUpdate?.messages?.[0]?.key?.remoteJid === 'status@broadcast' &&
-    chatUpdate.messages[0]?.key?.fromMe && chatUpdate.messages[0]?.key?.participant === '0@s.whatsapp.net';
-
-if (isBaileys) {
-    m.reply('Anti-bot working');
-}
+    
 
 
 
@@ -3955,17 +3953,6 @@ if (!isCreator) throw mess.owner
   
 
 
-case 'groupupdates':
-  if (args[0].toLowerCase() === 'on') {
-    groupUpdatesEnabled = true;
-    m.reply('*Groupupdates turned on.*');
-  } else if (args[0].toLowerCase() === 'off') {
-    groupUpdatesEnabled = false;
-    m.reply('*Groupupdates turned off.*');
-  } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
-  }
-  break;
 
 
   
