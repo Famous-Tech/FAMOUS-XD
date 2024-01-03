@@ -3965,17 +3965,17 @@ if (!isCreator) throw mess.owner
 
 
 case 'groupupdates':
-  if (!isCreator) throw mess.owner;
-  if (args[0] === 'on') {
+  if (args[0].toLowerCase() === 'on') {
     groupUpdatesEnabled = true;
-    m.reply('*group updates turned on.*');
-  } else if (args[0] === 'off') {
+    m.reply('*Groupupdates turned on.*');
+  } else if (args[0].toLowerCase() === 'off') {
     groupUpdatesEnabled = false;
-    m.reply('*group updates turned off.*');
+    m.reply('*Groupupdates turned off.*');
   } else {
     gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
+
 
   
   
