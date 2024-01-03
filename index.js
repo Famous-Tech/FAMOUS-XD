@@ -160,54 +160,6 @@ gss.ev.on('messages.update', async chatUpdate => {
 });
 
 
-//// Add a variable to track the state
-let groupUpdatesEnabled = true;
-
-// Toggle group updates
-const toggleGroupUpdates = () => {
-  groupUpdatesEnabled = !groupUpdatesEnabled;
-  return groupUpdatesEnabled;
-};
- 
-
-// group updates
-gss.ev.on('group-participants.update', async (anu) => {
-  // Check if group updates are enabled
-  if (!groupUpdatesEnabled) return;
-
-  console.log(anu);
-  try {
-    let metadata = await gss.groupMetadata(anu.id);
-    let participants = anu.participants;
-    for (let num of participants) {
-      // Get Profile Picture User
-      try {
-        ppuser = await gss.profilePictureUrl(num, 'image');
-      } catch {
-        ppuser = 'https://tinyurl.com/yx93l6da';
-      }
-
-      // Get Profile Picture Group
-      try {
-        ppgroup = await gss.profilePictureUrl(anu.id, 'image');
-      } catch {
-        ppgroup = 'https://tinyurl.com/yx93l6da';
-      }
-
-      if (anu.action == 'add') {
-        gss.sendMessage(anu.id, { image: { url: ppuser }, mentions: [num], caption: `Welcome To ${metadata.subject} @${num.split("@")[0]}` });
-      } else if (anu.action == 'remove') {
-        gss.sendMessage(anu.id, { image: { url: ppuser }, mentions: [num], caption: `@${num.split("@")[0]} Leaving To ${metadata.subject}` });
-      } else if (anu.action == 'promote') {
-        gss.sendMessage(anu.id, { image: { url: ppuser }, mentions: [num], caption: `@${num.split('@')[0]} Promote From ${metadata.subject}` });
-      } else if (anu.action == 'demote') {
-        gss.sendMessage(anu.id, { image: { url: ppuser }, mentions: [num], caption: `@${num.split('@')[0]} Demote From ${metadata.subject}` });
-      }
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
 
 	
 	
