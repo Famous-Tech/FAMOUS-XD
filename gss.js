@@ -456,6 +456,7 @@ if (isBaileys && m.fromMe) {
     m.reply('anti bot working');
 }
 */
+
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
