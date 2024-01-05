@@ -2227,6 +2227,8 @@ case 'ytmp3doc':
 
 
 
+
+
 case 'yts': case 'ytsearch': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2237,9 +2239,11 @@ case 'yts': case 'ytsearch': {
     const results = await yts(text);
 
     if (results.videos.length > 0) {
-      const pollOptions = results.videos.slice(0, 5).map((result, index) => `${result.title} (Option ${index + 1}) .play ${result.url}`);
+      const pollOptions = results.videos.slice(0, 5).map((result, index) => `${index + 1}. ${result.title}`);
 
-      await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions, 1);
+      const pollMessage = `*Choose a video to download:*\n\n${pollOptions.join('\n')}\n\nReply with the corresponding number to download.`;
+
+      await gss.sendMessage(m.chat, pollMessage, m);
       await doReact("✅");
     } else {
       return m.reply('No search results found.');
@@ -2250,6 +2254,7 @@ case 'yts': case 'ytsearch': {
   }
   break;
 }
+
 
 
 
