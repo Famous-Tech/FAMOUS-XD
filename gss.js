@@ -2236,10 +2236,11 @@ case 'ytsearch': {
 
     try {
         const results = await yts(text);
+        console.log(results); // Log the 'results' value
 
         if (results.videos.length > 0) {
-            const pollOptions = results.videos.slice(0, 5).map((result, index) => `${result.title} (Option ${index + 1}) .play ${result.url}`);
-            console.log(pollOptions); 
+            const pollOptions = results.videos.slice(0, 5).map((result, index) => `.play ${result.url} (Option ${index + 1}): ${result.title}`);
+            console.log(pollOptions); // Log the modified 'pollOptions' value
 
             await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions, 1);
             await doReact("✅");
@@ -2252,7 +2253,6 @@ case 'ytsearch': {
     }
     break;
 }
-
 
 
 
