@@ -2226,7 +2226,6 @@ case 'ytmp3doc':
 
 
 
-
 case 'yts': case 'ytsearch': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2242,7 +2241,9 @@ case 'yts': case 'ytsearch': {
         value: `.play ${result.url}`
       }));
 
-      await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions.map(option => option.name), 1);
+      const pollValues = pollOptions.map(option => option.value);
+      
+      await gss.sendPoll(m.chat, 'Choose a video to download:', pollValues, 1);
       await doReact("✅");
     } else {
       return m.reply('No search results found.');
@@ -2253,7 +2254,6 @@ case 'yts': case 'ytsearch': {
   }
   break;
 }
-
 
 
 
