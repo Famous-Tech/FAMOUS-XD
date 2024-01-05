@@ -2246,7 +2246,7 @@ case 'yts': case 'ytsearch': {
         const title = result.title;
 
         urlObject[`${optionIndex}.${i + 1}`] = result.url;
-        pollOptions.push(`.play ${optionIndex}.${i + 1} ${title}`);
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
       }
 
       if (!videoSearchResults.has(uniqueKey)) {
