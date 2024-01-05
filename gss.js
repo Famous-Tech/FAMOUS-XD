@@ -2227,31 +2227,48 @@ case 'ytmp3doc':
 
 
 
-case 'yts':
-case 'ytsearch': {
-    if (!text) {
-        return m.reply('Enter YouTube Video Link or Search Query!');
+case 'yts': case 'ytsearch': {
+  if (!text) {
+    return m.reply('Enter YouTube Video Link or Search Query!');
+  }
+  await doReact("🕘");
+
+  try {
+    const results = await yts(text);
+
+    if (results.videos.length > 0) {
+      let pollOptions = [];
+
+      const uniqueKey = `yts_${optionIndex}`;
+      const urlObject = {};
+
+      for (let i = 0; i < Math.min(5, results.videos.length); i++) {
+        const result = results.videos[i];
+        const videoUrl = result.url;
+        const title = result.title;
+
+        urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
+        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
+      }
+
+      if (!videoSearchResults.has(uniqueKey)) {
+        videoSearchResults.set(uniqueKey, {});
+      }
+
+      videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
+
+      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
+      await doReact("✅");
+
+      optionIndex += 1;
+    } else {
+      return m.reply('No search results found.');
     }
-    await doReact("🕘");
-
-    try {
-        const results = await yts(text);
-        console.log(results); // Log the 'results' value
-
-        if (results.videos.length > 0) {
-            const pollOptions = results.videos.slice(0, 5).map((result, index) => `.play ${result.url} (Option ${index + 1}): ${result.title}`);
-            console.log(pollOptions); // Log the modified 'pollOptions' value
-
-            await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions, 1);
-            await doReact("✅");
-        } else {
-            return m.reply('No search results found.');
-        }
-    } catch (error) {
-        console.error('Error during yts:', error);
-        return m.reply('Unexpected error occurred.');
-    }
-    break;
+  } catch (error) {
+    console.error('Error during yts:', error);
+    return m.reply('Unexpected error occurred.');
+  }
+  break;
 }
 
 
