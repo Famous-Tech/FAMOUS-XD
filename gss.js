@@ -2241,9 +2241,7 @@ case 'yts': case 'ytsearch': {
         value: `.play ${result.url}`
       }));
 
-      const pollValues = pollOptions.map(option => option.value);
-      
-      await gss.sendPoll(m.chat, 'Choose a video to download:', pollValues, 1);
+      await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions, 1);
       await doReact("✅");
     } else {
       return m.reply('No search results found.');
@@ -2254,6 +2252,7 @@ case 'yts': case 'ytsearch': {
   }
   break;
 }
+
 
 
 
