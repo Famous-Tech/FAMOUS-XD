@@ -2237,19 +2237,12 @@ case 'yts': case 'ytsearch': {
     const results = await yts(text);
 
     if (results.videos.length > 0) {
-      let pollOptions = [];
-      const urlObject = {};
+      const pollOptions = results.videos.slice(0, 5).map((result, index) => ({
+        name: result.title,
+        value: `.play ${result.url}`
+      }));
 
-      for (let i = 0; i < Math.min(5, results.videos.length); i++) {
-        const result = results.videos[i];
-        const title = result.title;
-        const videoUrl = result.url;
-
-        urlObject[`${i + 1}`] = videoUrl;
-        pollOptions.push({ name: title, value: `.play ${videoUrl}` });
-      }
-
-      await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions);
+      await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions.map(option => option.name), 1);
       await doReact("✅");
     } else {
       return m.reply('No search results found.');
@@ -2260,6 +2253,7 @@ case 'yts': case 'ytsearch': {
   }
   break;
 }
+
 
 
 
