@@ -2226,6 +2226,7 @@ case 'ytmp3doc':
 
 
 
+
 case 'yts': case 'ytsearch': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2236,10 +2237,7 @@ case 'yts': case 'ytsearch': {
     const results = await yts(text);
 
     if (results.videos.length > 0) {
-      const pollOptions = results.videos.slice(0, 5).map((result, index) => ({
-        name: result.title,
-        value: `.play ${result.url}`
-      }));
+      const pollOptions = results.videos.slice(0, 5).map((result, index) => `${result.title} (Option ${index + 1}) .play ${result.url}`);
 
       await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions, 1);
       await doReact("✅");
@@ -2252,6 +2250,7 @@ case 'yts': case 'ytsearch': {
   }
   break;
 }
+
 
 
 
