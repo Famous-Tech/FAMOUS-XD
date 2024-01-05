@@ -2227,6 +2227,11 @@ case 'ytmp3doc':
 
 
 
+// Assuming the initial declaration of optionIndex somewhere in your code
+let optionIndex = 1;
+
+// ...
+
 case 'yts': case 'ytsearch': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2244,10 +2249,10 @@ case 'yts': case 'ytsearch': {
       for (let i = 0; i < Math.min(5, results.videos.length); i++) {
         const result = results.videos[i];
         const title = result.title;
-        const optionValue = `.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1}`;
+        const optionValue = `.play ${optionIndex}.${i + 1}`;
 
-        urlObject[`${optionIndex}.${i + 1}`] = result.url;
-        pollOptions.push(title);
+        urlObject[`${optionIndex}.${i + 1}`] = optionValue;
+        pollOptions.push({ display: title, jid: optionValue });
       }
 
       if (!videoSearchResults.has(uniqueKey)) {
@@ -2256,8 +2261,7 @@ case 'yts': case 'ytsearch': {
 
       videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
 
-      const formattedPollOptions = pollOptions.map((title, i) => `${title} (Option ${optionIndex}.${i + 1})`);
-      
+      const formattedPollOptions = pollOptions.map(option => option.display);
       await gss.sendPoll(m.chat, 'Choose a video to download:', formattedPollOptions);
       await doReact("✅");
 
