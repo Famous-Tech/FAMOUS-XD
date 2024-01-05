@@ -5109,10 +5109,6 @@ break;
 
             
             default:
-            
-            if (/^bot/i.test(m.body)) {
-                    m.reply(`Bot Activated "${m.pushName}"`)
-                }
 		
         }
                 if (budy.startsWith('=>')) {
