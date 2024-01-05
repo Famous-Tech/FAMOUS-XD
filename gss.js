@@ -2238,29 +2238,19 @@ case 'yts': case 'ytsearch': {
 
     if (results.videos.length > 0) {
       let pollOptions = [];
-      const uniqueKey = `yts_${optionIndex}`;
       const urlObject = {};
 
       for (let i = 0; i < Math.min(5, results.videos.length); i++) {
         const result = results.videos[i];
         const title = result.title;
-        const optionValue = `.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1}`;
+        const videoUrl = result.url;
 
-        urlObject[`${optionIndex}.${i + 1}`] = optionValue;
-        pollOptions.push({ display: title, jid: optionValue });
+        urlObject[`${i + 1}`] = videoUrl;
+        pollOptions.push({ name: title, value: `.play ${videoUrl}` });
       }
 
-      if (!videoSearchResults.has(uniqueKey)) {
-        videoSearchResults.set(uniqueKey, {});
-      }
-
-      videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
-
-      const formattedPollOptions = pollOptions.map(option => option.display);
-      await gss.sendPoll(m.chat, 'Choose a video to download:', formattedPollOptions);
+      await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions);
       await doReact("✅");
-
-      optionIndex += 1;
     } else {
       return m.reply('No search results found.');
     }
