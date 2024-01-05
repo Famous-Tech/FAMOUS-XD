@@ -2227,35 +2227,31 @@ case 'ytmp3doc':
 
 
 
-
-
-case 'yts': case 'ytsearch': {
-  if (!text) {
-    return m.reply('Enter YouTube Video Link or Search Query!');
-  }
-  await doReact("🕘");
-
-  try {
-    const results = await yts(text);
-
-    if (results.videos.length > 0) {
-      const pollOptions = results.videos.slice(0, 5).map((result, index) => `${index + 1}. ${result.title}`);
-
-      const pollMessage = `*Choose a video to download:*\n\n${pollOptions.join('\n')}\n\nReply with the corresponding number to download.`;
-
-      await gss.sendMessage(m.chat, pollMessage, m);
-      await doReact("✅");
-    } else {
-      return m.reply('No search results found.');
+case 'yts':
+case 'ytsearch': {
+    if (!text) {
+        return m.reply('Enter YouTube Video Link or Search Query!');
     }
-  } catch (error) {
-    console.error('Error during yts:', error);
-    return m.reply('Unexpected error occurred.');
-  }
-  break;
+    await doReact("🕘");
+
+    try {
+        const results = await yts(text);
+        
+        if (results.videos.length > 0) {
+            const pollOptions = results.videos.slice(0, 5).map((result, index) => `${result.title} (Option ${index + 1}) .play ${result.url}`);
+            console.log(pollOptions);
+
+            await gss.sendPoll(m.chat, 'Choose a video to download:', pollOptions, 1);
+            await doReact("✅");
+        } else {
+            return m.reply('No search results found.');
+        }
+    } catch (error) {
+        console.error('Error during yts:', error);
+        return m.reply('Unexpected error occurred.');
+    }
+    break;
 }
-
-
 
 
 
