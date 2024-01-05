@@ -2226,7 +2226,6 @@ case 'ytmp3doc':
 
 
 
-
 case 'yts': case 'ytsearch': {
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
@@ -2244,11 +2243,10 @@ case 'yts': case 'ytsearch': {
 
       for (let i = 0; i < Math.min(5, results.videos.length); i++) {
         const result = results.videos[i];
-        const videoUrl = result.url;
         const title = result.title;
 
-        urlObject[`${optionIndex}.${i + 1}`] = videoUrl;
-        pollOptions.push(`.𝐩𝐥𝐚𝐲 ${optionIndex}.${i + 1} ${title}`);
+        urlObject[`${optionIndex}.${i + 1}`] = result.url;
+        pollOptions.push(`.play ${optionIndex}.${i + 1} ${title}`);
       }
 
       if (!videoSearchResults.has(uniqueKey)) {
@@ -2270,6 +2268,9 @@ case 'yts': case 'ytsearch': {
   }
   break;
 }
+
+// ...
+
 
 // Add this function to format upload date
 function formatUploadDate(uploadDate) {
