@@ -1089,7 +1089,6 @@ break;
   m.reply(mess.success);
 }
 break;
-
     
 case 'toqr': {
                 if (!q) return m.reply(' Please include link or text!')
