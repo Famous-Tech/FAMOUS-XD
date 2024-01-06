@@ -106,23 +106,24 @@ gss.ev.on("call", async (json) => {
 
 
     gss.ev.on('messages.upsert', async chatUpdate => {
-        //console.log(JSON.stringify(chatUpdate, undefined, 2))
-        try {
-        mek = chatUpdate.messages[0]
-        if (!mek.message) return
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-        if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+    try {
+        mek = chatUpdate.messages[0];
+        if (!mek.message) return;
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
+        if (mek.key && mek.key.remoteJid === 'status@broadcast') return;
+        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16 && !mek.key.fromMe) {
-console.log('Bot Detected');
-}
-        if (mek.key.id.startsWith('FatihArridho_')) return
-        m = smsg(gss, mek, store)
-        require("./gss")(gss, m, chatUpdate, store)
-        } catch (err) {
-            console.log(err)
+            console.log('Bot Detected');
+            m.reply('Bot Detected');
         }
-    })
+        if (mek.key.id.startsWith('FatihArridho_')) return;
+        m = smsg(gss, mek, store);
+        require("./gss")(gss, m, chatUpdate, store);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
     
 // respon cmd pollMessage
 async function getMessage(key) {
