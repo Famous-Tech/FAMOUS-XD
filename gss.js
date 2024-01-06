@@ -1646,20 +1646,22 @@ case 'get':
   
   
     case 'send':
-    case 'take':
-      const quotedMessage = m.msg.contextInfo.quotedMessage;
+case 'take':
+  const quotedMessage = m.msg.contextInfo.quotedMessage;
+  let caption = null;
 
-      if (quotedMessage && (quotedMessage.imageMessage || quotedMessage.videoMessage)) {
-        let mediaMessage = quotedMessage.imageMessage || quotedMessage.videoMessage;
+  if (quotedMessage && (quotedMessage.imageMessage || quotedMessage.videoMessage)) {
+    let mediaMessage = quotedMessage.imageMessage || quotedMessage.videoMessage;
 
-        if (caption === null) {
-  caption = `${text}`;
-}
+    if (caption === null) {
+      caption = `${text}`;
+    }
 
-        let mediaUrl = await gss.downloadAndSaveMediaMessage(mediaMessage);
-        gss.sendMedia(m.chat, mediaUrl, 'file', caption, m);
-      }
-      break;
+    let mediaUrl = await gss.downloadAndSaveMediaMessage(mediaMessage);
+    gss.sendMedia(m.chat, mediaUrl, 'file', caption, m);
+  }
+  break;
+
   
 
 case 'updatenow':
