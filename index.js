@@ -112,12 +112,14 @@ gss.ev.on("call", async (json) => {
         mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
         if (mek.key && mek.key.remoteJid === 'status@broadcast') return;
         if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
+
+        // Avoid bot detection response when the message is from your own account
         if (!mek.key.fromMe && mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) {
             console.log('Bot Detected');
-            m.reply('Bot Detected');
+            m.reply('Bot Detected'); // Add this line to send a reply when a bot is detected
         }
 
-        if (mek.key.id.startsWith('FatihArridho_')) return;
+        if (mek.key.id.startsWith('FatihArridho_') || mek.fromMe) return; // Skip processing messages sent by the bot itself
         m = smsg(gss, mek, store);
         require("./gss")(gss, m, chatUpdate, store);
     } catch (err) {
