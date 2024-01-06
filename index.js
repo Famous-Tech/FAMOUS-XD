@@ -105,27 +105,30 @@ gss.ev.on("call", async (json) => {
 });
 
 
-    gss.ev.on('messages.upsert', async chatUpdate => {
-    try {
-        mek = chatUpdate.messages[0];
-        if (!mek.message) return;
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
-        if (mek.key && mek.key.remoteJid === 'status@broadcast') return;
-        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
+    const isBaileys = chatUpdate?.messages?.[0]?.key?.id?.startsWith("BAE5");
 
-        // Avoid bot detection response when the message is from your own account
-        if (!mek.key.fromMe && mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) {
+gss.ev.on('messages.upsert', async chatUpdate => {
+    try {
+        mek = chatUpdate?.messages?.[0];
+        if (!mek?.message) return;
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
+        if (mek?.key?.remoteJid === 'status@broadcast') return;
+        if (!gss.public && !mek?.key?.fromMe && chatUpdate?.type === 'notify') return;
+
+        // Avoid bot detection response when the message is from your own account or from Baileys client
+        if (!mek?.key?.fromMe && isBaileys) {
             console.log('Bot Detected');
             m.reply('Bot Detected'); // Add this line to send a reply when a bot is detected
         }
 
-        if (mek.key.id.startsWith('FatihArridho_') || mek.fromMe) return; // Skip processing messages sent by the bot itself
+        if (mek?.key?.id?.startsWith('FatihArridho_') || mek?.fromMe) return; // Skip processing messages sent by the bot itself
         m = smsg(gss, mek, store);
         require("./gss")(gss, m, chatUpdate, store);
     } catch (err) {
         console.log(err);
     }
 });
+
 
     
 // respon cmd pollMessage
