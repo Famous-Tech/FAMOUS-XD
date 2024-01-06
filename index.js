@@ -105,30 +105,23 @@ gss.ev.on("call", async (json) => {
 });
 
 
-    const isBaileysMessage = (mek) => mek?.key?.id?.startsWith("BAE5");
-
-gss.ev.on('messages.upsert', async chatUpdate => {
-    try {
-        mek = chatUpdate?.messages?.[0];
-        if (!mek?.message) return;
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
-        if (mek?.key?.remoteJid === 'status@broadcast') return;
-        if (!gss.public && !mek?.key?.fromMe && chatUpdate?.type === 'notify') return;
-
-        // Avoid bot detection response when the message is from the bot itself or not a Baileys message
-        if (!mek?.key?.fromMe && isBaileysMessage(mek)) {
-            console.log('Bot Detected');
-            m.reply('Bot Detected'); // Add this line to send a reply when a bot is detected
+    gss.ev.on('messages.upsert', async chatUpdate => {
+        //console.log(JSON.stringify(chatUpdate, undefined, 2))
+        try {
+        mek = chatUpdate.messages[0]
+        if (!mek.message) return
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+        if (mek.key && mek.key.remoteJid === 'status@broadcast') return
+        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
+        if (mek.key.id.startsWith('FatihArridho_')) return
+        m = smsg(gss, mek, store)
+        require("./gss")(gss, m, chatUpdate, store)
+        } catch (err) {
+            console.log(err)
         }
-
-        if (mek?.key?.id?.startsWith('FatihArridho_') || mek?.fromMe) return; // Skip processing messages sent by the bot itself
-        m = smsg(gss, mek, store);
-        require("./gss")(gss, m, chatUpdate, store);
-    } catch (err) {
-        console.log(err);
-    }
-});
-
+    })
+    
 
 
     
