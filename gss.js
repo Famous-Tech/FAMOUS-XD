@@ -924,23 +924,33 @@ case 'setexif': {
 break;
 
 case 'promote': {
-  if (!m.isGroup) throw mess.group;
-  if (!isBotAdmins) throw mess.botAdmin;
-  if (!isAdmins) throw mess.admin;
+  try {
+    if (!m.isGroup) throw mess.group;
+    if (!isBotAdmins) throw mess.botAdmin;
+    if (!isAdmins) throw mess.admin;
 
-  let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-  let groupName = `${metadata.subject}`;
+    let metadata = await gss.groupMetadata(anu.id);
+    let groupName = metadata ? metadata.subject : 'Unknown Group';
+    let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
 
-  await gss.groupParticipantsUpdate(m.chat, users, 'promote')
-    .then((res) => {
-      let promotedUserName = res[0].replace('@s.whatsapp.net', '');
-      m.reply(`User @${promotedUserName} promoted successfully in the group ${groupName}.`);
-    })
-    .catch((err) => {
-      m.reply(`Failed to promote user(s) in the group ${groupName}.`);
-    });
+    await gss.groupParticipantsUpdate(m.chat, users, 'promote')
+      .then((res) => {
+        let promotedUserName = res[0].replace('@s.whatsapp.net', '');
+        m.reply(`User @${promotedUserName} promoted successfully in the group ${groupName}.`);
+        // Additional replies or actions based on 'res' can be added here
+      })
+      .catch((err) => {
+        m.reply(`Failed to promote user(s) in the group ${groupName}.`);
+        console.error('Error promoting user(s):', err);
+        // Additional error handling or replies can be added here
+      });
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle the error or provide a default value for metadata if needed
+  }
+  break;
 }
-break;
+
 
 
 
@@ -948,27 +958,41 @@ case 'add': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
+
   let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-  await gss.groupParticipantsUpdate(m.chat, users, 'add').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
+
+  await gss.groupParticipantsUpdate(m.chat, users, 'add')
+    .then(() => m.reply('User(s) added successfully to the group.'))
+    .catch(() => m.reply('Failed to add user(s) to the group.'));
 }
 break;
 
-	case 'kick': {
+case 'kick': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
+
   let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-  await gss.groupParticipantsUpdate(m.chat, users, 'remove').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
+
+  await gss.groupParticipantsUpdate(m.chat, users, 'remove')
+    .then(() => m.reply('User(s) kicked successfully from the group.'))
+    .catch(() => m.reply('Failed to kick user(s) from the group.'));
 }
 break;
+
 case 'demote': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
+
   let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-  await gss.groupParticipantsUpdate(m.chat, users, 'demote').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
+
+  await gss.groupParticipantsUpdate(m.chat, users, 'demote')
+    .then(() => m.reply('User(s) demoted successfully in the group.'))
+    .catch(() => m.reply('Failed to demote user(s) in the group.'));
 }
 break;
+
 case 'block': {
   if (!isCreator) throw mess.owner;
   let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
