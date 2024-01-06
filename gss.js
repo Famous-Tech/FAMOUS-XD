@@ -801,54 +801,6 @@ const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup
 const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
 
-try {
-  if (!m.isGroup) throw mess.group;
-  if (!isBotAdmins) throw mess.botAdmin;
-  if (!isAdmins) throw mess.admin;
-
-  let metadata = await gss.groupMetadata(m.chat);
-  let users = m.mentionedJid || (m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net']);
-
-  let usernames = await Promise.all(users.map(async (user) => {
-    try {
-      let contact = await gss.contacts[user];
-      return contact.notify || user.split('@')[0];
-    } catch (error) {
-      return user.split('@')[0];
-    }
-  }));
-
-  let groupCaption = `in the group ${metadata.subject}`;
-  let actionText = m.text.toLowerCase();
-
-  let replyText = '';
-
-  switch (actionText) {
-    case 'add':
-      await gss.groupParticipantsUpdate(m.chat, users, 'add');
-      replyText = `Users ${usernames.map(username => `@${username}`).join(', ')} added successfully ${groupCaption}.`;
-      break;
-    case 'kick':
-      await gss.groupParticipantsUpdate(m.chat, users, 'remove');
-      replyText = `Users ${usernames.map(username => `@${username}`).join(', ')} kicked successfully ${groupCaption}.`;
-      break;
-    case 'demote':
-      await gss.groupParticipantsUpdate(m.chat, users, 'demote');
-      replyText = `Users ${usernames.map(username => `@${username}`).join(', ')} demoted successfully ${groupCaption}.`;
-      break;
-    case 'promote':
-      await gss.groupParticipantsUpdate(m.chat, users, 'promote');
-      replyText = `Users ${usernames.map(username => `@${username}`).join(', ')} promoted successfully ${groupCaption}.`;
-      break;
-    default:
-      throw new Error('Invalid action specified.');
-  }
-
-  m.reply(replyText);
-} catch (error) {
-  console.error('Error:', error);
-  m.reply('No users specified for the action.');
-}
 
 
 
