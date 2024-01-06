@@ -1660,7 +1660,6 @@ case 'get':
         gss.sendMedia(m.chat, mediaUrl, 'file', caption, m);
       }
       break;
-
   
 
 case 'updatenow':
