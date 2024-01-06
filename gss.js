@@ -927,10 +927,21 @@ case 'promote': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
+
   let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-  await gss.groupParticipantsUpdate(m.chat, users, 'promote').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
+  let groupName = `${metadata.subject}`;
+
+  await gss.groupParticipantsUpdate(m.chat, users, 'promote')
+    .then((res) => {
+      let promotedUserName = res[0].replace('@s.whatsapp.net', '');
+      m.reply(`User @${promotedUserName} promoted successfully in the group ${groupName}.`);
+    })
+    .catch((err) => {
+      m.reply(`Failed to promote user(s) in the group ${groupName}.`);
+    });
 }
 break;
+
 
 
 case 'add': {
