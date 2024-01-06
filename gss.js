@@ -963,21 +963,20 @@ case 'add': {
     if (!isAdmins) throw mess.admin;
 
     let metadata = await gss.groupMetadata(m.chat);
-    let users = m.mentionedJid && m.mentionedJid.length > 0
-      ? m.mentionedJid
-      : m.quoted
-        ? [m.quoted.sender]
-        : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-
-    if (users.length === 0) {
-      m.reply('Please provide a user to add to the group.');
-      return;
-    }
+    let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
+    let usernames = await Promise.all(users.map(async (user) => {
+      try {
+        let contact = await gss.contacts[user];
+        return contact.notify || user.split('@')[0];
+      } catch (error) {
+        return user.split('@')[0];
+      }
+    }));
 
     await gss.groupParticipantsUpdate(m.chat, users, 'add')
       .then(() => {
-        let addedUserName = m.mentionedJid[0] ? '@' + gss.getName(m.mentionedJid[0]) : '';
-        m.reply(`User ${addedUserName} added successfully to the group ${metadata.subject}.`);
+        let addedUsernames = usernames.map(username => `@${username}`).join(', ');
+        m.reply(`Users ${addedUsernames} added successfully to the group ${metadata.subject}.`);
       })
       .catch(() => m.reply('Failed to add user(s) to the group.'));
   } catch (error) {
@@ -993,21 +992,20 @@ case 'kick': {
     if (!isAdmins) throw mess.admin;
 
     let metadata = await gss.groupMetadata(m.chat);
-    let users = m.mentionedJid && m.mentionedJid.length > 0
-      ? m.mentionedJid
-      : m.quoted
-        ? [m.quoted.sender]
-        : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-
-    if (users.length === 0) {
-      m.reply('Please provide a user to kick from the group.');
-      return;
-    }
+    let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
+    let usernames = await Promise.all(users.map(async (user) => {
+      try {
+        let contact = await gss.contacts[user];
+        return contact.notify || user.split('@')[0];
+      } catch (error) {
+        return user.split('@')[0];
+      }
+    }));
 
     await gss.groupParticipantsUpdate(m.chat, users, 'remove')
       .then(() => {
-        let kickedUserName = m.mentionedJid[0] ? '@' + gss.getName(m.mentionedJid[0]) : '';
-        m.reply(`User ${kickedUserName} kicked successfully from the group ${metadata.subject}.`);
+        let kickedUsernames = usernames.map(username => `@${username}`).join(', ');
+        m.reply(`Users ${kickedUsernames} kicked successfully from the group ${metadata.subject}.`);
       })
       .catch(() => m.reply('Failed to kick user(s) from the group.'));
   } catch (error) {
@@ -1016,6 +1014,7 @@ case 'kick': {
 }
 break;
 
+
 case 'demote': {
   try {
     if (!m.isGroup) throw mess.group;
@@ -1023,21 +1022,20 @@ case 'demote': {
     if (!isAdmins) throw mess.admin;
 
     let metadata = await gss.groupMetadata(m.chat);
-    let users = m.mentionedJid && m.mentionedJid.length > 0
-      ? m.mentionedJid
-      : m.quoted
-        ? [m.quoted.sender]
-        : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-
-    if (users.length === 0) {
-      m.reply('Please provide a user to demote in the group.');
-      return;
-    }
+    let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
+    let usernames = await Promise.all(users.map(async (user) => {
+      try {
+        let contact = await gss.contacts[user];
+        return contact.notify || user.split('@')[0];
+      } catch (error) {
+        return user.split('@')[0];
+      }
+    }));
 
     await gss.groupParticipantsUpdate(m.chat, users, 'demote')
       .then(() => {
-        let demotedUserName = m.mentionedJid[0] ? '@' + gss.getName(m.mentionedJid[0]) : '';
-        m.reply(`User ${demotedUserName} demoted successfully in the group ${metadata.subject}.`);
+        let demotedUsernames = usernames.map(username => `@${username}`).join(', ');
+        m.reply(`Users ${demotedUsernames} demoted successfully in the group ${metadata.subject}.`);
       })
       .catch(() => m.reply('Failed to demote user(s) in the group.'));
   } catch (error) {
@@ -1045,6 +1043,7 @@ case 'demote': {
   }
 }
 break;
+
 
 
 
