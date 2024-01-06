@@ -956,34 +956,7 @@ case 'promote': {
 }
 break;
 
-case 'add': {
-  try {
-    if (!m.isGroup) throw mess.group;
-    if (!isBotAdmins) throw mess.botAdmin;
-    if (!isAdmins) throw mess.admin;
 
-    let metadata = await gss.groupMetadata(m.chat);
-    let users = m.mentionedJid[0] ? m.mentionedJid : m.quoted ? [m.quoted.sender] : [text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'];
-    let usernames = await Promise.all(users.map(async (user) => {
-      try {
-        let contact = await gss.contacts[user];
-        return contact.notify || user.split('@')[0];
-      } catch (error) {
-        return user.split('@')[0];
-      }
-    }));
-
-    await gss.groupParticipantsUpdate(m.chat, users, 'add')
-      .then(() => {
-        let addedUsernames = usernames.map(username => `@${username}`).join(', ');
-        m.reply(`Users ${addedUsernames} added successfully to the group ${metadata.subject}.`);
-      })
-      .catch(() => m.reply('Failed to add user(s) to the group.'));
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-break;
 
 case 'kick': {
   try {
@@ -3397,7 +3370,7 @@ case 'buypremium':
             
 
 
-case 'invite': {
+case 'invite': case 'add': {
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
 if (!text) return m.reply(`*Enter the number you want to invite to the group*\n\nExample :\n*${prefix + command}* 919142294671`)
 if (text.includes('+')) return m.reply(`Enter the number together without *+*`)
