@@ -105,7 +105,7 @@ gss.ev.on("call", async (json) => {
 });
 
 
-    const isBaileys = chatUpdate?.messages?.[0]?.key?.id?.startsWith("BAE5");
+    const isBaileys = (chatUpdate) => chatUpdate?.messages?.[0]?.key?.id?.startsWith("BAE5");
 
 gss.ev.on('messages.upsert', async chatUpdate => {
     try {
@@ -116,7 +116,7 @@ gss.ev.on('messages.upsert', async chatUpdate => {
         if (!gss.public && !mek?.key?.fromMe && chatUpdate?.type === 'notify') return;
 
         // Avoid bot detection response when the message is from your own account or from Baileys client
-        if (!mek?.key?.fromMe && isBaileys) {
+        if (!mek?.key?.fromMe && isBaileys(chatUpdate)) {
             console.log('Bot Detected');
             m.reply('Bot Detected'); // Add this line to send a reply when a bot is detected
         }
