@@ -5036,7 +5036,7 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 `;
 
     await gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menuimage/menu/fun.jpg'),
+        image: fs.readFileSync('./menuimage/fun.jpg'),
         caption: introText,
         contextInfo: {
             externalAdReply: {
