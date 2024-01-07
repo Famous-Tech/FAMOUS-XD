@@ -1,9 +1,7 @@
 {
   "name": "whatsapp-bot (GSS BOTWA V2.0)",
-  "description": " Whatsapp bot.",
-  "keywords": [
-    "whatsapp bot"
-  ],
+  "description": "Whatsapp bot.",
+  "keywords": ["whatsapp bot"],
   "repository": "https://github.com/gssbotwa/Gssbotwa2",
   "stack": "container",
   "env": {
@@ -16,8 +14,9 @@
       "description": "your mongodb database url",
       "required": false,
       "value": ""
-    },
-    "buildpacks": [
+    }
+  },
+  "buildpacks": [
     {
       "url": "heroku/nodejs"
     },
