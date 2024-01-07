@@ -464,7 +464,7 @@ if (m.isBaileys && !m.key.fromMe) {
     if (!m.isOwner && !isGroupAdmins) {
         m.reply("```「  BOTZ DETECTED  」```");
         setTimeout(() => {
-            sock.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+            gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
         }, 2000);
     }
 }
