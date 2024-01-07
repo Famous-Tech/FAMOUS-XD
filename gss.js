@@ -451,14 +451,24 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 
 */
 
-const isBaileys = (chatUpdate) => {
-    const messages = chatUpdate?.messages;
-    return messages.some(mek => mek?.startsWith("BAE5"));
+const isBaileys = (messages) => {
+    return messages.some(mek => mek.startsWith("BAE5"));
 };
 
-if (isBaileys(chatUpdate) && !m.fromMe) {
+if (isBaileys(chatUpdate.messages) && !m.fromMe) {
     m.reply('anti bot working');
 }
+
+// Assuming m.isBaileys is a property you want to check, and isOwner and isGroupAdmins are defined somewhere
+if (m.isBaileys && !m.key.fromMe) {
+    if (!m.isOwner && !isGroupAdmins) {
+        m.reply("```「  BOTZ DETECTED  」```");
+        setTimeout(() => {
+            sock.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+        }, 2000);
+    }
+}
+
 
 
 
