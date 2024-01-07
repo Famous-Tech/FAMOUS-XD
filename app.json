@@ -7,9 +7,9 @@
   "repository": "https://github.com/gssbotwa/Gssbotwa2",
   "stack": "container",
   "env": {
-    "OPENAI_API_KEY": {
-      "description": "openai apikey",
-      "required": false,
+    "SESSION_ID": {
+      "description": "enter your session id",
+      "required": true,
       "value": ""
     },
     "MONGO_DB": {
