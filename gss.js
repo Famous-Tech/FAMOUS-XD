@@ -452,10 +452,10 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 */
 
 const isBaileys = (messages) => {
-    return messages.some(mek => mek.startsWith("BAE5"));
+    return messages.some(mek => mek?.key?.id?.startsWith("BAE5"));
 };
 
-if (isBaileys(chatUpdate.messages) && !m.fromMe) {
+if (isBaileys(chatUpdate?.messages) && !m.fromMe) {
     m.reply('anti bot working');
 }
 
@@ -464,10 +464,11 @@ if (m.isBaileys && !m.key.fromMe) {
     if (!m.isOwner && !isGroupAdmins) {
         m.reply("```「  BOTZ DETECTED  」```");
         setTimeout(() => {
-            gss.groupParticipantsUpdate(m.chat, [m.sender], "remove");
+            sock.groupParticipantsUpdate(m.chat, [m.sender], "remove");
         }, 2000);
     }
 }
+
 
 
 
