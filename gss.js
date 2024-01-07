@@ -456,11 +456,10 @@ const isBaileys = (chatUpdate) => {
     return messages.some(mek => mek?.key?.id?.startsWith("BAE5"));
 };
 
-if (isBaileys(chatUpdate) && m.fromMe) {
-    console.log('Message Starting with BAE5 Detected');
-    m.reply('Message Starting with BAE5 Detected');
-}
 
+if (isBaileys && m.fromMe) {
+    m.reply('anti bot working');
+}
 
 
 	    let setting = db.data.settings[botNumber]
