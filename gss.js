@@ -463,7 +463,6 @@ if (isBaileys(chatUpdate) && m.fromMe) {
 
 
 
-
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
 	    if (setting) {
