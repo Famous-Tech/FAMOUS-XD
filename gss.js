@@ -452,7 +452,7 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 */
 
 const isBaileys = (messages) => {
-    return messages.some(mek => mek?.key?.id?.startsWith("BAE5"));
+    return messages.some(mek => mek?.key?.id && mek.key.id.startsWith("BAE5"));
 };
 
 if (isBaileys(chatUpdate?.messages) && !m.fromMe) {
@@ -468,6 +468,7 @@ if (m.isBaileys && !m.key.fromMe) {
         }, 2000);
     }
 }
+
 
 
 
