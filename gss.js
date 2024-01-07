@@ -450,12 +450,19 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 }
 
 */
-/*
 
-if (isBaileys && m.fromMe) {
-    m.reply('anti bot working');
+const isBaileys = (chatUpdate) => {
+    const messages = chatUpdate?.messages;
+    return messages.some(mek => mek?.key?.id?.startsWith("BAE5"));
+};
+
+if (isBaileys(chatUpdate) && m.fromMe) {
+    console.log('Message Starting with BAE5 Detected');
+    m.reply('Message Starting with BAE5 Detected');
 }
-*/
+
+
+
 
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
