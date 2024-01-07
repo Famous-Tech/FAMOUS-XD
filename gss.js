@@ -453,13 +453,13 @@ gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
 
 const isBaileys = (chatUpdate) => {
     const messages = chatUpdate?.messages;
-    return messages.some(mek => mek?.key?.id?.startsWith("BAE5"));
+    return messages.some(mek => mek?.startsWith("BAE5"));
 };
 
-
-if (isBaileys && m.fromMe) {
+if (isBaileys(chatUpdate) && !m.fromMe) {
     m.reply('anti bot working');
 }
+
 
 
 	    let setting = db.data.settings[botNumber]
