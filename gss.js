@@ -1174,12 +1174,12 @@ case 'scriptbot':
             const releaseDate = new Date(data.created_at).toLocaleDateString('en-US');
             const lastUpdateDate = new Date(repoInfo.lastUpdate).toLocaleDateString('en-US');
 
-            uy = `GitHub Repository: [${data.full_name}](${data.html_url})
-Stars: ${repoInfo.stars}
-Forks: ${repoInfo.forks}
-Release Date: ${releaseDate}
-Last Update: ${lastUpdateDate}
-Owner: ${repoInfo.owner}`;
+            uy = `*GitHub Repository:* ${data.html_url}
+⭐ *Stars:* ${repoInfo.stars}
+♈ *Forks:* ${repoInfo.forks}
+📅 *Release Date:* ${releaseDate}
+🕐 *Last Update:* ${lastUpdateDate}
+👨‍💻 *Owner:* ${repoInfo.owner}`;
 
             gss.sendMessage(m.chat, {
                 text: uy,
