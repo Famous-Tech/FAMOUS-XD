@@ -1171,8 +1171,8 @@ case 'scriptbot':
             };
 
             // Format the date
-            const releaseDate = new Date(data.created_at).toLocaleDateString('en-US');
-            const lastUpdateDate = new Date(repoInfo.lastUpdate).toLocaleDateString('en-US');
+            const releaseDate = new Date(data.created_at).toLocaleDateString('en-GB');
+            const lastUpdateDate = new Date(repoInfo.lastUpdate).toLocaleDateString('en-GB');
 
             uy = `*GitHub Repository:* ${data.html_url}
 ⭐ *Stars:* ${repoInfo.stars}
