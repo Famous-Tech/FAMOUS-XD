@@ -1166,14 +1166,19 @@ case 'scriptbot':
             const repoInfo = {
                 stars: data.stargazers_count,
                 forks: data.forks_count,
-                releaseDate: data.created_at,
+                lastUpdate: data.updated_at,
                 owner: data.owner.login
             };
+
+            // Format the date
+            const releaseDate = new Date(data.created_at).toLocaleDateString('en-US');
+            const lastUpdateDate = new Date(repoInfo.lastUpdate).toLocaleDateString('en-US');
 
             uy = `GitHub Repository: [${data.full_name}](${data.html_url})
 Stars: ${repoInfo.stars}
 Forks: ${repoInfo.forks}
-Release Date: ${repoInfo.releaseDate}
+Release Date: ${releaseDate}
+Last Update: ${lastUpdateDate}
 Owner: ${repoInfo.owner}`;
 
             gss.sendMessage(m.chat, {
@@ -1184,8 +1189,8 @@ Owner: ${repoInfo.owner}`;
                         title: 'Script Free',
                         body: `SCRIPT BOT ${botname}`,
                         thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
-                        sourceUrl: data.html_url, // Link to the GitHub repository
-                        mediaType: 1,
+                        sourceUrl: data.html_url, 
+                        mediaType: 2,
                         renderLargerThumbnail: true
                     }
                 }
@@ -1195,6 +1200,7 @@ Owner: ${repoInfo.owner}`;
         })
         .catch(error => console.error('Error fetching GitHub repository info:', error));
     break;
+
 
 
 
