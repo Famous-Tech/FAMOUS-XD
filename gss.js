@@ -1253,18 +1253,20 @@ case 'akinatorstop':
     m.reply("Successfully canceled the previous akinator session.");
     break;
 
-case 'tagall': case 'all':{
-  if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
-if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
-let teks = `乂 *ᴀᴛᴛᴇɴᴛɪᴏɴ ᴇᴠᴇʀʏᴏɴᴇ* 乂 
+case 'tagall':
+case 'all':
+  if (!m.isGroup) return m.reply('You can use this command only in groups ❌');
+  if (!isAdmins) return m.reply('This feature is only for group admins');
 
-*Message:* ${args.join(" ") ? args.join(" ") : 'no message'}\n\n`
-for (let mem of participants) {
-teks += `❒ @${mem.id.split('@')[0]}\n`
-}
-gss.sendMessage(m.chat, { text: teks, mentions: participants.map(a => a.id) }, { quoted: m })
-}
-break;
+  let teks = `乂 *Attention Everyone* 乂\n\n*Message:* ${args.join(" ") ? args.join(" ") : 'no message'}\n\n`;
+
+  for (let mem of participants) {
+    teks += `❒ @${mem.id.split('@')[0]}\n`;
+  }
+
+  gss.sendMessage(m.chat, { text: teks, mentions: participants.map(a => ({ "tag": a.id })) }, { quoted: m });
+  break;
+
 
 case 'hidetag': {
   if (!m.isGroup) throw mess.group;
