@@ -1190,7 +1190,7 @@ case 'scriptbot':
                         body: `SCRIPT BOT ${botname}`,
                         thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
                         sourceUrl: data.html_url, 
-                        mediaType: 2,
+                        mediaType: 1,
                         renderLargerThumbnail: true
                     }
                 }
