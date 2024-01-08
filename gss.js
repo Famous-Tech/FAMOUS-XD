@@ -1156,26 +1156,20 @@ case 'setppgroup':
                 break
 
 case 'sc':
-            case 'script':
-            case 'scriptbot':
-                uy = `https://github.com/gssbotwa/Gssbotwa2`
-                gss.sendMessage(m.chat, {
-                    text: uy,
-                    contextInfo: {
-                        externalAdReply: {
-                            showAdAttribution: false,
-                            title: 'Script Free',
-                            body: `SCRIPT BOT ${botname}`,
-                            thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
-                            sourceUrl: global.link,
-                            mediaType: 1,
-                            renderLargerThumbnail: true
-                        }
-                    }
-                }, {
-                    quoted: m
-                })
-                break
+case 'script':
+case 'scriptbot': {
+    try {
+        let repoInfo = await axios.get("https://api.github.com/repos/gssbotwa/Gssbotwa2");
+        let repo = repoInfo.data;
+        let txt = `🤖 *${botname}'s Script Repository* 🤖\n\n*📚 Total Forks:* ${repo.forks_count}\n*⭐ Total Stars:* ${repo.stargazers_count}\n*📅 Last Release:* ${repo.updated_at}\n*👤 Owner:* ${repo.owner.login}\n\n*🔗 Repo Link:* ${uy}\n\n❝ Script BOT ${botname} is available for free on GitHub. Don't forget to give it a ⭐ if you find it helpful! ❞`;
+        
+        gss.sendMessage(m.chat, { text: uy, contextInfo: { externalAdReply: { showAdAttribution: false, title: 'Script Free', body: txt, thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg', sourceUrl: global.link, mediaType: 2, renderLargerThumbnail: true } } }, { quoted: m });
+    } catch (error) {
+        console.error("Error fetching GitHub repository information:", error);
+    }
+    break;
+}
+
 
 
  case 'setimgmenu':
