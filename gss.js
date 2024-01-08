@@ -1265,7 +1265,6 @@ case 'all': {
 } 
 break;
 
-
 case 'hidetag': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
