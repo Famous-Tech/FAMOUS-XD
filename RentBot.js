@@ -90,7 +90,7 @@ if (connection){
 if (connection != "connecting") console.log("Connecting to rent bot..")
 }
 console.log(up)
-if (up.qr) await sendImage(m.chat, await qrcode.toDataURL(up.qr,{scale : 8}), 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds', m)
+if (up.qr) await sendImage(m.from, await qrcode.toDataURL(up.qr,{scale : 8}), 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds', m)
 console.log(connection)
 if (connection == "open") {
 XeonBotInc.id = XeonBotInc.decodeJid(XeonBotInc.user.id)
