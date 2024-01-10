@@ -450,61 +450,6 @@ try {
 }
 
 
-const generateMenu = (cmdList, title) => {
-  const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
-    .map((v) => `┃${convertToFontStyle(prefix + v, randomFontStyle)}`)
-    .join('\n');
-
-  return `
-╭───〈 ${title} 〉───◆
-┃     ╭─────────────···▸
-${formattedCmdList.split('\n').map((item) => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
-┃     ╰──────────────
-╰━━━━━━━━━━━━━━━┈⊷`;
-};
-
-let cmdLists = [cmdGrup, cmdDown, cmdConv, cmdOwner];
-const menuTitles = ['𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨', '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥', '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥', '𝗢𝗪𝗡𝗘𝗥'];
-
-let introText = '';
-
-cmdLists.forEach((cmdList, index) => {
-  introText += generateMenu(cmdList, menuTitles[index]);
-});
-
-const menuMessage = 'Here is the menu, sir:\n1 - convertmenu\n2 - adminmenu\n3 - ownermenu\n4 - mainmenu\n5 - downloadmenu';
-
-const subMenus = {
-  '1': introTextConvert,
-  '2': introTextAdmin,
-  '3': introTextOwner,
-  '4': introTextMain,
-  '5': introTextDownload,
-};
-
-if (m.text && !m.key.fromMe) {
-  const lowerText = m.text.toLowerCase();
-
-  if (lowerText.includes('.meenu')) {
-    m.reply(menuMessage);
-  } else if (/^\d+$/.test(lowerText) && m.quoted) {
-    const quotedText = m.quoted.text.toLowerCase();
-
-    if (quotedText.includes(menuMessage.toLowerCase())) {
-      const selectedNumber = lowerText;
-      const subMenu = subMenus[selectedNumber];
-
-      if (subMenu) {
-        m.reply(subMenu);
-      } else {
-        m.reply('Invalid menu number. Please select a number from the menu.');
-      }
-    }
-  }
-}
-
-
-
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
@@ -919,6 +864,58 @@ const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup
 const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
 
+const generateMenu = (cmdList, title) => {
+  const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
+    .map((v) => `┃${convertToFontStyle(prefix + v, randomFontStyle)}`)
+    .join('\n');
+
+  return `
+╭───〈 ${title} 〉───◆
+┃     ╭─────────────···▸
+${formattedCmdList.split('\n').map((item) => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
+┃     ╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷`;
+};
+
+const cmdLists = [...cmdGrup, ...cmdDown, ...cmdConv,  ...cmdOwner];
+const menuTitles = ['𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨', '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥', '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥', '𝗢𝗪𝗡𝗘𝗥'];
+
+let introText = '';
+
+cmdLists.forEach((cmdList, index) => {
+  introText += generateMenu(cmdList, menuTitles[index]);
+});
+
+const menuMessage = 'Here is the menu, sir:\n1 - convertmenu\n2 - adminmenu\n3 - ownermenu\n4 - mainmenu\n5 - downloadmenu';
+
+const subMenus = {
+  '1': introTextConvert,
+  '2': introTextAdmin,
+  '3': introTextOwner,
+  '4': introTextMain,
+  '5': introTextDownload,
+};
+
+if (m.text && !m.key.fromMe) {
+  const lowerText = m.text.toLowerCase();
+
+  if (lowerText.includes('.meenu')) {
+    m.reply(menuMessage);
+  } else if (/^\d+$/.test(lowerText) && m.quoted) {
+    const quotedText = m.quoted.text.toLowerCase();
+
+    if (quotedText.includes(menuMessage.toLowerCase())) {
+      const selectedNumber = lowerText;
+      const subMenu = subMenus[selectedNumber];
+
+      if (subMenu) {
+        m.reply(subMenu);
+      } else {
+        m.reply('Invalid menu number. Please select a number from the menu.');
+      }
+    }
+  }
+}
 
 
 
