@@ -869,6 +869,8 @@ function generateMenu(cmdList, title) {
     console.error('Invalid cmdList. It should be an array.');
     return '';
   }
+  
+const randomSymbol = getRandomSymbol();
 
   const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
     .map((v, i) => `${randomSymbol}┃${v}`).join('\n');
