@@ -450,14 +450,39 @@ try {
 }
 
 
-const menuMessage = Here the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka;
+const randomFontStyle = getRandomFontStyle();
+const randomSymbol = getRandomSymbol();
+
+const generateMenu = (cmdList, title) => {
+  const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
+    .map((v) => `${randomSymbol}┃${convertToFontStyle(prefix + v, randomFontStyle)}`)
+    .join('\n');
+
+  return `
+╭───〈 ${title} 〉───◆
+┃     ╭─────────────···▸
+${formattedCmdList.split('\n').map((item) => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
+┃     ╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷`;
+};
+
+const cmdLists = [cmdGrup, cmdDown, cmdConv, cmdOwner];
+const menuTitles = ['𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨', '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥', '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥', '𝗢𝗪𝗡𝗘𝗥'];
+
+let introText = '';
+
+cmdLists.forEach((cmdList, index) => {
+  introText += generateMenu(cmdList, menuTitles[index]);
+});
+
+const menuMessage = 'Here is the menu, sir:\n1 - convertmenu\n2 - adminmenu\n3 - ownermenu\n4 - mainmenu\n5 - downloadmenu';
 
 const subMenus = {
-  '1': 'Sub menu for hi',
-  '2': 'Sub menu for bye',
-  '3': 'Sub menu for huo',
-  '4': 'Sub menu for jksd',
-  '5': 'Sub menu for jka'
+  '1': introTextConvert,
+  '2': introTextAdmin,
+  '3': introTextOwner,
+  '4': introTextMain,
+  '5': introTextDownload,
 };
 
 if (m.text && !m.key.fromMe) {
@@ -480,6 +505,7 @@ if (m.text && !m.key.fromMe) {
     }
   }
 }
+
 
 
 
