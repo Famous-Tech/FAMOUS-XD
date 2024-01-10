@@ -898,7 +898,8 @@ const subMenus = {
   '5': introTextDownload
 };
 
-if (m.text && !m.key.fromMe) {
+
+if (m.text) {
   const lowerText = m.text.toLowerCase();
 
   if (lowerText.includes('.meenu')) {
@@ -908,10 +909,9 @@ if (m.text && !m.key.fromMe) {
 
     if (quotedText.includes(menuMessage.toLowerCase())) {
       const selectedNumber = lowerText;
-      const validNumbers = Object.keys(subMenus);
+      const subMenu = subMenus[selectedNumber];
 
-      if (validNumbers.includes(selectedNumber)) {
-        const subMenu = subMenus[selectedNumber];
+      if (subMenu) {
         m.reply(subMenu);
       } else {
         m.reply('Invalid menu number. Please select a number from the menu.');
@@ -919,6 +919,7 @@ if (m.text && !m.key.fromMe) {
     }
   }
 }
+
 
 
 
