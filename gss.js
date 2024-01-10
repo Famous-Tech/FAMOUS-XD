@@ -404,7 +404,7 @@ try {
 }
 
     
-const apiUrlFm = 'https://vihangayt.me/download/fmmods';
+    const apiUrlFm = 'https://vihangayt.me/download/fmmods';
 
 try {
     const response = await axios.get(apiUrlFm);
@@ -414,32 +414,33 @@ try {
         const lowerText = m.text.toLowerCase();
 
         if (data.status === true && data.data) {
-            if (lowerText === '.fmmod') {
-                // Sending poll with FMMod options
-                const fmmodValues = Object.keys(data.data);
-                const pollName = 'Select FMMod';
-                const pollSelectableCount = 1;
-
-                const pollMessage = await gss.sendPoll(m.chat, pollName, fmmodValues, pollSelectableCount);
-            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Select FMMod')) {
-                // Handling when a user votes in the poll
-                const selectedOption = m.poll.selectedOptions[0].value; // Assuming single-choice poll
+    if (lowerText === '.fmmod') {
+        let fmmodList = 'Here is the FMMod list:\n';
+        Object.keys(data.data).forEach((fmmodName, index) => {
+            fmmodList += `${index + 1}. ${fmmodName}\n`;
+        });
+                await m.reply(fmmodList);
+            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the FMMod list')) {
+                const selectedNumber = parseInt(lowerText);
                 const fmmodNames = Object.keys(data.data);
 
-                if (selectedOption >= 1 && selectedOption <= fmmodNames.length) {
-                    const selectedFMMod = fmmodNames[selectedOption - 1];
+                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
+                    const fmmodName = fmmodNames[selectedNumber - 1];
 
-                    const apkBufferReq = await fetch(data.data[selectedFMMod].link);
+                    const apkBufferReq = await fetch(data.data[fmmodName].link);
                     const apkArrayBuffer = await apkBufferReq.arrayBuffer();
                     const apkBuffer = Buffer.from(apkArrayBuffer);
 
-                    // Reply with the selected FMMod
                     await gss.sendMessage(m.chat, {
                         document: apkBuffer,
                         mimetype: 'application/vnd.android.package-archive',
-                        fileName: `${selectedFMMod}.apk`,
-                        caption: `${selectedFMMod}`
+                        fileName: `${fmmodName}.apk`,
+                        caption: `${fmmodName}`
                     });
+                    
+                    
+                } else {
+                    await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
                 }
             }
         }
