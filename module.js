@@ -51,7 +51,6 @@ modul: {
     util: require('util'),
     Utils: require('@whiskeysockets/baileys/lib/Utils'),
     yargs: require('yargs'),
-    ytdlcr: require('youtubedl-core'),
     yts: require('yt-search'),
     yt: require('youtube-yts'),
     ytdl: require('ytdl-core'),
