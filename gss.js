@@ -906,7 +906,7 @@ if (m.text && !m.key.fromMe) {
   } else if (/^\d+$/.test(lowerText) && m.quoted) {
     const quotedText = m.quoted.text.toLowerCase();
 
-    if (quotedText.includes(menuMessage.toLowerCase())) {
+    if (quotedText.includes(menuMessage.toLowerCase()) && /^\d+$/.test(lowerText)) {
       const selectedNumber = lowerText;
       const subMenu = subMenus[selectedNumber];
 
