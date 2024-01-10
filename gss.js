@@ -883,11 +883,11 @@ ${formattedCmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`
 }
 
 
-const introTextConvert = generateMenu(...cmdConv, '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥');
-const introTextAdmin = generateMenu(...cmdGrup, '𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨');
-const introTextOwner = generateMenu(...cmdOwner, '𝗢𝗪𝗡𝗘𝗥');
-const introTextMain = generateMenu(...cmdMain, '𝗠𝗔𝗜𝗡 𝗠𝗘𝗡𝗨');
-const introTextDownload = generateMenu(...cmdDown, '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥');
+const introTextConvert = generateMenu(cmdConv, '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥');
+const introTextAdmin = generateMenu(cmdGrup, '𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨');
+const introTextOwner = generateMenu(cmdOwner, '𝗢𝗪𝗡𝗘𝗥');
+const introTextMain = generateMenu(cmdMain, '𝗠𝗔𝗜𝗡 𝗠𝗘𝗡𝗨');
+const introTextDownload = generateMenu(cmdDown, '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥');
 
 const menuMessage = 'Here the menu, sir:\n1 - convertmenu\n2 - adminmenu\n3 - ownermenu\n4 - mainmenu\n5 - downloadmenu';
 
