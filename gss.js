@@ -898,7 +898,6 @@ const subMenus = {
   '5': introTextDownload
 };
 
-
 if (m.text) {
   const lowerText = m.text.toLowerCase();
 
@@ -911,7 +910,7 @@ if (m.text) {
       const selectedNumber = lowerText;
       const subMenu = subMenus[selectedNumber];
 
-      if (subMenu) {
+      if (subMenu !== undefined) {
         m.reply(subMenu);
       } else {
         m.reply('Invalid menu number. Please select a number from the menu.');
@@ -919,6 +918,7 @@ if (m.text) {
     }
   }
 }
+
 
 
 
