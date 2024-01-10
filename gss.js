@@ -421,21 +421,33 @@ try {
                 const pollSelectableCount = 1;
 
                 const pollMessage = await gss.sendPoll(m.chat, pollName, fmmodValues, pollSelectableCount);
-            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the FMMod list')) {
-            }
-        } else if (m.poll) {
-            // Handle the case when a user votes in the poll
-            const voterJid = m.sender;
-            const selectedOption = m.poll.selectedOptions[0].value; // Assuming single-choice poll
+            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Select FMMod')) {
+                // Handling when a user votes in the poll
+                const selectedOption = m.poll.selectedOptions[0].value; // Assuming single-choice poll
+                const fmmodNames = Object.keys(data.data);
 
-            const selectedFMMod = Object.keys(data.data)[selectedOption - 1];
-            const messageToVoter = `Thanks for voting! You selected FMMod: ${selectedFMMod}`;
-            await gss.sendMessage(voterJid, messageToVoter);
+                if (selectedOption >= 1 && selectedOption <= fmmodNames.length) {
+                    const selectedFMMod = fmmodNames[selectedOption - 1];
+
+                    const apkBufferReq = await fetch(data.data[selectedFMMod].link);
+                    const apkArrayBuffer = await apkBufferReq.arrayBuffer();
+                    const apkBuffer = Buffer.from(apkArrayBuffer);
+
+                    // Reply with the selected FMMod
+                    await gss.sendMessage(m.chat, {
+                        document: apkBuffer,
+                        mimetype: 'application/vnd.android.package-archive',
+                        fileName: `${selectedFMMod}.apk`,
+                        caption: `${selectedFMMod}`
+                    });
+                }
+            }
         }
     }
 } catch (error) {
     console.error('Error fetching data from the API:', error.message);
 }
+
 
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
