@@ -73,6 +73,7 @@
     "object-query-string": "^1.2.0",
     "openai": "^4.11.1",
     "os": "^0.1.2",
+    "parse-ms": "^2.1.0",
     "path": "^0.12.7",
     "pdf-lib": "^1.17.1",
     "perf_hooks": "0.0.1",
