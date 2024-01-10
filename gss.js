@@ -420,10 +420,17 @@ try {
                 const pollName = 'Select FMMod';
                 const pollSelectableCount = 1;
 
-                gss.sendPoll(m.chat, pollName, fmmodValues, pollSelectableCount);
+                const pollMessage = await gss.sendPoll(m.chat, pollName, fmmodValues, pollSelectableCount);
             } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the FMMod list')) {
-                
             }
+        } else if (m.poll) {
+            // Handle the case when a user votes in the poll
+            const voterJid = m.sender;
+            const selectedOption = m.poll.selectedOptions[0].value; // Assuming single-choice poll
+
+            const selectedFMMod = Object.keys(data.data)[selectedOption - 1];
+            const messageToVoter = `Thanks for voting! You selected FMMod: ${selectedFMMod}`;
+            await gss.sendMessage(voterJid, messageToVoter);
         }
     }
 } catch (error) {
