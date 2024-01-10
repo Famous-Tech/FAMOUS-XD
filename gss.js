@@ -945,7 +945,7 @@ if (m.text) {
             break	
             
             case 'rentbot': {
-rentfromxeon(XeonBotInc, m, from)
+rentfromxeon(gss, m, from)
 }
 break
             
