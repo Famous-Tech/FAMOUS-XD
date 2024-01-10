@@ -906,11 +906,12 @@ if (m.text && !m.key.fromMe) {
   } else if (/^\d+$/.test(lowerText) && m.quoted) {
     const quotedText = m.quoted.text.toLowerCase();
 
-    if (quotedText.includes(menuMessage.toLowerCase()) && /^\d+$/.test(lowerText)) {
+    if (quotedText.includes(menuMessage.toLowerCase())) {
       const selectedNumber = lowerText;
-      const subMenu = subMenus[selectedNumber];
+      const validNumbers = Object.keys(subMenus);
 
-      if (subMenu) {
+      if (validNumbers.includes(selectedNumber)) {
+        const subMenu = subMenus[selectedNumber];
         m.reply(subMenu);
       } else {
         m.reply('Invalid menu number. Please select a number from the menu.');
@@ -918,6 +919,7 @@ if (m.text && !m.key.fromMe) {
     }
   }
 }
+
 
 
 
