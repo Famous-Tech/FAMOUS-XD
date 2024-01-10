@@ -404,7 +404,32 @@ try {
 }
 
     
-  
+const apiUrlFm = 'https://vihangayt.me/download/fmmods';
+
+try {
+    const response = await axios.get(apiUrlFm);
+    const data = response.data;
+
+    if (m.text) {
+        const lowerText = m.text.toLowerCase();
+
+        if (data.status === true && data.data) {
+            if (lowerText === '.fmmod') {
+                // Sending poll with FMMod options
+                const fmmodValues = Object.keys(data.data);
+                const pollName = 'Select FMMod';
+                const pollSelectableCount = 1;
+
+                gss.sendPoll(m.chat, pollName, fmmodValues, pollSelectableCount);
+            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the FMMod list')) {
+                
+            }
+        }
+    }
+} catch (error) {
+    console.error('Error fetching data from the API:', error.message);
+}
+
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
