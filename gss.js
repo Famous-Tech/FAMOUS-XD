@@ -450,12 +450,9 @@ try {
 }
 
 
-const randomFontStyle = getRandomFontStyle();
-const randomSymbol = getRandomSymbol();
-
 const generateMenu = (cmdList, title) => {
   const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
-    .map((v) => `${randomSymbol}┃${convertToFontStyle(prefix + v, randomFontStyle)}`)
+    .map((v) => `┃${convertToFontStyle(prefix + v, randomFontStyle)}`)
     .join('\n');
 
   return `
@@ -505,6 +502,7 @@ if (m.text && !m.key.fromMe) {
     }
   }
 }
+
 
 
 
