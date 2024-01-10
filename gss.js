@@ -865,6 +865,11 @@ const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
 
 const generateMenu = (cmdList, title) => {
+  if (!Array.isArray(cmdList)) {
+    console.error("Invalid cmdList: It should be an array.");
+    return ''; // or handle it in a way that fits your logic
+  }
+
   const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
     .map((v) => `┃${convertToFontStyle(prefix + v, randomFontStyle)}`)
     .join('\n');
