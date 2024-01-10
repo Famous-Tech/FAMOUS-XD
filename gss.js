@@ -871,7 +871,8 @@ function generateMenu(cmdList, title) {
   }
 
   const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
-    .map((v, i) => `${randomSymbol}┃${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
+    .map((v, i) => `${randomSymbol}┃${convertToFontStyle(v, randomFontStyle)}`).join('\n');
+
 
   return `
 ╭───〈 ${title} 〉───◆
