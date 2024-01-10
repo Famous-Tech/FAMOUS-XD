@@ -864,41 +864,32 @@ const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup
 const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
 
-const generateMenu = (cmdList, title) => {
-  if (!Array.isArray(cmdList)) {
-    console.error("Invalid cmdList: It should be an array.");
-    return ''; // or handle it in a way that fits your logic
-  }
-
+function generateMenu(cmdList, title) {
   const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
-    .map((v) => `┃${convertToFontStyle(prefix + v, randomFontStyle)}`)
-    .join('\n');
+    .map((v, i) => `${randomSymbol}┃${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
 
   return `
 ╭───〈 ${title} 〉───◆
 ┃     ╭─────────────···▸
-${formattedCmdList.split('\n').map((item) => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
+${formattedCmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
 ┃     ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
-};
+}
 
-const cmdLists = [...cmdGrup, ...cmdDown, ...cmdConv,  ...cmdOwner];
-const menuTitles = ['𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨', '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥', '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥', '𝗢𝗪𝗡𝗘𝗥'];
+const introTextConvert = generateMenu(...cmdConv, '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥');
+const introTextAdmin = generateMenu(...cmdGrup, '𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨');
+const introTextOwner = generateMenu(...cmdOwner, '𝗢𝗪𝗡𝗘𝗥');
+const introTextMain = generateMenu(...cmdMain, '𝗠𝗔𝗜𝗡 𝗠𝗘𝗡𝗨');
+const introTextDownload = generateMenu(...cmdDown, '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥');
 
-let introText = '';
-
-cmdLists.forEach((cmdList, index) => {
-  introText += generateMenu(cmdList, menuTitles[index]);
-});
-
-const menuMessage = 'Here is the menu, sir:\n1 - convertmenu\n2 - adminmenu\n3 - ownermenu\n4 - mainmenu\n5 - downloadmenu';
+const menuMessage = 'Here the menu, sir:\n1 - convertmenu\n2 - adminmenu\n3 - ownermenu\n4 - mainmenu\n5 - downloadmenu';
 
 const subMenus = {
   '1': introTextConvert,
   '2': introTextAdmin,
   '3': introTextOwner,
   '4': introTextMain,
-  '5': introTextDownload,
+  '5': introTextDownload
 };
 
 if (m.text && !m.key.fromMe) {
@@ -921,6 +912,7 @@ if (m.text && !m.key.fromMe) {
     }
   }
 }
+
 
 
 
