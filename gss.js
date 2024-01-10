@@ -865,6 +865,11 @@ const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
 
 function generateMenu(cmdList, title) {
+  if (!Array.isArray(cmdList)) {
+    console.error('Invalid cmdList. It should be an array.');
+    return '';
+  }
+
   const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
     .map((v, i) => `${randomSymbol}┃${convertToFontStyle(prefix + v, randomFontStyle)}`).join('\n');
 
@@ -875,6 +880,7 @@ ${formattedCmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`
 ┃     ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 }
+
 
 const introTextConvert = generateMenu(...cmdConv, '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥');
 const introTextAdmin = generateMenu(...cmdGrup, '𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨');
