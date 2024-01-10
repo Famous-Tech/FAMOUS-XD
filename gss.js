@@ -450,7 +450,7 @@ try {
 }
 
 
-const menuMessage = Here is the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka;
+const menuMessage = Here the menu, sir:\n1 - hi\n2 - bye\n3 - huo\n4 - jksd\n5 - jka;
 
 const subMenus = {
   '1': 'Sub menu for hi',
@@ -463,7 +463,7 @@ const subMenus = {
 if (m.text && !m.key.fromMe) {
   const lowerText = m.text.toLowerCase();
 
-  if (lowerText.includes('.menu')) {
+  if (lowerText.includes('.meenu')) {
     m.reply(menuMessage);
   } else if (/^\d+$/.test(lowerText) && m.quoted) {
     const quotedText = m.quoted.text.toLowerCase();
