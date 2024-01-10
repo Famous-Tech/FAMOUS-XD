@@ -5,6 +5,7 @@ const fonts = require('./lib/font.js');
 const menufont = require('./lib/menufont.js');
 const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
+const { rentfromxeon, conns } = require('./RentBot')
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
@@ -942,6 +943,11 @@ if (m.text) {
                 m.reply(`${m.pushName} already Afk${text ? ': ' + text : ''}`)
             }
             break	
+            
+            case 'rentbot': {
+rentfromxeon(XeonBotInc, m, from)
+}
+break
             
 case 'imdb': case 'movie':
 if (!text) return m.reply(`Give Me a Series or movie Name`)
