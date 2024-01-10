@@ -863,6 +863,11 @@ const cmdMain = ["Ping", "Alive", "Owner", "Menu", "Infochat", "Quoted", "Listpc
 const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup", "Bcall", "Setppbot", "Setexif", "Anticall", "Setstatus", "Setnamebot", "Sleep", "AutoTyping", "AlwaysOnline", "AutoRead"];
 const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
+function getRandomSymbol() {
+    const symbols = ['◉', '★', '◎', '✯','✯','✰','◬','✵','✦']; // Add more symbols as needed
+    const randomIndex = Math.floor(Math.random() * symbols.length);
+    return symbols[randomIndex];
+}
 
 function generateMenu(cmdList, title) {
   if (!Array.isArray(cmdList)) {
