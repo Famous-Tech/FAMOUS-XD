@@ -463,7 +463,7 @@ ${formattedCmdList.split('\n').map((item) => `┃${item ? ' ' + item.trim() : ''
 ╰━━━━━━━━━━━━━━━┈⊷`;
 };
 
-const cmdLists = [cmdGrup, cmdDown, cmdConv, cmdOwner];
+let cmdLists = [cmdGrup, cmdDown, cmdConv, cmdOwner];
 const menuTitles = ['𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨', '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥', '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥', '𝗢𝗪𝗡𝗘𝗥'];
 
 let introText = '';
