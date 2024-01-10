@@ -870,8 +870,8 @@ function generateMenu(cmdList, title) {
     return '';
   }
 
-  const formattedCmdList = cmdList.sort().join('\n');
-
+  const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
+    .map((v, i) => `${randomSymbol}┃${v}`).join('\n');
 
 
   return `
