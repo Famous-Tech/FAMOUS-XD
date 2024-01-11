@@ -85,7 +85,7 @@ else if (reason === DisconnectReason.timedOut) {
 console.log("Connection TimedOut, Reconnecting..."); start(); }
 else XeonBotInc.end(`Unknown DisconnectReason: ${reason}|${connection}`)
 }
-})
+}
 
 XeonBotInc.decodeJid = (jid) => {
 if (!jid) return jid
