@@ -75,7 +75,7 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 
 ## `𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑`
 <div align="left">
-  <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="200" height="200" alt="Ash"/></a>
+  <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Ash"/></a>
 <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
  </div>
 <br>
