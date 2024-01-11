@@ -90,7 +90,24 @@ if (connection){
 if (connection != "connecting") console.log("Connecting to rent bot..")
 }
 console.log(up)
-if (up.qr) await sendImage(from, await qrcode.toDataURL(up.qr,{scale : 8}), 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds')
+            if (!gss.authState.creds.registered) {
+                if (args.includes('qr')) {
+                    // Code for sending QR image
+                    const qrCode = await qrcode.toDataURL(state.qr, { scale: 8 });
+                    await sendImage(from, qrCode, 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds');
+                } else if (args.includes('pair')) {
+                    // Code for sending pairing code
+                    let phoneNumber = text ? text.trim() : getInput("Give Me your Number");
+                    let code = await XeonBotInc.requestPairingCode(phoneNumber);
+
+                    code = code?.match(/.{1,4}/g)?.join("-") || code;
+                    await m.reply(`Your Pairing Code: ${code}\n\nPlease enter this code to complete the pairing process.`);
+                    console.log(`Pairing code sent to ${phoneNumber}`);
+                } else {
+                    // Default case when no specific argument is provided
+                    return m.reply(`Give Me your Number`);
+                }
+            }
 console.log(connection)
 if (connection == "open") {
 XeonBotInc.id = XeonBotInc.decodeJid(XeonBotInc.user.id)
