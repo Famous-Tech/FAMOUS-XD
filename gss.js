@@ -160,6 +160,11 @@ async function doReact(emoji) {
 
 
 async function sendTypingEffect(gss, m, message, typingSpeed) {
+  if (!message) {
+    console.error('Error: Message is undefined or empty.');
+    return;
+  }
+
   const gptthink = await gss.sendMessage(m.chat, { text: 'Thinking...' });
 
   const words = message.split(' ');
