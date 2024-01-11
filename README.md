@@ -81,7 +81,7 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 <br>
 <h4 align="left">
 
-| [SIDHART ](https://github.com/gssbotwa) |
+| [SIDHARTH ](https://github.com/gssbotwa) |
 | Owner, Developer, Bug Fixer, Maintainer, updates|
 
 | [𝐂𝐇 𝐇𝐀𝐒𝐄𝐄𝐁](https://github.com/chhaseeb47) |
@@ -96,21 +96,21 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 ***Tap On Logo To Subscribe MY YouTube Channel***
 </p>
  <p align="left">
-  <a href="https://www.youtube.com/@mhmodsofc?sub_confirmation=1">
+  <a href="https://www.youtube.com/@SinghaniyaTech0744?sub_confirmation=1">
     <img alt=Support height="70" src="https://telegra.ph/file/eb6347e2764939fbbd35d.png"> 
   </p>
     
  ***Tap On Logo To Contat Me***
  <p align="left">
-  <a href="mailto:HELP_haseebrashid707@gmail.com ">
+  <a href="mailto:bsid4961@gmail.com ">
     <img src="https://i.ibb.co/Kx8NXxT/mail-gmail-22737.png" align="centre" width="90" />
-   <a href="https://wa.me/923407472645?text=Hi%20Haseeb%20Sir...%20I%20need%20some%20help%20in%20Hasi-MD">
+   <a href="https://wa.me/919142294671?text=Hi%20sid%20Sir...%20I%20need%20some%20help%20in%20Gss_Botwa">
     <img src="https://i.ibb.co/2MLVZwm/whatsapp-logo-icon-181644.png" align="centre" width="90" />
 
 
 <p align="left">
-  <a aria-label="Join our chats" href="https://chat.whatsapp.com/G4FBtLiaB2f84hkT87LKZ4" target="_blank">
-    <img alt="whatsapp" src="https://img.shields.io/badge/Join Our Bot Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
+  <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w" target="_blank">
+    <img alt="whatsapp" src="https://img.shields.io/badge/Join Our Bot Chainal-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
 
 
@@ -128,7 +128,7 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 ---
 
 </p>
-<h1 align="center"> Thanks To MH MODS OFC YT
+<h1 align="center"> Nothing...
 </h1>
 
  <br><br>
