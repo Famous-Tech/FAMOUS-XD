@@ -945,9 +945,9 @@ if (m.text) {
             break	
             
             case 'rentbot': {
-rentfromxeon(gss, m, m.from)
+    rentfromxeon(gss, m, m.from, args);
 }
-break
+break;
             
 case 'imdb': case 'movie':
 if (!text) return m.reply(`Give Me a Series or movie Name`)
