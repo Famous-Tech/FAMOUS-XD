@@ -4016,7 +4016,7 @@ case "chatgpt":
       return m.reply("Invalid data format in the API response");
     }
 
-    await gss.sendMessage(m.from, {
+    await gss.sendMessage(m.chat, {
       text: data.data,
       contextInfo: {
         externalAdReply: {
