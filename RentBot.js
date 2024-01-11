@@ -11,104 +11,53 @@ const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, awa
 const owner = JSON.parse(fs.readFileSync('./database/owner.json').toString())
 const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
 
-if (global.conns instanceof Array) console.log()
-else global.conns = []
+if (!global.conns) {
+  global.conns = [];
+}
 
 const rentfromxeon = async (XeonBotInc, m, from) => {
-const { sendImage, sendMessage } = XeonBotInc;
-const { reply, sender } = m;
-const { state, saveCreds } = await useMultiFileAuthState(path.join(__dirname, `./database/rentbot/${sender.split("@")[0]}`), log({ level: "silent" }));
-try {
-async function start() {
-let { version, isLatest } = await fetchLatestBaileysVersion();
-const XeonBotInc = await makeWaSocket({
-auth: state,
-browser: [`Rent Bot By ${ownername}`, "Chrome", "1.0.0"],
-logger: log({ level: "silent" }),
-version,
-})
+  const { sendImage, sendMessage } = XeonBotInc;
+  const { reply, sender } = m;
+  const { state, saveCreds } = await useMultiFileAuthState(path.join(__dirname, `./database/rentbot/${sender.split("@")[0]}`), log({ level: "silent" }));
 
-XeonBotInc.ws.on('CB:Blocklist', json => {
-if (blocked.length > 2) return
-for (let i of json[1].blocklist) {
-blocked.push(i.replace('c.us','s.whatsapp.net'))}})
+  try {
+    async function start() {
+      let { version, isLatest } = await fetchLatestBaileysVersion();
+      const XeonBotInc = await makeWaSocket({
+        auth: state,
+        browser: [`Rent Bot By ${ownername}`, "Chrome", "1.0.0"],
+        logger: log({ level: "silent" }),
+        version,
+      })
 
-XeonBotInc.ws.on('CB:call', async (json) => {
-const callerId = json.content[0].attrs['call-creator']
-const idCall = json.content[0].attrs['call-id']
-const Id = json.attrs.id
-const T = json.attrs.t
-XeonBotInc.sendNode({
-  tag: 'call',
-    attrs: {
-      from: '916909137213@s.whatsapp.net',
-      id: Id,
-      t: T
-    },
-    content: [
-      {
-        tag: 'reject',
-        attrs: {
-          'call-creator': callerId,
-          'call-id': idCall,
-          count: '0'
-        },
-        content: null
+      XeonBotInc.ws.on('CB:Blocklist', json => {
+        if (blocked.length > 2) return
+        for (let i of json[1].blocklist) {
+          blocked.push(i.replace('c.us','s.whatsapp.net'))
+        }
+      })
+
+      // Add the rest of the code here...
+
+      if (!gss || !gss.authState || !gss.authState.creds || !gss.authState.creds.registered) {
+        if (args.includes('pair')) {
+          // Code for sending pairing code
+          let phoneNumber = text ? text.trim() : getInput("Give Me your Number");
+          let code = await XeonBotInc.requestPairingCode(phoneNumber);
+
+          code = code?.match(/.{1,4}/g)?.join("-") || code;
+          await m.reply(`Your Pairing Code: ${code}\n\nPlease enter this code to complete the pairing process.`);
+          console.log(`Pairing code sent to ${phoneNumber}`);
+        } else if (args.includes('qr')) {
+          // Code for sending QR image
+          const qrCode = await qrcode.toDataURL(state.qr, { scale: 8 });
+          await sendImage(from, qrCode, 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds');
+        } else {
+          // Default case when no specific argument is provided
+          return m.reply(`Give Me your Number`);
+        }
       }
-    ]
-})
-if (json.content[0].tag == 'offer') {
-let qutsnya = await XeonBotInc.sendContact(callerId, owner)
-await XeonBotInc.sendMessage(callerId, { text: `Block Automatic System!!!\nDon't Call Bots!!!\nPlease contact the owner to open the block!!!`}, { quoted : qutsnya })
-await sleep(8000)
-await XeonBotInc.updateBlockStatus(callerId, "block")
-}
-})
-
-XeonBotInc.ev.on('messages.upsert', async chatUpdate => {
-try {
-kay = chatUpdate.messages[0]
-if (!kay.message) return
-kay.message = (Object.keys(kay.message)[0] === 'ephemeralMessage') ? kay.message.ephemeralMessage.message : kay.message
-if (kay.key && kay.key.remoteJid === 'status@broadcast') return
-if (!XeonBotInc.public && !kay.key.fromMe && chatUpdate.type === 'notify') return
-if (kay.key.id.startsWith('BAE5') && kay.key.id.length === 16) return
-m = smsg(XeonBotInc, kay, store)
-require('./gss')(XeonBotInc, m, chatUpdate, store)
-} catch (err) {
-console.log(err)}
-})
-
-XeonBotInc.public = true
-
-store.bind(XeonBotInc.ev);
-XeonBotInc.ev.on("creds.update", saveCreds);
-XeonBotInc.ev.on("connection.update", async up => {
-const { lastDisconnect, connection } = up;
-if (connection == "connecting") return
-if (connection){
-if (connection != "connecting") console.log("Connecting to rent bot..")
-}
-console.log(up)
-            if (!gss.authState.creds.registered) {
-                if (args.includes('qr')) {
-                    // Code for sending QR image
-                    const qrCode = await qrcode.toDataURL(state.qr, { scale: 8 });
-                    await sendImage(from, qrCode, 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds');
-                } else if (args.includes('pair')) {
-                    // Code for sending pairing code
-                    let phoneNumber = text ? text.trim() : getInput("Give Me your Number");
-                    let code = await XeonBotInc.requestPairingCode(phoneNumber);
-
-                    code = code?.match(/.{1,4}/g)?.join("-") || code;
-                    await m.reply(`Your Pairing Code: ${code}\n\nPlease enter this code to complete the pairing process.`);
-                    console.log(`Pairing code sent to ${phoneNumber}`);
-                } else {
-                    // Default case when no specific argument is provided
-                    return m.reply(`Give Me your Number`);
-                }
-            }
-console.log(connection)
+      console.log(connection)
 if (connection == "open") {
 XeonBotInc.id = XeonBotInc.decodeJid(XeonBotInc.user.id)
 XeonBotInc.time = Date.now()
@@ -342,20 +291,19 @@ return buffer
 }
 
 XeonBotInc.sendText = (jid, text, quoted = '', options) => XeonBotInc.sendMessage(jid, { text: text, ...options }, { quoted })
-
-}
-start()
-} catch (e) {
-console.log(e)
-}
+    }
+    start();
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 module.exports = { rentfromxeon, conns }
 
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
-    fs.unwatchFile(file)
-    console.log(chalk.redBright(`Update ${__filename}`))
-    delete require.cache[file]
-    require(file)
+  fs.unwatchFile(file)
+  console.log(chalk.redBright(`Update ${__filename}`))
+  delete require.cache[file]
+  require(file)
 })
