@@ -3992,46 +3992,52 @@ case 'update':
   break;
 
       case "gpt":
-      case "ai":
-      case "openai":
-      case "chatgpt":
-        if (!text) {
-          await doReact("❌");
-          return m.reply(`*Provide me a query, e.g., "Who made chat gpt?"`);
-        }
+case "ai":
+case "openai":
+case "chatgpt":
+  if (!text) {
+    await doReact("❌");
+    return m.reply(`*Provide me a query, e.g., "Who made chat gpt?"`);
+  }
 
-        try {
-          const res = await fetch(`https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`);
+  try {
+    const apiUrl = `https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`;
+    const res = await fetch(apiUrl);
 
-          const data = await res.json();
+    if (!res.ok) {
+      await doReact("❌");
+      return m.reply(`Invalid response from the API. Status code: ${res.status}`);
+    }
 
-          if (!data || !data.results) {
-            await doReact("❌");
-            return m.reply("Invalid response from the API");
-          }
+    const data = await res.json();
 
-          await gss.sendMessage(m.from, {
-            text: data.results,
-            contextInfo: {
-              externalAdReply: {
-                title: "GPT TURBO 3.5K",
-                body: "",
-                mediaType: 1,
-                thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
-                renderLargerThumbnail: false,
-                mediaUrl: "",
-                sourceUrl: "",            
-              },
-            },
-          }, { quoted: m });
+    if (!data || !data.status || !data.owner || !data.data) {
+      await doReact("❌");
+      return m.reply("Invalid data format in the API response");
+    }
 
-          await doReact("✅");
-        } catch (error) {
-          console.error(error);
-          await doReact("❌");
-          return m.reply("An error occurred while processing the request.");
-        }
-        break;
+    await gss.sendMessage(m.from, {
+      text: data.data,
+      contextInfo: {
+        externalAdReply: {
+          title: "GPT TURBO 3.5K",
+          body: "",
+          mediaType: 1,
+          thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
+          renderLargerThumbnail: false,
+          mediaUrl: "",
+          sourceUrl: "",
+        },
+      },
+    }, { quoted: m });
+
+    await doReact("✅");
+  } catch (error) {
+    console.error(error);
+    await doReact("❌");
+    return m.reply("An error occurred while processing the request.");
+  }
+  break;
 
 
 case 'snapshotfull': case 'ssf':
