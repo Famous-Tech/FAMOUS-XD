@@ -4006,8 +4006,8 @@ case "gpt":
         if (response.status === 200) {
             const result = response.data.result;
 
-            // Send the result directly
-            return gss.sendMessage(m.chat, { text: result });
+            // Send the result using m.reply
+            return m.reply(result);
         } else {
             console.error(`HTTP request failed with status ${response.status}`);
             return m.reply("Error: Unable to fetch data from the API.");
@@ -4017,6 +4017,7 @@ case "gpt":
         return m.reply("Error: " + error.message);
     }
     break;
+
 
 
 
