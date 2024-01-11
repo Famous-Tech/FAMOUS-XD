@@ -4005,19 +4005,19 @@ case "gpt":
 
         if (response.status === 200) {
             const result = response.data.result;
-            const typingSpeed = 100;
 
-            // Use the typing effect function
-            await sendTypingEffect(gss, m, result, typingSpeed);
+            // Send the result directly
+            return gss.sendMessage(m.chat, { text: result });
         } else {
             console.error(`HTTP request failed with status ${response.status}`);
-            m.reply("Error: Unable to fetch data from the API.");
+            return m.reply("Error: Unable to fetch data from the API.");
         }
     } catch (error) {
         console.error(error);
-        m.reply("Error: " + error.message);
+        return m.reply("Error: " + error.message);
     }
     break;
+
 
 
 
