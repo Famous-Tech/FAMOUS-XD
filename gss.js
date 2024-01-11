@@ -6,6 +6,7 @@ const menufont = require('./lib/menufont.js');
 const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
 const { rentfromxeon, conns } = require('./RentBot')
+const languages = require('./lib/languages');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
@@ -3992,12 +3993,12 @@ case "gpt":
   try {
     if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
 
-    const apiUrl = `https://api.caliph.biz.id/api/ai/oai-gpt?q=${encodeURIComponent(text)}&apikey=lykoUzNh`;
+    const apiUrl = `https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`;
     const response = await axios.get(apiUrl);
 
     if (response.status === 200) {
       const result = response.data.result;
-      const typingSpeed = 100; // Adjust the typing speed as needed (milliseconds per word)
+      const typingSpeed = 100;
 
       // Use the typing effect function
       await sendTypingEffect(gss, m, result, typingSpeed);
@@ -4042,37 +4043,39 @@ case 'ss':
 
 
 
-    case 'voiceai': case 'voicegpt':
-      if (!text) {
-        await m.reply(`*You can use the Voice AI command with text to get a spoken response.*\n\n*Example usage:*\n*◉ ${prefix + command} Tell me a joke.*`);
-        break;
-      }
+    case 'voiceai':
+case 'voicegpt':
+  if (!text) {
+    await m.reply(`*You can use the Voice AI command with text to get a spoken response.*\n\n*Example usage:*\n*◉ ${prefix + command} Tell me a joke.*`);
+    break;
+  }
 
-      try {
-        const apiEndpoint = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(text)}`;
-        let response = await axios.get(apiEndpoint);
-        let responseData = response.data;
+  try {
+    const apiEndpoint = `https://vihangayt.me/tools/gpt-voice?query=${encodeURIComponent(text)}`;
+    let response = await axios.get(apiEndpoint);
+    let responseData = response.data;
 
-        if (responseData.result) {
-          const result = responseData.result;
-          const speechURL = `https://matrix-coder.vercel.app/api/gpt?query=${encodeURIComponent(result)}`;
-          await gss.sendMessage(m.chat, {
-            audio: {
-              url: speechURL,
-            },
-            mimetype: 'audio/mp4',
-            ptt: true,
-            fileName: `${text}.mp3`,
-          }, {
-            quoted: m,
-          });
-        } else {
-          console.log('API returned an unexpected response:', responseData);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      break;
+    if (responseData.result) {
+      const result = responseData.result;
+      const speechURL = `https://vihangayt.me/tools/gpt-voice?query=${encodeURIComponent(result)}`;
+      await gss.sendMessage(m.chat, {
+        audio: {
+          url: speechURL,
+        },
+        mimetype: 'audio/mp4',
+        ptt: true,
+        fileName: `${text}.mp3`,
+      }, {
+        quoted: m,
+      });
+    } else {
+      console.log('API returned an unexpected response:', responseData);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  break;
+
 
 
 
@@ -4295,50 +4298,46 @@ m.reply(teks)
 break
 
 
-const languages = require('./lib/languages'); // Import the language codes module
 
-// Function to validate language code
+
 function isValidLanguageCode(code) {
-    return (code);
+    return languages.includes(code.toLowerCase());
 }
 
-// Command handler for 'say', 'tts', and 'gtts'
-case 'say':
-case 'tts':
-case 'gtts': {
-    if (!args[0] || !text) {
-        return m.reply('Usage: .say <language code> <text>');
+    case 'say':
+    case 'tts':
+    case 'gtts': {
+        if (!args[0] || !args[1]) {
+            return m.reply('Usage: .say <language code> <text>');
+        }
+
+        const langCode = args[0].toLowerCase(); // Language code provided by the user
+        const textToSpeak = args.slice(1).join(" "); // Get the text to speak
+
+        // Validate the language code
+        if (!isValidLanguageCode(langCode)) {
+            return m.reply('Invalid language code. Please provide a valid language code');
+        }
+
+        try {
+            const audioUrl = await googleTTS.tts(textToSpeak, langCode, 1);
+
+            return gss.sendMessage(m.chat, {
+                audio: {
+                    url: audioUrl,
+                },
+                mimetype: 'audio/mp4',
+                ptt: true,
+                fileName: `${textToSpeak}.mp3`,
+            }, {
+                quoted: m,
+            });
+        } catch (error) {
+            console.error('Error during TTS:', error);
+            return m.reply('Unexpected error occurred during TTS.');
+        }
     }
-
-    const langCode = args[0]; // Language code provided by the user
-    const textToSpeak = args.slice(1).join(" "); // Get the text to speak
-
-    // Validate the language code
-    if (!isValidLanguageCode(langCode)) {
-        return m.reply('Iɴᴠᴀʟɪᴅ ʟᴀɴɢᴜᴀɢᴇ ᴄᴏᴅᴇ. Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ʟᴀɴɢᴜᴀɢᴇ ᴄᴏᴅᴇ');
-    }
-
-    try {
-        // Generate the audio URL using the specified language code and text
-        const audioUrl = await googleTTS.tts(textToSpeak, langCode, 1); // 1 means slow, 0 means normal speed
-
-        // Send the audio message
-        return gss.sendMessage(m.chat, {
-            audio: {
-                url: audioUrl,
-            },
-            mimetype: 'audio/mp4',
-            ptt: true,
-            fileName: `${textToSpeak}.mp3`,
-        }, {
-            quoted: m,
-        });
-    } catch (error) {
-        console.error('Error during TTS:', error);
-        return m.reply('Unexpected error occurred during TTS.');
-    }
-}
-break;
+    break;
 
 
 
