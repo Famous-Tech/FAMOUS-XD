@@ -3990,28 +3990,29 @@ case 'update':
 
     case "ai":
 case "gpt":
-  try {
-    if (!text) return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+    try {
+        if (!text) {
+            return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+        }
 
-    const apiUrl = `https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`;
-    const response = await axios.get(apiUrl);
+        const apiUrl = `https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`;
+        const response = await axios.get(apiUrl);
 
-    if (response.status === 200) {
-      const result = response.data.result;
-      const typingSpeed = 100;
+        if (response.status === 200) {
+            const result = response.data.result;
+            const typingSpeed = 100;
 
-      // Use the typing effect function
-      await sendTypingEffect(gss, m, result, typingSpeed);
-
-    } else {
-      console.error(`HTTP request failed with status ${response.status}`);
-      m.reply("Error: Unable to fetch data from the API.");
+            // Use the typing effect function
+            await sendTypingEffect(gss, m, result, typingSpeed);
+        } else {
+            console.error(`HTTP request failed with status ${response.status}`);
+            m.reply("Error: Unable to fetch data from the API.");
+        }
+    } catch (error) {
+        console.error(error);
+        m.reply("Error: " + error.message);
     }
-  } catch (error) {
-    console.error(error);
-    m.reply("Error: " + error.message);
-  }
-  break;
+    break;
 
 
 
