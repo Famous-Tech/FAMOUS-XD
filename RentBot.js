@@ -290,7 +290,6 @@ return buffer
 }
 
 XeonBotInc.sendText = (jid, text, quoted = '', options) => XeonBotInc.sendMessage(jid, { text: text, ...options }, { quoted })
-    }
     start();
   } catch (e) {
     console.log(e)
