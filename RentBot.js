@@ -40,7 +40,7 @@ const rentfromxeon = async (XeonBotInc, m, from) => {
       // Add the rest of the code here...
 
       if (!gss || !gss.authState || !gss.authState.creds || !gss.authState.creds.registered) {
-        if (args.includes('pair')) {
+        if (args[0].toLowerCase('pair')) {
           // Code for sending pairing code
           let phoneNumber = text ? text.trim() : getInput("Give Me your Number");
           let code = await XeonBotInc.requestPairingCode(phoneNumber);
@@ -48,7 +48,7 @@ const rentfromxeon = async (XeonBotInc, m, from) => {
           code = code?.match(/.{1,4}/g)?.join("-") || code;
           await m.reply(`Your Pairing Code: ${code}\n\nPlease enter this code to complete the pairing process.`);
           console.log(`Pairing code sent to ${phoneNumber}`);
-        } else if (args.includes('qr')) {
+        } else if (args[0].toLowerCase('qr')) {
           // Code for sending QR image
           const qrCode = await qrcode.toDataURL(state.qr, { scale: 8 });
           await sendImage(from, qrCode, 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds');
