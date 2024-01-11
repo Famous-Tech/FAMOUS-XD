@@ -3997,10 +3997,13 @@ case "openai":
 case "chatgpt":
   if (!text) {
     await doReact("❌");
-    return m.reply(`*Provide me a query, e.g., "Who made chat gpt?"`);
+    return m.reply(`*Provide me a query,* e.g., "Who made chat gpt?"`);
   }
 
   try {
+    // Add typing effect
+    await sendTypingEffect(gss, m, "Generating response...", 100); // Adjust typing speed as needed
+
     const apiUrl = `https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`;
     const res = await fetch(apiUrl);
 
@@ -4016,6 +4019,11 @@ case "chatgpt":
       return m.reply("Invalid data format in the API response");
     }
 
+    // Remove the typing effect message
+    gss.deleteMessage(m.chat, data.gptthink.key, false);
+
+    // Rest of your code...
+    
     await gss.sendMessage(m.chat, {
       text: data.data,
       contextInfo: {
@@ -4038,6 +4046,7 @@ case "chatgpt":
     return m.reply("An error occurred while processing the request.");
   }
   break;
+
 
 
 case 'snapshotfull': case 'ssf':
