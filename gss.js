@@ -3991,37 +3991,47 @@ case 'update':
   }
   break;
 
-
-
-    case "ai":
-case "gpt":
-    try {
+      case "gpt":
+      case "ai":
+      case "openai":
+      case "chatgpt":
         if (!text) {
-            return m.reply(`*Chat With ChatGPT*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Hello*\n*◉ ${prefix + command} write a hello world program in python*`);
+          await doReact("❌");
+          return m.reply(`*Provide me a query, e.g., "Who made chat gpt?"`);
         }
 
-        const apiUrl = `https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`;
-        const response = await axios.get(apiUrl);
+        try {
+          const res = await fetch(`https://vihangayt.me/tools/chatgpt2?q=${encodeURIComponent(text)}`);
 
-        if (response.status === 200) {
-            const result = response.data.result;
+          const data = await res.json();
 
-            // Send the result using m.reply
-            return m.reply(result);
-        } else {
-            console.error(`HTTP request failed with status ${response.status}`);
-            return m.reply("Error: Unable to fetch data from the API.");
+          if (!data || !data.results) {
+            await doReact("❌");
+            return m.reply("Invalid response from the API");
+          }
+
+          await gss.sendMessage(m.from, {
+            text: data.results,
+            contextInfo: {
+              externalAdReply: {
+                title: "GPT TURBO 3.5K",
+                body: "",
+                mediaType: 1,
+                thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
+                renderLargerThumbnail: false,
+                mediaUrl: "",
+                sourceUrl: "",            
+              },
+            },
+          }, { quoted: m });
+
+          await doReact("✅");
+        } catch (error) {
+          console.error(error);
+          await doReact("❌");
+          return m.reply("An error occurred while processing the request.");
         }
-    } catch (error) {
-        console.error(error);
-        return m.reply("Error: " + error.message);
-    }
-    break;
-
-
-
-
-
+        break;
 
 
 case 'snapshotfull': case 'ssf':
