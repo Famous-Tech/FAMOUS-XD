@@ -1,6 +1,6 @@
 
 ### 1. FORK THIS REPO
-<a href='https://github.com/chhaseeb47/Hasi-MD/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
+<a href='[https://github.com/gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
 
 ### 2. SCAN QR CODE 
 <a href='https://replit.com/@naveeddogar/HASI-MD-QR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Scan Qr code-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
@@ -75,13 +75,13 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 
 ## `𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑`
 <div align="left">
-  <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
+  <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="200" height="200" alt="Ash"/></a>
 <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
  </div>
 <br>
 <h4 align="left">
 
-| [SIDHART ](https://github.com/chhaseeb47) |
+| [SIDHART ](https://github.com/gssbotwa) |
 | Owner, Developer, Bug Fixer, Maintainer, updates|
 
 | [𝐂𝐇 𝐇𝐀𝐒𝐄𝐄𝐁](https://github.com/chhaseeb47) |
