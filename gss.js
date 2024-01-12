@@ -1310,8 +1310,8 @@ case 'scriptbot':
                 contextInfo: {
                     externalAdReply: {
                         showAdAttribution: false,
-                        title: 'Script Free',
-                        body: `SCRIPT BOT ${botname}`,
+                        title: '',
+                        body: ``,
                         thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
                         sourceUrl: data.html_url, 
                         mediaType: 1,
