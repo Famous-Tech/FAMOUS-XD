@@ -144,7 +144,7 @@ const hours = Math.floor((uptime % (24 * 3600)) / 3600); // Calculate hours
 const minutes = Math.floor((uptime % 3600) / 60); // Calculate minutes
 const seconds = Math.floor(uptime % 60); // Calculate seconds
 //Uptime
-  const uptimeMessage = `*I am alive now since ${hours}h ${minutes}m ${seconds}s*`;
+  const uptimeMessage = `*I am alive now since ${day}D ${hours}H ${minutes}M ${seconds}S*`;
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
@@ -4600,7 +4600,7 @@ case 'infobot':
 │🔖 *Owner Name* : ${ownername}
 │🔖 *Owner Number* : ${owner}
 │🔖 *Prefix* :「 . 」
-│🔖 *Runtime* : _*${hours}h ${minutes}m ${seconds}s*_
+│🔖 *Runtime* : _*${uptimeMessage}s*_
 │🔖 *TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
 │🔖 *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰━━─━─◈─━─━╯`;
@@ -4909,7 +4909,7 @@ case 'allmenu': {
 │ *Bot Name* : *${botname}*
 │ *Owner Name* : *${ownername}*
 │ *Prefix* :  *[ . ]*
-│ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
+│ *Uptime* : *${uptimeMessage}*
 │ *Mode* : *Public*
 │ *TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
 │ *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
