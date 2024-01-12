@@ -96,7 +96,7 @@ if (connection == "open") {
 gss.id = gss.decodeJid(gss.user.id)
 gss.time = Date.now()
 global.conns.push(gss)
-await m.reply(`*Connected to ${botname}*\n\n*User :*\n _*× id : ${gss.decodeJid(gss.user.id)}*_`)
+await m.reply(`*Connected to\n\n*User :*\n _*× id : ${gss.decodeJid(gss.user.id)}*_`)
 user = `${gss.decodeJid(gss.user.id)}`
 txt = `*Detected using rent bot*\n\n _× User : @${user.split("@")[0]}_`
 sendMessage(`919142294671@s.whatsapp.net`,{text: txt, mentions : [user]})
