@@ -79,6 +79,44 @@ require('./gss')(gss, m, chatUpdate, store)
 console.log(err)}
 })
 
+// respon cmd pollMessage
+async function getMessage(key) {
+    if (store) {
+        const msg = await store.loadMessage(key.remoteJid, key.id);
+        return msg?.message;
+    }
+    return {
+        conversation: "Hai im gss botwa",
+    };
+}
+
+gss.ev.on('messages.update', async chatUpdate => {
+    for (const { key, update } of chatUpdate) {
+        if (update.pollUpdates && key.fromMe) {
+            const pollCreation = await getMessage(key);
+            if (pollCreation) {
+                const pollUpdate = await getAggregateVotesInPollMessage({
+                    message: pollCreation,
+                    pollUpdates: update.pollUpdates,
+                });
+                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
+                if (toCmd == undefined) return;
+                var prefCmd = prefix + toCmd;
+
+                try {
+                    // Delete the poll message immediately
+                    await gss.sendMessage(key.remoteJid, { delete: key });
+                } catch (error) {
+                    console.error("Error deleting message:", error);
+                }
+
+                gss.appenTextMessage(prefCmd, chatUpdate);
+            }
+        }
+    }
+});
+
+
 gss.public = true
 
 store.bind(gss.ev);
