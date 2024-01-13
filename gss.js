@@ -4600,7 +4600,7 @@ case 'infobot':
 │🔖 *Owner Name* : ${ownername}
 │🔖 *Owner Number* : ${owner}
 │🔖 *Prefix* :「 . 」
-│🔖 *Runtime* : _*${uptimeMessage}s*_
+│🔖 *Runtime* : _*${hours}h ${minutes}m ${seconds}s*_
 │🔖 *TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
 │🔖 *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰━━─━─◈─━─━╯`;
@@ -4909,7 +4909,7 @@ case 'allmenu': {
 │ *Bot Name* : *${botname}*
 │ *Owner Name* : *${ownername}*
 │ *Prefix* :  *[ . ]*
-│ *Uptime* : *${uptimeMessage}*
+│ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
 │ *Mode* : *Public*
 │ *TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
 │ *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
