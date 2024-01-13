@@ -74,7 +74,6 @@ let ANTICALL_MODE = false; // added
 
 const mongoDBUrl = process.env.MONGO_DB || 'mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority';
 
-
 let akinator = global.db.data.game.akinator = []
 let currentPollIndex = 0;
 let ytsOptionIndex = 1;
