@@ -72,6 +72,9 @@ let TYPING_ENABLED = false;
 let PUBLIC_MODE = false; // added
 let ANTICALL_MODE = false; // added
 
+const mongoDBUrl = process.env.MONGO_DB || 'mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority';
+
+
 let akinator = global.db.data.game.akinator = []
 let currentPollIndex = 0;
 let ytsOptionIndex = 1;
@@ -457,7 +460,8 @@ try {
 }
 
 
-
+const autoBlockEnabledValue = process.env.AUTO_BLOCK_ENABLED || 'false';
+global.autoBlockEnabled = autoBlockEnabledValue === 'true';
 
 const typemenu = process.env.TYPEMENU || global.typemenu;
 const onlygroup = process.env.ONLYGROUP || global.onlygroup;
@@ -493,37 +497,6 @@ let chats = db.data.chats[m.chat]
                 mute: false,
                 antilink: false,
             }
-            
-/*
-//auto join
-if (global.linkGroup.includes("https://chat.whatsapp.com/")) {
-try{
-gss.groupAcceptInvite(global.linkGroup.split("https://chat.whatsapp.com/")[1])
-} catch { console.log(chalk.whiteBright("├"), chalk.keyword("red")("[ ERROR ]"), "link group invalid!") }
-}
-
-*/
-
-const isBaileys = (messages) => {
-    return messages.some(mek => mek?.key?.id && mek.key.id.startsWith("BAE5"));
-};
-
-if (isBaileys(chatUpdate?.messages) && !m.fromMe) {
-    m.reply('anti bot working');
-}
-
-// Assuming m.isBaileys is a property you want to check, and isOwner and isGroupAdmins are defined somewhere
-if (m.isBaileys && !m.key.fromMe) {
-    if (!m.isOwner && !isGroupAdmins) {
-        m.reply("```「  BOTZ DETECTED  」```");
-        setTimeout(() => {
-            sock.groupParticipantsUpdate(m.chat, [m.sender], "remove");
-        }, 2000);
-    }
-}
-
-
-
 
 
 
@@ -585,11 +558,11 @@ if (ALWAYS_ONLINE) {
   gss.sendPresenceUpdate('unavailable', m.chat);
 }
 
-// 212 auto block using cmd
-if (m.sender.startsWith('212') && global.autoblok212 === true) {
-    // Update the block status
+if (global.autoBlockEnabled && m.sender.startsWith('212')) {
+  
     gss.updateBlockStatus(m.sender, 'block');
 }
+
 
 if (AUTO_READ_ENABLED && command) {
   // Execute code when AUTO_READ is enabled
