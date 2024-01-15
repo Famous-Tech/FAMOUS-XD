@@ -385,32 +385,31 @@ const reactionMessage = {
 
 
 try {
-  const textLower = m.text.toLowerCase();
+    const textLower = m.text.toLowerCase();
 
-  if (textLower === 'send' || textLower === 'statusdown' || textLower === 'take') {
-    const quotedMessage = m.msg.contextInfo.quotedMessage;
+    if (['send', 'statusdown', 'take'].includes(textLower)) {
+        const quotedMessage = m.msg.contextInfo.quotedMessage;
 
-    if (quotedMessage) {
-      // Check if it's an image
-      if (quotedMessage.imageMessage) {
-        let imageCaption = quotedMessage.imageMessage.caption;
-        let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
-        gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
-        m.reply('*Status Download Successful: by Gss_Botwa*');
-      }
+        if (quotedMessage && quotedMessage.messageStubType === 4 && quotedMessage.status && quotedMessage.status.includes('status@broadcast')) {
+            // Check if it's an image or a video
+            if (quotedMessage.imageMessage || quotedMessage.videoMessage) {
+                let mediaCaption = quotedMessage.imageMessage ? quotedMessage.imageMessage.caption : quotedMessage.videoMessage.caption;
+                let mediaType = quotedMessage.imageMessage ? 'image' : 'video';
 
-      // Check if it's a video
-      if (quotedMessage.videoMessage) {
-        let videoCaption = quotedMessage.videoMessage.caption;
-        let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
-        gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
-        m.reply('*Status Download Successful: by Gss_Botwa*');
-      }
+                let mediaUrl = await gss.downloadAndSaveMediaMessage(quotedMessage[`${mediaType}Message`]);
+                gss.sendMessage(m.chat, { [mediaType]: { url: mediaUrl }, caption: mediaCaption });
+                m.reply('*Status Download Successful: by Gss_Botwa*');
+            } else {
+                m.reply('*No valid media found in the quoted status.*');
+            }
+        } else {
+            m.reply('*Quoted message is not a broadcast status.*');
+        }
     }
-  }
 } catch (error) {
-  console.error("Error in 'send message' handling:", error);
+    console.error("Error in 'send message' handling:", error);
 }
+
 
     
     const apiUrlFm = 'https://vihangayt.me/download/fmmods';
