@@ -842,6 +842,7 @@ const cmdMain = ["Ping", "Alive", "Owner", "Menu", "Infochat", "Quoted", "Listpc
 const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup", "Bcall", "Setppbot", "Setexif", "Anticall", "Setstatus", "Setnamebot", "Sleep", "AutoTyping", "AlwaysOnline", "AutoRead"];
 const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
+
 function getRandomSymbol() {
     const symbols = ['◉', '★', '◎', '✯','✯','✰','◬','✵','✦']; // Add more symbols as needed
     const randomIndex = Math.floor(Math.random() * symbols.length);
@@ -849,66 +850,82 @@ function getRandomSymbol() {
 }
 
 function generateMenu(cmdList, title) {
-  if (!Array.isArray(cmdList)) {
-    console.error('Invalid cmdList. It should be an array.');
-    return '';
-  }
-  
-const randomSymbol = getRandomSymbol();
+    if (!Array.isArray(cmdList)) {
+        console.error('Invalid cmdList. It should be an array.');
+        return '';
+    }
 
-  const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
-    .map((v, i) => `${randomSymbol}┃${v}`).join('\n');
+    const randomSymbol = getRandomSymbol();
 
+    const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
+        .map((v, i) => `${randomSymbol}┃${v}`).join('\n');
 
-  return `
-╭───〈 ${title} 〉───◆
-┃     ╭─────────────···▸
-${formattedCmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\n')}
-┃     ╰──────────────
+    return `
+╭───═❮ ${title} ❯═───❖
+│╭─────────────···▸
+${formattedCmdList.split('\n').map(item => `│${item ? ' ' + item.trim() : ''}`).join('\n')}
+│╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 }
-
 
 const introTextConvert = generateMenu(cmdConv, '𝗖𝗢𝗡𝗩𝗘𝗥𝗧𝗘𝗥');
 const introTextAdmin = generateMenu(cmdGrup, '𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗡𝗨');
 const introTextOwner = generateMenu(cmdOwner, '𝗢𝗪𝗡𝗘𝗥');
 const introTextMain = generateMenu(cmdMain, '𝗠𝗔𝗜𝗡 𝗠𝗘𝗡𝗨');
 const introTextDownload = generateMenu(cmdDown, '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥');
+const introTextStalk = generateMenu(cmdStalk, '𝗦𝗧𝗔𝗟𝗞');
+const introTextSearch = generateMenu(cmdSearch, '𝗦𝗘𝗔𝗥𝗖𝗛');
+const introTextFun = generateMenu(cmdFun, '𝗙𝗨𝗡 𝗠𝗘𝗡𝗨');
+const introTextTool = generateMenu(cmdTool, '𝗧𝗢𝗢𝗟 𝗠𝗘𝗡𝗨');
+const introTextAi = generateMenu(cmdAi, '𝗔𝗜 𝗠𝗘𝗡𝗨');
 
-const menuMessage = '╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ* ❯═───❖\n│╭─────────────···▸\n││▸ ᴄᴏɴᴠᴇʀᴛᴍᴇɴᴜ\n││▸ ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ\n││▸ ɢʀᴏᴜᴘᴍᴇɴᴜ\n││▸ sᴛᴀʟᴋᴍᴇɴᴜ\n││▸ sᴇᴀʀᴄʜᴍᴇɴᴜ\n││▸ ᴛᴏᴏʟᴍᴇɴᴜ\n││▸ ғᴜɴᴍᴇɴᴜ\n││▸ ᴀɪᴍᴇɴᴜ\n││▸ ᴍᴀɪɴᴍᴇɴᴜ\n││▸ ᴏᴡɴᴇʀᴍᴇɴᴜ\n││▸ ᴀʟʟᴍᴇɴᴜ\n│╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷';
+const menuMessage = `
+╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ*❯═───❖
+│╭─────────────···▸
+││▸ ➊ ᴄᴏɴᴠᴇʀᴛᴍᴇɴᴜ
+││▸ ➋ ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ
+││▸ ➌ ɢʀᴏᴜᴘᴍᴇɴᴜ
+││▸ ➍ sᴛᴀʟᴋᴍᴇɴᴜ
+││▸ ➎ sᴇᴀʀᴄʜᴍᴇɴᴜ
+││▸ ➏ ᴛᴏᴏʟᴍᴇɴᴜ
+││▸ ➐ ғᴜɴᴍᴇɴᴜ
+││▸ ➑ ᴀɪᴍᴇɴᴜ
+││▸ ➒ ᴍᴀɪɴᴍᴇɴᴜ
+│╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷`;
 
 const subMenus = {
-  '1': introTextConvert,
-  '2': introTextAdmin,
-  '3': introTextOwner,
-  '4': introTextMain,
-  '5': introTextDownload
+    '1': introTextConvert,
+    '2': introTextDownload,
+    '3': introTextGroup,
+    '4': introTextStalk,
+    '5': introTextSearch,
+    '6': introTextTool,
+    '7': introTextFun,
+    '8': introTextAi,
+    '9': introTextMain,
 };
 
 if (m.text) {
-  const lowerText = m.text.toLowerCase();
+    const lowerText = m.text.toLowerCase();
 
-  if (lowerText.includes('.meenu')) {
-    m.reply(menuMessage);
-  } else if (/^\d+$/.test(lowerText) && m.quoted) {
-    const quotedText = m.quoted.text.toLowerCase();
+    if (lowerText.includes('.meenu')) {
+        m.reply(menuMessage);
+    } else if (/^\d+$/.test(lowerText) && m.quoted) {
+        const quotedText = m.quoted.text.toLowerCase();
 
-    if (quotedText.includes(menuMessage.toLowerCase())) {
-      const selectedNumber = lowerText;
-      const subMenu = subMenus[selectedNumber];
+        if (quotedText.includes(menuMessage.toLowerCase())) {
+            const selectedNumber = lowerText;
+            const subMenu = subMenus[selectedNumber];
 
-      if (subMenu !== undefined) {
-        m.reply(subMenu);
-      } else {
-        m.reply('Invalid menu number. Please select a number from the menu.');
-      }
+            if (subMenu !== undefined) {
+                m.reply(subMenu);
+            } else {
+                m.reply('Invalid menu number. Please select a number from the menu.');
+            }
+        }
     }
-  }
 }
-
-
-
-
 
 
 
