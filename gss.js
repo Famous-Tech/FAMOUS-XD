@@ -391,21 +391,16 @@ try {
         const quotedMessage = m.msg.contextInfo.quotedMessage;
 
         if (quotedMessage && quotedMessage.messageStubType === 4 && quotedMessage.status && quotedMessage.status.includes('status@broadcast')) {
-            // Check if the quoted message is from the chat 'status@broadcast'
-            if (quotedMessage.key.remoteJid === 'status@broadcast') {
-                // Check if it's an image or a video
-                if (quotedMessage.imageMessage || quotedMessage.videoMessage) {
-                    let mediaCaption = quotedMessage.imageMessage ? quotedMessage.imageMessage.caption : quotedMessage.videoMessage.caption;
-                    let mediaType = quotedMessage.imageMessage ? 'image' : 'video';
+            // Check if it's an image or a video
+            if (quotedMessage.imageMessage || quotedMessage.videoMessage) {
+                let mediaCaption = quotedMessage.imageMessage ? quotedMessage.imageMessage.caption : quotedMessage.videoMessage.caption;
+                let mediaType = quotedMessage.imageMessage ? 'image' : 'video';
 
-                    let mediaUrl = await gss.downloadAndSaveMediaMessage(quotedMessage[`${mediaType}Message`]);
-                    gss.sendMessage(m.chat, { [mediaType]: { url: mediaUrl }, caption: mediaCaption });
-                    m.reply('*Status Download Successful: by Gss_Botwa*');
-                } else {
-                    m.reply('*No valid media found in the quoted status.*');
-                }
+                let mediaUrl = await gss.downloadAndSaveMediaMessage(quotedMessage[`${mediaType}Message`]);
+                gss.sendMessage(m.chat, { [mediaType]: { url: mediaUrl }, caption: mediaCaption });
+                m.reply('*Status Download Successful: by Gss_Botwa*');
             } else {
-                m.reply('*Quoted message is not from the chat "status@broadcast".*');
+                m.reply('*No valid media found in the quoted status.*');
             }
         } else {
             m.reply('*Quoted message is not a broadcast status.*');
