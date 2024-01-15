@@ -863,9 +863,9 @@ function generateMenu(cmdList, title) {
 
     return `
 ╭───═❮ ${title} ❯═───❖
-│╭─────────────···▸
+│ ╭─────────────···▸
 ${formattedCmdList.split('\n').map(item => `│${item ? ' ' + item.trim() : ''}`).join('\n')}
-│╰──────────────
+│ ╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 }
 
