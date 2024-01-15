@@ -897,7 +897,7 @@ const menuMessage = `
 const subMenus = {
     '1': introTextConvert,
     '2': introTextDownload,
-    '3': introTextGroup,
+    '3': introTextAdmin,
     '4': introTextStalk,
     '5': introTextSearch,
     '6': introTextTool,
