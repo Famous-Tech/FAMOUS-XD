@@ -857,8 +857,9 @@ function generateMenu(cmdList, title) {
 
     const randomSymbol = getRandomSymbol();
 
-    const formattedCmdList = cmdList.sort((a, b) => a.localeCompare(b))
-        .map((v, i) => `${randomSymbol}┃${v}`).join('\n');
+    const formattedCmdList = cmdList
+    .sort((a, b) => a.localeCompare(b))
+    .map((v) => `│${v}`).join('\n');
 
     return `
 ╭───═❮ ${title} ❯═───❖
