@@ -1288,32 +1288,20 @@ case 'scriptbot':
             const releaseDate = new Date(data.created_at).toLocaleDateString('en-GB');
             const lastUpdateDate = new Date(repoInfo.lastUpdate).toLocaleDateString('en-GB');
 
-            uy = `*GitHub Repository:* ${data.html_url}
+            const uy = `*GitHub Repository:* ${data.html_url}
 ⭐ *Stars:* ${repoInfo.stars}
 ♈ *Forks:* ${repoInfo.forks}
 📅 *Release Date:* ${releaseDate}
 🕐 *Last Update:* ${lastUpdateDate}
 👨‍💻 *Owner:* ${repoInfo.owner}`;
 
-            gss.sendMessage(m.chat, {
-                text: uy,
-                contextInfo: {
-                    externalAdReply: {
-                        showAdAttribution: false,
-                        title: '',
-                        body: ``,
-                        thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
-                        sourceUrl: data.html_url, 
-                        mediaType: 1,
-                        renderLargerThumbnail: true
-                    }
-                }
-            }, {
+            gss.sendPoll(m.chat, uy, ['.menu', '.ping'], {
                 quoted: m
             });
         })
         .catch(error => console.error('Error fetching GitHub repository info:', error));
     break;
+
 
 
 
