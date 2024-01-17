@@ -1305,7 +1305,6 @@ case 'scriptbot':
 
 
 
-
  case 'setimgmenu':
             {
                 if (!isCreator) return m.reply(mess.owner)
@@ -4583,19 +4582,9 @@ case 'infobot':
 │🔖 *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
 ╰━━─━─◈─━─━╯`;
 
+    const pollOptions = ['.menu', '.ping'];
 
-    gss.sendMessage(m.chat, {
-        image: fs.readFileSync('./menuimage/menu.jpg'),
-        caption: tod,
-        contextInfo: {
-            externalAdReply: {
-                showAdAttribution: false,
-                title: botname,
-                sourceUrl: global.link,
-                body: `Bot Created By ${global.owner}`
-            }
-        }
-    });
+    gss.sendPoll(m.chat, tod, pollOptions);
     break;
 
 
