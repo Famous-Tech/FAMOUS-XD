@@ -58,7 +58,7 @@ const acr = new acrcloud({
 });
 const apiKey = "AIzaSyAlvaQ_Jv86iNnQlcyHYH0S3XXoqBw0HKs";
 const genAI = new GoogleGenerativeAI(apiKey);
-
+const tempMailAddresses = {};
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
 
 // read database
@@ -4537,16 +4537,8 @@ break;
 
           
 
-          
-          
 case 'tempmail':
-    const option = ['.mail 1','.mail 3','.mail 5'];
-    gss.sendPoll(m.chat, 'Select your mail:', option);
-    break;
-
-          
-          
-case 'tempmail': case 'mail': {
+case 'mail': {
   const maxEmails = 10;
   const count = Math.min(parseInt(args[0]) || 1, maxEmails); // Parse the provided argument as a number, default to 1
   const baseUrl = `https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=${count}`;
@@ -4557,9 +4549,16 @@ case 'tempmail': case 'mail': {
     const data = response.data;
 
     if (data && data.length > 0) {
+      // Save the generated email addresses with an index
+      data.forEach((email, index) => {
+        tempMailAddresses[index] = email;
+      });
+
       const tempMails = data.join('\n');
       const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
-      m.reply(replyMessage);
+
+      const pollOptions = tempMailAddresses.map((_, index) => `.${index}`);
+      gss.sendPoll(m.chat, replyMessage, pollOptions);
     } else {
       m.reply(`Failed to generate ${count} temporary email address(es).`);
     }
@@ -4569,6 +4568,64 @@ case 'tempmail': case 'mail': {
   }
   break;
 }
+
+// Add this code inside the existing 'checkmail' case
+case 'checkmail': {
+  const index = parseInt(args[0]); // Parse the provided argument as a number
+
+  if (!isNaN(index) && tempMailAddresses[index]) {
+    const emailToCheck = tempMailAddresses[index];
+    m.reply(`Checking messages for temporary email: ${emailToCheck}`);
+
+    // The rest of the code to check and display the message
+    const [login, domain] = emailToCheck.split('@');
+
+    const baseUrl = 'https://www.1secmail.com/api/v1/?action=getMessages';
+    const url = `${baseUrl}&login=${login}&domain=${domain}`;
+
+    const timeout = 10000; // 10 seconds timeout for Axios requests
+
+    try {
+      const response = await axios.get(url, { timeout });
+      const data = response.data;
+
+      if (data && data.length > 0) {
+        // Extract the latest message ID
+        const latestMessageId = data[0].id;
+
+        // Use the latest message ID to read the message
+        const readUrl = `https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${latestMessageId}`;
+
+        const readResponse = await axios.get(readUrl, { timeout });
+        const messageData = readResponse.data;
+
+        if (messageData && messageData.textBody) {
+          const sender = messageData.from;
+          const date = messageData.date;
+          const subject = messageData.subject || 'No Subject';
+
+          const replyMessage = `*Message in* ${emailToCheck}:\n\n*From:* ${sender}\n*Subject:* ${subject}\n*Date:* ${date}\n\n*Messages:*\n\n${messageData.textBody}`;
+          m.reply(replyMessage, m.from, { caption: replyMessage });
+
+        } else {
+          m.reply(`No message found in ${emailToCheck}.`);
+        }
+      } else {
+        m.reply(`No messages found in ${emailToCheck}.`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      m.reply(`Failed to read the most recent message in ${emailToCheck}.`);
+    }
+
+  } else {
+    m.reply('Invalid index. Please provide a valid index from the generated temporary emails.');
+  }
+  break;
+}
+
+          
+        
 
 case 'infobot':
     const tod = `
@@ -4586,66 +4643,6 @@ case 'infobot':
 
     gss.sendPoll(m.chat, tod, pollOptions);
     break;
-
-
-
-case 'checkmail': {
-  if (!text) {
-    m.reply('Please provide an email address to read the most recent message.');
-    break;
-  }
-
-  // Split the provided email address into login and domain
-  const [login, domain] = text.split('@');
-
-  // Check if the email address was split correctly
-  if (!login || !domain) {
-    m.reply('Invalid email address format.');
-    break;
-  }
-
-  const baseUrl = 'https://www.1secmail.com/api/v1/?action=getMessages';
-
-  // Use the extracted login and domain values
-  const url = `${baseUrl}&login=${login}&domain=${domain}`;
-
-  const timeout = 10000; // 10 seconds timeout for Axios requests
-
-  try {
-    const response = await axios.get(url, { timeout });
-    const data = response.data;
-
-    if (data && data.length > 0) {
-      // Extract the latest message ID
-      const latestMessageId = data[0].id;
-
-      // Use the latest message ID to read the message
-      const readUrl = `https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${latestMessageId}`;
-
-      const readResponse = await axios.get(readUrl, { timeout });
-      const messageData = readResponse.data;
-
-      if (messageData && messageData.textBody) {
-        const sender = messageData.from;
-        const date = messageData.date;
-        const subject = messageData.subject || 'No Subject';
-
-        const replyMessage = `*Message in* ${text}:\n\n*From:* ${sender}\n*Subject:* ${subject}\n*Date:* ${date}\n\n*Messages:*\n\n${messageData.textBody}`;
-        m.reply(replyMessage, m.from, { caption: replyMessage });
-        
-      } else {
-        m.reply(`No message found in ${text}.`);
-      }
-    } else {
-      m.reply(`No messages found in ${text}.`);
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    m.reply(`Failed to read the most recent message in ${text}.`);
-  }
-  break;
-}
-
 
 
 case 'cal':
