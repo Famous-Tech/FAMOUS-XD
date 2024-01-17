@@ -150,10 +150,9 @@ gss.ev.on('messages.update', async chatUpdate => {
                 var prefCmd = prefix + toCmd;
 
                 try {
-                    // Delete the poll message after 20 seconds
                     setTimeout(async () => {
                         await gss.sendMessage(key.remoteJid, { delete: key });
-                    }, 20000);
+                    }, 10000);
                 } catch (error) {
                     console.error("Error deleting message:", error);
                 }
