@@ -3408,7 +3408,6 @@ case 'apk': case 'app': case 'apkdl': {
 ┃✵╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
-
   // Download icon
   const iconPath = `./${getRandomName(".png")}`;
   await axios.get(iconUrl, { responseType: 'stream' })
