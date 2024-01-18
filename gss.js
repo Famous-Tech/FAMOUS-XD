@@ -2894,7 +2894,7 @@ case 'play': {
     currentPollIndex = 0;
 
     // Add 'audio', 'video', and 'next' options to the poll
-    const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.𝗡𝗘𝗫𝗧'];
+    const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
 
     gss.sendPoll(
       m.chat,
@@ -2911,6 +2911,8 @@ case 'play': {
 
 case '𝗔𝗨𝗗𝗜𝗢':
 case '𝗩𝗜𝗗𝗘𝗢':
+case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧':
+case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧':
 case '𝗡𝗘𝗫𝗧': {
   const pollOption = command.toLowerCase();
 
@@ -2941,6 +2943,25 @@ case '𝗡𝗘𝗫𝗧': {
   break;
 }
 
+case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
+  try {
+    // Audio download with audio only
+    const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
+    const audioBuffer = await new Promise((resolve, reject) => {
+      const chunks = [];
+      audioStream.on('data', (chunk) => chunks.push(chunk));
+      audioStream.on('end', () => resolve(Buffer.concat(chunks)));
+      audioStream.on('error', (error) => reject(error));
+    });
+
+    await gss.sendMessage(m.chat, { document: audioBuffer, mimetype: 'audio/mp3', fileName: `${currentResult.title}.mp3` }, { quoted: m });
+  } catch (error) {
+    console.error(`Error during audio download:`, error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
+
 case '𝗩𝗜𝗗𝗘𝗢': {
   try {
     // Video download with audio and video
@@ -2960,6 +2981,24 @@ case '𝗩𝗜𝗗𝗘𝗢': {
   break;
 }
 
+case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
+  try {
+    // Video download with audio and video
+    const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
+    const videoBuffer = await new Promise((resolve, reject) => {
+      const chunks = [];
+      videoStream.on('data', (chunk) => chunks.push(chunk));
+      videoStream.on('end', () => resolve(Buffer.concat(chunks)));
+      videoStream.on('error', (error) => reject(error));
+    });
+
+    await gss.sendMessage(m.chat, { document: videoBuffer, mimetype: 'video/mp4', fileName: `${currentResult.title}.mp4`, caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
+  } catch (error) {
+    console.error(`Error during video download:`, error);
+    m.reply('Unexpected error occurred.');
+  }
+  break;
+}
 
     case '𝗡𝗘𝗫𝗧': {
       // Increment the current poll index for the next search result
@@ -2970,7 +3009,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
         const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
         // Add 'audio', 'video', and 'next' options to the poll
-        const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗩𝗜𝗗𝗘𝗢', '.𝗡𝗘𝗫𝗧'];
+        const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
 
         await gss.sendPoll(
           m.chat,
