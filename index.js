@@ -84,26 +84,7 @@ async function startgss() {
 
     store.bind(gss.ev)
     
-    /*
-// auto reject call when user calls
-gss.ev.on("call", async (json) => {
-    const botNumber = await gss.decodeJid(gss.user.id);
-    let ciko = db.data.settings[botNumber].anticall;
 
-    if (ciko) {
-        for (const id of json) {
-            if (id.status === "offer") {
-                console.log("Rejecting call:", id);
-                let msg = await gss.sendMessage(id.from, {
-                    text: `anti call enabled`,
-                    mentions: [id.from],
-                });
-                await gss.rejectCall(id.id, id.from);
-            }
-        }
-    }
-});
-*/
 
     gss.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
