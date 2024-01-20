@@ -4333,32 +4333,6 @@ break
 
 
 
-
-
-    
-case 'tts': case 'say':
-let lang = args[0]
-  let text = args.slice(1).join(' ')
-  if ((args[0] || '').length !== 2) {
-    lang = defaultLang
-    text = args.join(' ')
-  }
-  if (!text && m.quoted?.text) text = m.quoted.text
-
-  let res
-  try { res = await tts(text, lang) }
-  catch (e) {
-    m.reply(e + '')
-    text = args.join(' ')
-    if (!text) throw `📌 Example : \n${prefix}${command} en hello world`
-    res = await tts(text, defaultLang)
-  } finally {
-    if (res) gss.sendMedia(m.chat, res, 'tts.opus', null, m, true)
-  }
-}
-break;
-
-
 case 'translate': case 'trt': {
   try {
     if (!text) return m.reply( 'Usage: .trt <language code> <text> or reply message');
