@@ -4127,25 +4127,27 @@ case 'aiimage':
     let thingMsg = await gss.sendMessage(m.chat, { text: 'Generating Images Please wait...' });
     const texti = text;
     try {
-      const response = await axios.get(`https://rest-api.akuari.my.id/ai/bing-ai2?text=${texti}`);
-      const data = response.data;
+  const response = await axios.get(`https://rest-api.akuari.my.id/ai/bing-ai2?text=${texti}`);
+  const data = response.data;
 
-      const images = data.image_links;
-      const timeforgen = data.execution_time;
-      const genetd = `✅ Successfully generated in ${timeforgen}`;
-      const randomImageIndex = Math.floor(Math.random() * images.length);
-      const randomImageLink = images[randomImageIndex];
+  console.log('API Response:', data); // Add this line to log the response
 
-      await gss.sendMessage(m.chat, {
-        image: {
-          url: randomImageLink,
-        },
-        caption: genetd,
-      }, {
-        quoted: m,
-      });
-    } catch (error) {
-      console.error('Error fetching image data:', error);
+  const images = data.image_links;
+  const timeforgen = data.execution_time;
+  const genetd = `✅ Successfully generated in ${timeforgen}`;
+  const randomImageIndex = Math.floor(Math.random() * images.length);
+  const randomImageLink = images[randomImageIndex];
+
+  await gss.sendMessage(m.chat, {
+    image: {
+      url: randomImageLink,
+    },
+    caption: genetd,
+  }, {
+    quoted: m,
+  });
+} catch (error) {
+  console.error('Error fetching image data:', error);
     }
   }
 
