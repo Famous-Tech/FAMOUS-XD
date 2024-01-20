@@ -4121,33 +4121,26 @@ case 'voicegpt':
 case 'imagine':
 case 'dalle':
 case 'aiimage':
-  if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`;
+  if (!text) throw `*You can generate images from text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Iron man*`;
 
   async function fetchImageData() {
-    let thingMsg = await gss.sendMessage(m.chat, { text: 'Generating Images Please wait...' });
-    const texti = text;
     try {
-  const response = await axios.get(`https://rest-api.akuari.my.id/ai/bing-ai2?text=${texti}`);
-  const data = response.data;
+      const response = await axios.get(`https://rest-api.akuari.my.id/ai/bing-ai2?text=${text}`);
+      const imageUrl = response.data.image;
 
-  console.log('API Response:', data); // Add this line to log the response
-
-  const images = data.image_links;
-  const timeforgen = data.execution_time;
-  const genetd = `✅ Successfully generated in ${timeforgen}`;
-  const randomImageIndex = Math.floor(Math.random() * images.length);
-  const randomImageLink = images[randomImageIndex];
-
-  await gss.sendMessage(m.chat, {
-    image: {
-      url: randomImageLink,
-    },
-    caption: genetd,
-  }, {
-    quoted: m,
-  });
-} catch (error) {
-  console.error('Error fetching image data:', error);
+      if (imageUrl) {
+        await gss.sendMessage(m.chat, {
+          image: {
+            url: imageUrl,
+          },
+        }, {
+          quoted: m,
+        });
+      } else {
+        throw 'Failed to retrieve image from the API.';
+      }
+    } catch (error) {
+      console.error('Error fetching image data:', error);
     }
   }
 
