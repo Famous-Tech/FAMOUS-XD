@@ -3159,12 +3159,12 @@ case 'toanime':
       // Generate anime version using Lolhuman API
       try {
         const anime = `https://api.lolhuman.xyz/api/imagetoanime?apikey=GataDios&img=${image}`;
-        await gss.sendFile(m.chat, anime, 'error.jpg', null, m);
+        await gss.sendMedia(m.chat, anime, 'error.jpg', null, m);
       } catch (i) {
         // If Lolhuman API fails, try Caliph API as a fallback
         try {
           const anime3 = `https://api.caliph.biz.id/api/animeai?img=${image}&apikey=caliphkey`;
-          await gss.sendFile(m.chat, anime3, 'error.jpg', null, m);
+          await gss.sendMedia(m.chat, anime3, 'error.jpg', null, m);
         } catch (e) {
           // If both APIs fail, throw an error
           console.error('Error generating anime version:', e);
@@ -4131,7 +4131,7 @@ case 'aiimage':
     
     if (response.ok) {
       const imageBuffer = await response.buffer();
-      await gss.sendFile(m.chat, imageBuffer, 'image.png', null, m);
+      await gss.sendMedia(m.chat, imageBuffer, 'image.png', null, m);
     } else {
       throw '*Image generation failed*';
     }
