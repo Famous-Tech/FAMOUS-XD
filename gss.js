@@ -4131,8 +4131,9 @@ case 'aiimage':
         const response = await fetch(endpoint);
 
         if (response.ok) {
-            const imageBuffer = await response.buffer();
-            await gss.sendMedia(m.chat, imageBuffer, 'image.png', null, m);
+            const imageBuffer = await response.arrayBuffer();
+            const buffer = Buffer.from(imageBuffer);
+            await gss.sendMedia(m.chat, buffer, 'image.png', null, m);
         } else {
             console.error('Image generation failed. HTTP Status:', response.status); // Add this line for logging
             throw '*Image generation failed*';
