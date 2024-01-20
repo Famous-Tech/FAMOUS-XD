@@ -4123,22 +4123,26 @@ case 'dalle':
 case 'aiimage':
     if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful anime girl*\n*◉ ${prefix + command} Elon Musk in pink output*`;
 
-  try {
-    m.reply('*Please wait, generating images...*');
+    try {
+        m.reply('*Please wait, generating images...*');
 
-    const endpoint = `https://rest-api.akuari.my.id/ai/bing-ai2?text=${encodeURIComponent(text)}`;
-    const response = await fetch(endpoint);
-    
-    if (response.ok) {
-      const imageBuffer = await response.buffer();
-      await gss.sendMedia(m.chat, imageBuffer, 'image.png', null, m);
-    } else {
-      throw '*Image generation failed*';
+        const endpoint = `https://rest-api.akuari.my.id/ai/bing-ai2?text=${encodeURIComponent(text)}`;
+        console.log('Fetching from endpoint:', endpoint); // Add this line for logging
+        const response = await fetch(endpoint);
+
+        if (response.ok) {
+            const imageBuffer = await response.buffer();
+            await gss.sendMedia(m.chat, imageBuffer, 'image.png', null, m);
+        } else {
+            console.error('Image generation failed. HTTP Status:', response.status); // Add this line for logging
+            throw '*Image generation failed*';
+        }
+    } catch (error) {
+        console.error('Error:', error); // Add this line for logging
+        throw '*Oops! Something went wrong while generating images. Please try again later.*';
     }
-  } catch {
-    throw '*Oops! Something went wrong while generating images. Please try again later.*';
-  }
-  break;
+    break;
+
 
 
 
