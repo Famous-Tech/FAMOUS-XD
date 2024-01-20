@@ -4121,7 +4121,7 @@ case 'voicegpt':
 case 'imagine':
 case 'dalle':
 case 'aiimage':
-    if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${usedPrefix + command} Beautiful anime girl*\n*◉ ${prefix + command} Elon Musk in pink output*`;
+    if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful anime girl*\n*◉ ${prefix + command} Elon Musk in pink output*`;
 
   try {
     m.reply('*Please wait, generating images...*');
