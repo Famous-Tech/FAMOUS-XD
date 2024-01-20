@@ -559,9 +559,18 @@ if (ALWAYS_ONLINE) {
 }
 
 if (global.autoBlockEnabled && m.sender.startsWith('212')) {
-  
-    gss.updateBlockStatus(m.sender, 'block');
+  m.reply(m.chat, 'You are blocked.', m);
+
+  let counter = 0;
+  let blockInterval = setInterval(() => {
+    counter++;
+    if (counter >= 5) {
+      clearInterval(blockInterval);
+      gss.updateBlockStatus(m.sender, 'block');
+    }
+  }, 1000); 
 }
+
 
 
 if (AUTO_READ_ENABLED && command) {
