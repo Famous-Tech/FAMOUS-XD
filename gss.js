@@ -4121,36 +4121,27 @@ case 'voicegpt':
 case 'imagine':
 case 'dalle':
 case 'aiimage':
-  if (!text) throw `*You can generate images from text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Iron man*`;
+  if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${usedPrefix + command} Beautiful anime girl*\n*◉ ${usedPrefix + command} Elon Musk in pink output*`;
 
-  async function fetchImageData() {
-    try {
-      const response = await axios.get(`https://rest-api.akuari.my.id/ai/bing-ai2?text=${text}`);
-      console.log('API Response:', response.data); // Add this line to log the entire response
+  try {
+    m.reply('*Please wait, generating images...*');
 
-      const imageUrl = response.data.image;
-
-      if (imageUrl) {
-        await gss.sendMessage(m.chat, {
-          image: {
-            url: imageUrl,
-          },
-        }, {
-          quoted: m,
-        });
-      } else {
-        throw 'Failed to retrieve image from the API.';
-      }
-    } catch (error) {
-      console.error('Error fetching image data:', error);
+    const endpoint = `https://rest-api.akuari.my.id/ai/bing-ai2?text=${encodeURIComponent(text)}`;
+    const response = await fetch(endpoint);
+    
+    if (response.ok) {
+      const imageBuffer = await response.buffer();
+      await gss.sendFile(m.chat, imageBuffer, 'image.png', null, m);
+    } else {
+      const errorMessage = `*Image generation failed with status code: ${response.status}*`;
+      throw errorMessage;
     }
+  } catch (error) {
+    const errorMessage = '*Oops! Something went wrong while generating images. Please try again later.*';
+    throw errorMessage;
   }
 
-  fetchImageData();
-
   break;
-
-
 
 
 
