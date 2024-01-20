@@ -4333,45 +4333,41 @@ break
 
 
 
-function isValidLanguageCode(code) {
-    return languages.includes(code.toLowerCase());
+function tts(text, lang = 'en-en') {
+  console.log(lang, text)
+  return new Promise((resolve, reject) => {
+    try {
+      let tts = gtts(lang)
+      let filePath = join(global.__dirname(import.meta.url), '../tmp', (1 * new Date) + '.wav')
+      tts.save(filePath, text, () => {
+        resolve(readFileSync(filePath))
+        unlinkSync(filePath)
+      })
+    } catch (e) { reject(e) }
+  })
 }
+    
+case 'tts': case 'say':
+let lang = args[0]
+  let text = args.slice(1).join(' ')
+  if ((args[0] || '').length !== 2) {
+    lang = defaultLang
+    text = args.join(' ')
+  }
+  if (!text && m.quoted?.text) text = m.quoted.text
 
-    case 'say':
-    case 'tts':
-    case 'gtts': {
-        if (!args[0] || !args[1]) {
-            return m.reply('Usage: .say <language code> <text>');
-        }
-
-        const langCode = args[0].toLowerCase(); // Language code provided by the user
-        const textToSpeak = args.slice(1).join(" "); // Get the text to speak
-
-        // Validate the language code
-        if (!isValidLanguageCode(langCode)) {
-            return m.reply('Invalid language code. Please provide a valid language code');
-        }
-
-        try {
-            const audioUrl = await googleTTS.tts(textToSpeak, langCode, 1);
-
-            return gss.sendMessage(m.chat, {
-                audio: {
-                    url: audioUrl,
-                },
-                mimetype: 'audio/mp4',
-                ptt: true,
-                fileName: `${textToSpeak}.mp3`,
-            }, {
-                quoted: m,
-            });
-        } catch (error) {
-            console.error('Error during TTS:', error);
-            return m.reply('Unexpected error occurred during TTS.');
-        }
-    }
-    break;
-
+  let res
+  try { res = await tts(text, lang) }
+  catch (e) {
+    m.reply(e + '')
+    text = args.join(' ')
+    if (!text) throw `📌 Example : \n${prefix}${command} en hello world`
+    res = await tts(text, defaultLang)
+  } finally {
+    if (res) gss.sendMedia(m.chat, res, 'tts.opus', null, m, true)
+  }
+}
+break;
 
 
 case 'translate': case 'trt': {
