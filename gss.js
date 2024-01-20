@@ -59,6 +59,7 @@ const acr = new acrcloud({
 const apiKey = "AIzaSyAlvaQ_Jv86iNnQlcyHYH0S3XXoqBw0HKs";
 const genAI = new GoogleGenerativeAI(apiKey);
 const tempMailAddresses = {};
+const defaultLang = 'en'
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
 
 // read database
