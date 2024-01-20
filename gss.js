@@ -4118,23 +4118,25 @@ case 'voicegpt':
 
 
 
-case 'imagine': case 'dalle': case 'aiimage':
-  if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`; 
+case 'imagine':
+case 'dalle':
+case 'aiimage':
+  if (!text) throw `*You can generate images From text using this command*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} Elon musk with Irom man*`;
 
-async function fetchImageData() {
-  let thingMsg = await gss.sendMessage(m.chat, { text: 'Generating Images Please wait...' });
-  const texti = text;
-  try {
-    const response = await axios.get(`https://v2-guru-indratensei.cloud.okteto.net/scrape?query=${texti}`);
-    const data = response.data;
+  async function fetchImageData() {
+    let thingMsg = await gss.sendMessage(m.chat, { text: 'Generating Images Please wait...' });
+    const texti = text;
+    try {
+      const response = await axios.get(`https://rest-api.akuari.my.id/ai/bing-ai2?text=${texti}`);
+      const data = response.data;
 
-    const images = data.image_links;
-    const timeforgen = data.execution_time;
-    const genetd =  `✅ Sucsessfully generated in ${timeforgen}`
-    const randomImageIndex = Math.floor(Math.random() * images.length);
-    const randomImageLink = images[randomImageIndex];
-    console.log(randomImageLink);
-    await gss.sendMessage(m.chat, {
+      const images = data.image_links;
+      const timeforgen = data.execution_time;
+      const genetd = `✅ Successfully generated in ${timeforgen}`;
+      const randomImageIndex = Math.floor(Math.random() * images.length);
+      const randomImageLink = images[randomImageIndex];
+
+      await gss.sendMessage(m.chat, {
         image: {
           url: randomImageLink,
         },
@@ -4142,14 +4144,15 @@ async function fetchImageData() {
       }, {
         quoted: m,
       });
-  } catch (error) {
-    console.error('Error fetching image data:', error);
+    } catch (error) {
+      console.error('Error fetching image data:', error);
+    }
   }
-}
 
-fetchImageData();
+  fetchImageData();
 
-break;
+  break;
+
 
 
 
