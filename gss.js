@@ -4121,31 +4121,23 @@ case 'voicegpt':
 case 'imagine':
 case 'dalle':
 case 'aiimage':
-  if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${usedPrefix + command} Beautiful anime girl*\n*◉ ${usedPrefix + command} Elon Musk in pink output*`;
+    if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${usedPrefix + command} Beautiful anime girl*\n*◉ ${usedPrefix + command} Elon Musk in pink output*`;
 
   try {
     m.reply('*Please wait, generating images...*');
 
-    const endpoint = `https://rest-api.akuari.my.id/ai/bing-ai2?text=${encodeURIComponent(text)}`;
+    const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}`;
     const response = await fetch(endpoint);
-
+    
     if (response.ok) {
-      const data = await response.json();
-      const imageUrl = data.image;
-
-      if (imageUrl) {
-        await gss.sendFile(m.chat, imageUrl, 'image.png', null, m);
-      } else {
-        throw '*Image URL not found in the response*';
-      }
+      const imageBuffer = await response.buffer();
+      await gss.sendFile(m.chat, imageBuffer, 'image.png', null, m);
     } else {
-      throw `*Image generation failed with status code: ${response.status}*`;
+      throw '*Image generation failed*';
     }
-  } catch (error) {
-    const errorMessage = '*Oops! Something went wrong while generating images. Please try again later.*';
-    throw errorMessage;
+  } catch {
+    throw '*Oops! Something went wrong while generating images. Please try again later.*';
   }
-
   break;
 
 
