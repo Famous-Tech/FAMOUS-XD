@@ -4334,19 +4334,7 @@ break
 
 
 
-function tts(text, lang = 'en-en') {
-  console.log(lang, text)
-  return new Promise((resolve, reject) => {
-    try {
-      let tts = gtts(lang)
-      let filePath = join(global.__dirname(const.meta.url), '../tmp', (1 * new Date) + '.wav')
-      tts.save(filePath, text, () => {
-        resolve(readFileSync(filePath))
-        unlinkSync(filePath)
-      })
-    } catch (e) { reject(e) }
-  })
-}
+
     
 case 'tts': case 'say':
 let lang = args[0]
