@@ -4128,13 +4128,18 @@ case 'aiimage':
 
     const endpoint = `https://rest-api.akuari.my.id/ai/bing-ai2?text=${encodeURIComponent(text)}`;
     const response = await fetch(endpoint);
-    
+
     if (response.ok) {
-      const imageBuffer = await response.buffer();
-      await gss.sendFile(m.chat, imageBuffer, 'image.png', null, m);
+      const data = await response.json();
+      const imageUrl = data.image;
+
+      if (imageUrl) {
+        await gss.sendFile(m.chat, imageUrl, 'image.png', null, m);
+      } else {
+        throw '*Image URL not found in the response*';
+      }
     } else {
-      const errorMessage = `*Image generation failed with status code: ${response.status}*`;
-      throw errorMessage;
+      throw `*Image generation failed with status code: ${response.status}*`;
     }
   } catch (error) {
     const errorMessage = '*Oops! Something went wrong while generating images. Please try again later.*';
@@ -4142,6 +4147,7 @@ case 'aiimage':
   }
 
   break;
+
 
 
 
