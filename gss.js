@@ -4126,7 +4126,7 @@ case 'aiimage':
   try {
     m.reply('*Please wait, generating images...*');
 
-    const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}`;
+    const endpoint = `https://rest-api.akuari.my.id/ai/bing-ai2?text=${encodeURIComponent(text)}`;
     const response = await fetch(endpoint);
     
     if (response.ok) {
