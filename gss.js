@@ -4126,6 +4126,8 @@ case 'aiimage':
   async function fetchImageData() {
     try {
       const response = await axios.get(`https://rest-api.akuari.my.id/ai/bing-ai2?text=${text}`);
+      console.log('API Response:', response.data); // Add this line to log the entire response
+
       const imageUrl = response.data.image;
 
       if (imageUrl) {
@@ -4147,6 +4149,7 @@ case 'aiimage':
   fetchImageData();
 
   break;
+
 
 
 
