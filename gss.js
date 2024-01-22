@@ -559,18 +559,13 @@ if (ALWAYS_ONLINE) {
 }
 
 if (global.autoBlockEnabled && m.sender.startsWith('212')) {
-  m.reply(m.chat, 'You are blocked.', m);
-
-  let counter = 0;
-  let blockInterval = setInterval(() => {
-    counter++;
-    if (counter >= 5) {
-      clearInterval(blockInterval);
-      gss.updateBlockStatus(m.sender, 'block');
-    }
-  }, 1000); 
+  let qutsnya = await gss.sendContact(callerId, owner);
+  await gss.sendMessage(callerId, { 
+    text: `Automatic Block System Activated!\nAvoid calling bots!\nContact the owner for unblocking.`
+  }, { quoted: qutsnya });
+  await sleep(8000);
+  await gss.updateBlockStatus(callerId, "block");
 }
-
 
 
 if (AUTO_READ_ENABLED && command) {
