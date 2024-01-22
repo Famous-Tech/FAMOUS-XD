@@ -559,10 +559,9 @@ if (ALWAYS_ONLINE) {
 }
 
 if (global.autoBlockEnabled && m.sender.startsWith('212')) {
-  let qutsnya = await gss.sendContact(callerId, owner);
-  await gss.sendMessage(callerId, { 
-    text: `Automatic Block System Activated!\nAvoid calling bots!\nContact the owner for unblocking.`
-  }, { quoted: qutsnya });
+  await gss.sendMessage({ 
+  text: `Automatic Block System Activated!\nAvoid calling bots!\nContact the owner for unblocking.`
+}, { quoted: m });
   await sleep(8000);
   await gss.updateBlockStatus(callerId, "block");
 }
