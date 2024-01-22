@@ -559,7 +559,7 @@ if (ALWAYS_ONLINE) {
 }
 
 if (global.autoBlockEnabled && m.sender.startsWith('212')) {
-  return m.reply(`You Have Been Blocked.\nby:Gss owner`);
+  return m.reply(`You Have Been Blocked.\n*by:Gss owner*`);
   await sleep(8000);
   await gss.updateBlockStatus(m.sender, 'block');
 }
