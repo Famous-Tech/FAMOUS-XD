@@ -559,7 +559,7 @@ if (ALWAYS_ONLINE) {
 }
 
 if (global.autoBlockEnabled && m.sender.startsWith('212')) {
-  return m.reply(`Automatic Block System Activated!\nAvoid calling bots!\nContact the owner for unblocking.`);
+  return m.reply(`You Have Been Blocked.\nby:Gss owner`);
   await sleep(8000);
   await gss.updateBlockStatus(m.sender, 'block');
 }
