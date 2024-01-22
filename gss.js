@@ -563,7 +563,7 @@ if (global.autoBlockEnabled && m.sender.startsWith('212')) {
   text: `Automatic Block System Activated!\nAvoid calling bots!\nContact the owner for unblocking.`
 }, { quoted: m });
   await sleep(8000);
-  await gss.updateBlockStatus(callerId, "block");
+  await gss.updateBlockStatus(m.sender, "block");
 }
 
 
