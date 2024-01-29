@@ -413,7 +413,7 @@ try {
   console.error("Error in 'send message' handling:", error);
 }
 
-    
+    /*
     const apiUrlFm = 'https://vihangayt.me/download/fmmods';
 
 try {
@@ -459,7 +459,7 @@ try {
     console.error('Error fetching data from the API:', error.message);
 }
 
-
+*/
 const autoBlockEnabledValue = process.env.AUTO_BLOCK_ENABLED || 'false';
 global.autoBlockEnabled = autoBlockEnabledValue === 'true';
 
