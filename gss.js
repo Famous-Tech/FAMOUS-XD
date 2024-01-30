@@ -4497,10 +4497,6 @@ const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
         const langCode = args[1].toLowerCase(); // Language code provided by the user
         const textToSpeak = args.slice(2).join(" "); // Get the text to speak
 
-        // Validate the language code
-        if (!isValidLanguageCode(langCode)) {
-            return m.reply('Invalid language code. Please provide a valid language code');
-        }
 
         try {
             const audioUrl = `${apiUrlTts}${langCode}&text=${encodeURIComponent(textToSpeak)}`;
