@@ -4586,92 +4586,32 @@ break;
 
           
 
-case 'tempmail':
-case 'mail': {
-  const maxEmails = 10;
-  const count = Math.min(parseInt(args[0]) || 1, maxEmails); // Parse the provided argument as a number, default to 1
-  const baseUrl = `https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=${count}`;
-  const timeout = 10000; // 10 seconds timeout for Axios requests
+    case 'tempmail': {
+        try {
+            const apiEndpoint = 'https://tempmail.apinepdev.workers.dev/api/gen';
+            
+            // Make a request to the API to generate a temporary email
+            const response = await fetch(apiEndpoint);
+            const data = await response.json();
 
-  try {
-    const response = await axios.get(baseUrl);
-    const data = response.data;
+            if (!data || !data.email) {
+                await doReact("❌");
+                return m.reply("Failed to generate temporary email");
+            }
 
-    if (data && data.length > 0) {
-      // Save the generated email addresses with an index
-      data.forEach((email, index) => {
-        tempMailAddresses[index] = email;
-      });
+            const generatedEmail = data.email;
 
-      const tempMails = data.join('\n');
-      const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
 
-      const pollOptions = tempMailAddresses.map((_, index) => `.${index}`);
-      gss.sendPoll(m.chat, replyMessage, pollOptions);
-    } else {
-      m.reply(`Failed to generate ${count} temporary email address(es).`);
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    m.reply('Failed to fetch temporary email addresses.');
-  }
-  break;
-}
-
-// Add this code inside the existing 'checkmail' case
-case 'checkmail': {
-  const index = parseInt(args[0]); // Parse the provided argument as a number
-
-  if (!isNaN(index) && tempMailAddresses[index]) {
-    const emailToCheck = tempMailAddresses[index];
-    m.reply(`Checking messages for temporary email: ${emailToCheck}`);
-
-    // The rest of the code to check and display the message
-    const [login, domain] = emailToCheck.split('@');
-
-    const baseUrl = 'https://www.1secmail.com/api/v1/?action=getMessages';
-    const url = `${baseUrl}&login=${login}&domain=${domain}`;
-
-    const timeout = 10000; // 10 seconds timeout for Axios requests
-
-    try {
-      const response = await axios.get(url, { timeout });
-      const data = response.data;
-
-      if (data && data.length > 0) {
-        // Extract the latest message ID
-        const latestMessageId = data[0].id;
-
-        // Use the latest message ID to read the message
-        const readUrl = `https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${latestMessageId}`;
-
-        const readResponse = await axios.get(readUrl, { timeout });
-        const messageData = readResponse.data;
-
-        if (messageData && messageData.textBody) {
-          const sender = messageData.from;
-          const date = messageData.date;
-          const subject = messageData.subject || 'No Subject';
-
-          const replyMessage = `*Message in* ${emailToCheck}:\n\n*From:* ${sender}\n*Subject:* ${subject}\n*Date:* ${date}\n\n*Messages:*\n\n${messageData.textBody}`;
-          m.reply(replyMessage, m.from, { caption: replyMessage });
-
-        } else {
-          m.reply(`No message found in ${emailToCheck}.`);
+            return m.reply(`Generated Temporary Email: ${generatedEmail}`);
+        } catch (error) {
+            console.error('Error during API request:', error);
+            await doReact("❌");
+            return m.reply('Unexpected error occurred during the request.');
         }
-      } else {
-        m.reply(`No messages found in ${emailToCheck}.`);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      m.reply(`Failed to read the most recent message in ${emailToCheck}.`);
     }
+    break;
 
-  } else {
-    m.reply('Invalid index. Please provide a valid index from the generated temporary emails.');
-  }
-  break;
-}
+
 
           
         
