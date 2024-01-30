@@ -4791,6 +4791,39 @@ case 'emojimix': {
 }
 break;
 
+
+    case 'freefirename': case 'ff': case 'ffstalk': {
+        if (!args[1]) {
+            await doReact("❌");
+            return m.reply('Usage: .freefirename <user_id>');
+        }
+
+        const userId = encodeURIComponent(args[1]);
+        const apiEndpoint = `https://ffname.vercel.app/?uid=${userId}`;
+
+        try {
+
+            const response = await fetch(apiEndpoint);
+            const data = await response.json();
+
+            if (!data || !data.result) {
+                await doReact("❌");
+                return m.reply('Failed to generate Free Fire name');
+            }
+
+            const generatedName = data.result;
+
+
+            return m.reply(`Generated Free Fire Name: ${generatedName}`);
+        } catch (error) {
+            console.error('Error during API request:', error);
+            await doReact("❌");
+            return m.reply('Unexpected error occurred during the request.');
+        }
+    }
+    break;
+
+
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
                 try {
                 let set
