@@ -4485,6 +4485,7 @@ case 'runtime': case 'alive':
                 break
                 
                 
+
 const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
 
     case 'say':
@@ -4494,13 +4495,12 @@ const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
             return m.reply('Usage: .say <language code> <text>');
         }
 
-        const langCode = args[1].toLowerCase(); // Language code provided by the user
-        const textToSpeak = args.slice(2).join(" "); // Get the text to speak
-
+        const langCode = args[1].toLowerCase();
+        const textToSpeak = args.slice(2).join(" ");
 
         try {
             const audioUrl = `${apiUrlTts}${langCode}&text=${encodeURIComponent(textToSpeak)}`;
-
+            
             return gss.sendMessage(m.chat, {
                 audio: {
                     url: audioUrl,
@@ -4517,6 +4517,7 @@ const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
         }
     }
     break;
+
     
 
 case 'addprem':
