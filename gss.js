@@ -4500,7 +4500,8 @@ const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
 
         try {
             const audioUrl = `${apiUrlTts}${langCode}&text=${encodeURIComponent(textToSpeak)}`;
-            
+
+
             return gss.sendMessage(m.chat, {
                 audio: {
                     url: audioUrl,
