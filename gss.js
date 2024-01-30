@@ -4487,9 +4487,6 @@ case 'runtime': case 'alive':
                 
                 
 
-
-
- 
     case 'say':
     case 'tts':
     case 'gtts': {
@@ -4502,8 +4499,7 @@ case 'runtime': case 'alive':
 
         try {
             const audioUrl = `${apiUrlTts}${langCode}&text=${encodeURIComponent(textToSpeak)}`;
-
-
+            
             return gss.sendMessage(m.chat, {
                 audio: {
                     url: audioUrl,
@@ -4520,6 +4516,7 @@ case 'runtime': case 'alive':
         }
     }
     break;
+
 
 
     
