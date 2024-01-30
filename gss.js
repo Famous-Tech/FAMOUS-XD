@@ -4857,6 +4857,51 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
                 break
                 
 
+
+    case 'checkmail': {
+        if (!args[1]) {
+            await doReact("❌");
+            return m.reply('Usage: .getemailmessages <email>');
+        }
+
+        const email = encodeURIComponent(args[1]);
+        const apiEndpoint = `https://tempmail.apinepdev.workers.dev/api/getmessage?email=${email}`;
+
+        try {
+
+            const response = await fetch(apiEndpoint);
+            const data = await response.json();
+
+            if (!data || !data.messages) {
+                await doReact("❌");
+                return m.reply('Failed to retrieve email messages');
+            }
+
+            const messages = data.messages;
+            
+
+            for (const message of messages) {
+                const sender = message.sender;
+                const subject = message.subject;
+                const messageBody = JSON.parse(message.message).body;
+
+                const replyMessage = `Sender: ${sender}\nSubject: ${subject}\nMessage: ${messageBody}`;
+
+
+                await m.reply(replyMessage);
+            }
+
+            const joinLink = data.joinLink;
+            await m.reply(`Join Link: ${joinLink}`);
+        } catch (error) {
+            console.error('Error during API request:', error);
+            await doReact("❌");
+            return m.reply('Unexpected error occurred during the request.');
+        }
+    }
+    break;
+
+
             
             case 'menu':
 case 'help':
