@@ -3730,37 +3730,6 @@ case 'wallpaper': {
 break;
 
 
-    case 'say':
-    case 'tts':
-    case 'gtts': {
-        if (!args[1]) {
-            return m.reply('Usage: .say <language code> <text>');
-        }
-
-        const langCode = args[1].toLowerCase();
-        const textToSpeak = args.slice(2).join(" ");
-
-        try {
-            const audioUrl = `https://texttospeech.apinepdev.workers.dev/?lang=${langCode}&text=${encodeURIComponent(textToSpeak)}`;
-
-
-            return gss.sendMessage(m.chat, {
-                audio: {
-                    url: audioUrl,
-                },
-                mimetype: 'audio/mp3',
-                ptt: true,
-                fileName: `${textToSpeak}.mp3`,
-            }, {
-                quoted: m,
-            });
-        } catch (error) {
-            console.error('Error during TTS:', error);
-            return m.reply('Unexpected error occurred during TTS.');
-        }
-    }
-    break;
-
 
 case 'wikimedia': {
   if (!text) throw 'Enter Query Title';
@@ -4088,6 +4057,58 @@ case "chatgpt":
     return m.reply("An error occurred while processing the request.");
   }
   break;
+
+
+    
+    case 'gf': {
+        if (!text) {
+            await doReact("❌");
+            return m.reply(`*Provide me a query,* e.g., "Who made chat gpt?"`);
+        }
+
+        try {
+            const apiEndpoint = 'https://chatgpt.apinepdev.workers.dev/';
+            const question = encodeURIComponent(text);
+            const state = 'girlfriend';
+
+            const apiUrl = `${apiEndpoint}?question=${question}&state=${state}`;
+            const res = await fetch(apiUrl);
+
+            if (!res.ok) {
+                await doReact("❌");
+                return m.reply(`Invalid response from the API. Status code: ${res.status}`);
+            }
+
+            const data = await res.json();
+
+            if (!data || !data.answer) {
+                await doReact("❌");
+                return m.reply("Invalid data format in the API response");
+            }
+
+            await gss.sendMessage(m.chat, {
+                text: data.answer,
+                contextInfo: {
+                    externalAdReply: {
+                        title: "GPT TURBO 3.5K",
+                        body: "",
+                        mediaType: 1,
+                        thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
+                        renderLargerThumbnail: false,
+                        mediaUrl: "",
+                        sourceUrl: "",
+                    },
+                },
+            }, { quoted: m });
+
+            await doReact("✅");
+        } catch (error) {
+            console.error(error);
+            await doReact("❌");
+            return m.reply("An error occurred while processing the request.");
+        }
+    }
+    break;
 
 
 case 'snapshotfull': case 'ssf':
