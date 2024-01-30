@@ -4484,6 +4484,45 @@ case 'runtime': case 'alive':
                 })
                 break
                 
+                
+const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
+
+    case 'say':
+    case 'tts':
+    case 'gtts': {
+        if (!args[1]) {
+            return m.reply('Usage: .say <language code> <text>');
+        }
+
+        const langCode = args[1].toLowerCase(); // Language code provided by the user
+        const textToSpeak = args.slice(2).join(" "); // Get the text to speak
+
+        // Validate the language code
+        if (!isValidLanguageCode(langCode)) {
+            return m.reply('Invalid language code. Please provide a valid language code');
+        }
+
+        try {
+            const audioUrl = `${apiUrlTts}${langCode}&text=${encodeURIComponent(textToSpeak)}`;
+
+            return gss.sendMessage(m.chat, {
+                audio: {
+                    url: audioUrl,
+                },
+                mimetype: 'audio/mp3',
+                ptt: true,
+                fileName: `${textToSpeak}.mp3`,
+            }, {
+                quoted: m,
+            });
+        } catch (error) {
+            console.error('Error during TTS:', error);
+            return m.reply('Unexpected error occurred during TTS.');
+        }
+    }
+    break;
+    
+
 case 'addprem':
                 if (!isCreator) return m.reply(mess.owner)
                 if (args.length < 2)
