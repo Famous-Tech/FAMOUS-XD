@@ -4793,12 +4793,12 @@ break;
 
 
     case 'freefirename': case 'ff': case 'ffstalk': {
-        if (!args[1]) {
+        if (!text) {
             await doReact("❌");
-            return m.reply('Usage: .freefirename <user_id>');
+            return m.reply(`*Provide me free fire uid*`);
         }
 
-        const userId = encodeURIComponent(args[1]);
+        const userId = encodeURIComponent(text);
         const apiEndpoint = `https://ffname.vercel.app/?uid=${userId}`;
 
         try {
@@ -4862,7 +4862,7 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
     case 'getemailmessages': case 'checkmail': {
         if (!text) {
             await doReact("❌");
-            return m.reply(`*Provide me tempmail for view inbox`);
+            return m.reply(`*Provide me tempmail for view inbox*`);
         }
 
         const email = encodeURIComponent(text);
@@ -4888,15 +4888,13 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
             for (const message of messages) {
                 const sender = message.sender;
                 const subject = message.subject;
+                const date = new Date(JSON.parse(message.message).date).toLocaleString();
                 const messageBody = JSON.parse(message.message).body;
 
-                const replyMessage = `Sender: ${sender}\nSubject: ${subject}\nMessage: ${messageBody}`;
+                const replyMessage = `Sender: ${sender}\nSubject: ${subject}\nDate: ${date}\nMessage: ${messageBody}`;
 
                 await m.reply(replyMessage);
             }
-
-            const joinLink = data.joinLink;
-            await m.reply(`Join Link: ${joinLink}`);
         } catch (error) {
             console.error('Error during API request:', error);
             await doReact("❌");
