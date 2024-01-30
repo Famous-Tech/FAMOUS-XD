@@ -62,7 +62,7 @@ const tempMailAddresses = {};
 const defaultLang = 'en'
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
 
-const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
+
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
@@ -3729,6 +3729,39 @@ case 'wallpaper': {
 }
 break;
 
+
+    case 'say':
+    case 'tts':
+    case 'gtts': {
+        if (!args[1]) {
+            return m.reply('Usage: .say <language code> <text>');
+        }
+
+        const langCode = args[1].toLowerCase();
+        const textToSpeak = args.slice(2).join(" ");
+
+        try {
+            const audioUrl = `https://texttospeech.apinepdev.workers.dev/?lang=${langCode}&text=${encodeURIComponent(textToSpeak)}`;
+
+
+            return gss.sendMessage(m.chat, {
+                audio: {
+                    url: audioUrl,
+                },
+                mimetype: 'audio/mp3',
+                ptt: true,
+                fileName: `${textToSpeak}.mp3`,
+            }, {
+                quoted: m,
+            });
+        } catch (error) {
+            console.error('Error during TTS:', error);
+            return m.reply('Unexpected error occurred during TTS.');
+        }
+    }
+    break;
+
+
 case 'wikimedia': {
   if (!text) throw 'Enter Query Title';
   let { wikimedia } = require('./lib/scraper');
@@ -4484,40 +4517,6 @@ case 'runtime': case 'alive':
       quoted: m
                 })
                 break
-                
-                
-
-    case 'say':
-    case 'tts':
-    case 'gtts': {
-        if (!args[1]) {
-            return m.reply('Usage: .say <language code> <text>');
-        }
-
-        const langCode = args[1].toLowerCase();
-        const textToSpeak = args.slice(2).join(" ");
-
-        try {
-            const audioUrl = `${apiUrlTts}${langCode}&text=${encodeURIComponent(textToSpeak)}`;
-            
-            return gss.sendMessage(m.chat, {
-                audio: {
-                    url: audioUrl,
-                },
-                mimetype: 'audio/mp3',
-                ptt: true,
-                fileName: `${textToSpeak}.mp3`,
-            }, {
-                quoted: m,
-            });
-        } catch (error) {
-            console.error('Error during TTS:', error);
-            return m.reply('Unexpected error occurred during TTS.');
-        }
-    }
-    break;
-
-
 
     
 
