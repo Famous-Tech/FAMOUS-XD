@@ -4858,7 +4858,8 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
                 
 
 
-    case 'checkmail': {
+
+    case 'getemailmessages': case 'checkmail': {
         if (!args[1]) {
             await doReact("❌");
             return m.reply('Usage: .getemailmessages <email>');
@@ -4868,8 +4869,13 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
         const apiEndpoint = `https://tempmail.apinepdev.workers.dev/api/getmessage?email=${email}`;
 
         try {
-
             const response = await fetch(apiEndpoint);
+
+            if (!response.ok) {
+                await doReact("❌");
+                return m.reply(`Invalid response from the API. Status code: ${response.status}`);
+            }
+
             const data = await response.json();
 
             if (!data || !data.messages) {
@@ -4878,7 +4884,6 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
             }
 
             const messages = data.messages;
-            
 
             for (const message of messages) {
                 const sender = message.sender;
@@ -4886,7 +4891,6 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
                 const messageBody = JSON.parse(message.message).body;
 
                 const replyMessage = `Sender: ${sender}\nSubject: ${subject}\nMessage: ${messageBody}`;
-
 
                 await m.reply(replyMessage);
             }
