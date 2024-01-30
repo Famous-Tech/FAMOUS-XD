@@ -62,6 +62,7 @@ const tempMailAddresses = {};
 const defaultLang = 'en'
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
 
+const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
@@ -4486,7 +4487,6 @@ case 'runtime': case 'alive':
                 
                 
 
-const apiUrlTts = "https://texttospeech.apinepdev.workers.dev/?lang=";
 
     case 'say':
     case 'tts':
