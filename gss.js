@@ -4860,12 +4860,12 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
 
 
     case 'getemailmessages': case 'checkmail': {
-        if (!args[1]) {
+        if (!text) {
             await doReact("❌");
-            return m.reply('Usage: .getemailmessages <email>');
+            return m.reply(`*Provide me tempmail for view inbox`);
         }
 
-        const email = encodeURIComponent(args[1]);
+        const email = encodeURIComponent(text);
         const apiEndpoint = `https://tempmail.apinepdev.workers.dev/api/getmessage?email=${email}`;
 
         try {
