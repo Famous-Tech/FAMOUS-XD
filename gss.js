@@ -4812,10 +4812,9 @@ case 'ffinfo': {
             return m.reply('Failed to fetch Free Fire user information');
         }
 
-        const ffUsername = data.nickname;
-        const region = data.region;
+        const { nickname, region, join, ...rest } = data;
 
-        return m.reply(`Free Fire User ID Information:\nName: ${ffUsername}\nRegion: ${region}`);
+        return m.reply(`Free Fire User ID Information:\nName: ${nickname}\nRegion: ${region}`);
     } catch (error) {
         console.error('Error during API request:', error);
         await doReact("❌");
@@ -4823,6 +4822,7 @@ case 'ffinfo': {
     }
 }
 break;
+
 
 
 
