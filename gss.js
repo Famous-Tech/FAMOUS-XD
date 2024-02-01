@@ -4791,11 +4791,10 @@ case 'emojimix': {
 }
 break;
 
-
+case 'ff':
+case 'ffstalk':
 case 'freefireinfo':
-case 'ffinfo': 
-  case 'ff': 
-    case 'ffstalk': {
+case 'ffinfo': {
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide me Free Fire UID*`);
@@ -4808,12 +4807,12 @@ case 'ffinfo':
         const response = await fetch(apiEndpoint);
         const data = await response.json();
 
-        if (!data || !data.ffusername || !data.region) {
+        if (!data || !data.nickname || !data.region) {
             await doReact("❌");
             return m.reply('Failed to fetch Free Fire user information');
         }
 
-        const ffUsername = data.ffusername;
+        const ffUsername = data.nickname;
         const region = data.region;
 
         return m.reply(`Free Fire User ID Information:\nName: ${ffUsername}\nRegion: ${region}`);
