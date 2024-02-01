@@ -4791,17 +4791,16 @@ case 'emojimix': {
 }
 break;
 
+case 'freefirename':
 case 'ff':
-case 'ffstalk':
-case 'freefireinfo':
-case 'ffinfo': {
+case 'ffstalk': {
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide me Free Fire UID*`);
     }
 
     const userId = encodeURIComponent(text);
-    const apiEndpoint = `https://ffinfo.vercel.app/?uid=${userId}`;
+    const apiEndpoint = `https://ffname.vercel.app/?uid=${userId}`;
 
     try {
         const response = await fetch(apiEndpoint);
@@ -4809,12 +4808,13 @@ case 'ffinfo': {
 
         if (!data || !data.nickname || !data.region) {
             await doReact("❌");
-            return m.reply('Failed to fetch Free Fire user information');
+            return m.reply('Failed to generate Free Fire name');
         }
 
-        const { nickname, region, join, ...rest } = data;
+        const generatedName = data.nickname;
+        const userRegion = data.region;
 
-        return m.reply(`Free Fire User ID Information:\nName: ${nickname}\nRegion: ${region}`);
+        return m.reply(` Free Fire userid Information\n Name: ${generatedName}\nRegion: ${userRegion}`);
     } catch (error) {
         console.error('Error during API request:', error);
         await doReact("❌");
