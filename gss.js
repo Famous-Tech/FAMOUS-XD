@@ -4792,36 +4792,37 @@ case 'emojimix': {
 break;
 
 
-    case 'freefirename': case 'ff': case 'ffstalk': {
-        if (!text) {
-            await doReact("❌");
-            return m.reply(`*Provide me free fire uid*`);
-        }
-
-        const userId = encodeURIComponent(text);
-        const apiEndpoint = `https://ffname.vercel.app/?uid=${userId}`;
-
-        try {
-
-            const response = await fetch(apiEndpoint);
-            const data = await response.json();
-
-            if (!data || !data.result) {
-                await doReact("❌");
-                return m.reply('Failed to generate Free Fire name');
-            }
-
-            const generatedName = data.result;
-
-
-            return m.reply(`Generated Free Fire Name: ${generatedName}`);
-        } catch (error) {
-            console.error('Error during API request:', error);
-            await doReact("❌");
-            return m.reply('Unexpected error occurred during the request.');
-        }
+case 'freefirename':
+case 'ff':
+case 'ffstalk': {
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide me Free Fire UID*`);
     }
-    break;
+
+    const userId = encodeURIComponent(text);
+    const apiEndpoint = `https://ffname.vercel.app/?uid=${userId}`;
+
+    try {
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+
+        if (!data || !data.nickname) {
+            await doReact("❌");
+            return m.reply('Failed to generate Free Fire name');
+        }
+
+        const generatedName = data.nickname;
+
+        return m.reply(`Generated Free Fire Name: ${generatedName}`);
+    } catch (error) {
+        console.error('Error during API request:', error);
+        await doReact("❌");
+        return m.reply('Unexpected error occurred during the request.');
+    }
+}
+break;
+
 
 
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
