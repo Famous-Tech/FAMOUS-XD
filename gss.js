@@ -3043,7 +3043,8 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
 
 async function instaDownload(url) {
     try {
-        const apiUrl = `https://rest-api.akuari.my.id/downloader/igdl2?link=${encodeURIComponent(url)}`;
+        const apiKey = 'GataDios';
+        const apiUrl = `https://api.lolhuman.xyz/api/instagram?apikey=${apiKey}&url=${encodeURIComponent(url)}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -3065,15 +3066,13 @@ async function downloadInstagramMedia(url) {
 
         console.log('API Response:', result);
 
-        if (result.respon && result.respon.status && result.respon.data && result.respon.data.length > 0) {
-            const mediaType = result.respon.data[0].type;
-            const mediaUrl = result.respon.data[0].url;
+        if (result.status === 200 && result.result && result.result.length > 0) {
+            const mediaUrls = result.result;
 
-            if (mediaType && mediaUrl) {
-                return { type: mediaType, url: mediaUrl };
-            } else {
-                throw new Error('Media type or URL not found in API response');
-            }
+            return mediaUrls.map((mediaUrl, index) => ({
+                type: 'image', 
+                url: mediaUrl,
+            }));
         } else {
             throw new Error('Invalid or unexpected API response');
         }
