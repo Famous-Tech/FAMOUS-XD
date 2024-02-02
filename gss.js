@@ -3043,7 +3043,7 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
 
 async function instaDownload(url) {
     try {
-        const apiUrl = `https://vihangayt.me/download/instagram?url=${encodeURIComponent(url)}`;
+        const apiUrl = `https://rest-api.akuari.my.id/downloader/igdl2?link=${encodeURIComponent(url)}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -3065,9 +3065,9 @@ async function downloadInstagramMedia(url) {
 
         console.log('API Response:', result);
 
-        if (result.status && result.data && result.data.data && result.data.data.length > 0) {
-            const mediaType = result.data.data[0].type;
-            const mediaUrl = result.data.data[0].url;
+        if (result.respon && result.respon.status && result.respon.data && result.respon.data.length > 0) {
+            const mediaType = result.respon.data[0].type;
+            const mediaUrl = result.respon.data[0].url;
 
             if (mediaType && mediaUrl) {
                 return { type: mediaType, url: mediaUrl };
