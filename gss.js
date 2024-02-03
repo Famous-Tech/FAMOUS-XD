@@ -3223,7 +3223,12 @@ case "audiocloner":
                 audio: {
                     url: audioUrl,
                 },
-            }, { quoted: m });
+                mimetype: 'audio/mp4',
+                ptt: true,
+                fileName: `${text}.mp3`,
+            }, {
+                quoted: m,
+            });
 
             await doReact("✅");
         } else {
