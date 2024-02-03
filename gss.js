@@ -3184,16 +3184,15 @@ case 'toanime':
   break;
 
 
-// Assuming you have the voiceCloner function from the previous example
 
 case "voicecloner":
 case "cloner":
 case "audiocloner":
+case "vc":
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide valid input text.*`);
     }
-
 
     const urls = text.split("|");
     if (urls.length !== 2) {
@@ -3218,16 +3217,22 @@ case "audiocloner":
 
         console.log('API Response:', result);
 
+        if (result.status === "success" && result.output && result.output.length > 0) {
+            const audioUrl = result.output[0];
 
-
-        await doReact("✅");
+            await gss.sendMessage(m.chat, { audio: await fetch(audioUrl).then(r => r.buffer()), mimetype: 'audio/mp3' }, { quoted: m });
+            
+            await doReact("✅");
+        } else {
+            await doReact("❌");
+            return m.reply("Invalid or unexpected API response");
+        }
     } catch (error) {
         console.error(error);
         await doReact("❌");
         return m.reply("An error occurred while processing the request.");
     }
     break;
-
 
 
 
