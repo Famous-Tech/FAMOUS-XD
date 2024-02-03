@@ -3184,15 +3184,14 @@ case 'toanime':
   break;
 
 
-
 case "voicecloner":
 case "cloner":
 case "audiocloner":
-case "vc":
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide valid input text.*`);
     }
+
 
     const urls = text.split("|");
     if (urls.length !== 2) {
@@ -3220,20 +3219,23 @@ case "vc":
         if (result.status === "success" && result.output && result.output.length > 0) {
             const audioUrl = result.output[0];
 
-            await gss.sendMessage(m.chat, { audio: await fetch(audioUrl).then(r => r.buffer()), mimetype: 'audio/mp3' }, { quoted: m });
-            
+            await gss.sendMessage(m.chat, {
+                audio: {
+                    url: audioUrl,
+                },
+            }, { quoted: m });
+
             await doReact("✅");
         } else {
             await doReact("❌");
-            return m.reply("Invalid or unexpected API response");
+            return m.reply(`Invalid or unexpected API response. ${JSON.stringify(result)}`);
         }
     } catch (error) {
         console.error(error);
         await doReact("❌");
-        return m.reply("An error occurred while processing the request.");
+        return m.reply(`An error occurred while processing the request. ${error.message}`);
     }
     break;
-
 
 
 case 'anime':
