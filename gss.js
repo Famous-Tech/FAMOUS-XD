@@ -3187,6 +3187,7 @@ case 'toanime':
 case "voicecloner":
 case "cloner":
 case "audiocloner":
+case "vc":
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide valid input text.*`);
@@ -3241,6 +3242,27 @@ case "audiocloner":
         return m.reply(`An error occurred while processing the request. ${error.message}`);
     }
     break;
+
+case 'say': case 'tts': case 'gtts':{
+if (!text) return m.reply('Where is the text?')
+            let texttts = text
+            const xeonrl = googleTTS.getAudioUrl(texttts, {
+                lang: "en",
+                slow: false,
+                host: "https://translate.google.com",
+            })
+            return gss.sendMessage(m.chat, {
+                audio: {
+                    url: xeonrl,
+                },
+                mimetype: 'audio/mp4',
+                ptt: true,
+                fileName: `${text}.mp3`,
+            }, {
+                quoted: m,
+            })
+        }
+        break
 
 
 case 'anime':
