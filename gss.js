@@ -3184,6 +3184,49 @@ case 'toanime':
   break;
 
 
+// Assuming you have the voiceCloner function from the previous example
+
+case "voicecloner":
+case "cloner":
+case "audiocloner":
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide valid input text.*`);
+    }
+
+
+    const urls = text.split("|");
+    if (urls.length !== 2) {
+        await doReact("❌");
+        return m.reply(`*Invalid input format. Provide two audio URLs separated by "|".*`);
+    }
+
+    const initAudioUrl = urls[0].trim();
+    const targetAudioUrl = urls[1].trim();
+
+    try {
+        const apiKey = 'KcLEqyC54x4cYrSo6WOtuH4lVcAgQdnKpcASHeuoxuafCVcDXEXN3w4EK03B';
+        const apiUrl = `https://matrixcoder.vercel.app/api/VoiceCloner?init_audio=${encodeURIComponent(initAudioUrl)}&target_audio=${encodeURIComponent(targetAudioUrl)}&key=${apiKey}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            await doReact("❌");
+            return m.reply(`Invalid response from the API. Status code: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        console.log('API Response:', result);
+
+
+
+        await doReact("✅");
+    } catch (error) {
+        console.error(error);
+        await doReact("❌");
+        return m.reply("An error occurred while processing the request.");
+    }
+    break;
 
 
 
