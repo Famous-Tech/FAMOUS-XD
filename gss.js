@@ -3204,7 +3204,7 @@ case "vc":
     const targetAudioUrl = urls[1].trim();
 
     try {
-        const apiKey = 'KcLEqyC54x4cYrSo6WOtuH4lVcAgQdnKpcASHeuoxuafCVcDXEXN3w4EK03B';
+        const apiKey = 'JNIEhCxbV8apFC4RvHvl8ntahzGv1Vf0XzLp3q5upQcxyu6dn0KYNsJno8ZM';
         const apiUrl = `https://matrixcoder.vercel.app/api/VoiceCloner?init_audio=${encodeURIComponent(initAudioUrl)}&target_audio=${encodeURIComponent(targetAudioUrl)}&key=${apiKey}`;
         const response = await fetch(apiUrl);
 
@@ -3243,26 +3243,6 @@ case "vc":
     }
     break;
 
-case 'say': case 'tts': case 'gtts':{
-if (!text) return m.reply('Where is the text?')
-            let texttts = text
-            const xeonrl = googleTTS.getAudioUrl(texttts, {
-                lang: "en",
-                slow: false,
-                host: "https://translate.google.com",
-            })
-            return gss.sendMessage(m.chat, {
-                audio: {
-                    url: xeonrl,
-                },
-                mimetype: 'audio/mp4',
-                ptt: true,
-                fileName: `${text}.mp3`,
-            }, {
-                quoted: m,
-            })
-        }
-        break
 
 
 case 'anime':
