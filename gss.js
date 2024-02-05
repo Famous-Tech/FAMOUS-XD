@@ -61,7 +61,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 const tempMailAddresses = {};
 const defaultLang = 'en'
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
-
+let vcapiKey = 'JNIEhCxbV8apFC4RvHvl8ntahzGv1Vf0XzLp3q5upQcxyu6dn0KYNsJno8ZM';
 
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
@@ -3184,6 +3184,7 @@ case 'toanime':
   break;
 
 
+
 case "voicecloner":
 case "cloner":
 case "audiocloner":
@@ -3192,7 +3193,6 @@ case "vc":
         await doReact("❌");
         return m.reply(`*Provide valid input text.*`);
     }
-
 
     const urls = text.split("|");
     if (urls.length !== 2) {
@@ -3204,8 +3204,7 @@ case "vc":
     const targetAudioUrl = urls[1].trim();
 
     try {
-        const apiKey = 'JNIEhCxbV8apFC4RvHvl8ntahzGv1Vf0XzLp3q5upQcxyu6dn0KYNsJno8ZM';
-        const apiUrl = `https://matrixcoder.vercel.app/api/VoiceCloner?init_audio=${encodeURIComponent(initAudioUrl)}&target_audio=${encodeURIComponent(targetAudioUrl)}&key=${apiKey}`;
+        const apiUrl = `https://matrixcoder.vercel.app/api/VoiceCloner?init_audio=${encodeURIComponent(initAudioUrl)}&target_audio=${encodeURIComponent(targetAudioUrl)}&key=${vcapiKey}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -3242,6 +3241,19 @@ case "vc":
         return m.reply(`An error occurred while processing the request. ${error.message}`);
     }
     break;
+
+
+case "vckey":
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide the new API key.*`);
+    }
+
+    vcapiKey = text.trim();
+    await doReact("✅");
+    return m.reply(`API key updated successfully.`);
+    break;
+
 
 
 
