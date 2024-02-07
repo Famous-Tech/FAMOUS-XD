@@ -493,7 +493,7 @@ if (!('autobio' in setting)) setting.autobio = false
         
         
 if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
-    await gss.readMessages([mek.key]);
+     gss.readMessages([mek.key]);
 }
 
 
