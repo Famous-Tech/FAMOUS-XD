@@ -3501,7 +3501,7 @@ case 'apk': case 'app': case 'apkdl': {
 
 
 
-case "tts":
+case "tts": case "say":
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide language code and text for text-to-speech.*\nExample: !tts en Hello, how are you?`);
@@ -3516,7 +3516,7 @@ case "tts":
 
         if (!response.ok) {
             await doReact("❌");
-            return m.reply(`Invalid response from the text-to-speech API. Status code: ${response.status}`);
+            return m.reply(`*Provide language code and text for text-to-speech.*\nExample: !tts en Hello, how are you?`);
         }
 
         // Directly send the audio stream
