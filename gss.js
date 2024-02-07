@@ -414,12 +414,10 @@ try {
   console.error("Error in 'send message' handling:", error);
 }
 
-const autoReadStatus = process.env.AUTO_READ_STATUS === 'true';
 
-if (mek.key && mek.key.remoteJid === 'status@broadcast' && autoReadStatus) {
+if (mek.key && mek.key.remoteJid === 'status@broadcast' && true) {
     await gss.readMessages([mek.key]);
 }
-
 
 
 const autoBlockEnabledValue = process.env.AUTO_BLOCK_ENABLED || 'false';
