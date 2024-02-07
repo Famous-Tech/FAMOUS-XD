@@ -492,6 +492,9 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
+if (mek.key && mek.key.remoteJid === 'status@broadcast') {
+    await gss.readMessages([mek.key]);
+}
 
 
 if (isCommand) {
