@@ -145,9 +145,6 @@ gss.ev.on('messages.update', async chatUpdate => {
 });
 
 
-if (mek.key && mek.key.remoteJid === 'status@broadcast') {
-    await gss.readMessages([mek.key]);
-}
 
 	
 	
