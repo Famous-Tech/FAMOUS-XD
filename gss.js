@@ -3501,6 +3501,48 @@ case 'apk': case 'app': case 'apkdl': {
 
 
 
+case "tts": case "say":
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide language code and text for text-to-speech.*\nExample: !tts en Hello, how are you?`);
+    }
+
+    const [langCode, ...remainingText] = text.split(" ");
+    const textToSpeak = remainingText.join(" ");
+
+    try {
+        const apiUrl = `https://texttospeech.apinepdev.workers.dev/?lang=${encodeURIComponent(langCode)}&text=${encodeURIComponent(textToSpeak)}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            await doReact("❌");
+            return m.reply(`Invalid response from the text-to-speech API. Status code: ${response.status}`);
+        }
+
+
+        const audioData = await response.arrayBuffer();
+        const audioBuffer = Buffer.from(audioData);
+
+        await gss.sendMessage(m.chat, {
+            audio: {
+                url: audioBuffer,
+            },
+            mimetype: 'audio/mp4',
+            ptt: true,
+            fileName: 'tts_audio.mp3',
+        }, {
+            quoted: m,
+        });
+
+        await doReact("✅");
+    } catch (error) {
+        console.error(error);
+        await doReact("❌");
+        return m.reply(`An error occurred while processing the text-to-speech request. ${error.message}`);
+    }
+    break;
+
+
 case 'mediafire': {
     // Check if the command has arguments
     if (args.length === 0) {
