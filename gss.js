@@ -3065,9 +3065,9 @@ async function downloadInstagramMedia(url) {
 
         console.log('API Response:', result);
 
-        if (result.respon && result.respon.status && result.respon.data && result.respon.data.length > 0) {
-            const mediaType = result.respon.data[0].type;
-            const mediaUrl = result.respon.data[0].url;
+        if (result.status && result.data && result.data.length > 0) {
+            const mediaType = result.data[0].type;
+            const mediaUrl = result.data[0].url;
 
             if (mediaType && mediaUrl) {
                 return { type: mediaType, url: mediaUrl };
@@ -3082,8 +3082,6 @@ async function downloadInstagramMedia(url) {
         throw error;
     }
 }
-
-
 
 
 async function downloadAndSendMedia(m, text, isDocument) {
@@ -3104,7 +3102,7 @@ async function downloadAndSendMedia(m, text, isDocument) {
 
         const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
-        // Send the media using gss.sendMessage with the saved file
+        
         if (isDocument) {
             await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/mp4`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else {
@@ -3122,9 +3120,7 @@ async function downloadAndSendMedia(m, text, isDocument) {
     }
 }
 
-// ...
 
-// Handle Instagram media download
 case 'igdl':
 case 'insta':
 case 'ig':
@@ -3132,7 +3128,7 @@ case 'instagram':
     await downloadAndSendMedia(m, text, false);
     break;
 
-// Handle Instagram media download as document
+
 case 'igdldoc':
 case 'instadoc':
 case 'igdoc':
