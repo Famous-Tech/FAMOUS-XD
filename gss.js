@@ -3043,7 +3043,7 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
 
 async function instaDownload(url) {
     try {
-        const apiUrl = `https://rest-api.akuari.my.id/downloader/igdl2?link=${encodeURIComponent(url)}`;
+        const apiUrl = `https://instagramdownloader.apinepdev.workers.dev/?url=${encodeURIComponent(url)}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
