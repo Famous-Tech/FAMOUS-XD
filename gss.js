@@ -415,9 +415,6 @@ try {
 }
 
 
-if (mek.key && mek.key.remoteJid === 'status@broadcast' && true) {
-    await gss.readMessages([mek.key]);
-}
 
 
 const autoBlockEnabledValue = process.env.AUTO_BLOCK_ENABLED || 'false';
