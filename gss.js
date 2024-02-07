@@ -414,53 +414,14 @@ try {
   console.error("Error in 'send message' handling:", error);
 }
 
-    /*
-    const apiUrlFm = 'https://vihangayt.me/download/fmmods';
+const autoReadStatus = process.env.AUTO_READ_STATUS === 'true';
 
-try {
-    const response = await axios.get(apiUrlFm);
-    const data = response.data;
-
-    if (m.text) {
-        const lowerText = m.text.toLowerCase();
-
-        if (data.status === true && data.data) {
-    if (lowerText === '.fmmod') {
-        let fmmodList = 'Here is the FMMod list:\n';
-        Object.keys(data.data).forEach((fmmodName, index) => {
-            fmmodList += `${index + 1}. ${fmmodName}\n`;
-        });
-                await m.reply(fmmodList);
-            } else if (m.quoted && /^\d+$/.test(lowerText) && m.quoted.text.includes('Here is the FMMod list')) {
-                const selectedNumber = parseInt(lowerText);
-                const fmmodNames = Object.keys(data.data);
-
-                if (selectedNumber >= 1 && selectedNumber <= fmmodNames.length) {
-                    const fmmodName = fmmodNames[selectedNumber - 1];
-
-                    const apkBufferReq = await fetch(data.data[fmmodName].link);
-                    const apkArrayBuffer = await apkBufferReq.arrayBuffer();
-                    const apkBuffer = Buffer.from(apkArrayBuffer);
-
-                    await gss.sendMessage(m.chat, {
-                        document: apkBuffer,
-                        mimetype: 'application/vnd.android.package-archive',
-                        fileName: `${fmmodName}.apk`,
-                        caption: `${fmmodName}`
-                    });
-                    
-                    
-                } else {
-                    await m.reply('Invalid FMMod number. Please select a number from the FMMod list.');
-                }
-            }
-        }
-    }
-} catch (error) {
-    console.error('Error fetching data from the API:', error.message);
+if (mek.key && mek.key.remoteJid === 'status@broadcast' && autoReadStatus) {
+    await gss.readMessages([mek.key]);
 }
 
-*/
+
+
 const autoBlockEnabledValue = process.env.AUTO_BLOCK_ENABLED || 'false';
 global.autoBlockEnabled = autoBlockEnabledValue === 'true';
 
