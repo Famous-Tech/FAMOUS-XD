@@ -1519,6 +1519,48 @@ case 'mute': {
 }
 break;
 
+case "logomaker":
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide a logo name for the logo maker.*\nExample: !logomaker MyLogo`);
+    }
+
+    const logoName = encodeURIComponent(text);
+
+    try {
+        const apiUrl = `https://logomaker.apinepdev.workers.dev/?logoname=${logoName}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            await doReact("❌");
+            return m.reply(`Invalid response from the logo maker API. Status code: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.logo) {
+            await gss.sendMessage(m.chat, {
+                image: {
+                    url: result.logo,
+                },
+                mimetype: 'image/jpeg', // Adjust based on the actual image format
+                caption: 'Generated Logo',
+            }, {
+                quoted: m,
+            });
+
+            await doReact("✅");
+        } else {
+            await doReact("❌");
+            return m.reply(`Invalid or unexpected API response. Logo not found.`);
+        }
+    } catch (error) {
+        console.error(error);
+        await doReact("❌");
+        return m.reply(`An error occurred while processing the logo maker request. ${error.message}`);
+    }
+    break;
+
 
 
 case 'linkgroup': case 'linkgc': {
