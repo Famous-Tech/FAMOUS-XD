@@ -104,7 +104,14 @@ async function startgss() {
     })
     
 
-
+    //autostatus view
+        gss.ev.on('messages.upsert', async chatUpdate => {
+        	if (global.antiswview){
+            mek = chatUpdate.messages[0]
+            if (mek.key && mek.key.remoteJid === 'status@broadcast') {
+            	await gss.readMessages([mek.key]) }
+            }
+    })
     
 // respon cmd pollMessage
 async function getMessage(key) {
