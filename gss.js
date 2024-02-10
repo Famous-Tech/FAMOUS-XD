@@ -130,7 +130,6 @@ const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
         const antiToxic = m.isGroup ? nttoxic.includes(m.from) : false
           const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
-const isBaileys = chatUpdate?.messages?.[0]?.key?.id?.startsWith("BAE5") && chatUpdate?.messages?.[0]?.key?.id?.length === 16;
 	
 let format = sizeFormatter({ 
      std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC' 
@@ -449,9 +448,11 @@ let chats = db.data.chats[m.chat]
             if (chats) {
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
+                 if (!('antibot' in chats)) chats.antibot = false
             } else global.db.data.chats[m.chat] = {
                 mute: false,
                 antilink: false,
+                antibot: false,
             }
 
 
@@ -563,6 +564,16 @@ if (currentTime < "03:00:00") {
     var greetingTime = 'Good Midnight 🌃';
 }
 
+
+if (db.data.chats[m.chat].antibot) {
+    if (m.isBaileys && m.fromMe == false){
+        if (isAdmin || !isBotAdmin){		  
+        } else {
+          m.reply(`_*Another Bot Detected*_\n\n_*Husshhh Get away from this group!!!*_`)
+    return await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+        }
+    }
+   }
 
 	    
 if (antiToxic) {
@@ -1426,29 +1437,17 @@ break;
 
 
 
-case 'antibot': {
-    if (!m.isGroup) throw mess.group;
-    if (!isBotAdmins) throw mess.botAdmin;
-    if (!isAdmins) throw mess.admin;
-    
-    if (!args || args.length < 1) {
-        gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
-    } else {
-        const antibotSetting = args[0].toLowerCase();
-        if (antibotSetting === "on") {
-            if (db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Active`);
-            db.data.chats[m.chat].antibot = true;
-            m.reply(`Antibot Activated!`);
-        } else if (antibotSetting === "off") {
-            if (!db.data.chats[m.chat]?.antibot) return m.reply(`Antibot Already Inactive`);
-            db.data.chats[m.chat].antibot = false;
-            m.reply(`Antibot Deactivated!`);
-        } else {
-            gss.sendPoll(m.chat, "Choose Antibot Setting:", [`${prefix}antibot on`, `${prefix}antibot off`]);
-        }
-    }
-}
-break;
+ case 'antibot':{
+               if (args.length < 1) return m.reply('on/off?')
+               if (args[0] === 'on') {
+                  db.data.chats[from].antibot = true
+                  m.reply(`${command} is enabled`)
+               } else if (args[0] === 'off') {
+                  db.data.chats[from].antibot = false
+                  m.reply(`${command} is disabled`)
+               }
+               }
+            break
 
 case 'antidelete': {
 if (!isCreator) throw mess.owner;
