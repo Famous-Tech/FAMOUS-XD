@@ -1441,10 +1441,10 @@ break;
  case 'antibot':{
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
-                  db.data.chats[m.from].antibot = true
+                  db.data.chats[m.chat].antibot = true
                   m.reply(`${command} is enabled`)
                } else if (args[0] === 'off') {
-                  db.data.chats[m.from].antibot = false
+                  db.data.chats[m.chat].antibot = false
                   m.reply(`${command} is disabled`)
                }
                }
