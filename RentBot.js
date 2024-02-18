@@ -41,7 +41,7 @@ const T = json.attrs.t
 gss.sendNode({
   tag: 'call',
     attrs: {
-      from: '919142294671@s.whatsapp.net',
+      from: '917050906659@s.whatsapp.net',
       id: Id,
       t: T
     },
@@ -137,7 +137,7 @@ global.conns.push(gss)
 await m.reply(`*Connected to\n\n*User :*\n _*× id : ${gss.decodeJid(gss.user.id)}*_`)
 user = `${gss.decodeJid(gss.user.id)}`
 txt = `*Detected using rent bot*\n\n _× User : @${user.split("@")[0]}_`
-sendMessage(`919142294671@s.whatsapp.net`,{text: txt, mentions : [user]})
+sendMessage(`917050906659@s.whatsapp.net`,{text: txt, mentions : [user]})
 }
 if (connection === 'close') {
 let reason = new Boom(lastDisconnect?.error)?.output.statusCode
@@ -336,11 +336,11 @@ const tod = generateWAMessageFromContent(jid,
 "description": desc,
 "currencyCode": "INR",
 "priceAmount1000": "100000",
-"url": `https://youtube.com/channel/UC7NslQroUqQYzo2wDFBOUMg`,
+"url": `https://youtube.com/@SinghaniyaTech0744`,
 "productImageCount": 1,
 "salePriceAmount1000": "0"
 },
-"businessOwnerJid": `916909137213@s.whatsapp.net`
+"businessOwnerJid": `917050906659@s.whatsapp.net`
 }
 }, options)
 return gss.relayMessage(jid, tod.message, {messageId: tod.key.id})
