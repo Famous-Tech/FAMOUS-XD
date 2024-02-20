@@ -31,7 +31,7 @@ global.sessionName = 'session';
 global.prefa = ['', '!', '.'];
 global.sp = '✪';
 global.mess = {
-    success: '```✓ Success```',
+    success: '`✓ Success`',
     admin: '`This feature is only for group admins`',
     botAdmin: '`I am not an admin!`',
     owner: '`You are not my owner`',
