@@ -1518,13 +1518,13 @@ case "cricketscore": case "score":
                 Update: ${result.update}
                 Live Score: ${result.livescore}
                 Run Rate: ${result.runrate}
-                Batter 1: ${result.batterone} - ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr}
-                Batter 2: ${result.battertwo} - ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr}
-                Bowler 1: ${result.bowlerone} - ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy}
-                Bowler 2: ${result.bowlertwo} - ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy}
+                Batter 1: ${result.batterone} - ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}
+                Batter 2: ${result.battertwo} - ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}
+                Bowler 1: ${result.bowlerone} - ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}
+                Bowler 2: ${result.bowlertwo} - ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}
             `;
 
-            await gss.sendMessage(m.chat, formattedResult, { quoted: m });
+            await m.reply(`🏏 ${formattedResult}`);
             await doReact("✅");
         } else {
             await doReact("❌");
@@ -1536,6 +1536,7 @@ case "cricketscore": case "score":
         return m.reply(`An error occurred while processing the cricket score request. ${error.message}`);
     }
     break;
+
 
 
 
