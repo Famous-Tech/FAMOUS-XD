@@ -1496,7 +1496,7 @@ break;
 case "cricketscore": case "score":
     if (!text) {
         await doReact("❌");
-        return m.reply(`*Provide a match ID for cricket score.*\nExample: !cricketscore 12345`);
+        return m.reply(`*Provide a match ID for cricket score.*\nExample: .cricketscore 12345`);
     }
 
     const matchId = encodeURIComponent(text);
@@ -1515,16 +1515,16 @@ case "cricketscore": case "score":
         if (result.title && result.update && result.livescore) {
             const formattedResult = `
                 *${result.title}*
-                Update: ${result.update}
-                Live Score: ${result.livescore}
-                Run Rate: ${result.runrate}
-                Batter 1: ${result.batterone} - ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}
-                Batter 2: ${result.battertwo} - ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}
-                Bowler 1: ${result.bowlerone} - ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}
-                Bowler 2: ${result.bowlertwo} - ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}
+                🚀 Update: ${result.update}
+                ⚡ Live Score: ${result.livescore}
+                🏃 Run Rate: ${result.runrate}
+                🏏 Batter 1: ${result.batterone} - ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}
+                🏏 Batter 2: ${result.battertwo} - ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}
+                🥎 Bowler 1: ${result.bowlerone} - ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}
+                🥎 Bowler 2: ${result.bowlertwo} - ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}
             `;
 
-            await m.reply(`🏏 ${formattedResult}`);
+            await m.reply(`${formattedResult}`);
             await doReact("✅");
         } else {
             await doReact("❌");
