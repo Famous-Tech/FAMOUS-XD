@@ -1492,6 +1492,49 @@ if (!isCreator) throw mess.owner;
 }
 break;
 
+case "cricketscore": case "score":
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide a match ID for cricket score.*\nExample: !cricketscore 12345`);
+    }
+
+    const matchId = encodeURIComponent(text);
+
+    try {
+        const apiUrl = `https://cricket-olive.vercel.app/score?id=${matchId}`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            await doReact("❌");
+            return m.reply(`Invalid response from the cricket score API. Status code: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.title && result.update && result.livescore) {
+            const formattedResult = `
+                *${result.title}*
+                Update: ${result.update}
+                Live Score: ${result.livescore}
+                Run Rate: ${result.runrate}
+                Batter 1: ${result.batterone} - ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr}
+                Batter 2: ${result.battertwo} - ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr}
+                Bowler 1: ${result.bowlerone} - ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy}
+                Bowler 2: ${result.bowlertwo} - ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy}
+            `;
+
+            await gss.sendMessage(m.chat, formattedResult, { quoted: m });
+            await doReact("✅");
+        } else {
+            await doReact("❌");
+            return m.reply(`Invalid or unexpected API response. Required fields not found.`);
+        }
+    } catch (error) {
+        console.error(error);
+        await doReact("❌");
+        return m.reply(`An error occurred while processing the cricket score request. ${error.message}`);
+    }
+    break;
 
 
 
