@@ -91,8 +91,7 @@ const userContextMap = new Map();
 let banUser = JSON.parse(fs.readFileSync('./database/banUser.json'));
 let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
 let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
-const isBan = banUser.includes(m.sender)
-const isBanChat = m.isGroup ? banchat.includes(from) : false
+
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -132,6 +131,8 @@ const isViewOnce = ["viewOnceMessageV2","viewOnceMessage"].includes(m.type)
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
 const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
+const isBan = banUser.includes(m.sender)
+const isBanChat = m.isGroup ? banchat.includes(from) : false
         const antiToxic = m.isGroup ? nttoxic.includes(m.from) : false
           const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
