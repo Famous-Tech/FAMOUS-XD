@@ -3638,7 +3638,7 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
           banchat.push(m.from);
           m.reply('This Group has been banned from using me!');
 
-          var groupe = await gss.groupMetadata(from);
+          var groupe = await gss.groupMetadata(m.from);
           var members = groupe['participants'];
           var mems = [];
           members.map(async adm => {
@@ -3648,7 +3648,7 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
           gss.sendMessage(m.from, { text: `\`\`\`「 Notice 」\`\`\`\n\nThis group is banned from using the bot. So, here nobody can use me anymore!`, contextInfo: { mentionedJid: mems } }, { quoted: m });
         } else if (args[0] === "off") {
           if (!isBanChat) return m.reply('This Group is Already Banned from using me!');
-          let off = banchat.indexOf(from);
+          let off = banchat.indexOf(m.from);
           banchat.splice(off, 1);
           m.reply('This Group has been *unbanned* from using me!');
         } else {
