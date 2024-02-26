@@ -4003,6 +4003,8 @@ break;
             
 
 case 'ping': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("🕘");
   const startTime = new Date();
   const pingMsg = await gss.sendMessage(m.chat, { text: '*cheking...*' });
