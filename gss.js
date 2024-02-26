@@ -3635,7 +3635,7 @@ case 'banchat': case 'bangroup': case 'banmode': {
 if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
         if (args[0] === "on") {
           if (isBanChat) return m.reply('This Group is Already Banned from using me!');
-          banchat.push(from);
+          banchat.push(m.from);
           m.reply('This Group has been banned from using me!');
 
           var groupe = await gss.groupMetadata(from);
@@ -3977,7 +3977,8 @@ break;
 	    
 		      case 'mode': {
     if (!isCreator) throw mess.owner;
-
+if (isBan) throw mess.banned;
+        if (isBanChat) throw mess.bangc;
     const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
@@ -4014,7 +4015,7 @@ case 'ping': {
         key: pingMsg.key,
         type: 14,
         editedMessage: {
-          conversation: `*Response speed is:* ${new Date() - startTime} ms`
+          conversation: `*Pong:* ${new Date() - startTime} ms`
         }
       }
     }, {});
