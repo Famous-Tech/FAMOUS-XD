@@ -31,6 +31,8 @@ global.sessionName = 'session';
 global.prefa = ['', '!', '.'];
 global.sp = '✪';
 global.mess = {
+  banned: 'You are *Banned* fron using commands!',
+  bangc: 'This Group is *Banned* from using Commands!',
     success: '`✓ Success`',
     admin: '`This feature is only for group admins`',
     botAdmin: '`I am not an admin!`',
