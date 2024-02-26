@@ -88,6 +88,11 @@ const reportedMessages = {};
 const videoSearchResults = new Map();
 let titleUrlMap = {}; 
 const userContextMap = new Map();
+let banUser = JSON.parse(fs.readFileSync('./database/banUser.json'));
+let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
+let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
+const isBan = banUser.includes(m.sender)
+const isBanChat = m.isGroup ? banchat.includes(from) : false
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -1537,6 +1542,31 @@ case "cricketscore": case "score":
     }
     break;
 
+case 'ban': {
+        if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return reply(mess.bangc);
+        if (!isCreator) return reply(mess.owner)
+        if (!args[0]) return m.reply(`Select add or del (add to ban, del to unban), For Example: reply *${prefix}ban add* to the user you want to ban.`)
+        if (args[1]) {
+          orgnye = args[1] + "@s.whatsapp.net"
+        } else if (m.quoted) {
+          orgnye = m.quoted.sender
+        }
+        const isBane = banUser.includes(orgnye)
+        if (args[0] === "add") {
+          if (isBane) return ads('User is already banned.')
+          banUser.push(orgnye)
+          m.reply(`Successfully Banned the user.`)
+        } else if (args[0] === "del") {
+          if (!isBane) return ads('User is already unbanned.')
+          let delbans = banUser.indexOf(orgnye)
+          banUser.splice(delbans, 1)
+          m.reply(`Successfully Unbanned the user.`)
+        } else {
+          m.reply("Error")
+        }
+      }
+        break;
 
 
 
@@ -3598,6 +3628,34 @@ case 'apk': case 'app': case 'apkdl': {
   break;
 }
 
+
+case 'banchat': case 'bangroup': case 'banmode': {
+        if (isBan) return reply(mess.banned);
+        if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
+if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
+        if (args[0] === "on") {
+          if (isBanChat) return m.reply('This Group is Already Banned from using me!');
+          banchat.push(from);
+          m.reply('This Group has been banned from using me!');
+
+          var groupe = await gss.groupMetadata(from);
+          var members = groupe['participants'];
+          var mems = [];
+          members.map(async adm => {
+            mems.push(adm.id.replace('c.us', 's.whatsapp.net'));
+          });
+
+          gss.sendMessage(m.from, { text: `\`\`\`「 Notice 」\`\`\`\n\nThis group is banned from using the bot. So, here nobody can use me anymore!`, contextInfo: { mentionedJid: mems } }, { quoted: m });
+        } else if (args[0] === "off") {
+          if (!isBanChat) return m.reply('This Group is Already Banned from using me!');
+          let off = banchat.indexOf(from);
+          banchat.splice(off, 1);
+          m.reply('This Group has been *unbanned* from using me!');
+        } else {
+          m.reply('Please choose either *"on"* or *"off"* to ban or unban the group from using the bot.');
+        }
+      }
+        break;
 
 
 case "tts": case "say":
