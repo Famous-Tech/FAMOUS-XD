@@ -3966,6 +3966,8 @@ case 'wikimedia': {
 break;
 
         case 'ringtone': {
+if (isBan) throw mess.banned;
+        if (isBanChat) throw mess.bangc;
 		if (!text) throw `Example : ${prefix + command} black rover`
         let { ringtone } = require('./lib/scraper')
 		let anu = await ringtone(text)
