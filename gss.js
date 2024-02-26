@@ -1545,7 +1545,7 @@ case "cricketscore": case "score":
 case 'ban': {
         if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-        if (!isCreator) return m reply(mess.owner)
+        if (!isCreator) return m.reply(mess.owner)
         if (!args[0]) return m.reply(`Select add or del (add to ban, del to unban), For Example: reply *${prefix}ban add* to the user you want to ban.`)
         if (args[1]) {
           orgnye = args[1] + "@s.whatsapp.net"
