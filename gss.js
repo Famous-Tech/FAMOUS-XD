@@ -1412,8 +1412,8 @@ break;
 	    case 'style': case 'styletext': {
 	      if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit); // Response when the limit is exhausted
-  db.data.users[m.sender].limit -= 1; // Decrease the limit by 1
+  if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit);
+  db.data.users[m.sender].limit -= 1;
   let { styletext } = require('./lib/scraper');
   if (!text) throw 'Enter the text query!';
   let anu = await styletext(text);
@@ -1426,7 +1426,7 @@ break;
 break;
 
 case 'group':
-case 'grup': 
+case 'grup': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
