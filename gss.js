@@ -1424,7 +1424,7 @@ break;
   m.reply(teks);
 }
 break;
-
+/*
 case 'group':
 case 'grup': {
   if (!m.isGroup) throw mess.group;
@@ -1444,7 +1444,7 @@ case 'grup': {
   }
 }
 break;
-
+*/
 
 
 case 'editinfo': {
