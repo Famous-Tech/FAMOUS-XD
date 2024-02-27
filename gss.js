@@ -3833,7 +3833,7 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
             mems.push(adm.id.replace('c.us', 's.whatsapp.net'));
           });
 
-          gss.sendMessage(m.from, { text: `\`\`\`「 Notice 」\`\`\`\n\nThis group is banned from using the bot. So, here nobody can use me anymore!`, contextInfo: { mentionedJid: mems } }, { quoted: m });
+          gss.sendMessage(m.chat, { text: `\`\`\`「 Notice 」\`\`\`\n\nThis group is banned from using the bot. So, here nobody can use me anymore!`, contextInfo: { mentionedJid: mems } }, { quoted: m });
         } else if (args[0] === "off") {
           if (!isBanChat) return m.reply('This Group is Already Banned from using me!');
           let off = banchat.indexOf(m.from);
