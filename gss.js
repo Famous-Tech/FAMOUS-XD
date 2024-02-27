@@ -461,15 +461,7 @@ let chats = db.data.chats[m.chat]
                 antibot: true,
             }
 
-if (db.data.chats[m.chat].antibot) {
-    if (m.isBaileys && m.fromMe == false){
-        if (isAdmin || !isBotAdmin){		  
-        } else {
-          m.reply(`_*Another Bot Detected*_\n\n_*Husshhh Get away from this group!!!*_`)
-    return await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-        }
-    }
-   }
+
 
 
 	    let setting = db.data.settings[botNumber]
@@ -578,7 +570,15 @@ if (currentTime < "03:00:00") {
 }
 
 
-
+if (db.data.chats[m.chat].antibot) {
+    if (m.isBaileys && m.fromMe == false){
+        if (isAdmin || !isBotAdmin){		  
+        } else {
+          m.reply(`_*Another Bot Detected*_\n\n_*Husshhh Get away from this group!!!*_`)
+    return await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+        }
+    }
+   }
 
 	    
 if (antiToxic) {
