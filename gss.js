@@ -911,6 +911,8 @@ if (m.text) {
 	    
         switch(isCommand) {
 	    case 'afk': {
+	      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 let user = global.db.data.users[m.sender]
                 user.afkTime = + new Date
                 user.afkReason = text
@@ -919,11 +921,15 @@ if (m.text) {
             break	
             
             case 'rentbot': {
+if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     rentfromxeon(gss, m, m.from, args);
 }
 break;
             
 case 'imdb': case 'movie':
+if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 if (!text) return m.reply(`Give Me a Series or movie Name`)
             let fids = await axios.get(`http://www.omdbapi.com/?apikey=742b2d09&t=${text}&plot=full`)
             let imdbt = ""
@@ -957,6 +963,8 @@ if (!text) return m.reply(`Give Me a Series or movie Name`)
             break
             
         case 'ttc': case 'ttt': case 'tictactoe': {
+if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
             let TicTacToe = require("./lib/tictactoe")
             this.game = this.game ? this.game : {}
             if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'You are still in the game'
@@ -1005,6 +1013,8 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
             }
             break
             case 'delttc': case 'delttt': {
+if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
             let roomnya = Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))
             if (!roomnya) throw `You are not in the tictactoe room!`
             delete this.game[roomnya.id]
@@ -1013,6 +1023,8 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
             break
       
             case 'join': {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   if (!text) throw 'Enter the Group Link!';
   if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) throw 'Invalid Link!';
@@ -1023,12 +1035,16 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
 break;
 
 case 'leave': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   await gss.groupLeave(m.chat).then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
 }
 break;
 
 case 'setexif': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   if (!text) throw `Example: ${prefix + command} packname|author`;
   global.packname = text.split("|")[0];
@@ -1037,6 +1053,8 @@ case 'setexif': {
 }
 break;
 case 'promote': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   try {
     if (!m.isGroup) throw mess.group;
     if (!isBotAdmins) throw mess.botAdmin;
@@ -1069,6 +1087,8 @@ break;
 
 case 'kick': {
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!m.isGroup) throw mess.group;
     if (!isBotAdmins) throw mess.botAdmin;
     if (!isAdmins) throw mess.admin;
@@ -1099,6 +1119,8 @@ break;
 
 case 'demote': {
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!m.isGroup) throw mess.group;
     if (!isBotAdmins) throw mess.botAdmin;
     if (!isAdmins) throw mess.admin;
@@ -1130,6 +1152,8 @@ break;
 
 
 case 'block': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
   await gss.updateBlockStatus(users, 'block').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
@@ -1137,6 +1161,8 @@ case 'block': {
 break;
 
 case 'unblock': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
   await gss.updateBlockStatus(users, 'unblock').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)));
@@ -1144,6 +1170,8 @@ case 'unblock': {
 break;
 
 case 'setname': case 'setsubject': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1153,6 +1181,8 @@ case 'setname': case 'setsubject': {
 break;
 
 case 'setdesc': case 'setdesk': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1162,6 +1192,8 @@ case 'setdesc': case 'setdesk': {
 break;
 
           case 'setppbot': {
+            if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   if (!/image/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
   if (/webp/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
@@ -1172,6 +1204,8 @@ break;
 break;
     
 case 'toqr': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 if (!q) return m.reply(' Please include link or text!')
                 const QrCode = require('qrcode-reader')
                 const qrcode = require('qrcode')
@@ -1195,6 +1229,8 @@ case 'toqr': {
             break
             
 case "readqr": {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 try {
 mee = await gss.downloadAndSaveMediaMessage(quoted)
 mem = await TelegraPh(mee)
@@ -1210,6 +1246,8 @@ break
 case 'setppgroup':
             case 'setppgrup':
             case 'setppgc':
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 if (!m.isGroup) return m.reply(mess.group)
                 if (!isAdmins) return m.reply(mess.admin)
                 if (!isBotAdmins) return m.reply(mess.botAdmin)
@@ -1250,6 +1288,8 @@ case 'setppgroup':
 case 'sc':
 case 'script':
 case 'scriptbot':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     const githubRepoUrl = 'https://api.github.com/repos/gssbotwa/Gssbotwa2';
 
     fetch(githubRepoUrl)
@@ -1285,6 +1325,8 @@ case 'scriptbot':
 
  case 'setimgmenu':
             {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 if (!isCreator) return m.reply(mess.owner)
                 let delb = await gss.downloadAndSaveMediaMessage(quoted)
                 await fsx.copy(delb, './menuimage/allmenu.jpg')
@@ -1295,6 +1337,8 @@ case 'scriptbot':
             
             
 case 'akinator':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     m.reply(`Akinator is a game and mobile application that attempts to accurately guess the user's thoughts through a series of detailed questions.\n\n~> ${prefix}akinatorstart: To start\n~> ${prefix}akinatorstop: To stop`)
     break;
 case 'akinatorstart':
@@ -1334,6 +1378,8 @@ case 'akinatorstop':
 
 case 'tagall':
 case 'all': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
   if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs');
   let teks = `乂 *ᴀᴛᴛᴇɴᴛɪᴏɴ ᴇᴠᴇʀʏᴏɴᴇ* 乂 \n\n*Message:* ${args.length > 0 ? args.join(" ") : 'no message'}\n\n`;
@@ -1345,6 +1391,8 @@ case 'all': {
 break;
 
 case 'hidetag': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1353,6 +1401,8 @@ case 'hidetag': {
 break;
 
 case 'totag': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1362,6 +1412,8 @@ case 'totag': {
 break;
 
 	    case 'style': case 'styletext': {
+	      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isPremium && global.db.data.users[m.sender].limit < 1) return m.reply(mess.endLimit); // Response when the limit is exhausted
   db.data.users[m.sender].limit -= 1; // Decrease the limit by 1
   let { styletext } = require('./lib/scraper');
@@ -1376,7 +1428,9 @@ break;
 break;
 
 case 'group':
-case 'grup': {
+case 'grup': 
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1398,6 +1452,8 @@ break;
 
 
 case 'editinfo': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1419,6 +1475,8 @@ break;
 
 
             case 'antilink': {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1445,6 +1503,8 @@ break;
 
 
  case 'antibot':{
+   if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
                   db.data.chats[m.chat].antibot = true
@@ -1457,6 +1517,8 @@ break;
             break
 
 case 'antidelete': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 if (!isCreator) throw mess.owner;
     if (!args || args.length < 1) {
         gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
@@ -1478,6 +1540,8 @@ if (!isCreator) throw mess.owner;
 break;
 
 case 'antiviewonce': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 if (!isCreator) throw mess.owner;
     if (!args || args.length < 1) {
         gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
@@ -1500,6 +1564,8 @@ break;
 
 
 case "cricketscore": case "score":
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide a match ID for cricket score.*\nExample: .cricketscore 12345`);
@@ -1572,6 +1638,8 @@ case 'ban': {
 
 
 case 'mute': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1595,6 +1663,8 @@ case 'mute': {
 break;
 
 case "logomaker":
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide a logo name for the logo maker.*\nExample: !logomaker MyLogo`);
@@ -1639,6 +1709,8 @@ case "logomaker":
 
 
 case 'linkgroup': case 'linkgc': {
+ if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   let response = await gss.groupInviteCode(m.chat);
@@ -1649,6 +1721,8 @@ break;
 
 
 case 'setstatus': case 'setbiobot': case 'setbotbio': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   if (!text) throw `This is a WhatsApp Bot named gss botwa`;
   let name = await gss.updateProfileStatus(text);
@@ -1657,6 +1731,8 @@ case 'setstatus': case 'setbiobot': case 'setbotbio': {
 break;
 
 case 'anticall': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!isCreator) throw mess.owner;
 
     let ciko = db.data.settings[botNumber]?.anticall;
@@ -1686,6 +1762,8 @@ break;
 case 'delall':
 case 'delete':
 case 'del': 
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) return m.reply('Yᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ᴏᴡɴᴇʀ')
     
         if (!m.quoted) return m.reply('Pʟᴇᴀsᴇ ᴍᴇɴᴛɪᴏɴ ᴀ ᴍᴇssᴀɢᴇ');
@@ -1701,6 +1779,8 @@ case 'del':
     break;
 
 case 'bcgc': case 'bcgroup': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   if (!text) throw `Where's the text?\n\nExample: ${prefix + command} fatih-san`;
   let getGroups = await gss.groupFetchAllParticipating();
@@ -1717,6 +1797,8 @@ case 'bcgc': case 'bcgroup': {
 break;
   
 case 'bc': case 'broadcast': case 'bcall': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
   if (!text) throw `Where's the text?\n\nExample: ${prefix + command} fatih-san`;
   let anu = await store.chats.all().map(v => v.id);
@@ -1730,6 +1812,8 @@ case 'bc': case 'broadcast': case 'bcall': {
 break;
 
 case 'infochat': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.quoted) m.reply('Reply to a message');
   let msg = await m.getQuotedObj();
   if (!m.quoted.isBaileys) throw 'The message is not sent by the bot!';
@@ -1747,6 +1831,8 @@ break;
 
 case 'autosview':
     case 'autostatusview':{
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
                   antiswview = true
@@ -1759,6 +1845,8 @@ case 'autosview':
             break
 
 case 'q': case 'quoted': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.quoted) return m.reply('Reply to the message!');
   let wokwol = await gss.serializeM(await m.getQuotedObj());
   if (!wokwol.quoted) return m.reply('The replied message does not contain a reply');
@@ -1767,6 +1855,8 @@ case 'q': case 'quoted': {
 break;
 
             case 'listpc': {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   let anu = await store.chats.all().filter(v => v.id.endsWith('.net')).map(v => v.id);
   let teks = `⬣ *LIST PERSONAL CHAT*\n\nTotal Chats: ${anu.length} Chats\n\n`;
   for (let i of anu) {
@@ -1778,6 +1868,8 @@ break;
 break;
 
 case 'listgc': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   let anu = await store.chats.all().filter(v => v.id.endsWith('@g.us')).map(v => v.id);
   let teks = `⬣ *LIST GROUP CHAT*\n\nTotal Groups: ${anu.length} Groups\n\n`;
   for (let i of anu) {
@@ -1789,6 +1881,8 @@ case 'listgc': {
 break;
 
 case 'listonline': case 'liston': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat;
   let online = [...Object.keys(store.presences[id]), botNumber];
   gss.sendText(m.chat, 'List Online:\n\n' + online.map(v => '⭔ @' + v.replace(/@.+/, '')).join`\n`, m, { mentions: online });
@@ -1797,6 +1891,8 @@ break;
 
 
 case 'remini': case 'upscale': case 'enhance': case 'hd': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!quoted) return m.reply(`Where is the picture?`);
     if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
     m.reply(mess.wait);
@@ -1817,6 +1913,8 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 
         case 'gemini':
 case 'vision': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!quoted) return m.reply(`Where is the picture?`);
     if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
     
@@ -1852,6 +1950,8 @@ case 'vision': {
 
 
 case 'lyrics': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 if (!text) return m.reply(`Comand usage: ${prefix}lyrics Thunder`)
 await doReact("❌");
 m.reply(mess.wait);
@@ -1872,6 +1972,8 @@ break;
 
 
 case 'whatmusic': case 'find': case 'shazame':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!m.quoted) {
         m.reply('You asked about music. Please provide a quoted audio or video message for identification.');
     } else if (/audio|video/.test(mime)) {
@@ -1913,6 +2015,8 @@ case 'whatmusic': case 'find': case 'shazame':
 
 case 'fetch':
 case 'get':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
   const _url = new URL(text);
   const url = `${_url.origin}${_url.pathname}?${_url.searchParams.toString()}`;
@@ -1942,6 +2046,8 @@ case 'get':
   
     case 'send':
 case 'take':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   const quotedMessage = m.msg.contextInfo.quotedMessage;
   let caption = null;
 
@@ -1960,6 +2066,8 @@ case 'take':
   
 
 case 'updatenow':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (global.herokuConfig && global.herokuConfig.heroku) {
     const DB = require('./lib');
     try {
@@ -1980,6 +2088,8 @@ case 'updatenow':
 
 
 case 'ebinary': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) throw `Example: ${prefix + command} text`;
   let { eBinary } = require('./lib/binary');
   let eb = await eBinary(text);
@@ -1988,6 +2098,8 @@ case 'ebinary': {
 break;
 
 case 'dbinary': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) throw `Example: ${prefix + command} text`;
   let { dBinary } = require('./lib/binary');
   let db = await dBinary(text);
@@ -1996,6 +2108,8 @@ case 'dbinary': {
 break;
 
 case 'tomp4': case 'tovideo': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!/webp/.test(mime)) throw `Reply sticker with caption *${prefix + command}*`;
   m.reply(mess.wait);
   let { webp2mp4File } = require('./lib/uploader');
@@ -2007,6 +2121,8 @@ case 'tomp4': case 'tovideo': {
 break;
 
 case 'toaud': case 'toaudio': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!/video/.test(mime) && !/audio/.test(mime)) throw `Send/Reply with Video/Audio to convert into Audio with caption ${prefix + command}`;
   m.reply(mess.wait);
   let media = await gss.downloadMediaMessage(qmsg);
@@ -2017,6 +2133,8 @@ case 'toaud': case 'toaudio': {
 break;
 
             case 'tomp3': {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!/video/.test(mime) && !/audio/.test(mime)) throw `Send/Reply with Video/Audio to convert into MP3 with caption ${prefix + command}`;
   m.reply(mess.wait);
   let media = await gss.downloadMediaMessage(qmsg);
@@ -2027,6 +2145,8 @@ break;
 break;
 
 case 'tovn': case 'toptt': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!/video/.test(mime) && !/audio/.test(mime)) throw `Reply with Video/Audio to convert into VN with caption ${prefix + command}`;
   m.reply(mess.wait);
   let media = await gss.downloadMediaMessage(qmsg);
@@ -2037,6 +2157,8 @@ case 'tovn': case 'toptt': {
 break;
 
 case 'togif': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!/webp/.test(mime)) throw `Reply sticker with caption *${prefix + command}*`;
   m.reply(mess.wait);
   let { webp2mp4File } = require('./lib/uploader');
@@ -2048,6 +2170,8 @@ case 'togif': {
 break;
 
 case 'tourl': case 'url': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   m.reply(mess.wait);
   let { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader');
   let media = await gss.downloadAndSaveMediaMessage(qmsg);
@@ -2063,6 +2187,8 @@ case 'tourl': case 'url': {
 break;
 
             case 'imagenobg': case 'removebg': case 'remove-bg': {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!/image/.test(mime)) throw `Send/Reply with Image with caption ${prefix + command}`;
   if (/webp/.test(mime)) throw `Send/Reply Image with caption ${prefix + command}`;
   let remobg = require('remove.bg');
@@ -2088,6 +2214,8 @@ break;
 break;
 
 case'tagadmins': case 'admins': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 if (!text) return m.reply(`*give me message for admin*`)
 let teks = `*「 Tag Admins 」*
 
@@ -2106,6 +2234,8 @@ case 'ytv':
   case 'video': 
     case 'ytmp4':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
       m.reply('Enter YouTube Link or Search Query!');
       doReact("❌");
@@ -2210,6 +2340,8 @@ await doReact("⬇️");
 case 'ytvdoc':
   case 'ytmp4doc':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
       m.reply('Enter YouTube Link or Search Query!');
       doReact("❌");
@@ -2316,6 +2448,8 @@ case 'yta':
 case 'song':
 case 'ytmp3':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
       m.reply('Enter YouTube Link or Search Query!');
       doReact("❌");
@@ -2431,6 +2565,8 @@ case 'ytadoc':
 case 'songdoc':
 case 'ytmp3doc':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
       m.reply('Enter YouTube Link or Search Query!');
       doReact("❌");
@@ -2543,6 +2679,8 @@ case 'ytmp3doc':
 
 
 case 'yts': case 'ytsearch': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
     return m.reply('Enter YouTube Video Link or Search Query!');
   }
@@ -2596,6 +2734,8 @@ function formatUploadDate(uploadDate) {
 }
 
 case '𝐩𝐥𝐚𝐲': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
     return m.reply('Please specify the video you want to play. Use the format: play [unique-key]');
     doReact("❌");
@@ -2667,6 +2807,8 @@ async function streamToBuffer(stream) {
 
 
 case '𝐀𝐮𝐝𝐢𝐨': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
     return m.reply('Please specify the unique key for audio playback. Use the format: audio [unique-key]');
     doReact("❌");
@@ -2745,6 +2887,8 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
 
 
 case '𝐀𝐮𝐝𝐢𝐨𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
     return m.reply('Please specify the unique key for audio playback. Use the format: audio [unique-key]');
   }
@@ -2825,6 +2969,8 @@ await doReact("✅");
 
 
 case '𝐕𝐢𝐝𝐞𝐨': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
     return m.reply('Please specify the unique key for video playback. Use the format: video [unique-key]');
   }
@@ -2895,6 +3041,8 @@ const captionText = `
 }
 
 case '𝐕𝐢𝐝𝐞𝐨𝐝𝐨𝐜𝐮𝐦𝐞𝐧𝐭': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
     return m.reply('Please specify the unique key for video playback. Use the format: video [unique-key]');
   }
@@ -2965,6 +3113,8 @@ const captionText = `
 
 
 case 'play': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
 
   try {
@@ -3005,6 +3155,10 @@ case '𝗩𝗜𝗗𝗘𝗢':
 case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧':
 case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧':
 case '𝗡𝗘𝗫𝗧': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+        if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   const pollOption = command.toLowerCase();
 
   if (!videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
@@ -3016,6 +3170,8 @@ case '𝗡𝗘𝗫𝗧': {
   switch (pollOption) {
     
     case '𝗔𝗨𝗗𝗜𝗢': {
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   try {
     // Audio download with audio only
     const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
@@ -3036,6 +3192,8 @@ case '𝗡𝗘𝗫𝗧': {
 
 case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     // Audio download with audio only
     const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
     const audioBuffer = await new Promise((resolve, reject) => {
@@ -3055,6 +3213,8 @@ case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
 
 case '𝗩𝗜𝗗𝗘𝗢': {
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     // Video download with audio and video
     const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
     const videoBuffer = await new Promise((resolve, reject) => {
@@ -3074,6 +3234,8 @@ case '𝗩𝗜𝗗𝗘𝗢': {
 
 case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     // Video download with audio and video
     const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
     const videoBuffer = await new Promise((resolve, reject) => {
@@ -3092,6 +3254,8 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
 }
 
     case '𝗡𝗘𝗫𝗧': {
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
       // Increment the current poll index for the next search result
       currentPollIndex++;
 
@@ -3123,6 +3287,8 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
 }
 
   case 'restart':
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply('Proses....')
                 exec('pm2 restart all')
@@ -3214,6 +3380,8 @@ case 'igdl':
 case 'insta':
 case 'ig':
 case 'instagram':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     await downloadAndSendMedia(m, text, false);
     break;
 
@@ -3222,11 +3390,15 @@ case 'igdldoc':
 case 'instadoc':
 case 'igdoc':
 case 'instagramdoc':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     await downloadAndSendMedia(m, text, true);
     break;
 
 
 case 'toanime':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!quoted) return m.reply(`Where is the picture?`);
   if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
 
@@ -3274,6 +3446,8 @@ case "voicecloner":
 case "cloner":
 case "audiocloner":
 case "vc":
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide valid input text.*`);
@@ -3329,6 +3503,8 @@ case "vc":
 
 
 case "vckey":
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide the new API key.*`);
@@ -3348,6 +3524,8 @@ case 'animegirl':
 case 'sexy':
 case 'sexygirl':
 case 'sexyanime':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   const maxImageCount = 10;
   const requestedCount = Math.min(parseInt(args[0]) || 1, maxImageCount);
   const imageUrl = requestedCount === 1 ?
@@ -3377,6 +3555,8 @@ case 'wink': case 'poke': case 'nom': case 'slap': case 'smile':
 case 'wave': case 'awoo': case 'blush': case 'smug': case 'glomp': 
 case 'happy': case 'dance': case 'cringe': case 'cuddle': case 'highfive': 
 case 'shinobu': case 'handhold': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 axios.get(`https://api.waifu.pics/sfw/${isCommand}`)
 .then(({data}) => {
 gss.sendImageAsSticker(m.chat, data.url, m, { packname: global.packname, author: global.author })
@@ -3389,6 +3569,8 @@ break
 case 'true':
 case 'truecaller':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
       // Reply when no phone number is provided
     return  m.reply ('Please provide a phone number.');
@@ -3443,6 +3625,8 @@ case 'truecaller':
 
 
 case "xnxxdl": {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 	if (!text) return m.reply(`Enter Url`)
         if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`)
         const fg = require('api-dylux')
@@ -3457,6 +3641,8 @@ break
 
 
 case 'xnxxsearch': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 	if (!text) return m.reply(`Enter Query`)
 	const fg = require('api-dylux')
 	let res = await fg.xnxxSearch(text)
@@ -3468,6 +3654,8 @@ case 'xnxxsearch': {
 
 
 case 'qc':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     try {
         if (!text) {
             return m.reply('Please provide text for the quote.');
@@ -3536,6 +3724,8 @@ case 'qc':
 
 
 case 'apk': case 'app': case 'apkdl': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) throw `I need an apk name for download`;
 
   const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
@@ -3631,6 +3821,8 @@ case 'apk': case 'app': case 'apkdl': {
 
 
 case 'banchat': case 'bangroup': case 'banmode': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
         if (isBan) return reply(mess.banned);
         if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
 if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
@@ -3660,6 +3852,8 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
 
 
 case "tts": case "say":
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide language code and text for text-to-speech.*\nExample: !tts en Hello, how are you?`);
@@ -3700,7 +3894,9 @@ case "tts": case "say":
 
 
 case 'mediafire': {
-    // Check if the command has arguments
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+    // Check if the command has rguments
     if (args.length === 0) {
         return m.reply(`Where is the link? \n\nExample: ${prefix + command} https://www.mediafire.com/file/96mscj81p92na3r/images+(35).jpeg/file`);
     }
@@ -3752,6 +3948,8 @@ case 'mediafire': {
 
 case 'buypremium':
             case 'premiumuser': {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 let teks = `Hi ${pushname}👋\n Want to Buy Premium? Just chat with the owner😉`
                 await gss.sendMessage(m.chat, {
                     text: teks,
@@ -3776,6 +3974,8 @@ case 'buypremium':
 
 
 case 'invite': case 'add': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
 if (!text) return m.reply(`*Enter the number you want to invite to the group*\n\nExample :\n*${prefix + command}* 919142294671`)
 if (text.includes('+')) return m.reply(`Enter the number together without *+*`)
@@ -3792,6 +3992,8 @@ break
 
 
 case 'fb': case 'fbdl': case 'facebook': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!args[0]) {
         throw ` Please send the link of a Facebook video\n\nEXAMPLE :\n *${prefix + command}* https://fb.watch/7B5KBCgdO3`;
     }
@@ -3838,6 +4040,8 @@ case 'fb': case 'fbdl': case 'facebook': {
 }
   
 case 'instastalk': case 'igs': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 if (!args[0]) return m.reply(`Enter Instagram Username\n\nExample: ${prefix + command} world_reacode_egg`)
 
 const igs = require('api-dylux')
@@ -3862,6 +4066,8 @@ await m.reply(`Please wait...`);
 break;
 
  case 'gitclone':
+   if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!args[0]) return m.reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/sid238/Gss_Botwa`)
   if (!isUrl(args[0]) && !args[0].includes('github.com')) return m.reply(`Link invalid!!`)
   let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
@@ -3876,6 +4082,8 @@ break;
 
 
 case 'google': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) throw `Example : ${prefix + command} fatih arridho`;
   let google = require('google-it');
   google({ 'query': text }).then(res => {
@@ -3891,6 +4099,8 @@ case 'google': {
 break;
 
 case 'gimage': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) throw `Example : ${prefix + command} kaori cicak`;
   let gis = require('g-i-s');
   gis(text, async (error, result) => {
@@ -3911,6 +4121,8 @@ break;
 
 
 case 'sticker': case 's': case 'stickergif': case 'sgif': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (/image/.test(mime)) {
     m.reply(mess.wait);
     let media = await gss.downloadMediaMessage(qmsg);
@@ -3929,6 +4141,8 @@ case 'sticker': case 's': case 'stickergif': case 'sgif': {
 break;
 
 case 'pinterest': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   m.reply(mess.wait);
   let { pinterest } = require('./lib/scraper');
   anu = await pinterest(text);
@@ -3939,6 +4153,8 @@ break;
 
 
 case 'wallpaper': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) throw 'Enter Query Title';
   let { wallpaper } = require('./lib/scraper');
   anu = await wallpaper(text);
@@ -3954,6 +4170,8 @@ break;
 
 
 case 'wikimedia': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!text) throw 'Enter Query Title';
   let { wikimedia } = require('./lib/scraper');
   anu = await wikimedia(text);
@@ -4038,6 +4256,8 @@ break;
 
             
 case 'getbio':  
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
    if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
   try {
     let who
@@ -4058,10 +4278,14 @@ case 'getbio':
   break; // Don't forget to add the 'break' statement at the end
   
 case 'system': case 'info': case 'ram': case 'usage':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
 mainSys();
 break;
 
 case 'setmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('setmenu has 5 views');
 
@@ -4071,6 +4295,8 @@ case 'setmenu': {
 break;
 
 case 'onlygroup': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('onlygroup true/false');
 
@@ -4080,6 +4306,8 @@ case 'onlygroup': {
 break;
 
 case 'onlypc': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('onlypc true/false');
 
@@ -4092,6 +4320,8 @@ case 'tiktok':
 case 'tt':
 case 'tiktoknowm':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) m.reply ('Enter Query Link!');
 
     m.reply(mess.wait);
@@ -4129,6 +4359,8 @@ case 'tiktokdoc':
 case 'ttdoc':
 case 'tiktoknowmdoc':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) m.reply('Enter Query Link!');
 
     m.reply(mess.wait);
@@ -4171,6 +4403,8 @@ case 'attp':
 case 'ttp2':
 case 'attp2':
 case 'attp3':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!q) return m.reply('Give me text');
   m.reply(mess.wait);
 
@@ -4178,6 +4412,8 @@ case 'attp3':
 
   switch (command) {
     case 'attp':
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
       apiUrl = 'https://api.lolhuman.xyz/api/attp?apikey=GataDios&text=';
       break;
     case 'attp2':
@@ -4215,6 +4451,8 @@ case 'attp3':
   break;
 
 case 'update':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) return m.reply('This command is only for my owner');
   
   try {
@@ -4242,6 +4480,8 @@ case 'update':
 case "ai":
 case "openai":
 case "chatgpt":
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide me a query,* e.g., "Who made chat GPT?"`);
@@ -4290,6 +4530,8 @@ case "chatgpt":
 
     
     case 'gf': {
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
         if (!text) {
             await doReact("❌");
             return m.reply(`*Provide me a query,* e.g., "Who made chat gpt?"`);
@@ -4342,6 +4584,8 @@ case "chatgpt":
 
 case 'snapshotfull': case 'ssf':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) return m.reply("```Uhh Please, Give me Url!```");
     let urll = `https://image.thum.io/get/fullpage/=${text.match(/\bhttps?:\/\/\S+/gi)[0]}`
     let media = await getBuffer(urll)
@@ -4355,6 +4599,8 @@ case 'snapshotfull': case 'ssf':
 case 'snapshot':
 case 'ss':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) return m.reply("```Uhh Please, Give me Url!```");
     let urll = `https://api.screenshotmachine.com/?key=c04d3a&url=${encodeURIComponent(text)}&dimension=720x720`;
     let media = await getBuffer(urll);
@@ -4365,47 +4611,11 @@ case 'ss':
   break;
 
 
-
-    case 'voiceai':
-case 'voicegpt':
-  if (!text) {
-    await m.reply(`*You can use the Voice AI command with text to get a spoken response.*\n\n*Example usage:*\n*◉ ${prefix + command} Tell me a joke.*`);
-    break;
-  }
-
-  try {
-    const apiEndpoint = `https://vihangayt.me/tools/gpt-voice?query=${encodeURIComponent(text)}`;
-    let response = await axios.get(apiEndpoint);
-    let responseData = response.data;
-
-    if (responseData.result) {
-      const result = responseData.result;
-      const speechURL = `https://vihangayt.me/tools/gpt-voice?query=${encodeURIComponent(result)}`;
-      await gss.sendMessage(m.chat, {
-        audio: {
-          url: speechURL,
-        },
-        mimetype: 'audio/mp4',
-        ptt: true,
-        fileName: `${text}.mp3`,
-      }, {
-        quoted: m,
-      });
-    } else {
-      console.log('API returned an unexpected response:', responseData);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-  break;
-
-
-
-
-
 case 'imagine':
 case 'dalle':
 case 'aiimage':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful anime girl*\n*◉ ${prefix + command} Elon Musk in pink output*`;
 
     try {
@@ -4428,10 +4638,6 @@ case 'aiimage':
         throw '*Oops! Something went wrong while generating images. Please try again later.*';
     }
     break;
-
-
-
-
 
 
   
@@ -4619,6 +4825,8 @@ break
 
 case 'translate': case 'trt': {
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) return m.reply( 'Usage: .trt <language code> <text> or reply message');
     if (text && m.quoted && m.quoted.text) {
       let lang = text.slice(0, 2);
@@ -4651,6 +4859,8 @@ case 'translate': case 'trt': {
 }
 
 case 'readmore': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) return m.reply( 'give me text');
 
     const continuationMessage = `
@@ -4662,6 +4872,8 @@ case 'readmore': {
 
   
 case 'poll': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
     if (!isAdmins) return m.reply('Tʜɪs ғᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ғᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴ, ᴏᴡɴᴇʀ ᴀɴᴅ ʙᴏᴛᴀᴅᴍɪɴ, ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴜsᴇ ɪᴛ.')
             let [poll, opt] = text.split("|")
@@ -4690,6 +4902,8 @@ case 'resetlink':
 case 'resetgrouplink':
 case 'resetgclink':
 case 'resetgruplink': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
     if (!isAdmins) return m.reply('Tʜɪs ғᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ғᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴ, ᴏᴡɴᴇʀ ᴀɴᴅ ʙᴏᴛᴀᴅᴍɪɴ, ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴜsᴇ ɪᴛ.')
 gss.groupRevokeInvite(m.chat)
@@ -4698,6 +4912,8 @@ await m.reply('group link reset ')
 break
 
 case 'gdrive':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!args[0]) throw ' Eɴᴛᴇʀ ᴀ Gᴏᴏɢʟᴇ Dʀɪᴠᴇ ʟɪɴᴋ';
   try {
     let res = await fg.GDriveDl(args[0]);
@@ -4725,6 +4941,8 @@ function convertToFontStyle(text, style) {
 
 case 'fontchange':
 case 'fancy': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (args.length === 0) {
         const availableStylesPreview = availableStyles.map(style => {
             const previewText = convertToFontStyle("gss botwa", style);
@@ -4751,6 +4969,8 @@ break;
         
 
 case 'runtime': case 'alive':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 let pinga = ` ${uptimeMessage}`
                 gss.sendMessage(m.chat, {
         image: fs.readFileSync('./menuimage/alive.jpg'),
@@ -4817,6 +5037,8 @@ break;
 
     case 'tempmail': {
         try {
+          if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
             const apiEndpoint = 'https://tempmail.apinepdev.workers.dev/api/gen';
             
             // Make a request to the API to generate a temporary email
@@ -4846,6 +5068,8 @@ break;
         
 
 case 'infobot':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     const tod = `
 ╭━──━─◈─━─━╮
 │🔖 *Bot Name* : ${botname}
@@ -4868,6 +5092,8 @@ case 'calc':
 case 'calcular':
 case 'calculadora':
   try {
+    if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     let id = m.chat;
     gss.math = gss.math ? gss.math : {};
 
@@ -4914,6 +5140,8 @@ case 'calculadora':
 function formatDate(date) {
 }
 case 'nowa':
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     let regex = /x/g;
     if (!text) throw 'Give a number to search';
     if (!text.match(regex)) throw `*Example: ${prefix + command} 919142294xxx`;
@@ -4933,6 +5161,8 @@ case 'nowa':
     break;
     
 case 'githubstalk': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   if (!args[0]) return m.reply('Mention a GitHub username to stalk.');
 
   const username = args[0];
@@ -5009,6 +5239,8 @@ case 'githubstalk': {
     break;
     
 case 'emojimix': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   let [emoji1, emoji2] = text.split`+`;
   if (!emoji1) throw `Example: ${prefix + command} 😅+🤔`;
   if (!emoji2) throw `Example: ${prefix + command} 😅+🤔`;
@@ -5023,7 +5255,10 @@ break;
 case 'freefirename':
 case 'ff':
 case 'ffstalk': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
+      
         await doReact("❌");
         return m.reply(`*Provide me Free Fire UID*`);
     }
@@ -5057,6 +5292,8 @@ break;
 
 case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
                 try {
+                  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
                 let set
                 if (/bass/.test(command)) set = '-af equalizer=f=54:width_type=o:width=2:g=20'
                 if (/blown/.test(command)) set = '-af acrusher=.1:1:64:0:log'
@@ -5091,6 +5328,8 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
 
 
     case 'getemailmessages': case 'checkmail': {
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
         if (!text) {
             await doReact("❌");
             return m.reply(`*Provide me tempmail for view inbox*`);
@@ -5141,6 +5380,8 @@ case 'help':
 case 'list':
 case 'listmenu':
 {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
 }
 break;
@@ -5160,6 +5401,8 @@ const randomSymbol = getRandomSymbol();
 
 case 'menuall':
 case 'allmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     await doReact("📁");
     let a = db.data.users[m.sender];
     let introText = `
@@ -5352,6 +5595,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 case 'gcmenu':
 case 'grupmenu':
 case 'groupmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   const randomFontStyle = getRandomFontStyle();
   const randomSymbol = getRandomSymbol();
   
@@ -5388,6 +5633,8 @@ break;
             case 'downloadmenu':
 case 'dlmenu':
 case 'downmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("⬇️");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
@@ -5418,6 +5665,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 break;
 
 case 'searchmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("🔍");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
@@ -5448,6 +5697,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 break;
 
 case 'funmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
@@ -5478,6 +5729,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 break;
 
 case 'convertmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
@@ -5508,6 +5761,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 break;
 
 case 'mainmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
@@ -5538,6 +5793,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 break;
 
 case 'ownermenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
@@ -5568,6 +5825,8 @@ ${cmdList.split('\n').map(item => `┃${item ? ' ' + item.trim() : ''}`).join('\
 break;
 
 case 'aimenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
@@ -5600,6 +5859,8 @@ break;
 
 
 case 'toolmenu': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
   await doReact("📁");
     const randomSymbol = getRandomSymbol();
     const randomFontStyle = getRandomFontStyle();
