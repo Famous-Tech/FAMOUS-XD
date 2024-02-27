@@ -1424,9 +1424,11 @@ break;
   m.reply(teks);
 }
 break;
-/*
+
 case 'group':
 case 'grup': {
+  if (isBan) return m.reply(mess.banned);
+  if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1444,12 +1446,11 @@ case 'grup': {
   }
 }
 break;
-*/
 
 
 case 'editinfo': {
   if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+  if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
@@ -1471,8 +1472,8 @@ break;
 
 
             case 'antilink': {
-              if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+  if (isBan) return m.reply(mess.banned);
+  if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
