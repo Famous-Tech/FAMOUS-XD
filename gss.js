@@ -1578,7 +1578,7 @@ case "cricketscore": case "score":
         const result = await response.json();
 
         let formattedResult = `╭══════════════•∞•══╮\n`;
-        formattedResult += `│⿻ *GSS BOTWA*\n`;
+        formattedResult += `│⿻ *GSS BOTWA 😎 🔥*\n`;
         formattedResult += `│  *LIVE MATCH INFO* ✨\n`;
         formattedResult += `│⿻\n`;
 
