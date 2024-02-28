@@ -4202,6 +4202,9 @@ break;
 
 
 
+// Initialize a map to store user warnings
+const userWarnings = new Map();
+
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4232,9 +4235,13 @@ case 'warn': {
     
     // Reset the user's warning count after kicking
     userWarnings.set(target, 0);
+  } else {
+    // Optionally, you can add a message here for users with fewer than 3 warnings
+    m.reply(`This is warning ${warnings} out of 3.`);
   }
 }
 break;
+
 
 case 'unwarn': {
   if (isBan) return m.reply(mess.banned);
