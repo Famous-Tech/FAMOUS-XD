@@ -4201,6 +4201,7 @@ break;
 
 
 
+
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4212,23 +4213,24 @@ case 'warn': {
     return m.reply('Mention or reply to the user you want to warn.');
   }
 
-
+  // Initialize user warnings if not present
   if (!userWarnings.has(target)) {
     userWarnings.set(target, 0);
   }
 
-
+  // Increment the user's warning count
   const warnings = userWarnings.get(target) + 1;
   userWarnings.set(target, warnings);
 
   m.reply(`User warned (${warnings}/3).`);
 
+  // Check if the user has reached the maximum warnings (3)
   if (warnings === 3) {
-  
+    // Kick the user from the group
     gss.groupParticipantsUpdate(m.chat, [target], 'remove');
     m.reply('User kicked from the group due to three warnings.');
     
-
+    // Reset the user's warning count after kicking
     userWarnings.set(target, 0);
   }
 }
@@ -4239,21 +4241,21 @@ case 'unwarn': {
   if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) return m.reply(mess.owner)
 
-  const target = m.mentionedJidList[0] || m.quoted?.sender;
+  const target = m.mentionedJidList[0] || (m.quoted && m.quoted.sender);
 
   if (!target) {
     return m.reply('Mention or reply to the user you want to unwarn.');
   }
 
-
+  // Check if the user has any warnings
   if (userWarnings.has(target)) {
-
+    // Decrement the user's warning count
     const currentWarnings = userWarnings.get(target) - 1;
 
-
+    // Ensure the warning count does not go below 0
     const newWarnings = Math.max(0, currentWarnings);
 
-
+    // Update the user's warning count
     userWarnings.set(target, newWarnings);
 
     m.reply(`One warning removed. Current warnings: ${newWarnings}/3.`);
@@ -4262,6 +4264,7 @@ case 'unwarn': {
   }
 }
 break;
+
 
 
 case 'wikimedia': {
