@@ -1583,26 +1583,31 @@ case "cricketscore": case "score":
 
         if (result.update && result.update.toLowerCase() !== "data not found") {
             formattedResult += `│⿻ *${result.update}*\n`;
+            await m.reply(formattedResult);
+            await doReact("✅");
         } else {
-          
-            formattedResult += `│⿻ *Live Score:* ${result.livescore || 'Data Not Found'}\n`;
-            formattedResult += `│⿻ *Run Rate:* ${result.runrate || 'CRR: Data Not Found'}\n`;
-            formattedResult += `│⿻ *Batter 1:* ${result.batterone || 'Data Not Found'} - ${result.batsmanonerun || 'Data Not Found'} (${result.batsmanoneball || 'Data Not Found'}) SR: ${result.batsmanonesr || 'Data Not Found'} ${result.batsmanone === result.batterone ? '🏏' : ''}\n`;
-            formattedResult += `│⿻ *Batter 2:* ${result.battertwo || 'Data Not Found'} - ${result.batsmantworun || 'Data Not Found'} (${result.batsmantwoball || 'Data Not Found'}) SR: ${result.batsmantwosr || 'Data Not Found'} ${result.battertwo === result.battertwo ? '🏏' : ''}\n`;
-            formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone || 'Data Not Found'} - ${result.bowleroneover || 'Data Not Found'} overs, ${result.bowleronerun || 'Data Not Found'}/${result.bowleronewickers || 'Data Not Found'}, Economy: ${result.bowleroneeconomy || 'Data Not Found'} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n`;
-            formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo || 'Data Not Found'} - ${result.bowlertwoover || 'Data Not Found'} overs, ${result.bowlertworun || 'Data Not Found'}/${result.bowlertwowickers || 'Data Not Found'}, Economy: ${result.bowlertwoeconomy || 'Data Not Found'} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n`;
+            formattedResult += `│⿻ *Innings Break*\n`;
+            formattedResult += `│⿻ *Live Score:* ${result.livescore}\n`;
+            formattedResult += `│⿻ *Run Rate:* ${result.runrate}\n`;
+            formattedResult += `│⿻ *Batter 1:* ${result.batterone}\n`;
+            formattedResult += `│⿻ *${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '*🏏' : ''}*\n`;
+            formattedResult += `│⿻ *Batter 2:* ${result.battertwo}\n`;
+            formattedResult += `│⿻ *${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '*🏏' : ''}*\n`;
+            formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone}\n`;
+            formattedResult += `│⿻ *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Econ: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '*🎯' : ''}*\n`;
+            formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo}\n`;
+            formattedResult += `│⿻ *${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Econ: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '*🎯' : ''}*\n`;
+            formattedResult += `╰══•∞•═══════════════╯`;
+            await m.reply(formattedResult);
+            await doReact("✅");
         }
-
-        formattedResult += `╰══•∞•═══════════════╯`;
-
-        await m.reply(formattedResult);
-        await doReact("✅");
     } catch (error) {
         console.error(error);
         await doReact("❌");
         return m.reply(`An error occurred while processing the cricket score request. ${error.message}`);
     }
     break;
+
  
 
 
