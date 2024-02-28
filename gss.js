@@ -1586,6 +1586,7 @@ case "score":
     formattedResult += `│⿻\n`;
 
     if (result.update && result.update.toLowerCase() !== "data not found") {
+      formattedResult += `│⿻   *${result.title}*\n`;
       formattedResult += `│⿻   *${result.update}*\n`;
       formattedResult += `│⿻ \n`;
     } else {
