@@ -1604,7 +1604,7 @@ case "score":
       formattedResult += `│⿻   *${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? " " : " "}*\n`;
       formattedResult += `│⿻\n`;
       formattedResult += `│⿻   *Bowler 1:* ${result.bowlerone}\n`;
-      formattedResult += `│⿻   *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? " " : " "}*\n`;
+      formattedResult += `│⿻   *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Econ: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? " " : " "}*\n`;
       formattedResult += `│⿻\n`;
       formattedResult += `│⿻    *Bowler 2:* ${result.bowlertwo}\n`;
       formattedResult += `│⿻   *${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}*, *Econ: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? " " : " "}*\n`;
