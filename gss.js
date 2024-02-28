@@ -1558,7 +1558,6 @@ if (!isCreator) throw mess.owner;
 }
 break;
 
-
 case "cricketscore": case "score":
     if (!text) {
         await doReact("❌");
