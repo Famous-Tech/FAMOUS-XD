@@ -1577,7 +1577,7 @@ case "cricketscore":
 
         const result = await response.json();
 
-        let formattedResult = `╭═════════•∞•══╮\n`;
+        let formattedResult = `╭══════════════•∞•══╮\n`;
         formattedResult += `│⿻ *GSS BOTWA*\n`;
         formattedResult += `│  *LIVE MATCH INFO* ✨\n`;
 
@@ -1602,7 +1602,7 @@ case "cricketscore":
             formattedResult += `│⿻ ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n`;
         }
 
-        formattedResult += `╰══•∞•═════════╯`;
+        formattedResult += `╰══•∞•═══════════════╯ `;
 
         await m.reply(formattedResult);
         await doReact("✅");
