@@ -1559,6 +1559,8 @@ if (!isCreator) throw mess.owner;
 break;
 
 case "cricketscore": case "score":
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide a match ID for cricket score.*\nExample: !cricketscore 12345`);
