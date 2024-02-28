@@ -1593,16 +1593,16 @@ case "cricketscore": case "score":
         if (result.livescore && result.livescore.toLowerCase() !== "data not found") {
             formattedResult += `│⿻ *Live Score:* ${result.livescore}\n`;
             formattedResult += `│⿻ *Run Rate:* ${result.runrate}\n`;
-            formattedResult += `│⿻`;
+            formattedResult += `│⿻\n`;
             formattedResult += `│⿻ *Batter 1:* ${result.batterone}\n`; 
             formattedResult += `│⿻ ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}\n`;
-            formattedResult += `│⿻`;
+            formattedResult += `│⿻\n`;
             formattedResult += `│⿻ *Batter 2:* ${result.battertwo}\n`;
             formattedResult += `│⿻ ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}\n`;
-            formattedResult += `│⿻`;
+            formattedResult += `│⿻\n`;
             formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone}\n`;
             formattedResult += `│⿻ ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n`;
-            formattedResult += `│⿻`;
+            formattedResult += `│⿻\n`;
             formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo}\n`;
             formattedResult += `│⿻ ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n`;
         }
