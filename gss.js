@@ -4206,7 +4206,7 @@ case 'warn': {
   if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) return m.reply(mess.owner)
 
-  const target = m.mentionedJidList[0] || m.quoted?.sender;
+  const target = m.mentionedJidList[0] || (m.quoted && m.quoted.sender);
 
   if (!target) {
     return m.reply('Mention or reply to the user you want to warn.');
