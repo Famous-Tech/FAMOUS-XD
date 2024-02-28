@@ -1559,7 +1559,7 @@ if (!isCreator) throw mess.owner;
 break;
 
 
-case "cricketscore":
+case "cricketscore": case "score":
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide a match ID for cricket score.*\nExample: !cricketscore 12345`);
