@@ -1577,9 +1577,9 @@ case "cricketscore": case "score":
 
         const result = await response.json();
 
-        let formattedResult = `╭═════════•∞•══╮\n`;
-        formattedResult += `│⿻ *GSS BOTWA*\n`;
-        formattedResult += `│  *LIVE MATCH INFO* ✨\n`;
+        let formattedResult = `╭══════════════•∞•══╮\n`;
+        formattedResult += `│⿻ *GSS BOTWA LIVE MATCH  SCORE*\n`;
+        formattedResult += `│  *PAST & UPCOMING MATCH INFO* ✨\n`;
 
         if (result.update && result.update.toLowerCase() !== "data not found") {
             formattedResult += `│⿻ *${result.update}*\n`;
@@ -1592,13 +1592,13 @@ case "cricketscore": case "score":
         if (result.livescore && result.livescore.toLowerCase() !== "data not found") {
             formattedResult += `│⿻ *Live Score:* ${result.livescore}\n`;
             formattedResult += `│⿻ *Run Rate:* ${result.runrate}\n`;
-            formattedResult += `│⿻ *Batter 1:* ${result.batterone} - ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}\n`;
-            formattedResult += `│⿻ *Batter 2:* ${result.battertwo} - ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}\n`;
-            formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone} - ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n`;
-            formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo} - ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n`;
+            formattedResult += `│⿻ *Batter 1:* ${result.batterone} \n│⿻ ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}\n\n`;
+            formattedResult += `│⿻ *Batter 2:* ${result.battertwo} \n│⿻ ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}\n\n`;
+            formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone}\n │⿻ ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n\n`;
+            formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo}\n │⿻ ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n\n`;
         }
 
-        formattedResult += `╰══•∞•═════════╯`;
+        formattedResult += `╰══•∞•═══════════════╯`;
 
         await m.reply(formattedResult);
         await doReact("✅");
