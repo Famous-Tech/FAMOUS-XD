@@ -85,6 +85,7 @@ const audioSearchResults = new Map();
 let optionIndex = 1;
 let index = 1;
 const reportedMessages = {};
+const userWarnings = new Map();
 const videoSearchResults = new Map();
 let titleUrlMap = {}; 
 const userContextMap = new Map();
@@ -4197,6 +4198,70 @@ case 'wallpaper': {
 }
 break;
 
+
+
+
+case 'warn': {
+  if (isBan) return m.reply(mess.banned);
+  if (isBanChat) return m.reply(mess.bangc);
+  if (!isCreator) return m.reply(mess.owner)
+
+  const target = m.mentionedJidList[0] || m.quoted?.sender;
+
+  if (!target) {
+    return m.reply('Mention or reply to the user you want to warn.');
+  }
+
+
+  if (!userWarnings.has(target)) {
+    userWarnings.set(target, 0);
+  }
+
+
+  const warnings = userWarnings.get(target) + 1;
+  userWarnings.set(target, warnings);
+
+  m.reply(`User warned (${warnings}/3).`);
+
+  if (warnings === 3) {
+  
+    gss.groupParticipantsUpdate(m.chat, [target], 'remove');
+    m.reply('User kicked from the group due to three warnings.');
+    
+
+    userWarnings.set(target, 0);
+  }
+}
+break;
+
+case 'unwarn': {
+  if (isBan) return m.reply(mess.banned);
+  if (isBanChat) return m.reply(mess.bangc);
+  if (!isCreator) return m.reply(mess.owner)
+
+  const target = m.mentionedJidList[0] || m.quoted?.sender;
+
+  if (!target) {
+    return m.reply('Mention or reply to the user you want to unwarn.');
+  }
+
+
+  if (userWarnings.has(target)) {
+
+    const currentWarnings = userWarnings.get(target) - 1;
+
+
+    const newWarnings = Math.max(0, currentWarnings);
+
+
+    userWarnings.set(target, newWarnings);
+
+    m.reply(`One warning removed. Current warnings: ${newWarnings}/3.`);
+  } else {
+    m.reply('User does not have any warnings.');
+  }
+}
+break;
 
 
 case 'wikimedia': {
