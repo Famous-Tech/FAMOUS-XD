@@ -1587,6 +1587,7 @@ case "score":
 
     if (result.update && result.update.toLowerCase() !== "data not found") {
       formattedResult += `│⿻   *${result.update}*\n`;
+      formattedResult += `│⿻ \n`;
     } else {
       await m.reply(`*Update:* Data not found for the specified match ID.`);
       await doReact("❌");
@@ -1598,16 +1599,16 @@ case "score":
       formattedResult += `│⿻   *Run Rate:* ${result.runrate}\n`;
       formattedResult += `│⿻\n`;
       formattedResult += `│⿻   *Batter 1:* ${result.batterone}\n`;
-      formattedResult += `│⿻   *${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? "" : ""}*\n`;
+      formattedResult += `│⿻   *${result.batsmanonerun} (${result.batsmanoneball})* SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? "" : ""}\n`;
       formattedResult += `│⿻\n`;
       formattedResult += `│⿻   *Batter 2:* ${result.battertwo}\n`;
-      formattedResult += `│⿻   *${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? "" : ""}*\n`;
+      formattedResult += `│⿻   *${result.batsmantworun} (${result.batsmantwoball})* SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? "" : ""}\n`;
       formattedResult += `│⿻\n`;
       formattedResult += `│⿻   *Bowler 1:* ${result.bowlerone}\n`;
-      formattedResult += `│⿻   *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Econ: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? "" : ""}*\n`;
+      formattedResult += `│⿻   *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, *Econ:* ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? "" : ""}\n`;
       formattedResult += `│⿻\n`;
       formattedResult += `│⿻    *Bowler 2:* ${result.bowlertwo}\n`;
-      formattedResult += `│⿻   *${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}*, *Econ: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? "" : ""}*\n`;
+      formattedResult += `│⿻   *${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}*, *Econ:* ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? "" : ""}\n`;
     }
 
     formattedResult += `╰══•∞•═══════════════╯ `;
@@ -1623,34 +1624,49 @@ case "score":
 
 
 
- 
-
-
 case 'ban': {
-        if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-        if (!isCreator) return m.reply(mess.owner)
-        if (!args[0]) return m.reply(`Select add or del (add to ban, del to unban), For Example: reply *${prefix}ban add* to the user you want to ban.`)
-        if (args[1]) {
-          orgnye = args[1] + "@s.whatsapp.net"
-        } else if (m.quoted) {
-          orgnye = m.quoted.sender
-        }
-        const isBane = banUser.includes(orgnye)
-        if (args[0] === "add") {
-          if (isBane) return ads('User is already banned.')
-          banUser.push(orgnye)
-          m.reply(`Successfully Banned the user.`)
-        } else if (args[0] === "del") {
-          if (!isBane) return ads('User is already unbanned.')
-          let delbans = banUser.indexOf(orgnye)
-          banUser.splice(delbans, 1)
-          m.reply(`Successfully Unbanned the user.`)
-        } else {
-          m.reply("Error")
-        }
-      }
-        break;
+  if (isBan) return m.reply(mess.banned);
+  if (isBanChat) return m.reply(mess.bangc);
+  if (!isCreator) return m.reply(mess.owner)
+
+  if (m.quoted && m.quoted.sender) {
+    const orgnye = m.quoted.sender;
+    const isBane = banUser.includes(orgnye);
+    
+    if (isBane) return m.reply('User is already banned.');
+    
+    banUser.push(orgnye);
+    return m.reply(`Successfully Banned the user.`);
+  }
+
+  const orgnye = m.sender;
+  const isBane = banUser.includes(orgnye);
+
+  if (isBane) return m.reply('You are already banned.');
+  banUser.push(orgnye);
+  return m.reply(`Successfully Banned you.`);
+}
+break;
+
+case 'unban': {
+  if (isBan) return m.reply(mess.banned);
+  if (isBanChat) return m.reply(mess.bangc);
+  if (!isCreator) return m.reply(mess.owner)
+
+  if (m.quoted && m.quoted.sender) {
+    const orgnye = m.quoted.sender;
+    const isBane = banUser.includes(orgnye);
+
+    if (!isBane) return m.reply('User is not banned.');
+
+    let delbans = banUser.indexOf(orgnye);
+    banUser.splice(delbans, 1);
+    return m.reply(`Successfully Unbanned the user.`);
+  }
+
+  return m.reply("Invalid option. Reply to a message to ban/unban the user.");
+}
+break;
 
 
 
