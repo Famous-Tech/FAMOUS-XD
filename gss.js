@@ -1558,67 +1558,69 @@ if (!isCreator) throw mess.owner;
 }
 break;
 
-case "cricketscore": case "score":
+case "cricketscore":
+case "score":
   if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    if (!text) {
-        await doReact("❌");
-        return m.reply(`*Provide a match ID for cricket score.*\nExample: !cricketscore 12345`);
+  if (isBanChat) return m.reply(mess.bangc);
+  if (!text) {
+    await doReact("❌");
+    return m.reply(`*Provide a match ID for cricket score.*\nExample: !cricketscore 12345`);
+  }
+
+  const matchId = encodeURIComponent(text);
+
+  try {
+    const apiUrl = `https://cricket-olive.vercel.app/score?id=${matchId}`;
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      await doReact("❌");
+      return m.reply(`Invalid response from the cricket score API. Status code: ${response.status}`);
     }
 
-    const matchId = encodeURIComponent(text);
+    const result = await response.json();
 
-    try {
-        const apiUrl = `https://cricket-olive.vercel.app/score?id=${matchId}`;
-        const response = await fetch(apiUrl);
+    let formattedResult = `╭══════════════•∞•══╮\n`;
+    formattedResult += `│⿻ *GSS BOTWA 😎 🔥*\n`;
+    formattedResult += `│  *LIVE MATCH INFO* ✨\n`;
+    formattedResult += `│⿻\n`;
 
-        if (!response.ok) {
-            await doReact("❌");
-            return m.reply(`Invalid response from the cricket score API. Status code: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        let formattedResult = `╭══════════════•∞•══╮\n`;
-        formattedResult += `│⿻ *GSS BOTWA 😎 🔥*\n`;
-        formattedResult += `│  *LIVE MATCH INFO* ✨\n`;
-        formattedResult += `│⿻\n`;
-
-        if (result.update && result.update.toLowerCase() !== "data not found") {
-            formattedResult += `│⿻ *${result.update}*\n`;
-        } else {
-            await m.reply(`*Update:* Data not found for the specified match ID.`);
-            await doReact("❌");
-            return;
-        }
-
-        if (result.livescore && result.livescore.toLowerCase() !== "data not found") {
-            formattedResult += `│⿻  *Live Score:* ${result.livescore}\n`;
-            formattedResult += `│⿻  *Run Rate:* ${result.runrate}\n`;
-            formattedResult += `│⿻\n`;
-            formattedResult += `│⿻  *Batter 1:* ${result.batterone}\n`; 
-            formattedResult += `│⿻  *${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? }*\n`;
-            formattedResult += `│⿻\n`;
-            formattedResult += `│⿻  *Batter 2:* ${result.battertwo}\n`;
-            formattedResult += `│⿻  *${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? }*\n`;
-            formattedResult += `│⿻\n`;
-            formattedResult += `│⿻  *Bowler 1:* ${result.bowlerone}\n`;
-            formattedResult += `│⿻  *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? }*\n`;
-            formattedResult += `│⿻\n`;
-            formattedResult += `│⿻  *Bowler 2:* ${result.bowlertwo}\n`;
-            formattedResult += `│⿻  *${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}*, *Econ: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? }*\n`;
-        }
-
-        formattedResult += `╰══•∞•═══════════════╯ `;
-
-        await m.reply(formattedResult);
-        await doReact("✅");
-    } catch (error) {
-        console.error(error);
-        await doReact("❌");
-        return m.reply(`An error occurred while processing the cricket score request. ${error.message}`);
+    if (result.update && result.update.toLowerCase() !== "data not found") {
+      formattedResult += `│⿻ *${result.update}*\n`;
+    } else {
+      await m.reply(`*Update:* Data not found for the specified match ID.`);
+      await doReact("❌");
+      return;
     }
-    break;
+
+    if (result.livescore && result.livescore.toLowerCase() !== "data not found") {
+      formattedResult += `│⿻  *Live Score:* ${result.livescore}\n`;
+      formattedResult += `│⿻  *Run Rate:* ${result.runrate}\n`;
+      formattedResult += `│⿻\n`;
+      formattedResult += `│⿻  *Batter 1:* ${result.batterone}\n`;
+      formattedResult += `│⿻  *${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? "someValueIfTrue" : "someValueIfFalse"}*\n`;
+      formattedResult += `│⿻\n`;
+      formattedResult += `│⿻  *Batter 2:* ${result.battertwo}\n`;
+      formattedResult += `│⿻  *${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? "someValueIfTrue" : "someValueIfFalse"}*\n`;
+      formattedResult += `│⿻\n`;
+      formattedResult += `│⿻  *Bowler 1:* ${result.bowlerone}\n`;
+      formattedResult += `│⿻  *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? "someValueIfTrue" : "someValueIfFalse"}*\n`;
+      formattedResult += `│⿻\n`;
+      formattedResult += `│⿻  *Bowler 2:* ${result.bowlertwo}\n`;
+      formattedResult += `│⿻  *${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}*, *Econ: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? "someValueIfTrue" : "someValueIfFalse"}*\n`;
+    }
+
+    formattedResult += `╰══•∞•═══════════════╯ `;
+
+    await m.reply(formattedResult);
+    await doReact("✅");
+  } catch (error) {
+    console.error(error);
+    await doReact("❌");
+    return m.reply(`An error occurred while processing the cricket score request. ${error.message}`);
+  }
+  break;
+
 
 
  
