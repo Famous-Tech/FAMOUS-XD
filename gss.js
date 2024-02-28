@@ -1582,7 +1582,7 @@ case "cricketscore":
         formattedResult += `│  *LIVE MATCH INFO* ✨\n`;
 
         if (result.update && result.update.toLowerCase() !== "data not found") {
-            formattedResult += `│⿻ *${result.update}*\n\n`;
+            formattedResult += `│⿻ *${result.update}*\n`;
         } else {
             await m.reply(`*Update:* Data not found for the specified match ID.`);
             await doReact("❌");
@@ -1591,13 +1591,13 @@ case "cricketscore":
 
         if (result.livescore && result.livescore.toLowerCase() !== "data not found") {
             formattedResult += `│⿻ *Live Score:* ${result.livescore}\n`;
-            formattedResult += `│⿻ *Run Rate:* ${result.runrate}\n\n`;
+            formattedResult += `│⿻ *Run Rate:* ${result.runrate}\n`;
             formattedResult += `│⿻ *Batter 1:* ${result.batterone}`; 
-            formattedResult += `│⿻ ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}\n\n`;
+            formattedResult += `│⿻ ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}\n`;
             formattedResult += `│⿻ *Batter 2:* ${result.battertwo}`;
-            formattedResult += `│⿻ ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}\n\n`;
+            formattedResult += `│⿻ ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}\n`;
             formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone}`;
-            formattedResult += `│⿻ ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n\n`;
+            formattedResult += `│⿻ ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n`;
             formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo}`;
             formattedResult += `│⿻ ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n`;
         }
