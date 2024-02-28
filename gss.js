@@ -1559,9 +1559,7 @@ if (!isCreator) throw mess.owner;
 break;
 
 
-case "cricketscore": case "score":
-if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+case "cricketscore":
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide a match ID for cricket score.*\nExample: !cricketscore 12345`);
@@ -1580,28 +1578,23 @@ if (isBan) return m.reply(mess.banned);
 
         const result = await response.json();
 
-        let formattedResult = `╭═════════•∞•══╮\n`;
+        let formattedResult = `╭══════════════•∞•══╮\n`;
         formattedResult += `│⿻ *GSS BOTWA*\n`;
         formattedResult += `│  *LIVE MATCH INFO* ✨\n`;
 
         if (result.update && result.update.toLowerCase() !== "data not found") {
             formattedResult += `│⿻ *${result.update}*\n`;
         } else {
-            await m.reply(`*Update:* Data not found for the specified match ID.`);
-            await doReact("❌");
-            return;
+          
+            formattedResult += `│⿻ *Live Score:* ${result.livescore || 'Data Not Found'}\n`;
+            formattedResult += `│⿻ *Run Rate:* ${result.runrate || 'CRR: Data Not Found'}\n`;
+            formattedResult += `│⿻ *Batter 1:* ${result.batterone || 'Data Not Found'} - ${result.batsmanonerun || 'Data Not Found'} (${result.batsmanoneball || 'Data Not Found'}) SR: ${result.batsmanonesr || 'Data Not Found'} ${result.batsmanone === result.batterone ? '🏏' : ''}\n`;
+            formattedResult += `│⿻ *Batter 2:* ${result.battertwo || 'Data Not Found'} - ${result.batsmantworun || 'Data Not Found'} (${result.batsmantwoball || 'Data Not Found'}) SR: ${result.batsmantwosr || 'Data Not Found'} ${result.battertwo === result.battertwo ? '🏏' : ''}\n`;
+            formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone || 'Data Not Found'} - ${result.bowleroneover || 'Data Not Found'} overs, ${result.bowleronerun || 'Data Not Found'}/${result.bowleronewickers || 'Data Not Found'}, Economy: ${result.bowleroneeconomy || 'Data Not Found'} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n`;
+            formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo || 'Data Not Found'} - ${result.bowlertwoover || 'Data Not Found'} overs, ${result.bowlertworun || 'Data Not Found'}/${result.bowlertwowickers || 'Data Not Found'}, Economy: ${result.bowlertwoeconomy || 'Data Not Found'} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n`;
         }
 
-        if (result.livescore && result.livescore.toLowerCase() !== "data not found") {
-            formattedResult += `│⿻ *Live Score:* ${result.livescore}\n`;
-            formattedResult += `│⿻ *Run Rate:* ${result.runrate}\n`;
-            formattedResult += `│⿻ *Batter 1:* ${result.batterone} - ${result.batsmanonerun} (${result.batsmanoneball}) SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? '🏏' : ''}\n`;
-            formattedResult += `│⿻ *Batter 2:* ${result.battertwo} - ${result.batsmantworun} (${result.batsmantwoball}) SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? '🏏' : ''}\n`;
-            formattedResult += `│⿻ *Bowler 1:* ${result.bowlerone} - ${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Economy: ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? '🎯' : ''}\n`;
-            formattedResult += `│⿻ *Bowler 2:* ${result.bowlertwo} - ${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Economy: ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? '🎯' : ''}\n`;
-        }
-
-        formattedResult += `╰══•∞•═════════╯`;
+        formattedResult += `╰══•∞•═══════════════╯`;
 
         await m.reply(formattedResult);
         await doReact("✅");
@@ -1611,6 +1604,7 @@ if (isBan) return m.reply(mess.banned);
         return m.reply(`An error occurred while processing the cricket score request. ${error.message}`);
     }
     break;
+ 
 
 
 case 'ban': {
