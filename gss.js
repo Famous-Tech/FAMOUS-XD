@@ -4202,6 +4202,9 @@ function setUserWarnings(userId, warnings) {
 }
 
 
+// ... (existing code)
+
+// Your 'warn' case
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4215,12 +4218,6 @@ case 'warn': {
     return m.reply('Mention or reply to the user you want to warn.');
   }
 
-  // Check if the user is already warned
-  const isWarned = warnedUsers.includes(orgnye);
-
-  if (isWarned) {
-    return m.reply('User is already warned.');
-  }
 
   // Add the user to the warnedUsers list
   warnedUsers.push(orgnye);
@@ -4234,12 +4231,14 @@ case 'warn': {
   if (newWarnings === 3) {
     gss.groupParticipantsUpdate(m.chat, [orgnye], 'remove');
     m.reply('User kicked from the group due to three warnings.');
+    // Reset warnings for the user after taking action
     setUserWarnings(orgnye, 0);
   } else {
     m.reply(`This is warning ${newWarnings} out of 3.`);
   }
   break;
 }
+
 
 
 
