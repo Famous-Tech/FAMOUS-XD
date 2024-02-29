@@ -1627,10 +1627,9 @@ case 'ban': {
   if (m.quoted) {
     orgnye = m.quoted;
   } else {
-    return m.reply('Mention or reply to the user you want to warn.');
+    return m.reply('Mention or reply to the user you want to ban.');
   }
     
-    if (isBane) return m.reply('User is already banned.');
     
     banUser.push(orgnye);
     return m.reply(`Successfully Banned the user.`);
@@ -1652,10 +1651,9 @@ case 'unban': {
   if (m.quoted) {
     orgnye = m.quoted;
   } else {
-    return m.reply('Mention or reply to the user you want to warn.');
+    return m.reply('Mention or reply to the user you want to unban.');
   }
 
-    if (!isBane) return m.reply('User is not banned.');
 
     let delbans = banUser.indexOf(orgnye);
     banUser.splice(delbans, 1);
