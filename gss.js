@@ -85,14 +85,13 @@ const audioSearchResults = new Map();
 let optionIndex = 1;
 let index = 1;
 const reportedMessages = {};
-const userWarnings = new Map();
 const videoSearchResults = new Map();
 let titleUrlMap = {}; 
 const userContextMap = new Map();
 let banUser = JSON.parse(fs.readFileSync('./database/banUser.json'));
 let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
 let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
-
+const db = require('./database/warn.json');
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -4202,13 +4201,11 @@ break;
 
 
 
-// Initialize a map to store user warnings
-const userWarnings = new Map();
 
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
-  if (!isCreator) return m.reply(mess.owner)
+  if (!isCreator) return m.reply(mess.owner);
 
   const target = m.mentionedJidList[0] || (m.quoted && m.quoted.sender);
 
@@ -4216,31 +4213,30 @@ case 'warn': {
     return m.reply('Mention or reply to the user you want to warn.');
   }
 
-  // Initialize user warnings if not present
-  if (!userWarnings.has(target)) {
-    userWarnings.set(target, 0);
-  }
+  // Get the user's current warning count from the database
+  const currentWarnings = db.getUserWarnings(target) || 0;
 
-  // Increment the user's warning count
-  const warnings = userWarnings.get(target) + 1;
-  userWarnings.set(target, warnings);
+  // Increment the warning count and update the database
+  const newWarnings = currentWarnings + 1;
+  db.setUserWarnings(target, newWarnings);
 
-  m.reply(`User warned (${warnings}/3).`);
+  m.reply(`User warned (${newWarnings}/3).`);
 
   // Check if the user has reached the maximum warnings (3)
-  if (warnings === 3) {
+  if (newWarnings === 3) {
     // Kick the user from the group
     gss.groupParticipantsUpdate(m.chat, [target], 'remove');
     m.reply('User kicked from the group due to three warnings.');
     
-    // Reset the user's warning count after kicking
-    userWarnings.set(target, 0);
+    // Reset the user's warning count in the database
+    db.setUserWarnings(target, 0);
   } else {
     // Optionally, you can add a message here for users with fewer than 3 warnings
-    m.reply(`This is warning ${warnings} out of 3.`);
+    m.reply(`This is warning ${newWarnings} out of 3.`);
   }
 }
 break;
+
 
 
 case 'unwarn': {
