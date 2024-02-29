@@ -94,6 +94,7 @@ let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
 // const warnedUsers = JSON.parse(fs.readFileSync('./database/warn.json'))
 const warnUsers = []; // Define warnUsers array
 let warnedUsers = [];
+const userWarnings = {};
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -4192,16 +4193,13 @@ break;
 
 
 
-
 function getUserWarnings(userId) {
-
+  return userWarnings[userId];
 }
-
 
 function setUserWarnings(userId, warnings) {
-
+  userWarnings[userId] = warnings;
 }
-
 
 
 case 'warn': {
@@ -4236,7 +4234,6 @@ case 'warn': {
   }
   break;
 }
-
 
 
 
