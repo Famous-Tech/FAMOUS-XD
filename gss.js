@@ -4200,7 +4200,7 @@ case 'warn': {
 
   if (m.quoted && m.quoted.sender) {
     const orgnye = m.quoted.sender;
-    const isWarned = warnUser.includes(orgnye);
+    const isWarned = warnUsers.includes(orgnye);
   } else {
     return m.reply('Mention or reply to the user you want to warn.');
   }
