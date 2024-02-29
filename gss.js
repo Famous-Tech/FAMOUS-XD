@@ -4201,6 +4201,7 @@ function setUserWarnings(userId, warnings) {
 
 }
 
+
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4239,6 +4240,7 @@ case 'warn': {
   }
   break;
 }
+
 
 
 
