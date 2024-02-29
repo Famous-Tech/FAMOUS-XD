@@ -1621,12 +1621,9 @@ case "score":
 
 case 'ban': {
   if (!isCreator) return m.reply(mess.owner)
-  if (isBan) return m.reply(mess.banned);
-  if (isBanChat) return m.reply(mess.bangc);
-  
 
-  if (m.quoted && m.quoted.sender) {
-    const orgnye = m.quoted.sender;
+  if (m.quoted && m.quoted) {
+    const orgnye = m.quoted;
     const isBane = banUser.includes(orgnye);
     
     if (isBane) return m.reply('User is already banned.');
@@ -1646,12 +1643,9 @@ break;
 
 case 'unban': {
   if (!isCreator) return m.reply(mess.owner)
-  if (isBan) return m.reply(mess.banned);
-  if (isBanChat) return m.reply(mess.bangc);
-  
 
-  if (m.quoted && m.quoted.sender) {
-    const orgnye = m.quoted.sender;
+  if (m.quoted && m.quoted) {
+    const orgnye = m.quoted;
     const isBane = banUser.includes(orgnye);
 
     if (!isBane) return m.reply('User is not banned.');
