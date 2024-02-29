@@ -23,6 +23,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk')
 const { exec, spawn, execSync } = require("child_process")
 const axios = require('axios')
+const openai = require('openai');
 const path = require('path')
 const fg = require('api-dylux');
 const cheerio = require('cheerio');
@@ -4592,66 +4593,99 @@ case 'update':
 
 
 
-case "gpt":
-case "ai":
-case "openai":
-case "chatgpt": {
+
+const apiKey = 'YOUR_OPENAI_API_KEY';
+const gptHistoryFile = 'gpthistory.json';
+
+// Initialize OpenAI GPT
+const gpt = new openai.OpenAIAPI(apiKey);
+
+// Load history from file
+let gptHistory = {};
+try {
+  const historyData = fs.readFileSync(gptHistoryFile);
+  gptHistory = JSON.parse(historyData);
+} catch (error) {
+  console.error('Error loading GPT history:', error.message);
+}
+
+// Function to save history to file
+function saveHistoryToFile() {
+  try {
+    const historyData = JSON.stringify(gptHistory, null, 2);
+    fs.writeFileSync(gptHistoryFile, historyData);
+  } catch (error) {
+    console.error('Error saving GPT history:', error.message);
+  }
+}
+
+
+case 'openai':
+case 'gpt': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
-    await doReact("❌");
-    return m.reply(`*Provide me a query,* e.g., "Who made chat GPT?"`);
+    await doReact('❌');
+    return m.reply(`*Provide me a query,* e.g., "Tell me a joke."`);
   }
 
+  // Load custom prompt from file
+  const customPromptFile = 'customprompt.json';
+  let customPrompt = '';
   try {
-    const apiUrl = `https://chatgpt.apinepdev.workers.dev/?question=${encodeURIComponent(text)}`;
-    const res = await fetch(apiUrl);
+    const promptData = fs.readFileSync(customPromptFile);
+    customPrompt = JSON.parse(promptData).prompt;
+  } catch (error) {
+    console.error('Error loading custom prompt:', error.message);
+  }
 
-    if (!res.ok) {
-      await doReact("❌");
-      return m.reply(`Invalid response from the API. Status code: ${res.status}`);
-    }
+  // Get user's GPT history or create an empty array
+  const userGPTHistory = gptHistory[m.sender] || [];
+  
+  // Combine user history with the custom prompt and current query
+  const promptWithHistory = `${customPrompt}\n\n${userGPTHistory.join('\n\n')}\n\nUser Query: ${text}`;
 
-    const data = await res.json();
+  try {
+    // Call OpenAI GPT to generate a response
+    const response = await gpt.complete({
+      engine: 'text-davinci-003',
+      prompt: promptWithHistory,
+      temperature: 0.7,
+      max_tokens: 150,
+    });
 
-    if (!data || !data.answer) {
-      await doReact("❌");
-      return m.reply("Invalid data format in the API response");
-    }
+    // Extract and save the response
+    const gptResponse = response.choices[0].text.trim();
+    userGPTHistory.push(`User Query: ${text}\nGPT Response: ${gptResponse}`);
+    gptHistory[m.sender] = userGPTHistory;
 
-    // Get or create the user's GPT conversation array
-    const userConversation = gptConversations[m.sender] || [];
-    // Save the user's query and GPT's response in the conversation array
-    userConversation.push({ query: text, response: data.answer });
-    // Update the conversation array in the global object
-    gptConversations[m.sender] = userConversation;
-
-    // Construct the message with conversation context
-    const gptMessage = userConversation.map((msg) => `${msg.query}\nGPT: ${msg.response}`).join('\n\n');
+    // Save the updated history to file
+    saveHistoryToFile();
 
     await gss.sendMessage(m.chat, {
-      text: gptMessage,
+      text: gptResponse,
       contextInfo: {
         externalAdReply: {
-          title: "GPT TURBO 3.5K",
-          body: "",
+          title: 'OpenAI GPT',
+          body: '',
           mediaType: 1,
-          thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
+          thumbnailUrl: 'YOUR_THUMBNAIL_URL',
           renderLargerThumbnail: false,
-          mediaUrl: "",
-          sourceUrl: "",
+          mediaUrl: '',
+          sourceUrl: '',
         },
       },
     }, { quoted: m });
 
-    await doReact("✅");
+    await doReact('✅');
   } catch (error) {
-    console.error(error);
-    await doReact("❌");
-    return m.reply("An error occurred while processing the request.");
+    console.error('Error with OpenAI GPT:', error.message);
+    await doReact('❌');
+    return m.reply('An error occurred while processing the request.');
   }
   break;
 }
+
 
 
 
