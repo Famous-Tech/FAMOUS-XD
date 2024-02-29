@@ -4199,9 +4199,8 @@ case 'warn': {
   let orgnye;
 
   if (m.quoted && m.quoted.sender) {
-    orgnye = m.quoted.sender;
-  } else if (m.mentionedJidList[0]) {
-    orgnye = m.mentionedJidList[0];
+    const orgnye = m.quoted.sender;
+    const isWarned = warnUser.includes(orgnye);
   } else {
     return m.reply('Mention or reply to the user you want to warn.');
   }
