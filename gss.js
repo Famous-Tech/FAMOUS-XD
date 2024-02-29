@@ -91,7 +91,7 @@ const userContextMap = new Map();
 let banUser = JSON.parse(fs.readFileSync('./database/banUser.json'));
 let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
 let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
-const db = require('./database/warn.json');
+const warn = JSON.parse(fs.readFileSync('./database/warn.json'))
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
