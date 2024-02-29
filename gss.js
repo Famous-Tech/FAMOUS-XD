@@ -4213,8 +4213,8 @@ case 'warn': {
 
   let orgnye;
 
-  if (m.quoted && m.quoted.sender) {
-    orgnye = m.quoted.sender;
+  if (m.quoted) {
+    orgnye = m.quoted;
   } else {
     return m.reply('Mention or reply to the user you want to warn.');
   }
@@ -4266,8 +4266,8 @@ case 'unwarn': {
 
   let orgnye;
 
-  if (m.quoted && m.quoted.sender) {
-    orgnye = m.quoted.sender;
+  if (m.quoted ) {
+    orgnye = m.quoted;
   } else {
     return m.reply('Mention or reply to the user you want to unwarn.');
   }
