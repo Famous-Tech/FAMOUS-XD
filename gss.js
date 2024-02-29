@@ -1620,9 +1620,10 @@ case "score":
 
 
 case 'ban': {
+  if (!isCreator) return m.reply(mess.owner)
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
-  if (!isCreator) return m.reply(mess.owner)
+  
 
   if (m.quoted && m.quoted.sender) {
     const orgnye = m.quoted.sender;
@@ -1644,9 +1645,10 @@ case 'ban': {
 break;
 
 case 'unban': {
+  if (!isCreator) return m.reply(mess.owner)
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
-  if (!isCreator) return m.reply(mess.owner)
+  
 
   if (m.quoted && m.quoted.sender) {
     const orgnye = m.quoted.sender;
@@ -4204,9 +4206,10 @@ function setUserWarnings(userId, warnings) {
 
 
 case 'warn': {
+  if (!isCreator) return m.reply(mess.owner)
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
-  if (!isCreator) return m.reply(mess.owner);
+  
 
   let orgnye;
 
@@ -4256,9 +4259,10 @@ function unwarnUser(userId) {
 
 
 case 'unwarn': {
+  if (!isCreator) return m.reply(mess.owner)
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
-  if (!isCreator) return m.reply(mess.owner);
+  
 
   let orgnye;
 
