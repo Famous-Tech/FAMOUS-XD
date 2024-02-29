@@ -91,7 +91,7 @@ const userContextMap = new Map();
 let banUser = JSON.parse(fs.readFileSync('./database/banUser.json'));
 let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
 let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
-const warnedUsers = JSON.parse(fs.readFileSync('./database/warn.json'))
+// const warnedUsers = JSON.parse(fs.readFileSync('./database/warn.json'))
 const warnUsers = []; // Define warnUsers array
 let warnedUsers = [];
 
