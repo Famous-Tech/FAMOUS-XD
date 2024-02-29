@@ -4192,6 +4192,34 @@ break;
 
 
 
+// Functions to read and write data to the 'warn.json' file
+const readWarnData = () => {
+  try {
+    const data = fs.readFileSync('warn.json', 'utf-8');
+    return JSON.parse(data) || {};
+  } catch (error) {
+    return {};
+  }
+};
+
+const writeWarnData = (data) => {
+  fs.writeFileSync('warn.json', JSON.stringify(data, null, 2), 'utf-8');
+};
+
+// Function to get user warnings
+const getUserWarnings = (userId) => {
+  const warnData = readWarnData();
+  return warnData[userId] || 0;
+};
+
+// Function to set user warnings
+const setUserWarnings = (userId, warnings) => {
+  const warnData = readWarnData();
+  warnData[userId] = warnings;
+  writeWarnData(warnData);
+};
+
+// 'warn' case
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4203,29 +4231,23 @@ case 'warn': {
     return m.reply('Mention or reply to the user you want to warn.');
   }
 
-  // Get the user's current warning count from the database
-  const currentWarnings = db.getUserWarnings(target) || 0;
-
-  // Increment the warning count and update the database
+  const orgnye = target;
+  const currentWarnings = getUserWarnings(orgnye) || 0;
   const newWarnings = currentWarnings + 1;
-  db.setUserWarnings(target, newWarnings);
+  setUserWarnings(orgnye, newWarnings);
 
   m.reply(`User warned (${newWarnings}/3).`);
 
-  // Check if the user has reached the maximum warnings (3)
   if (newWarnings === 3) {
-    // Kick the user from the group
-    gss.groupParticipantsUpdate(m.chat, [target], 'remove');
+    gss.groupParticipantsUpdate(m.chat, [orgnye], 'remove');
     m.reply('User kicked from the group due to three warnings.');
-    
-    // Reset the user's warning count in the database
-    db.setUserWarnings(target, 0);
+    setUserWarnings(orgnye, 0);
   } else {
-    // Optionally, you can add a message here for users with fewer than 3 warnings
     m.reply(`This is warning ${newWarnings} out of 3.`);
   }
 }
 break;
+
 
 
 
