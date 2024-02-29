@@ -4601,7 +4601,7 @@ const gptHistoryFile = 'history.json';
 const gpt = new openai.OpenAIAPI(openaiApiKey);
 
 // Load history from file
-let gptHistory = {};
+let history = {};
 try {
   const historyData = fs.readFileSync(gptHistoryFile);
   gptHistory = JSON.parse(historyData);
@@ -4640,7 +4640,7 @@ case 'gpt': {
   }
 
   // Get user's GPT history or create an empty array
-  const userGPTHistory = gptHistory[m.sender] || [];
+  const userGPTHistory = history[m.sender] || [];
   
   // Combine user history with the custom prompt and current query
   const promptWithHistory = `${customPrompt}\n\n${userGPTHistory.join('\n\n')}\n\nUser Query: ${text}`;
