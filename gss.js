@@ -4192,6 +4192,15 @@ break;
 
 
 
+function getUserWarnings(userId) {
+
+}
+
+
+function setUserWarnings(userId, warnings) {
+
+}
+
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4200,8 +4209,7 @@ case 'warn': {
   let orgnye;
 
   if (m.quoted && m.quoted.sender) {
-    const orgnye = m.quoted.sender;
-    const isWarned = warnUsers.includes(orgnye);
+    orgnye = m.quoted.sender;
   } else {
     return m.reply('Mention or reply to the user you want to warn.');
   }
@@ -4229,8 +4237,9 @@ case 'warn': {
   } else {
     m.reply(`This is warning ${newWarnings} out of 3.`);
   }
+  break;
 }
-break;
+
 
 
 
