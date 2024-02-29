@@ -4594,7 +4594,7 @@ case 'update':
 
 
 
-const apiKey = 'YOUR_OPENAI_API_KEY';
+const apiKey = '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';
 const gptHistoryFile = 'gpthistory.json';
 
 // Initialize OpenAI GPT
