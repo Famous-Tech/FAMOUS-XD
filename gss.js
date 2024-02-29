@@ -96,7 +96,6 @@ let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
 const warnUsers = []; 
 let warnedUsers = [];
 const userWarnings = {};
-const gptConversations = {};
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -4593,99 +4592,55 @@ case 'update':
 
 
 
-
-const openaiApiKey = global.openaiApiKey;
-const gptHistoryFile = 'history.json';
-
-// Initialize OpenAI GPT
-const gpt = new openai.OpenAIAPI(openaiApiKey);
-
-// Load history from file
-let history = {};
-try {
-  const historyData = fs.readFileSync(gptHistoryFile);
-  gptHistory = JSON.parse(historyData);
-} catch (error) {
-  console.error('Error loading GPT history:', error.message);
-}
-
-// Function to save history to file
-function saveHistoryToFile() {
-  try {
-    const historyData = JSON.stringify(gptHistory, null, 2);
-    fs.writeFileSync(gptHistoryFile, historyData);
-  } catch (error) {
-    console.error('Error saving GPT history:', error.message);
-  }
-}
-
-
-case 'openai':
-case 'gpt': {
+  case "gpt":
+case "ai":
+case "openai":
+case "chatgpt":
   if (isBan) return m.reply(mess.banned);
-  if (isBanChat) return m.reply(mess.bangc);
-  if (!text) {
-    await doReact('❌');
-    return m.reply(`*Provide me a query,* e.g., "Tell me a joke."`);
-  }
+        if (isBanChat) return m.reply(mess.bangc);
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide me a query,* e.g., "Who made chat GPT?"`);
+    }
 
-  // Load custom prompt from file
-  const customPromptFile = 'prompt.json';
-  let customPrompt = '';
-  try {
-    const promptData = fs.readFileSync(customPromptFile);
-    customPrompt = JSON.parse(promptData).prompt;
-  } catch (error) {
-    console.error('Error loading custom prompt:', error.message);
-  }
+    try {
+        const apiUrl = `https://chatgpt.apinepdev.workers.dev/?question=${encodeURIComponent(text)}`;
+        const res = await fetch(apiUrl);
 
-  // Get user's GPT history or create an empty array
-  const userGPTHistory = history[m.sender] || [];
-  
-  // Combine user history with the custom prompt and current query
-  const promptWithHistory = `${customPrompt}\n\n${userGPTHistory.join('\n\n')}\n\nUser Query: ${text}`;
+        if (!res.ok) {
+            await doReact("❌");
+            return m.reply(`Invalid response from the API. Status code: ${res.status}`);
+        }
 
-  try {
-    // Call OpenAI GPT to generate a response
-    const response = await gpt.complete({
-      engine: 'text-davinci-003',
-      prompt: promptWithHistory,
-      temperature: 0.7,
-      max_tokens: 150,
-    });
+        const data = await res.json();
 
-    // Extract and save the response
-    const gptResponse = response.choices[0].text.trim();
-    userGPTHistory.push(`User Query: ${text}\nGPT Response: ${gptResponse}`);
-    gptHistory[m.sender] = userGPTHistory;
+        if (!data || !data.answer) {
+            await doReact("❌");
+            return m.reply("Invalid data format in the API response");
+        }
 
-    // Save the updated history to file
-    saveHistoryToFile();
+        await gss.sendMessage(m.chat, {
+            text: data.answer,
+            contextInfo: {
+                externalAdReply: {
+                    title: "GPT TURBO 3.5K",
+                    body: "",
+                    mediaType: 1,
+                    thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
+                    renderLargerThumbnail: false,
+                    mediaUrl: "",
+                    sourceUrl: "",
+                },
+            },
+        }, { quoted: m });
 
-    await gss.sendMessage(m.chat, {
-      text: gptResponse,
-      contextInfo: {
-        externalAdReply: {
-          title: 'OpenAI GPT',
-          body: '',
-          mediaType: 1,
-          thumbnailUrl: 'https://youtu.be/rHpBSpE7Emo',
-          renderLargerThumbnail: false,
-          mediaUrl: '',
-          sourceUrl: '',
-        },
-      },
-    }, { quoted: m });
-
-    await doReact('✅');
-  } catch (error) {
-    console.error('Error with OpenAI GPT:', error.message);
-    await doReact('❌');
-    return m.reply('An error occurred while processing the request.');
-  }
-  break;
-}
-
+        await doReact("✅");
+    } catch (error) {
+        console.error(error);
+        await doReact("❌");
+        return m.reply("An error occurred while processing the request.");
+    }
+    break;
 
 
 
