@@ -22,7 +22,6 @@ global.APIs = {
 
 // Other
 global.apikey = 'bf2d2cf29b3edc604b447983';
-global.openaiApiKey = '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';
 global.ownername = '𝑆𝛪𝐷 𝐵𝛨𝛥𝛪';
 global.owner = ['917050906659'];
 global.premium = ['917050906659'];
