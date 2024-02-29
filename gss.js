@@ -1627,9 +1627,8 @@ case 'ban': {
   if (m.quoted) {
     orgnye = m.quoted;
   } else {
-    return m.reply('Mention or reply to the user you want to ban.');
+    return m.reply('Mention or reply to the user you want to warn.');
   }
-    
     
     if (isBane) return m.reply('User is already banned.');
     
@@ -1643,7 +1642,6 @@ case 'ban': {
   if (isBane) return m.reply('You are already banned.');
   banUser.push(orgnye);
   return m.reply(`Successfully Banned you.`);
-}
 break;
 
 case 'unban': {
@@ -1654,7 +1652,7 @@ case 'unban': {
   if (m.quoted) {
     orgnye = m.quoted;
   } else {
-    return m.reply('Mention or reply to the user you want to unban.');
+    return m.reply('Mention or reply to the user you want to warn.');
   }
 
     if (!isBane) return m.reply('User is not banned.');
@@ -1665,7 +1663,6 @@ case 'unban': {
   }
 
   return m.reply("Invalid option. Reply to a message to ban/unban the user.");
-}
 break;
 
 
