@@ -91,10 +91,11 @@ const userContextMap = new Map();
 let banUser = JSON.parse(fs.readFileSync('./database/banUser.json'));
 let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
 let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
-// const warnedUsers = JSON.parse(fs.readFileSync('./database/warn.json'))
-const warnUsers = []; // Define warnUsers array
+
+const warnUsers = []; 
 let warnedUsers = [];
 const userWarnings = {};
+const gptConversations = {};
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -4588,55 +4589,69 @@ case 'update':
   }
   break;
 
-      case "gpt":
+
+
+
+case "gpt":
 case "ai":
 case "openai":
-case "chatgpt":
+case "chatgpt": {
   if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    if (!text) {
-        await doReact("❌");
-        return m.reply(`*Provide me a query,* e.g., "Who made chat GPT?"`);
+  if (isBanChat) return m.reply(mess.bangc);
+  if (!text) {
+    await doReact("❌");
+    return m.reply(`*Provide me a query,* e.g., "Who made chat GPT?"`);
+  }
+
+  try {
+    const apiUrl = `https://chatgpt.apinepdev.workers.dev/?question=${encodeURIComponent(text)}`;
+    const res = await fetch(apiUrl);
+
+    if (!res.ok) {
+      await doReact("❌");
+      return m.reply(`Invalid response from the API. Status code: ${res.status}`);
     }
 
-    try {
-        const apiUrl = `https://chatgpt.apinepdev.workers.dev/?question=${encodeURIComponent(text)}`;
-        const res = await fetch(apiUrl);
+    const data = await res.json();
 
-        if (!res.ok) {
-            await doReact("❌");
-            return m.reply(`Invalid response from the API. Status code: ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        if (!data || !data.answer) {
-            await doReact("❌");
-            return m.reply("Invalid data format in the API response");
-        }
-
-        await gss.sendMessage(m.chat, {
-            text: data.answer,
-            contextInfo: {
-                externalAdReply: {
-                    title: "GPT TURBO 3.5K",
-                    body: "",
-                    mediaType: 1,
-                    thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
-                    renderLargerThumbnail: false,
-                    mediaUrl: "",
-                    sourceUrl: "",
-                },
-            },
-        }, { quoted: m });
-
-        await doReact("✅");
-    } catch (error) {
-        console.error(error);
-        await doReact("❌");
-        return m.reply("An error occurred while processing the request.");
+    if (!data || !data.answer) {
+      await doReact("❌");
+      return m.reply("Invalid data format in the API response");
     }
-    break;
+
+    // Get or create the user's GPT conversation array
+    const userConversation = gptConversations[m.sender] || [];
+    // Save the user's query and GPT's response in the conversation array
+    userConversation.push({ query: text, response: data.answer });
+    // Update the conversation array in the global object
+    gptConversations[m.sender] = userConversation;
+
+    // Construct the message with conversation context
+    const gptMessage = userConversation.map((msg) => `${msg.query}\nGPT: ${msg.response}`).join('\n\n');
+
+    await gss.sendMessage(m.chat, {
+      text: gptMessage,
+      contextInfo: {
+        externalAdReply: {
+          title: "GPT TURBO 3.5K",
+          body: "",
+          mediaType: 1,
+          thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
+          renderLargerThumbnail: false,
+          mediaUrl: "",
+          sourceUrl: "",
+        },
+      },
+    }, { quoted: m });
+
+    await doReact("✅");
+  } catch (error) {
+    console.error(error);
+    await doReact("❌");
+    return m.reply("An error occurred while processing the request.");
+  }
+  break;
+}
 
 
 
