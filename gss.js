@@ -91,7 +91,7 @@ const userContextMap = new Map();
 let banUser = JSON.parse(fs.readFileSync('./database/banUser.json'));
 let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
 let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
-const warn = JSON.parse(fs.readFileSync('./database/warn.json'))
+const warnUser = JSON.parse(fs.readFileSync('./database/warn.json'))
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -4191,35 +4191,6 @@ break;
 
 
 
-
-// Functions to read and write data to the 'warn.json' file
-const readWarnData = () => {
-  try {
-    const data = fs.readFileSync('warn.json', 'utf-8');
-    return JSON.parse(data) || {};
-  } catch (error) {
-    return {};
-  }
-};
-
-const writeWarnData = (data) => {
-  fs.writeFileSync('warn.json', JSON.stringify(data, null, 2), 'utf-8');
-};
-
-// Function to get user warnings
-const getUserWarnings = (userId) => {
-  const warnData = readWarnData();
-  return warnData[userId] || 0;
-};
-
-// Function to set user warnings
-const setUserWarnings = (userId, warnings) => {
-  const warnData = readWarnData();
-  warnData[userId] = warnings;
-  writeWarnData(warnData);
-};
-
-// 'warn' case
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4232,6 +4203,17 @@ case 'warn': {
   }
 
   const orgnye = target;
+
+  // Check if the user is already warned
+  const isWarned = warnedUsers.includes(orgnye);
+
+  if (isWarned) {
+    return m.reply('User is already warned.');
+  }
+
+  // Add the user to the warnedUsers list
+  warnedUsers.push(orgnye);
+
   const currentWarnings = getUserWarnings(orgnye) || 0;
   const newWarnings = currentWarnings + 1;
   setUserWarnings(orgnye, newWarnings);
@@ -4247,6 +4229,7 @@ case 'warn': {
   }
 }
 break;
+
 
 
 
