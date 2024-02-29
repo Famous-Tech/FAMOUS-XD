@@ -4595,7 +4595,7 @@ case 'update':
 
 
 const apiKey = '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';
-const gptHistoryFile = 'gpthistory.json';
+const gptHistoryFile = 'history.json';
 
 // Initialize OpenAI GPT
 const gpt = new openai.OpenAIAPI(apiKey);
@@ -4630,7 +4630,7 @@ case 'gpt': {
   }
 
   // Load custom prompt from file
-  const customPromptFile = 'customprompt.json';
+  const customPromptFile = 'prompt.json';
   let customPrompt = '';
   try {
     const promptData = fs.readFileSync(customPromptFile);
@@ -4669,7 +4669,7 @@ case 'gpt': {
           title: 'OpenAI GPT',
           body: '',
           mediaType: 1,
-          thumbnailUrl: 'YOUR_THUMBNAIL_URL',
+          thumbnailUrl: 'https://youtu.be/rHpBSpE7Emo',
           renderLargerThumbnail: false,
           mediaUrl: '',
           sourceUrl: '',
