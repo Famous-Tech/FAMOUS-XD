@@ -4215,7 +4215,7 @@ case 'warn': {
     return m.reply('Mention or reply to the user you want to warn.');
   }
 
-  // Add the user to the warnedUsers list
+
   warnedUsers.push(orgnye);
 
   const currentWarnings = getUserWarnings(orgnye) || 0;
@@ -4227,10 +4227,10 @@ case 'warn': {
   if (newWarnings === 3) {
     gss.groupParticipantsUpdate(m.chat, [orgnye], 'remove');
     m.reply('User kicked from the group due to three warnings.');
-    // Reset warnings for the user after taking action
+
     setUserWarnings(orgnye, 0);
   } else {
-    m.reply(`This is warning ${newWarnings} out of 3.`);
+    m.reply(`${text}.`);
   }
   break;
 }
@@ -4238,39 +4238,46 @@ case 'warn': {
 
 
 
+function unwarnUser(userId) {
+  
+  const currentWarnings = getUserWarnings(userId) || 0;
 
+  if (currentWarnings > 0) {
 
+    const newWarnings = currentWarnings - 1;
+    setUserWarnings(userId, newWarnings);
 
+    return newWarnings;
+  } else {
+    return 0; 
+  }
+}
 
 
 case 'unwarn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
-  if (!isCreator) return m.reply(mess.owner)
+  if (!isCreator) return m.reply(mess.owner);
 
-  const target = m.mentionedJidList[0] || (m.quoted && m.quoted.sender);
+  let orgnye;
 
-  if (!target) {
+  if (m.quoted && m.quoted.sender) {
+    orgnye = m.quoted.sender;
+  } else {
     return m.reply('Mention or reply to the user you want to unwarn.');
   }
 
-  // Check if the user has any warnings
-  if (userWarnings.has(target)) {
-    // Decrement the user's warning count
-    const currentWarnings = userWarnings.get(target) - 1;
 
-    // Ensure the warning count does not go below 0
-    const newWarnings = Math.max(0, currentWarnings);
+  const remainingWarnings = unwarnUser(orgnye);
 
-    // Update the user's warning count
-    userWarnings.set(target, newWarnings);
-
-    m.reply(`One warning removed. Current warnings: ${newWarnings}/3.`);
+  if (remainingWarnings > 0) {
+    m.reply(`User's warning removed (${remainingWarnings}/3).`);
   } else {
-    m.reply('User does not have any warnings.');
+    m.reply('User has no warnings to remove.');
   }
+
+  break;
 }
-break;
 
 
 
