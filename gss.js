@@ -4230,7 +4230,7 @@ case 'warn': {
 
     setUserWarnings(orgnye, 0);
   } else {
-    m.reply(`${text}.`);
+    m.reply(`user warned: ${text}`);
   }
   break;
 }
