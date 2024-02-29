@@ -4594,11 +4594,11 @@ case 'update':
 
 
 
-const apiKey = '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';
+const openaiApiKey = global.openaiApiKey;
 const gptHistoryFile = 'history.json';
 
 // Initialize OpenAI GPT
-const gpt = new openai.OpenAIAPI(apiKey);
+const gpt = new openai.OpenAIAPI(openaiApiKey);
 
 // Load history from file
 let gptHistory = {};
