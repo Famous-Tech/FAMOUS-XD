@@ -4196,13 +4196,15 @@ case 'warn': {
   if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) return m.reply(mess.owner);
 
-  const target = m.mentionedJidList[0] || (m.quoted && m.quoted.sender);
+  let orgnye;
 
-  if (!target) {
+  if (m.quoted && m.quoted.sender) {
+    orgnye = m.quoted.sender;
+  } else if (m.mentionedJidList[0]) {
+    orgnye = m.mentionedJidList[0];
+  } else {
     return m.reply('Mention or reply to the user you want to warn.');
   }
-
-  const orgnye = target;
 
   // Check if the user is already warned
   const isWarned = warnedUsers.includes(orgnye);
@@ -4229,6 +4231,7 @@ case 'warn': {
   }
 }
 break;
+
 
 
 
