@@ -93,6 +93,7 @@ let banchat = JSON.parse(fs.readFileSync('./database/banChat.json'));
 let ban = JSON.parse(fs.readFileSync('./database/ban.json'))
 const warnedUsers = JSON.parse(fs.readFileSync('./database/warn.json'))
 const warnUsers = []; // Define warnUsers array
+let warnedUsers = [];
 
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
@@ -4202,9 +4203,7 @@ function setUserWarnings(userId, warnings) {
 }
 
 
-// ... (existing code)
 
-// Your 'warn' case
 case 'warn': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
@@ -4217,7 +4216,6 @@ case 'warn': {
   } else {
     return m.reply('Mention or reply to the user you want to warn.');
   }
-
 
   // Add the user to the warnedUsers list
   warnedUsers.push(orgnye);
@@ -4238,6 +4236,7 @@ case 'warn': {
   }
   break;
 }
+
 
 
 
