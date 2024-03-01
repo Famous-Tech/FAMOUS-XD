@@ -1620,47 +1620,46 @@ case "score":
 
 
 case 'ban': {
-  if (!isCreator) return m.reply(mess.owner);
-
-  let orgnye;
+  
+  if (!isCreator) return m.reply(mess.owner)
 
   if (m.quoted) {
-    orgnye = m.quoted;
-  } else {
-    return m.reply('Mention or reply to the user you want to ban.');
+    const orgnye = m.quoted;
+    const isBane = banUser.includes(orgnye);
+    
+    if (isBane) return m.reply('User is already banned.');
+    
+    banUser.push(orgnye);
+    return m.reply(`Successfully Banned the user.`);
   }
 
+  const orgnye = m.quoted;
   const isBane = banUser.includes(orgnye);
 
-  if (isBane) return m.reply('User is already banned.');
-
+  if (isBane) return m.reply('You are already banned.');
   banUser.push(orgnye);
-  return m.reply(`Successfully Banned the user.`);
-  break;
+  return m.reply(`Successfully Banned you.`);
 }
+break;
 
 case 'unban': {
-  if (!isCreator) return m.reply(mess.owner);
-
-  let orgnye;
+  
+  if (!isCreator) return m.reply(mess.owner)
 
   if (m.quoted) {
-    orgnye = m.quoted;
-  } else {
-    return m.reply('Mention or reply to the user you want to unban.');
+    const orgnye = m.quoted;
+    const isBane = banUser.includes(orgnye);
+
+    if (!isBane) return m.reply('User is not banned.');
+
+    let delbans = banUser.indexOf(orgnye);
+    banUser.splice(delbans, 1);
+    return m.reply(`Successfully Unbanned the user.`);
   }
 
-  const isBane = banUser.includes(orgnye);
-
-  if (!isBane) return m.reply('User is not banned.');
-
-  const delbans = banUser.indexOf(orgnye);
-  banUser.splice(delbans, 1);
-  return m.reply(`Successfully Unbanned the user.`);
-  break;
+  return m.reply("Invalid option. Reply to a message to ban/unban the user.");
 }
-
-
+break;
 
 
 
