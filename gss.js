@@ -1632,13 +1632,6 @@ case 'ban': {
     banUser.push(orgnye);
     return m.reply(`Successfully Banned the user.`);
   }
-
-  const orgnye = m.quoted;
-  const isBane = banUser.includes(orgnye);
-
-  if (isBane) return m.reply('You are already banned.');
-  banUser.push(orgnye);
-  return m.reply(`Successfully Banned you.`);
 }
 break;
 
