@@ -51,7 +51,6 @@ const translate = require('translate-google-api');
  const pingSt = new Date();
 const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, reSize, jsonformat, format, parseMention, getRandom, getGroupAdmins } = require('./lib/myfunc')
 
-
 const acr = new acrcloud({
     host: 'identify-eu-west-1.acrcloud.com',
     access_key: 'c33c767d683f78bd17d4bd4991955d81',
