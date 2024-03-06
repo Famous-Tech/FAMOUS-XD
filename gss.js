@@ -124,7 +124,6 @@ const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
 const isViewOnce = ["viewOnceMessageV2","viewOnceMessage"].includes(m.type)
 	const botname = "𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫";
 	const devlopernumber = "919142294671";
-	
         // Group
         const groupMetadata = m.isGroup ? await gss.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
