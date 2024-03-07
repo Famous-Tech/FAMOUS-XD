@@ -17,7 +17,7 @@
 
 ---
 ### 1. FORK THIS REPO
-<a href='[https://github.com/gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
+<a href='https://github.com/Gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
 
 ### 2. SCAN QR CODE 
 <a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Replit Pairing-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
