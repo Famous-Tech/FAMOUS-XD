@@ -1780,7 +1780,30 @@ case 'anticall': {
 }
 break;
 
+case 'autobio': {
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+    if (!isCreator) throw mess.owner;
 
+    let ciko = db.data.settings[botNumber]?.autobio;
+
+    if (!args || args.length < 1) {
+        gss.sendPoll(m.chat, "Choose autobio Setting:", [`${prefix}autobio off`, `${prefix}autobio on`]);
+    } else {
+        if (args[0].toLowerCase() === "on") {
+            if (ciko) return m.reply(`Already Active Before`);
+            db.data.settings[botNumber].autobio = true;
+            m.reply(`autobio Active!`);
+        } else if (args[0].toLowerCase() === "off") {
+            if (!ciko) return m.reply(`Already Inactive Before`);
+            db.data.settings[botNumber].autobio = false;
+            m.reply(`autobio Deactivated!`);
+        } else {
+            gss.sendPoll(m.chat, "Choose autobio Setting:", [`${prefix}anticall off`, `${prefix}anticall on`]);
+        }
+    }
+}
+break;
 
 
             case 'deleteall':
