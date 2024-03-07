@@ -1,14 +1,10 @@
 
- Fixing All Today 
- 
- 
- 
  <h1 align="center">GSS BOTWA MD</h1> 
 <p align="center"> Introducing GSS BOTWA MD, It is designed to bring a whole new level of excitement to your boring WhatsApp use. </p>
 
 
    <p align="center">
- <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w" target="_blank">
+ <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029Va8SjGU1noyxsYBA2K2e" target="_blank">
     <img alt="whatsapp" src="https://img.shields.io/badge/Join Our Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
   </a>
@@ -24,8 +20,8 @@
 <a href='[https://github.com/gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
 
 ### 2. SCAN QR CODE 
-<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Scan Qr code-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
-<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Scan Qr code 2-black?style=for-the-badge&logo=qrcode&logoColor=white'/></a>
+<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Replit Pairing-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
+<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Non Workin-black?style=for-the-badge&logo=qrcode&logoColor=white'/></a>
 
 ## `𝐌𝐨𝐧𝐠𝐨𝐃𝐁 𝐔𝐑𝐋.`    Your Bot Cannot run without this.
 
