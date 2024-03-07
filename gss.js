@@ -1780,7 +1780,7 @@ case 'anticall': {
 }
 break;
 
-case "autoabout":
+case "autoabout": case "autobio":
     const autoAboutStatus = process.env.AUTO_ABOUT || 'true';
     if (autoAboutStatus === 'true') {
         process.env.AUTO_ABOUT = 'false';
