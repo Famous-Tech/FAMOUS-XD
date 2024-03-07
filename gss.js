@@ -1780,30 +1780,17 @@ case 'anticall': {
 }
 break;
 
-case 'autobio': {
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    if (!isCreator) throw mess.owner;
-
-    let ciko = db.data.settings[botNumber]?.autobio;
-
-    if (!args || args.length < 1) {
-        gss.sendPoll(m.chat, "Choose autobio Setting:", [`${prefix}autobio off`, `${prefix}autobio on`]);
+case "autoabout":
+    const autoAboutStatus = process.env.AUTO_ABOUT || 'true';
+    if (autoAboutStatus === 'true') {
+        process.env.AUTO_ABOUT = 'false';
+        return m.reply("Auto About is now *OFF*");
     } else {
-        if (args[0].toLowerCase() === "on") {
-            if (ciko) return m.reply(`Already Active Before`);
-            db.data.settings[botNumber].autobio = true;
-            m.reply(`autobio Active!`);
-        } else if (args[0].toLowerCase() === "off") {
-            if (!ciko) return m.reply(`Already Inactive Before`);
-            db.data.settings[botNumber].autobio = false;
-            m.reply(`autobio Deactivated!`);
-        } else {
-            gss.sendPoll(m.chat, "Choose autobio Setting:", [`${prefix}anticall off`, `${prefix}anticall on`]);
-        }
+        process.env.AUTO_ABOUT = 'true';
+        setBio();
+        return m.reply("Auto About is now *ON*");
     }
-}
-break;
+    break;
 
 
             case 'deleteall':
