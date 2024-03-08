@@ -35,7 +35,6 @@
 <br>
 <br>
 <h2 align="center"> ❤  Deploy On Heroku  ❤ </h2>
-
 <p align="center">
   <a href="https://heroku.com/deploy?template=https://github.com/gssbotwa/Gssbotwa2">
     <img title="A17 on Heroku" src="https://www.herokucdn.com/deploy/button.png" alt="Deploy on Heroku">
@@ -46,7 +45,6 @@
           <a href='https://youtu.be/BX0vkAirhkY?si=ZoOT-Gsis-acsjGT' target="_blank"><img alt='Heroku Deploy Tutorial' src='https://img.shields.io/badge/-Heroku Deploy Tutorial-blue?style=for-the-badge&logo=heroku&logoColor=white'/></a>
 <br>
 <h2 align="center"> 🍃  Deploy On Railway  🍃 </h2>
-
 <h2 align="center">
   <a href="https://railway.app/new">
     <img title="GSS on Railway" src="https://railway.app/button.svg" />
@@ -58,13 +56,12 @@
 
 - Customize your configuration details in your repository, specifically in the [`config.js`](https://github.com/gssbotwa/Gssbotwa2/blob/master/config.js) file.
 
-
 ```
-global.Owner = ["916297175943"];
-global.OwnerNumber = ["916297175943"];
-global.ownertag = ["916297175943"];
-global.OwnerName = "Kai";
-global.BotName = "A17";
+global.ownername = '𝑆𝛪𝐷 𝐵𝛨𝛥𝛪';
+global.owner = ['917050906659'];
+global.premium = ['917050906659'];
+global.packname = '𝚜𝚝𝚒𝚌𝚔𝚎𝚛 𝚋𝚢';
+global.author = '𝐆𝐒𝐒 𝚩𝚯𝚻𝐖𝚫';
 
 ```
 
@@ -85,9 +82,6 @@ global.BotName = "A17";
 
 | [𝐂𝐇 𝐇𝐀𝐒𝐄𝐄𝐁](https://github.com/chhaseeb47) |
 | CO.Devloper |
-
-
-
 
 
 
