@@ -59,7 +59,7 @@
 - Customize your configuration details in your repository, specifically in the [`config.js`](https://github.com/gssbotwa/Gssbotwa2/blob/master/config.js) file.
 
 
-
+```
 global.Owner = ["916297175943"];
 global.OwnerNumber = ["916297175943"];
 global.ownertag = ["916297175943"];
