@@ -21,45 +21,47 @@
 
 ---
 
-<h2 align="center"> 🔰 Tap Here To Fork 🔰 </h2>
-
-<h2 align="center">
+<h2 align="left"> 1.🔰 Tap Here To Fork 🔰 </h2>
   <a href="https://github.com/Gssbotwa/Gssbotwa2/fork">
     <img src="https://img.shields.io/badge/FORK GSSBOTWA MD-h?color=white&style=for-the-badge&logo=stackshare" />
   </a>
 </h2>
 <br>
-<h2 align="center"> 🍁  Run Repl for session I'd 🍁 </h2>
+<h2 align="LEFT"> 2.🍁  Run Repl for Credit Js 🍁 </h2>
 
-<h2 align="center">
+<h2 align="LEFT">
   <a href="https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1">
     <img src="https://repl.it/badge/github/quiec/whatsasena" />
-  </a>
+</a>
 </h2>
   <br>
 
  ⚙️Tap To Change Owner Name & Number,[CLICK HERE](https://github.com/gssbotwa/Gssbotwa2/blob/master/config.js)⚙️
-  
 <br>
-<h2 align="center"> ❤  Deploy On Heroku  ❤ </h2>
-<p align="center">
+<h2 align="left"> 3.❤  Deployment Method❤ </h2>
+ <p align="LEFT" >
   <a href="https://heroku.com/deploy?template=https://github.com/gssbotwa/Gssbotwa2">
-    <img title="A17 on Heroku" src="https://www.herokucdn.com/deploy/button.png" alt="Deploy on Heroku">
+    <img title="GSS on Heroku" src="https://www.herokucdn.com/deploy/button.png" alt="Deploy on Heroku">
+   
+ 
   </a>
-
-<br>
-<h2 align="center"> 🍃  Deploy On Railway  🍃 </h2>
-<h2 align="center">
+ <p align="LEFT" >
+    <a href="https://repl.it/github/gssbotwa/Gssbotwa2">
+    <img src="https://i.ibb.co/zrB5kMh/deploy-on-repl.jpg" width="170px" alt="Deploy REPLIT" >
+<h2 align="left">
   <a href="https://railway.app/new">
     <img title="GSS on Railway" src="https://railway.app/button.svg" />
   </a>
+</h1>
+<br>
+
+<h1 align="left"> Developers 
+</a>
 </h2>
 
 <br>
 
-<h2 align="left">
-##Developer :
- 
+
 <div align="LEFT">
   <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Ash"/></a>
 <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
@@ -72,8 +74,6 @@
 
 | [𝐂𝐇 𝐇𝐀𝐒𝐄𝐄𝐁](https://github.com/chhaseeb47) |
 | CO.Devloper |
-
-
 
 <h4 align="left">
 ##𝐒𝐮𝐩𝐩𝐨𝐫𝐭 :
@@ -103,7 +103,7 @@
 ---
 
 </p>
-<h1 align="center"> Nothing...
+<h1 align="center"> 𝐄𝐭𝐡𝐢𝐱 𝐒𝐢𝐝 𝐗 𝐇𝐚𝐬𝐞𝐞𝐛
 </h1>
 
  <br><br>
