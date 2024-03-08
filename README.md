@@ -2,18 +2,22 @@
  <h1 align="center">GSS BOTWA MD</h1> 
 <p align="center"> Introducing GSS BOTWA MD, It is designed to bring a whole new level of excitement to your boring WhatsApp use. </p>
 
-
-   <p align="center">
- <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029Va8SjGU1noyxsYBA2K2e" target="_blank">
-    <img alt="whatsapp" src="https://img.shields.io/badge/Join Our Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
-  </a>
-  </a>
-  <a aria-label="GSS BOTWA MD is free to use" href="https://youtube.com/@mhmodsofc" target="_blank">
-    <img alt="MH MODS OFC Yt" src="https://img.shields.io/youtube/channel/subscribers/UCU071AMRqcd5mfTdCgJFwPg" target="_blank" />
-  </a>
-
+<p align="center">
+  <a href="https://github.com/gssbotwa">
+    <img src="https://img.shields.io/github/followers/gssbotwa?style=flat-square&logo=github&color=black">
+  <a href="https://github.com/gssbotwa/Gssbotwa2/stargazers"> 
+     <img src="https://img.shields.io/github/stars/gssbotwa/Gssbotwa2?style=flat-square&logo=github&color=black">
+   <a href="https://github.com/gssbotwa/Gssbotwa2/fork">
+    <img src="https://img.shields.io/github/forks/gssbotwa/Gssbotwa2?style=flat-square&logo=github&color=black">
+    
+  
+<p align="center"> 
+    <a aria-label="Subscribe Me" href="https://www.youtube.com/@InnoxentTech?sub_confirmation=1" target="_blank">
+   <img alt="whatsapp" src="https://img.shields.io/badge/Subscribe Yt-red?style=for-the-badge&logo=youtube&logoColor=white" />
+    <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029VaGvk6XId7nHNGfiRs0m" target="_blank">
+   <img alt="whatsapp" src="https://img.shields.io/badge/Join Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
 </p>
-<p align="center"><img src="https://profile-counter.glitch.me/{chhaseeb47}/count.svg" alt="chhaseeb47 :: Visitor's Count" /></p>
+<p align="center"><img src="https://profile-counter.glitch.me/{gssbotwa}/count.svg" alt="gssbotwa :: Visitor's Count" /></p>
 
 ---
 
@@ -32,17 +36,17 @@
     <img src="https://repl.it/badge/github/quiec/whatsasena" />
   </a>
 </h2>
-<br>
+  <br>
+
+ ⚙️Tap To Change Owner Name & Number,[CLICK HERE](https://github.com/gssbotwa/Gssbotwa2/blob/master/config.js)⚙️
+  
 <br>
 <h2 align="center"> ❤  Deploy On Heroku  ❤ </h2>
 <p align="center">
   <a href="https://heroku.com/deploy?template=https://github.com/gssbotwa/Gssbotwa2">
     <img title="A17 on Heroku" src="https://www.herokucdn.com/deploy/button.png" alt="Deploy on Heroku">
   </a>
-</p>
-<p align="center">
-     <br>
-          <a href='https://youtu.be/BX0vkAirhkY?si=ZoOT-Gsis-acsjGT' target="_blank"><img alt='Heroku Deploy Tutorial' src='https://img.shields.io/badge/-Heroku Deploy Tutorial-blue?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+
 <br>
 <h2 align="center"> 🍃  Deploy On Railway  🍃 </h2>
 <h2 align="center">
@@ -51,26 +55,12 @@
   </a>
 </h2>
 
-
-<h2 align="center"> ⚙️  Edit Config File  ⚙️ </h2>
-
-- Customize your configuration details in your repository, specifically in the [`config.js`](https://github.com/gssbotwa/Gssbotwa2/blob/master/config.js) file.
-
-```
-global.ownername = '𝑆𝛪𝐷 𝐵𝛨𝛥𝛪';
-global.owner = ['917050906659'];
-global.premium = ['917050906659'];
-global.packname = '𝚜𝚝𝚒𝚌𝚔𝚎𝚛 𝚋𝚢';
-global.author = '𝐆𝐒𝐒 𝚩𝚯𝚻𝐖𝚫';
-
-```
-
 <br>
-<br>
-<h1 align="center">  ⭐ 𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑 ⭐
 
-## ``
-<div align="left">
+<h2 align="left">
+##Developer :
+ 
+<div align="LEFT">
   <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Ash"/></a>
 <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
  </div>
@@ -101,14 +91,6 @@ global.author = '𝐆𝐒𝐒 𝚩𝚯𝚻𝐖𝚫';
     <img src="https://i.ibb.co/Kx8NXxT/mail-gmail-22737.png" align="centre" width="90" />
    <a href="https://wa.me/919142294671?text=Hi%20sid%20Sir...%20I%20need%20some%20help%20in%20Gss_Botwa">
     <img src="https://i.ibb.co/2MLVZwm/whatsapp-logo-icon-181644.png" align="centre" width="90" />
-
-
-<p align="left">
- 
-
-
-
-</br>
 
 
 <h2 align="center">  Reminder
