@@ -534,7 +534,7 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
             `.trim(), msg, {
                         mentions: [participant]
                     })
-        this.copyNForward(conn.user.id, msg, false).catch(e => console.log(e, msg))
+        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
     } catch (e) {
         console.error(e)
     }
