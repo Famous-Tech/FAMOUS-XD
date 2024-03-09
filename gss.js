@@ -521,7 +521,7 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
         } = message
         if (fromMe)
             return
-        let msg = this.serializeM(this.loadMessage(id))
+        let msg = m.serializeM(m.loadMessage(id))
         if (!msg)
             return
         let chat = global.db.data.chats[msg.chat] || {}
@@ -534,7 +534,7 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
             `.trim(), msg, {
                         mentions: [participant]
                     })
-        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
+        m.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
     } catch (e) {
         console.error(e)
     }
