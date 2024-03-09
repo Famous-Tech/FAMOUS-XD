@@ -507,8 +507,6 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
 
  async function deleteUpdate(message) {
     try {
-        if (typeof process.env.antidelete === 'undefined' || process.env.antidelete.toLowerCase() === 'false') return;
-
         const { fromMe, id, participant } = message;
 
         if (fromMe) return;
@@ -519,7 +517,7 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
 
         let chat = global.db.data.chats[msg.chat] || {};
 
-        await this.reply(conn.user.id, `
+        await this.reply(gss.user.id, `
             ≡ deleted a message 
             ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
             ▢ *Number :* @${participant.split`@`[0]} 
@@ -533,6 +531,7 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
         console.error(e);
     }
 }
+
 
 
 if (isCommand) {
