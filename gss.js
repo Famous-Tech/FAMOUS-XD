@@ -453,10 +453,12 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
 let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
+              if (!("antiDelete" in chat)) chat.antiDelete = true
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
                  if (!('antibot' in chats)) chats.antibot = false
             } else global.db.data.chats[m.chat] = {
+                antiDelete: true,
                 mute: false,
                 antilink: true,
                 antibot: true,
@@ -507,28 +509,34 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
 
  async function deleteUpdate(message) {
     try {
-        const { fromMe, id, participant } = message;
+        
+       
+      if (typeof process.env.antidelete === 'undefined' || process.env.antidelete.toLowerCase() === 'false') return;
 
-        if (fromMe) return;
 
-        let msg = await this.serializeM(await this.loadMessage(id));
-
-        if (!msg) return;
-
-        let chat = global.db.data.chats[msg.chat] || {};
-
-        await m.reply(conn.user.id, `
+        const {
+            fromMe,
+            id,
+            participant
+        } = message
+        if (fromMe)
+            return
+        let msg = this.serializeM(this.loadMessage(id))
+        if (!msg)
+            return
+        let chat = global.db.data.chats[msg.chat] || {}
+       
+            await this.reply(conn.user.id, `
             ≡ deleted a message 
             ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
             ▢ *Number :* @${participant.split`@`[0]} 
             └─────────────
             `.trim(), msg, {
-            mentions: [participant]
-        });
-
-        this.copyNForward(conn.user.id, msg, false).catch(e => console.log(e, msg));
+                        mentions: [participant]
+                    })
+        this.copyNForward(conn.user.id, msg, false).catch(e => console.log(e, msg))
     } catch (e) {
-        console.error(e);
+        console.error(e)
     }
 }
 
