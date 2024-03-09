@@ -455,7 +455,7 @@ let chats = db.data.chats[m.chat]
             if (chats) {
               if (!("antiDelete" in chat)) chat.antiDelete = true
                 if (!('mute' in chats)) chats.mute = false
-                if (!('antilink' in chats)) chats.antilink = false
+                if (!('antilink' in chats)) chats.antilink = true
                  if (!('antibot' in chats)) chats.antibot = false
             } else global.db.data.chats[m.chat] = {
                 antiDelete: true,
