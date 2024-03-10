@@ -36,7 +36,7 @@
 </h2>
   <br>
 
- ⚙️Tap To Change Owner Name & Number,[CLICK HERE](https://github.com/gssbotwa/Gssbotwa2/blob/master/config.js)⚙️
+ ⚙️ To Change Owner Name & Number, Open Config.jis file tap Edit > Change and Commit. ⚙️
 <br>
 <h2 align="left"> 3.❤  Deployment Method❤ </h2>
  <p align="LEFT" >
