@@ -505,7 +505,6 @@ if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
 }
 
 
-
 if (isCommand) {
             
 if (!m.isGroup && !isCreator && global.onlygroup) {
