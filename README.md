@@ -23,9 +23,8 @@
 ### 1. FORK THIS REPO
 <a href='[https://github.com/gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
 
-### 2. SCAN QR CODE 
-<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Scan Qr code-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
-<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Scan Qr code 2-black?style=for-the-badge&logo=qrcode&logoColor=white'/></a>
+### 2. GET SESSION VIA PAIR CODE
+<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Click here to get your session-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
 
 ## `𝐌𝐨𝐧𝐠𝐨𝐃𝐁 𝐔𝐑𝐋.`    Your Bot Cannot run without this.
 
