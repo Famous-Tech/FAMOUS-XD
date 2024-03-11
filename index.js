@@ -103,32 +103,6 @@ async function startgss() {
         }
     })
     
-gss.ev.on('messages.upsert', async (chatUpdate) => {
-    try {
-        const mek = chatUpdate.messages[0];
-        if (mek.key) {
-            // Update the chat with the deleted message
-            await gss.modifyChat(mek.key.remoteJid, 'delete', { messageIds: [mek.key.id] });
-
-            // Reply with the delete message information
-            await m.reply(gss.user.id, `
-                ≡ deleted a message 
-                ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
-                ▢ *Number :* @${mek.participant.split`@`[0]} 
-                └─────────────
-            `.trim(), mek, {
-                mentions: [mek.participant]
-            });
-
-            // Forward the deleted message
-            await gss.copyNForward(gss.user.id, mek, false);
-        }
-    } catch (e) {
-        console.error(e);
-    }
-});
-
-
 
 
 
