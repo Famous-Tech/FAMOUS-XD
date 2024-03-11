@@ -64,7 +64,7 @@ if (global.db) setInterval(async () => {
   }, 30 * 1000)
 
 async function startgss() {
-    const { state, saveCreds } = await useMultiFileAuthState(`./session`)
+    const { state, saveCreds } = await useMultiFileAuthState(`./${sessionName}`)
 
     const gss = gssConnect({
         logger: pino({ level: 'silent' }),
@@ -84,7 +84,26 @@ async function startgss() {
 
     store.bind(gss.ev)
     
+    /*
+// auto reject call when user calls
+gss.ev.on("call", async (json) => {
+    const botNumber = await gss.decodeJid(gss.user.id);
+    let ciko = db.data.settings[botNumber].anticall;
 
+    if (ciko) {
+        for (const id of json) {
+            if (id.status === "offer") {
+                console.log("Rejecting call:", id);
+                let msg = await gss.sendMessage(id.from, {
+                    text: `anti call enabled`,
+                    mentions: [id.from],
+                });
+                await gss.rejectCall(id.id, id.from);
+            }
+        }
+    }
+});
+*/
 
     gss.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
@@ -104,14 +123,7 @@ async function startgss() {
     })
     
 
-    //autostatus view
-        gss.ev.on('messages.upsert', async chatUpdate => {
-        	if (global.antiswview){
-            mek = chatUpdate.messages[0]
-            if (mek.key && mek.key.remoteJid === 'status@broadcast') {
-            	await gss.readMessages([mek.key]) }
-            }
-    })
+
     
 // respon cmd pollMessage
 async function getMessage(key) {
@@ -138,9 +150,8 @@ gss.ev.on('messages.update', async chatUpdate => {
                 var prefCmd = prefix + toCmd;
 
                 try {
-                    setTimeout(async () => {
-                        await gss.sendMessage(key.remoteJid, { delete: key });
-                    }, 10000);
+                    // Delete the poll message immediately
+                    await gss.sendMessage(key.remoteJid, { delete: key });
                 } catch (error) {
                     console.error("Error deleting message:", error);
                 }
@@ -597,4 +608,3 @@ fs.watchFile(file, () => {
 	delete require.cache[file]
 	require(file)
 })
- 
