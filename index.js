@@ -9,7 +9,7 @@ const yargs = require('yargs/yargs')
 const chalk = require('chalk')
 const FileType = require('file-type')
 const path = require('path')
-const _ = require('lodash')
+const _ = require('lodash'
 const axios = require('axios')
 const PhoneNumber = require('awesome-phonenumber')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif')
@@ -84,26 +84,7 @@ async function startgss() {
 
     store.bind(gss.ev)
     
-    /*
-// auto reject call when user calls
-gss.ev.on("call", async (json) => {
-    const botNumber = await gss.decodeJid(gss.user.id);
-    let ciko = db.data.settings[botNumber].anticall;
 
-    if (ciko) {
-        for (const id of json) {
-            if (id.status === "offer") {
-                console.log("Rejecting call:", id);
-                let msg = await gss.sendMessage(id.from, {
-                    text: `anti call enabled`,
-                    mentions: [id.from],
-                });
-                await gss.rejectCall(id.id, id.from);
-            }
-        }
-    }
-});
-*/
 
     gss.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
@@ -123,7 +104,14 @@ gss.ev.on("call", async (json) => {
     })
     
 
-
+    //autostatus view
+        gss.ev.on('messages.upsert', async chatUpdate => {
+        	if (global.antiswview){
+            mek = chatUpdate.messages[0]
+            if (mek.key && mek.key.remoteJid === 'status@broadcast') {
+            	await gss.readMessages([mek.key]) }
+            }
+    })
     
 // respon cmd pollMessage
 async function getMessage(key) {
@@ -150,8 +138,9 @@ gss.ev.on('messages.update', async chatUpdate => {
                 var prefCmd = prefix + toCmd;
 
                 try {
-                    // Delete the poll message immediately
-                    await gss.sendMessage(key.remoteJid, { delete: key });
+                    setTimeout(async () => {
+                        await gss.sendMessage(key.remoteJid, { delete: key });
+                    }, 10000);
                 } catch (error) {
                     console.error("Error deleting message:", error);
                 }
@@ -608,3 +597,4 @@ fs.watchFile(file, () => {
 	delete require.cache[file]
 	require(file)
 })
+ 
