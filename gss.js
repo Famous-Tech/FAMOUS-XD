@@ -482,9 +482,9 @@ async function deleteUpdate(message) {
         let msg = this.serializeM(this.loadMessage(id))
         if (!msg)
             return
-        let chats = global.db.data.chats[msg.chat] || {}
+        let chats = global.db.data.chats[m.chat] || {}
        
-            await this.reply(conn.user.id, `
+            await this.reply(gss.user.id, `
             ≡ deleted a message 
             ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
             ▢ *Number :* @${participant.split`@`[0]} 
@@ -492,7 +492,7 @@ async function deleteUpdate(message) {
             `.trim(), msg, {
                         mentions: [participant]
                     })
-        this.copyNForward(conn.user.id, msg, false).catch(e => console.log(e, msg))
+        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
     } catch (e) {
         console.error(e)
     }
