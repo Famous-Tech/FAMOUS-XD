@@ -453,17 +453,50 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
 let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
+              if (!("antiDelete" in chats)) chats.antiDelete = true
                 if (!('mute' in chats)) chats.mute = false
-                if (!('antilink' in chats)) chats.antilink = false
-                 if (!('antibot' in chats)) chats.antibot = false
+                if (!('antilink' in chats)) chats.antilink = true
+                 if (!('antibot' in chats)) chats.antibot = true
             } else global.db.data.chats[m.chat] = {
+                antiDelete: true,
                 mute: false,
                 antilink: true,
                 antibot: true,
             }
 
 
+chatsasync function deleteUpdate(message) {
+    try {
+        
+       
+      if (typeof process.env.antidelete === 'undefined' || process.env.antidelete.toLowerCase() === 'false') return;
 
+
+        const {
+            fromMe,
+            id,
+            participant
+        } = message
+        if (fromMe)
+            return
+        let msg = this.serializeM(this.loadMessage(id))
+        if (!msg)
+            return
+        let chats = global.db.data.chats[msg.chat] || {}
+       
+            await this.reply(conn.user.id, `
+            ≡ deleted a message 
+            ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
+            ▢ *Number :* @${participant.split`@`[0]} 
+            └─────────────
+            `.trim(), msg, {
+                        mentions: [participant]
+                    })
+        this.copyNForward(conn.user.id, msg, false).catch(e => console.log(e, msg))
+    } catch (e) {
+        console.error(e)
+    }
+}
 
 	    let setting = db.data.settings[botNumber]
         if (typeof setting !== 'object') db.data.settings[botNumber] = {}
