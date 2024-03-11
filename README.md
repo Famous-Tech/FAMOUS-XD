@@ -1,68 +1,101 @@
 
+ Fixing All Today 
+ 
+ 
+ 
  <h1 align="center">GSS BOTWA MD</h1> 
 <p align="center"> Introducing GSS BOTWA MD, It is designed to bring a whole new level of excitement to your boring WhatsApp use. </p>
 
-<p align="center">
-  <a href="https://github.com/gssbotwa">
-    <img src="https://img.shields.io/github/followers/gssbotwa?style=flat-square&logo=github&color=black">
-  <a href="https://github.com/gssbotwa/Gssbotwa2/stargazers"> 
-     <img src="https://img.shields.io/github/stars/gssbotwa/Gssbotwa2?style=flat-square&logo=github&color=black">
-   <a href="https://github.com/gssbotwa/Gssbotwa2/fork">
-    <img src="https://img.shields.io/github/forks/gssbotwa/Gssbotwa2?style=flat-square&logo=github&color=black">
-    
-  
-<p align="center"> 
-    <a aria-label="Subscribe Me" href="https://www.youtube.com/@InnoxentTech?sub_confirmation=1" target="_blank">
-   <img alt="whatsapp" src="https://img.shields.io/badge/Subscribe Yt-red?style=for-the-badge&logo=youtube&logoColor=white" />
-    <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029VaGvk6XId7nHNGfiRs0m" target="_blank">
-   <img alt="whatsapp" src="https://img.shields.io/badge/Join Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
+
+   <p align="center">
+ <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w" target="_blank">
+    <img alt="whatsapp" src="https://img.shields.io/badge/Join Our Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
+  </a>
+  </a>
+  <a aria-label="GSS BOTWA MD is free to use" href="https://youtube.com/@mhmodsofc" target="_blank">
+    <img alt="MH MODS OFC Yt" src="https://img.shields.io/youtube/channel/subscribers/UCU071AMRqcd5mfTdCgJFwPg" target="_blank" />
+  </a>
+
 </p>
-<p align="center"><img src="https://profile-counter.glitch.me/{gssbotwa}/count.svg" alt="gssbotwa :: Visitor's Count" /></p>
+<p align="center"><img src="https://profile-counter.glitch.me/{chhaseeb47}/count.svg" alt="chhaseeb47 :: Visitor's Count" /></p>
+
+---
+### 1. FORK THIS REPO
+<a href='[https://github.com/gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
+
+### 2. SCAN QR CODE 
+<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Scan Qr code-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
+<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Scan Qr code 2-black?style=for-the-badge&logo=qrcode&logoColor=white'/></a>
+
+## `𝐌𝐨𝐧𝐠𝐨𝐃𝐁 𝐔𝐑𝐋.`    Your Bot Cannot run without this.
+
+```
+mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority
+```
+<a href='https://youtu.be/_Yqtsho9eI0?si=_ezalTW5QiTI-0w2' target="_blank"><img alt='Mongodb Url Tutorial' src='https://img.shields.io/badge/-Mongodb Url Tutorial-green?style=for-the-badge&logo=mongodb&logoColor=darkgreen'/></a>
+
+
+
+#### DEPLOY TO HEROKU 
+
+1. If You don't have a account in Heroku. Create a account.
+    <br>
+<a href='https://signup.heroku.com/' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+
+2. Now Deploy
+    <br>
+<a href='https://heroku.com/deploy' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+
+3. How To Deploy video Tutorial.
+     <br>
+          <a href='https://youtu.be/BX0vkAirhkY?si=ZoOT-Gsis-acsjGT' target="_blank"><img alt='Heroku Deploy Tutorial' src='https://img.shields.io/badge/-Heroku Deploy Tutorial-blue?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+
+#### DEPLOY TO CODESPACE
+
+1. If You don't have a account in Codespace. Create a account.
+    <br>
+<a href='https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fcodespaces' target="_blank"><img alt='Codespaces' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=visualstudiocode' width="96.35" height="28"/></a></p>
+
+2. Now Deploy
+    <br>
+<a href='https://github.com/codespaces/new' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=visualstudiocode' width="96.35" height="28"/></a></p>
+
+
+#### DEPLOY TO RAILWAY
+
+1. If You don't have a account in Railway. Create a account.
+    <br>
+<a href='https://railway.app/login' target="_blank"><img alt='Railway' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/></a></p>
+
+2. Now Deploy
+    <br>
+<a href='https://railway.app/new' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/></a></p>
+
+#### DEPLOY TO MONGENIUS
+
+1. If You don't have a account in Mongenius. Create a account.
+    <br>
+<a href='https://studio.mogenius.com/user/registration' target="_blank"><img alt='Mongenius' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=genius' width="96.35" height="28"/></a></p>
+
+2. Now Deploy
+    <br>
+<a href='https://railway.app/new' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=genius' width="96.35" height="28"/></a></p>
+
+
+#### DEPLOY TO REPLIT
+
+1. If You don't have a account in Replit. Create a account.
+    <br>
+<a href='https://replit.com/' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=replit&logoColor=white'/></a>
+
+2. Now Deploy
+    <br>
+<a href='https://replit.com/github/gssbotwa/Gssbotwa2' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Deploy-black?style=for-the-badge&logo=replit&logoColor=white'/></a>
 
 ---
 
-<h2 align="left"> 1.🔰 Tap Here To Fork 🔰 </h2>
-  <a href="https://github.com/Gssbotwa/Gssbotwa2/fork">
-    <img src="https://img.shields.io/badge/FORK GSSBOTWA MD-h?color=white&style=for-the-badge&logo=stackshare" />
-  </a>
-</h2>
-<br>
-<h2 align="LEFT"> 2.🍁  Run Repl for Credit Js 🍁 </h2>
-
-<h2 align="LEFT">
-  <a href="https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1">
-    <img src="https://repl.it/badge/github/quiec/whatsasena" />
-</a>
-</h2>
-  <br>
-
- ⚙️ To Change Owner Name & Number, Open Config.jis file tap Edit > Change and Commit. ⚙️
-<br>
-<h2 align="left"> 3.❤  Deployment Method❤ </h2>
- <p align="LEFT" >
-  <a href="https://heroku.com/deploy?template=https://github.com/gssbotwa/Gssbotwa2">
-    <img title="GSS on Heroku" src="https://www.herokucdn.com/deploy/button.png" alt="Deploy on Heroku">
-   
- 
-  </a>
- <p align="LEFT" >
-    <a href="https://repl.it/github/gssbotwa/Gssbotwa2">
-    <img src="https://i.ibb.co/zrB5kMh/deploy-on-repl.jpg" width="170px" alt="Deploy REPLIT" >
-<h2 align="left">
-  <a href="https://railway.app/new">
-    <img title="GSS on Railway" src="https://railway.app/button.svg" />
-  </a>
-</h1>
-<br>
-
-<h1 align="left"> Developers 
-</a>
-</h2>
-
-<br>
-
-
-<div align="LEFT">
+## `𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑`
+<div align="left">
   <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Ash"/></a>
 <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
  </div>
@@ -75,6 +108,9 @@
 | [𝐂𝐇 𝐇𝐀𝐒𝐄𝐄𝐁](https://github.com/chhaseeb47) |
 | CO.Devloper |
 
+
+
+  </br> 
 <h4 align="left">
 ##𝐒𝐮𝐩𝐩𝐨𝐫𝐭 :
   
@@ -93,6 +129,14 @@
     <img src="https://i.ibb.co/2MLVZwm/whatsapp-logo-icon-181644.png" align="centre" width="90" />
 
 
+<p align="left">
+ 
+
+
+
+</br>
+
+
 <h2 align="center">  Reminder
 </h2>
    
@@ -103,7 +147,7 @@
 ---
 
 </p>
-<h1 align="center"> 𝐄𝐭𝐡𝐢𝐱 𝐒𝐢𝐝 𝐗 𝐇𝐚𝐬𝐞𝐞𝐛
+<h1 align="center"> Nothing...
 </h1>
 
  <br><br>
