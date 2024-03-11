@@ -515,7 +515,7 @@ if (!isCreator && global.onlypc && m.isGroup) {
     return m.reply("Hello, if you want to use this bot, please chat privately with the bot.")
 }
 
-if (TYPING_ENABLED && command) {
+if (TYPING_ENABLED) {
   // Execute code when REACODING is enabled
   gss.sendPresenceUpdate('composing');
 }
