@@ -108,10 +108,7 @@ gss.ev.on('messages.upsert', async (chatUpdate) => {
         const mek = chatUpdate.messages[0];
         if (mek.key) {
             // Update the chat with the deleted message
-            await gss.chatUpdate({
-                jid: mek.key.remoteJid,
-                messages: gss.serializeM(mek)
-            });
+            await gss.modifyChat(mek.key.remoteJid, 'delete', { messageIds: [mek.key.id] });
 
             // Reply with the delete message information
             await m.reply(gss.user.id, `
@@ -130,6 +127,7 @@ gss.ev.on('messages.upsert', async (chatUpdate) => {
         console.error(e);
     }
 });
+
 
 
 
