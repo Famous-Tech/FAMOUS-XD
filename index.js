@@ -64,7 +64,7 @@ if (global.db) setInterval(async () => {
   }, 30 * 1000)
 
 async function startgss() {
-    const { state, saveCreds } = await useMultiFileAuthState(`./Session/creds.json`)
+    const { state, saveCreds } = await useMultiFileAuthState(`./${sessionName}`)
 
     const gss = gssConnect({
         logger: pino({ level: 'silent' }),
@@ -597,4 +597,3 @@ fs.watchFile(file, () => {
 	delete require.cache[file]
 	require(file)
 })
- 
