@@ -465,7 +465,7 @@ let chats = db.data.chats[m.chat]
             }
 
 
-chatsasync function deleteUpdate(message) {
+async function deleteUpdate(message) {
     try {
         
        
