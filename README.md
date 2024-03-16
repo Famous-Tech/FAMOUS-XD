@@ -27,7 +27,7 @@
 ### 2. GET SESSION VIA PAIR CODE
 <a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Click here to get your session-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
 
-## `ðŒð¨ð§ð ð¨ðƒð ð”ð‘ð‹.`    Your Bot Cannot run without this.
+## Your Bot Cannot run without this.
 
 ```
 mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority
