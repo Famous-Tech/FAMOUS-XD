@@ -1,24 +1,20 @@
 
 
 # `GSS BOTWA V2`
-<br>
+br>
 <br>
 
 
-![Typing SVG](https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=3F00FF&center=true&width=900&height=100&lines=Its%20GSS-BOTWA-V2-MD;%20Multi-Device%20WhatsApp%20Bot;%20Developed%20By%20ETHIX%20Xsid)
+!<img src="https://readme-typing-svg.demolab.com?font=Capriola&size=40&duration=4000&pause=450&color=F70069&background=FFFFAA00&center=true&random=false&width=600&height=100&lines=Welcome+to+GSSBOTWA+MD+!;Explore+the+world+of+features!" />
 <p align="center">
   
-</p>
 
-<p align="center">
-<a href="https://github.com/gssbotwa"><img title="Author" src="https://img.shields.io/badge/CREATOR-SALMAN SER-black.svg?style=for-the-badge&logo=github"></a>
-
-### â„¹ï¸ **About GSS BOTWA-V2**
+### ℹ️¸ **About GSS BOTWA-V2**
 GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https://github.com/gssbotwa). It offers a wide range of extraordinary features, making it an advanced and user-friendly bot for various purposes.
 
 <p align="center"><img src="https://profile-counter.glitch.me/{GSSBOTWA-V2}/count.svg" alt="ETHIX Xsid :: Visitor's Count" /></p>
 
-### ðŸ“Š **Bot Statistics**
+### 📊**Bot Statistics**
 <p align="center">
 <a href="https://github.com/gssbotwa/followers"><img title="Followers" src="https://img.shields.io/github/followers/gssbotwa?color=red&style=flat-square"></a>
 <a href="https://github.com/gssbotwa/gssbotwa2/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/gssbotwa/gssbotwa2?color=blue&style=flat-square"></a>
@@ -36,37 +32,35 @@ GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https
 ####
 
 *Gssbotwa-V2* - A Advanced Multi Device whatsapp bot
--------
 
 ***
 
-## â­ `Star This Repo`
-If you find gssbotwa2 helpful, consider giving it a star â­ to show your appreciation.
+### Small Description About 
 
-Thanks to all contributors! ðŸš€
+- ✔️ | Simple
+- ✔️ | Fully Featured
+- ✔️ | Anti (call/sticker & more)
+- ✔️ | Nsfw 
+- ✔️ | Sticker 
+- ✔️ | Text Quotes
+- ✔️ | Pies
+- ✔️ | Anime 
+- ✔️ | Tools 
 
+-------
+# 🔥 MAIN SETUP
 
-
-## ðŸš€ `Bot Features`
-| Feature                          | Description                                             | Available    | Version    |
-| ---------------------------------| ------------------------------------------------------- | ------------ | ---------- |
-| Multi-Device Support             | Operate the bot on multiple devices simultaneously      | âœ…           | 3.0        |
-| AI Chat Bot                      | Bot Can Reply To Questions                              | âœ…           | 3.0        |
-| Downloader Commands              | Download various types of content from the internet     | âœ…           | 3.0        |
-| Hidden NSFW Commands             | Access a range of NSFW commands hidden in the bot       | âœ…           | 3.0        |
-| Logo Commands                    | Generate logos using specialized commands               | âœ…           | 3.0        |
-| Anime Commands                   | Explore anime-related commands and features             | âœ…           | 3.0        |
-| Bot Cantrol Commands             | Cantrol Bot Without Opening Deploy Platform             | âœ…           | 3.0        |
-| Various Games                    | Enjoy a variety of games within the bot                 | âœ…           | 3.0        |
-| Audio/Video Editor Commands      | Edit audio and video files with bot commands            | âœ…           | 3.0        |
-
-## ðŸ› ï¸ `Installation Methods`
-1. Fork the repo
+   1. Fork the repo
     <br>
-<a href='https://github.com/gssbotwa/gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork Repo-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
+<a href='https://github.com/gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork Repo-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
+2. Get Creds Json (SERVER 1)
+    <br>
+<a href='https://xlicon-v3-web.onrender.com' target="_blank"><img alt='SESSION ID' src='https://img.shields.io/badge/Session_id-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
-## ðŸš€ `Deployments`
+---------
+
+## 🥵🔥 DEPLOYMENTS  (EASIEST WAY)
 #### DEPLOY TO HEROKU 
 
 1. If You don't have a account in Heroku. Create a account.
@@ -75,7 +69,7 @@ Thanks to all contributors! ðŸš€
 
 2. Now Deploy
     <br>
-<a href='https://xlcon-v3-deloy.vercel.app/' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+<a href='  https://heroku.com/deploy?template=https://github.com/gssbotwa/Gssbotwa2' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
 
 #### DEPLOY TO REPLIT
 
@@ -150,110 +144,4 @@ Thanks to all contributors! ðŸš€
     <br>
 <a href='https://dashboard.render.com' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=render' width="96.35" height="28"/></a></p>
 
-## ðŸŽ‡ `NEW DEPLOYMENT`
-NOW DeployðŸ‘‡
-<br>
-## DEPLOY IN KOYEB    
-[![Deploy on Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/auth/signup)  
 
-# `TUTORIALS`
-
-
-   
-## `CREDITS` 
-<div><button id="boton" type="button">Baileys - By WhiskeySockets & adiwajshing</button></div>
-<a href="https://github.com/WhiskeySockets/Baileys"><img src="https://github.com/WhiskeySockets.png" width="150" height="150" alt="adiwajshing"/></a>
-<div><button id="boton" type="button">Base  - By CHEEMS BOTZ</button></div>
-
-
-## ðŸ“› `OWNER` 
-<a href="https://github.com/gssbotwa"><img src="https://github.com/gssbotwa.png" width="250" height="250" alt="Ethix Xsid"/></a>
-  
-**gssbotwa-V2** - By `Ethix`
-<br>
-`Development , Maintainence , Bot Updates`
-
-
--------
-
-## ðŸŒˆ `Support Us`
-- **Mail Us:** [bsid4961@gmail.com](mailto:bsid4961@gmail.com)
-- **Join Our Support Group:**
- <p align="center">
-   
-   
-
-<a aria-label="Join our chats" href="https://wa.me/917050906659?text=Hi!! Ethix Xsid, I need Your Help" target="_blank">
-    <img alt="whatsapp" src="https://img.shields.io/badge/Owner%20Whatsapp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
-
-
-## ðŸ”’ `Reminder`
-Misusing the bot may result in a ban from WhatsApp. Use at your own risk.
-
-
-# Install Manually ðŸ‘‡
-## `Requirements`
-* [Node.js](https://nodejs.org/en/)
-* [Git](https://git-scm.com/downloads)
-* [FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2020-12-08-13-03/ffmpeg-n4.3.1-26-gca55240b8c-win64-gpl-4.3.zip)
-* [Libwebp](https://developers.google.com/speed/webp/download)
-* Any text editor
-## `Clone Repo & Installation dependencies`
-```bash
-git clone https://github.com/<your gitHub Username>/gssbotwa2.git
-cd gssbotwa2
-
-npm start
-```
-## `For Termux/Ssh/Ubuntu`
-```bash
-apt update
-apt upgrade
-pkg update && pkg upgrade
-pkg install bash
-pkg install libwebp
-pkg install git -y
-pkg install nodejs -y 
-pkg install ffmpeg -y 
-pkg install wget
-pkg install imagemagick -y
-git clone https://github.com/<your gitHub Username>/gssbotwa2
-cd gssbotwa2
-yarn install
-npm start
-```
-## `For VPS`
-```bash
-apt install nodejs 
-apt install git 
-apt apt install ffmpeg 
-apt apt install libwebp 
-apt apt install imagrmagick
-apt install bash
-git clone https://github.com/<your gitHub Username>/gssbotwa2
-cd gssbotwa2
-npm start
-```
-## `For 24/7 Activation (Termux)`
-```bash
-npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs
-```
-
-## `Reminder`
-   
-## 
-- This bot is not made by `WhatsApp Inc.` So misusing the bot might `ban` your `WhatsApp account!`(Though your WhatsApp account can be unbanned only once.)
-- I am not responsible for banning your account.
-- Use at your own risk by keeping this warning in mind.
-
-
-## `NOTICE`
-   
-## 
-- Not For Sale
-- Don't Forget to Give Credits If you are using or Reuploading My Plugins/files
-- Have A Good Day Ahead
-- Don't Use This Script As Your Bot Base 
----
-
- <br><br>
