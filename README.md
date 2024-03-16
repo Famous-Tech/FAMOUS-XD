@@ -1,15 +1,11 @@
 
+<h1 align="center"> ✧GSS BOT WA ✧ </h1>
 
-# `GSS BOTWA V2`
-br>
-<br>
-
-
-!<img src="https://readme-typing-svg.demolab.com?font=Capriola&size=40&duration=4000&pause=450&color=F70069&background=FFFFAA00&center=true&random=false&width=600&height=100&lines=Welcome+to+GSSBOTWA+MD+!;Explore+the+world+of+features!" />
 <p align="center">
-  
+  <img src="https://readme-typing-svg.demolab.com?font=Capriola&size=40&duration=4000&pause=450&color=F70069&background=FFFFAA00&center=true&random=false&width=600&height=100&lines=Welcome+to+GSSBOT+WA+!;Explore+the+world+of+features!" />
+</p>
 
-### ℹ️¸ **About GSS BOTWA-V2**
+### ℹ️¸**About GSS BOTWA-V2**
 GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https://github.com/gssbotwa). It offers a wide range of extraordinary features, making it an advanced and user-friendly bot for various purposes.
 
 <p align="center"><img src="https://profile-counter.glitch.me/{GSSBOTWA-V2}/count.svg" alt="ETHIX Xsid :: Visitor's Count" /></p>
@@ -56,7 +52,7 @@ GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https
 
 2. Get Creds Json (SERVER 1)
     <br>
-<a href='https://xlicon-v3-web.onrender.com' target="_blank"><img alt='SESSION ID' src='https://img.shields.io/badge/Session_id-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
+<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='SESSION ID' src='https://img.shields.io/badge/Session_id-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
 
 ---------
 
@@ -144,4 +140,38 @@ GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https
     <br>
 <a href='https://dashboard.render.com' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=render' width="96.35" height="28"/></a></p>
 
+---
+
+## `𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑`
+<div align="left">
+<a href="[https://github.com/gssbotwa.png]"><img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Ash"/></a>
+  <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
+ </div>
+<br>
+<h4 align="left">
+
+| [Ethix Sid ](https://github.com/gssbotwa) |
+| Owner, Developer, Maintainer, updates|
+
+| [𝐂𝐇 𝐇𝐀𝐒𝐄𝐄𝐁](https://github.com/chhaseeb47) |
+| CO.Devloper, Bug Fixer |
+
+
+</br>
+
+
+<h2 align="center">  Reminder
+</h2>
+   
+- This bot is not made by `WhatsApp Inc.` So misusing the bot might `ban` your `WhatsApp account!`(Though your WhatsApp account can be unbanned only once.)
+- I am not responsible for banning your account.
+- Use at your own risk by keeping this warning in mind.
+
+---
+
+</p>
+<h1 align="center"> Keep Supporting
+</h1>
+
+ <br><br>
 
