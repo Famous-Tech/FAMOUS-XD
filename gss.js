@@ -3970,11 +3970,11 @@ case "tts": case "say":
 
     // Translate tafsir from Bahasa Indonesia to Urdu
     let translatedTafsirUrduRes = await translate(json.data.tafsir.id, { to: 'ur' });
-    let translatedTafsirUrdu = translatedTafsirUrduRes.data.translations[0].translatedText;
+    let translatedTafsirUrdu = translatedTafsirUrduRes?.data?.translations[0]?.translatedText || 'Translation not available';
 
     // Translate tafsir from Bahasa Indonesia to English
     let translatedTafsirEnglishRes = await translate(json.data.tafsir.id, { to: 'en' });
-    let translatedTafsirEnglish = translatedTafsirEnglishRes.data.translations[0].translatedText;
+    let translatedTafsirEnglish = translatedTafsirEnglishRes?.data?.translations[0]?.translatedText || 'Translation not available';
 
     let quranSurah = `
     🕌 *Quran: The Holy Book*\n
@@ -3992,6 +3992,7 @@ case "tts": case "say":
        gss.sendMedia(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, { type: 'audioMessage', ptt: true });
     }
     break;
+
 
 
 
