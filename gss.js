@@ -3943,7 +3943,7 @@ case "tts": case "say":
         let surahInput = m.text.split(' ')[1];
 
         if (!surahInput) {
-            throw new Error(`Please specify the surah number or name`);
+            throw (`Please specify the surah number or name`);
         }
 
         let surahListRes = await fetch('https://quran-endpoint.vercel.app/quran');
@@ -3956,14 +3956,14 @@ case "tts": case "say":
         );
 
         if (!surahData) {
-            throw new Error(`Couldn't find surah with number or name "${surahInput}"`);
+            throw (`Couldn't find surah with number or name "${surahInput}"`);
         }
 
         let ress = await fetch(`https://quran-endpoint.vercel.app/quran/${surahData.number}`);
         
         if (!ress.ok) {
             let error = await ress.json(); 
-            throw new Error(`API request failed with status ${ress.status} and message ${error.message}`);
+            throw (`API request failed with status ${ress.status} and message ${error.message}`);
         }
 
         let json = await ress.json();
@@ -3987,7 +3987,7 @@ case "tts": case "say":
         m.reply(quranSurah);
 
         if (json.data.recitation.full) {
-           gss.sendFile(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, { type: 'audioMessage', ptt: true });
+           gss.sendMedia(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, { type: 'audioMessage', ptt: true });
         }
         break;
 
