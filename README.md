@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Profile Picture"/>
   <img src="https://profile-counter.glitch.me/{chhaseeb47}/count.svg" alt="chhaseeb47 :: Visitor's Count" />
 </p>
 
@@ -36,12 +37,12 @@ Your Bot Cannot run without this.
 #### DEPLOY TO HEROKU
 1. If You don't have an account on Heroku, create one.
    <a href='https://signup.heroku.com/' target="_blank">
-     <img alt='Heroku' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=heroku&logoColor=white'/>
+     <img alt='Create Heroku Account' src='https://img.shields.io/badge/-Create Heroku Account-black?style=for-the-badge&logo=heroku&logoColor=white'/>
    </a>
 
 2. Now Deploy
    <a href='https://heroku.com/deploy' target="_blank">
-     <img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=heroku&logoColor=white'/>
+     <img alt='DEPLOY TO HEROKU' src='https://img.shields.io/badge/-DEPLOY TO HEROKU-black?style=for-the-badge&logo=heroku&logoColor=white'/>
    </a>
 
 3. How To Deploy video Tutorial.
@@ -52,45 +53,45 @@ Your Bot Cannot run without this.
 #### DEPLOY TO CODESPACE
 1. If You don't have an account on Codespace, create one.
    <a href='https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fcodespaces' target="_blank">
-     <img alt='Codespaces' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=visualstudiocode' width="96.35" height="28"/>
+     <img alt='Create Codespace Account' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=visualstudiocode' width="96.35" height="28"/>
    </a>
 
 2. Now Deploy
    <a href='https://github.com/codespaces/new' target="_blank">
-     <img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=visualstudiocode' width="96.35" height="28"/>
+     <img alt='DEPLOY TO CODESPACE' src='https://img.shields.io/badge/DEPLOY TO CODESPACE-h?color=black&style=for-the-badge&logo=visualstudiocode' width="96.35" height="28"/>
    </a>
 
 #### DEPLOY TO RAILWAY
 1. If You don't have an account on Railway, create one.
    <a href='https://railway.app/login' target="_blank">
-     <img alt='Railway' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/>
+     <img alt='Create Railway Account' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/>
    </a>
 
 2. Now Deploy
    <a href='https://railway.app/new' target="_blank">
-     <img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/>
+     <img alt='DEPLOY TO RAILWAY' src='https://img.shields.io/badge/DEPLOY TO RAILWAY-h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/>
    </a>
 
 #### DEPLOY TO MONGENIUS
 1. If You don't have an account on Mongenius, create one.
    <a href='https://studio.mogenius.com/user/registration' target="_blank">
-     <img alt='Mongenius' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=genius' width="96.35" height="28"/>
+     <img alt='Create Mongenius Account' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=genius' width="96.35" height="28"/>
    </a>
 
 2. Now Deploy
    <a href='https://railway.app/new' target="_blank">
-     <img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=genius' width="96.35" height="28"/>
+     <img alt='DEPLOY TO MONGENIUS' src='https://img.shields.io/badge/DEPLOY TO MONGENIUS-h?color=black&style=for-the-badge&logo=genius' width="96.35" height="28"/>
    </a>
 
 #### DEPLOY TO REPLIT
 1. If You don't have an account on Replit, create one.
    <a href='https://replit.com/' target="_blank">
-     <img alt='Heroku' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=replit&logoColor=white'/>
+     <img alt='Create Replit Account' src='https://img.shields.io/badge/-Create Replit Account-black?style=for-the-badge&logo=replit&logoColor=white'/>
    </a>
 
 2. Now Deploy
    <a href='https://replit.com/github/gssbotwa/Gssbotwa2' target="_blank">
-     <img alt='Heroku' src='https://img.shields.io/badge/-Deploy-black?style=for-the-badge&logo=replit&logoColor=white'/>
+     <img alt='DEPLOY TO REPLIT' src='https://img.shields.io/badge/-DEPLOY TO REPLIT-black?style=for-the-badge&logo=replit&logoColor=white'/>
    </a>
 
 ---
