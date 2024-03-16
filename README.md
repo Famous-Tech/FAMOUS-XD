@@ -24,12 +24,8 @@ GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https
 <p align='center'>
 </p>
 
-  
-####
-
-*Gssbotwa-V2* - A Advanced Multi Device whatsapp bot
-
 ***
+
 
 ### Small Description About 
 
@@ -155,6 +151,19 @@ GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https
 
 | [𝐂𝐇 𝐇𝐀𝐒𝐄𝐄𝐁](https://github.com/chhaseeb47) |
 | CO.Devloper, Bug Fixer |
+
+## ```Connect With Me```
+
+<a href="https://api.whatsapp.com/send?phone=917050906659&text=Hello+SID+BRO+❤️✨"><img src="https://img.shields.io/badge/Connect on WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
+<a href="https://youtube.com/@mhmodsofc"><img src="https://img.shields.io/badge/Subscribe on Youtube-E4405F?style=for-the-badge&logo=youtube&logoColor=white"></a>
+
+## ```Bot Support Groups```
+
+<a href="https://chat.whatsapp.com/HwhBcKPN1AWKuImlq5kG3X"><img src="https://img.shields.io/badge/Join support group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
+
+<a href="https://whatsapp.com/channel/0029Va8SjGU1noyxsYBA2K2e"><img src="https://img.shields.io/badge/Follow Channel For latest info & CC-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
+
+---------
 
 
 </br>
