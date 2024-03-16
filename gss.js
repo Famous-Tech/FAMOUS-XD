@@ -3959,14 +3959,14 @@ case "tts": case "say":
             throw new Error(`Couldn't find surah with number or name "${surahInput}"`);
         }
 
-        let res = await fetch(`https://quran-endpoint.vercel.app/quran/${surahData.number}`);
+        let ress = await fetch(`https://quran-endpoint.vercel.app/quran/${surahData.number}`);
         
-        if (!res.ok) {
-            let error = await res.json(); 
-            throw new Error(`API request failed with status ${res.status} and message ${error.message}`);
+        if (!ress.ok) {
+            let error = await ress.json(); 
+            throw new Error(`API request failed with status ${ress.status} and message ${error.message}`);
         }
 
-        let json = await res.json();
+        let json = await ress.json();
 
         // Translate tafsir from Bahasa Indonesia to Urdu
         let translatedTafsirUrdu = await translate(json.data.tafsir.id, { to: 'ur', autoCorrect: true });
