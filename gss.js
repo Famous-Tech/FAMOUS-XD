@@ -45,7 +45,7 @@ const { Primbon } = require('scrape-primbon')
 const primbon = new Primbon()
 const osu = require("node-os-utils");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const translate = require('translate-google-api');
+const { translate } = require('translate-google-api');
   const { cpus, totalmem, freemem } = require("os");
   const {  sizeFormatter } = require("human-readable");
  const pingSt = new Date();
@@ -3939,7 +3939,9 @@ case "tts": case "say":
 
 
 
-    case 'surah': case 'quran':
+    
+
+case 'surah': case 'quran':
     let surahInput = m.text.split(' ')[1];
 
     if (!surahInput) {
@@ -3971,8 +3973,7 @@ case "tts": case "say":
     // Translate tafsir from Bahasa Indonesia to Urdu
     let translatedTafsirUrdu = '';
     try {
-        let translatedTafsirUrduRes = await translate(json.data.tafsir.id, { to: 'ur' });
-        translatedTafsirUrdu = translatedTafsirUrduRes.data.translations[0].translatedText;
+        translatedTafsirUrdu = await translate(json.data.tafsir.id, { to: 'ur' });
     } catch (error) {
         console.error('Error translating to Urdu:', error);
         translatedTafsirUrdu = 'Translation not available';
@@ -3981,8 +3982,7 @@ case "tts": case "say":
     // Translate tafsir from Bahasa Indonesia to English
     let translatedTafsirEnglish = '';
     try {
-        let translatedTafsirEnglishRes = await translate(json.data.tafsir.id, { to: 'en' });
-        translatedTafsirEnglish = translatedTafsirEnglishRes.data.translations[0].translatedText;
+        translatedTafsirEnglish = await translate(json.data.tafsir.id, { to: 'en' });
     } catch (error) {
         console.error('Error translating to English:', error);
         translatedTafsirEnglish = 'Translation not available';
@@ -4004,8 +4004,6 @@ case "tts": case "say":
        gss.sendMedia(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, { type: 'audioMessage', ptt: true });
     }
     break;
-
-
 
 
 
