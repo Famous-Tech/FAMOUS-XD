@@ -3940,56 +3940,59 @@ case "tts": case "say":
 
 
     case 'surah': case 'quran':
-        let surahInput = m.text.split(' ')[1];
+    let surahInput = m.text.split(' ')[1];
 
-        if (!surahInput) {
-            throw (`Please specify the surah number or name`);
-        }
+    if (!surahInput) {
+        throw (`Please specify the surah number or name`);
+    }
 
-        let surahListRes = await fetch('https://quran-endpoint.vercel.app/quran');
-        let surahList = await surahListRes.json();
+    let surahListRes = await fetch('https://quran-endpoint.vercel.app/quran');
+    let surahList = await surahListRes.json();
 
-        let surahData = surahList.data.find(surah => 
-            surah.number === Number(surahInput) || 
-            surah.asma.ar.short.toLowerCase() === surahInput.toLowerCase() || 
-            surah.asma.en.short.toLowerCase() === surahInput.toLowerCase()
-        );
+    let surahData = surahList.data.find(surah => 
+        surah.number === Number(surahInput) || 
+        surah.asma.ar.short.toLowerCase() === surahInput.toLowerCase() || 
+        surah.asma.en.short.toLowerCase() === surahInput.toLowerCase()
+    );
 
-        if (!surahData) {
-            throw (`Couldn't find surah with number or name "${surahInput}"`);
-        }
+    if (!surahData) {
+        throw (`Couldn't find surah with number or name "${surahInput}"`);
+    }
 
-        let ress = await fetch(`https://quran-endpoint.vercel.app/quran/${surahData.number}`);
-        
-        if (!ress.ok) {
-            let error = await ress.json(); 
-            throw (`API request failed with status ${ress.status} and message ${error.message}`);
-        }
+    let ress = await fetch(`https://quran-endpoint.vercel.app/quran/${surahData.number}`);
+    
+    if (!ress.ok) {
+        let error = await ress.json(); 
+        throw (`API request failed with status ${ress.status} and message ${error.message}`);
+    }
 
-        let json = await ress.json();
+    let json = await ress.json();
 
-        // Translate tafsir from Bahasa Indonesia to Urdu
-        let translatedTafsirUrdu = await translate(json.data.tafsir.id, { to: 'ur', autoCorrect: true });
+    // Translate tafsir from Bahasa Indonesia to Urdu
+    let translatedTafsirUrduRes = await translate(json.data.tafsir.id, { to: 'ur' });
+    let translatedTafsirUrdu = translatedTafsirUrduRes.data.translations[0].translatedText;
 
-        // Translate tafsir from Bahasa Indonesia to English
-        let translatedTafsirEnglish = await translate(json.data.tafsir.id, { to: 'en', autoCorrect: true });
+    // Translate tafsir from Bahasa Indonesia to English
+    let translatedTafsirEnglishRes = await translate(json.data.tafsir.id, { to: 'en' });
+    let translatedTafsirEnglish = translatedTafsirEnglishRes.data.translations[0].translatedText;
 
-        let quranSurah = `
-        🕌 *Quran: The Holy Book*\n
-        📜 *Surah ${json.data.number}: ${json.data.asma.ar.long} (${json.data.asma.en.long})*\n
-        Type: ${json.data.type.en}\n
-        Number of verses: ${json.data.ayahCount}\n
-        🔮 *Explanation (Urdu):*\n
-        ${translatedTafsirUrdu.text}\n
-        🔮 *Explanation (English):*\n
-        ${translatedTafsirEnglish.text}`;
+    let quranSurah = `
+    🕌 *Quran: The Holy Book*\n
+    📜 *Surah ${json.data.number}: ${json.data.asma.ar.long} (${json.data.asma.en.long})*\n
+    Type: ${json.data.type.en}\n
+    Number of verses: ${json.data.ayahCount}\n
+    🔮 *Explanation (Urdu):*\n
+    ${translatedTafsirUrdu}\n
+    🔮 *Explanation (English):*\n
+    ${translatedTafsirEnglish}`;
 
-        m.reply(quranSurah);
+    m.reply(quranSurah);
 
-        if (json.data.recitation.full) {
-           gss.sendMedia(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, { type: 'audioMessage', ptt: true });
-        }
-        break;
+    if (json.data.recitation.full) {
+       gss.sendMedia(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, { type: 'audioMessage', ptt: true });
+    }
+    break;
+
 
 
 case 'mediafire': {
