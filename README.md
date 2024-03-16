@@ -1,5 +1,5 @@
 
-<h1 align="center"> ✧GSS BOT WA ✧ </h1>
+<h1 align="center"> ✧ GSS BOT WA ✧ </h1>
 
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Capriola&size=40&duration=4000&pause=450&color=F70069&background=FFFFAA00&center=true&random=false&width=600&height=100&lines=Welcome+to+GSSBOT+WA+!;Explore+the+world+of+features!" />
@@ -31,8 +31,8 @@ GSS BOTWA-V2 is a Cool Multi-Device WhatsApp bot developed by [ETHIX Xsid](https
 
 - ✔️ | Simple
 - ✔️ | Fully Featured
-- ✔️ | Anti (call/sticker & more)
-- ✔️ | Nsfw 
+- ✔️ | Anti (heroku ban,anti number)
+- ✔️ | large file dowloading  
 - ✔️ | Sticker 
 - ✔️ | Text Quotes
 - ✔️ | Pies
