@@ -267,7 +267,7 @@ async function setBio() {
     const uptimeSeconds = Math.floor(process.uptime() % 60);
 
     const status = `🗓 ${timeString} Auto Bio By Gss_Botwa\n`;
-    if (process.env.AUTO_ABOUT || 'true' === 'true') await gss.updateProfileStatus(status);
+    if (process.env.AUTO_ABOUT === 'true') await gss.updateProfileStatus(status);
     return "Done";
 }
 
