@@ -500,29 +500,28 @@ if (!('autobio' in setting)) setting.autobio = false
             timezone: "Asia/kolkata"
         })
         
-        
 
 
-require('moment/locale/en'); // Import English locale
-
-// Define a function to get the current Indian time in the required format
-function getCurrentIndianTime() {
-    return moment().tz('Asia/Kolkata').locale('en').format('MM/DD/YYYY ⌚ hh:mm:ss A');
+async function setBio() {
+    setInterval(async () => {
+        if (db.data.settings[botNumber].autobio) {
+            const date = new Date();
+            const options = {
+                timeZone: 'Asia/Kolkata',
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const timeString = moment(date).tz('Asia/Kolkata').format('MM/DD/YYYY ⌚ hh:mm:ss A');
+            const status = `📆 ${timeString} gssbotwa ⚡`;
+            await gss.updateProfileStatus(status).catch(_ => _);
+        }
+    }, 60000);
 }
 
-// Define a function to get the status message with time, date, and emoji
-function getStatusMessage() {
-    const currentTime = getCurrentIndianTime();
-    return `📆 ${currentTime}  gssbotwa ⚡`;
-}
+setBio();
 
-// Auto set bio every minute
-setInterval(async () => {
-    if (db.data.settings[botNumber].autobio) {
-        const status = getStatusMessage();
-        await gss.updateProfileStatus(status).catch(_ => _);
-    }
-}, 60000);
 
 
 
