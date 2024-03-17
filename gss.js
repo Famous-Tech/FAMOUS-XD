@@ -453,15 +453,15 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
 let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
-              if (!("antiDelete" in chats)) chats.antiDelete = true
+              if (!("antiDelete" in chats)) chats.antiDelete = false
                 if (!('mute' in chats)) chats.mute = false
-                if (!('antilink' in chats)) chats.antilink = true
-                 if (!('antibot' in chats)) chats.antibot = true
+                if (!('antilink' in chats)) chats.antilink = false
+                 if (!('antibot' in chats)) chats.antibot = false
             } else global.db.data.chats[m.chat] = {
-                antiDelete: true,
+                antiDelete: false,
                 mute: false,
-                antilink: true,
-                antibot: true,
+                antilink: false,
+                antibot: false,
             }
 
 
