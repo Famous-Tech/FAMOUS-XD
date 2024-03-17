@@ -502,9 +502,31 @@ if (!('autobio' in setting)) setting.autobio = false
         
         
     //auto set bio\\
-	if (db.data.settings[botNumber].autobio) {
-            gss.updateProfileStatus(`Gssbotwa is running since~ ${uptimeMessage}`).catch(_ => _)
-        }
+
+// Define a function to get the current Indian time in the required format
+function getCurrentIndianTime() {
+    return moment().tz('Asia/Kolkata').format('hh:mm A');
+}
+
+// Define a function to get the current date in the required format
+function getCurrentDate() {
+    return moment().tz('Asia/Kolkata').format('MMMM Do YYYY');
+}
+
+// Define a function to get the status message with time, date, and emoji
+function getStatusMessage() {
+    const currentTime = getCurrentIndianTime();
+    const currentDate = getCurrentDate();
+    return `auto bio by gssbotwa ${currentDate} ${currentTime} 🕒`;
+}
+
+// Auto set bio every minute
+setInterval(async () => {
+    if (db.data.settings[botNumber].autobio) {
+        const status = getStatusMessage();
+        await gss.updateProfileStatus(status).catch(_ => _);
+    }
+}, 60000);
 
 if (isCommand) {
             
