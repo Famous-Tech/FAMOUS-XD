@@ -1781,30 +1781,6 @@ case 'anticall': {
 }
 break;
 
-case 'autoabout': case "autobio":
-    if (isBan) return m.reply(mess.banned);
-    if (isBanChat) return m.reply(mess.bangc);
-    if (!isCreator) throw mess.owner;
-
-    let autoAboutStatus = global.AUTO_ABOUT || 'true';
-
-    if (!args || args.length < 1) {
-        gss.sendPoll(m.chat, "Choose Auto About Setting:", [`${prefix}autoabout off`, `${prefix}autoabout on`]);
-    } else {
-        if (args[0].toLowerCase() === "on") {
-            if (autoAboutStatus === 'true') return m.reply(`Already Active Before`);
-            global.AUTO_ABOUT = 'true';
-            m.reply(`Auto About is now *ON*`);
-        } else if (args[0].toLowerCase() === "off") {
-            if (autoAboutStatus === 'false') return m.reply(`Already Inactive Before`);
-            global.AUTO_ABOUT = 'false';
-            m.reply(`Auto About is now *OFF*`);
-        } else {
-            gss.sendPoll(m.chat, "Choose Auto About Setting:", [`${prefix}autoabout off`, `${prefix}autoabout on`]);
-        }
-    }
-    break;
-
 
 
             case 'deleteall':
