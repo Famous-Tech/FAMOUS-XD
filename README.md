@@ -8,16 +8,32 @@
 
 
    <p align="center">
- <a aria-label="Join our chats" href="https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w" target="_blank">
-    <img alt="whatsapp" src="https://img.shields.io/badge/Join Our Channel-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
-  </a>
-  </a>
   <a aria-label="GSS BOTWA MD is free to use" href="https://youtube.com/@mhmodsofc" target="_blank">
-    <img alt="MH MODS OFC Yt" src="https://img.shields.io/youtube/channel/subscribers/UCU071AMRqcd5mfTdCgJFwPg" target="_blank" />
+    <img alt="MH MODS OFC Yt" src="https://img.shields.io/youtube/channel/subscribers/UCWHA-PreVSVaYhDTAiUipCA" target="_blank" />
   </a>
 
 </p>
 <p align="center"><img src="https://profile-counter.glitch.me/{chhaseeb47}/count.svg" alt="chhaseeb47 :: Visitor's Count" /></p>
+
+
+
+  <p align="center">
+<a href="https://whatsapp.com/channel/0029Va8SjGU1noyxsYBA2K2e"><img src="https://img.shields.io/badge/Connect on WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
+<a href="https://www.youtube.com/channel/UCWHA-PreVSVaYhDTAiUipCA"><img src="https://img.shields.io/badge/Subcribe On Youtube-E4405F?style=for-the-badge&logo=youtube&logoColor=white"></a>
+<a href="https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w"><img src="https://img.shields.io/badge/Join WhatsApp Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
+   
+<p align="center">
+<a href="https://github.com/gssbotwa/followers"><img title="Followers" src="https://img.shields.io/github/followers/gssbotwa?color=red&style=flat-square"></a>
+<a href="https://github.com/gssbotwa/Gssbotwa2/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/gssbotwa/Gssbotwa2?color=blue&style=flat-square"></a>
+<a href="https://github.com/gssbotwa/Gssbotwa2/network/members"><img title="Forks" src="https://img.shields.io/github/forks/gssbotwa/Gssbotwa2?color=red&style=flat-square"></a>
+<a href="https://github.com/gssbotwa/Gssbotwa2/watchers"><img title="Watching" src="https://img.shields.io/github/watchers/gssbotwa/Gssbotwa2?label=Watchers&color=blue&style=flat-square"></a>
+<a href="https://github.com/gssbotwa/Gssbotwa2"><img title="Open Source" src="https://img.shields.io/badge/Author-ETHIX SID X %20HASEEB-red?v=103"></a>
+<a href="https://github.com/gssbotwa/Gssbotwa2/"><img title="Size" src="https://img.shields.io/github/repo-size/gssbotwa/Gssbotwa2?style=flat-square&color=green"></a>
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgssbotwa%2FXLICON-V3-MD&count_bg=%2379C83D&title_bg=%23555555&icon=probot.svg&icon_color=%2300FF6D&title=hits&edge_flat=false"/></a>
+<a href="https://github.com/gssbotwa/Gssbotwa2/graphs/commit-activity"><img height="20" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg"></a>&nbsp;&nbsp;
+</p>
+<p align='center'>
+</p>
 
 ---
 ### 1. FORK THIS REPO
@@ -94,7 +110,7 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 
 ---
 
-## `ðƒð„ð•ð„ð‹ðŽðð„ð‘`
+## `DEVELOPERS`
 <div align="left">
   <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Ash"/></a>
 <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
@@ -105,14 +121,14 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 | [SIDHARTH ](https://github.com/gssbotwa) |
 | Owner, Developer, Bug Fixer, Maintainer, updates|
 
-| [ð‚ð‡ ð‡ð€ð’ð„ð„ð](https://github.com/chhaseeb47) |
+| [ CH HASEEB ](https://github.com/chhaseeb47) |
 | CO.Devloper |
 
 
 
   </br> 
 <h4 align="left">
-##ð’ð®ð©ð©ð¨ð«ð­ :
+
   
 ***Tap On Logo To Subscribe MY YouTube Channel***
 </p>
