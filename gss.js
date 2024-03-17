@@ -1794,7 +1794,6 @@ case 'autoabout': case "autobio":
         if (args[0].toLowerCase() === "on") {
             if (autoAboutStatus === 'true') return m.reply(`Already Active Before`);
             global.AUTO_ABOUT = 'true';
-            setBio(); 
             m.reply(`Auto About is now *ON*`);
         } else if (args[0].toLowerCase() === "off") {
             if (autoAboutStatus === 'false') return m.reply(`Already Inactive Before`);
