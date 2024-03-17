@@ -268,7 +268,7 @@ async function setBio() {
 
     const status = `🗓 ${timeString} Auto Bio By Gss_Botwa\n`;
 
-    if (global.AUTO_ABOUT === true) {
+    if (global.AUTO_ABOUT) {
         await gss.updateProfileStatus(status);
         console.log('Status updated:', status);
     } else {
