@@ -503,7 +503,7 @@ if (!('autobio' in setting)) setting.autobio = false
         
     //auto set bio\\
 	if (db.data.settings[botNumber].autobio) {
-            XeonBotInc.updateProfileStatus(`Gssbotwa is running since~ ${uptimeMessage}`).catch(_ => _)
+            gss.updateProfileStatus(`Gssbotwa is running since~ ${uptimeMessage}`).catch(_ => _)
         }
 
 if (isCommand) {
