@@ -1786,19 +1786,19 @@ case 'autoabout': case "autobio":
     if (isBanChat) return m.reply(mess.bangc);
     if (!isCreator) throw mess.owner;
 
-    let autoAboutStatus = process.env.AUTO_ABOUT || 'true';
+    let autoAboutStatus = global.AUTO_ABOUT || 'true';
 
     if (!args || args.length < 1) {
         gss.sendPoll(m.chat, "Choose Auto About Setting:", [`${prefix}autoabout off`, `${prefix}autoabout on`]);
     } else {
         if (args[0].toLowerCase() === "on") {
             if (autoAboutStatus === 'true') return m.reply(`Already Active Before`);
-            process.env.AUTO_ABOUT = 'true';
+            global.AUTO_ABOUT = 'true';
             setBio(); 
             m.reply(`Auto About is now *ON*`);
         } else if (args[0].toLowerCase() === "off") {
             if (autoAboutStatus === 'false') return m.reply(`Already Inactive Before`);
-            process.env.AUTO_ABOUT = 'false';
+            global.AUTO_ABOUT = 'false';
             m.reply(`Auto About is now *OFF*`);
         } else {
             gss.sendPoll(m.chat, "Choose Auto About Setting:", [`${prefix}autoabout off`, `${prefix}autoabout on`]);
