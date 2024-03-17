@@ -501,10 +501,10 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
-if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
-     gss.readMessages([mek.key]);
-}
-
+    //auto set bio\\
+	if (db.data.settings[botNumber].autobio) {
+            XeonBotInc.updateProfileStatus(`Gssbotwa is running since~ ${uptimeMessage}`).catch(_ => _)
+        }
 
 if (isCommand) {
             
@@ -4153,6 +4153,20 @@ await m.reply(`Please wait...`);
       }
 }
 break;
+
+ case 'autobio':
+                if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+        if (!isCreator) throw mess.owner
+                if (args.length < 1) return m.reply(`Example ${prefix + command} on/off`)
+                if (q == 'on') {
+                    db.data.settings[botNumber].autobio = true
+                    m.reply(`Successfully Changed AutoBio To ${q}`)
+                } else if (q == 'off') {
+                    db.data.settings[botNumber].autobio = false
+                    m.reply(`Successfully Changed AutoBio To ${q}`)
+                }
+            break
 
  case 'gitclone':
    if (isBan) return m.reply(mess.banned);
