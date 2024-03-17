@@ -153,7 +153,7 @@ const hours = Math.floor((uptime % (24 * 3600)) / 3600); // Calculate hours
 const minutes = Math.floor((uptime % 3600) / 60); // Calculate minutes
 const seconds = Math.floor(uptime % 60); // Calculate seconds
 //Uptime
-  const uptimeMessage = `*I am alive now since ${day}D ${hours}H ${minutes}M ${seconds}S*`;
+  const uptimeMessage = `*I am alive now since ${day}d ${hours}h ${minutes}m ${seconds}s*`;
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
   
