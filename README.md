@@ -1,8 +1,4 @@
 
- Fixing All Today 
- 
- 
- 
  <h1 align="center">GSS BOTWA MD</h1> 
 <p align="center"> Introducing GSS BOTWA MD, It is designed to bring a whole new level of excitement to your boring WhatsApp use. </p>
 
@@ -40,7 +36,7 @@
 
 
 ### 2. GET SESSION VIA PAIR CODE
-<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Click here to get your session-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
+<a href='https://replit.com/@MHMODS/GSS-BOT-WA-PAIR?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Click here to get your credit js-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
 
 ## Your Bot Cannot run without this.
 
@@ -63,7 +59,7 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 
 3. How To Deploy video Tutorial.
      <br>
-          <a href='https://youtu.be/BX0vkAirhkY?si=ZoOT-Gsis-acsjGT' target="_blank"><img alt='Heroku Deploy Tutorial' src='https://img.shields.io/badge/-Heroku Deploy Tutorial-blue?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+          <a href='https://youtu.be/NbREC9DTQcA?si=bamV9UTA5nXGwDDD' target="_blank"><img alt='Heroku Deploy Tutorial' src='https://img.shields.io/badge/-Heroku Deploy Tutorial-red?style=for-the-badge&logo=youtube&logoColor=white'/></a>
 
 #### DEPLOY TO CODESPACE
 
@@ -162,7 +158,7 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 ---
 
 </p>
-<h1 align="center"> Nothing...
+<h1 align="center"> Keep Supporting
 </h1>
 
  <br><br>
