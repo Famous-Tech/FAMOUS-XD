@@ -3156,13 +3156,10 @@ const captionText = `
   break;
 }
 
-
-
-
 case 'play': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!text) return m.reply('Enter YouTube Video Link or Search Query!');
+  if (!text) return m.reply('Enter Search Query!');
 
   try {
     const searchResults = await yts(text);
@@ -3191,7 +3188,6 @@ case 'play': {
     console.error('Error during play:', error);
     m.reply('Unexpected error occurred.');
   }
-
   break;
 }
 
@@ -3247,7 +3243,6 @@ case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
       audioStream.on('end', () => resolve(Buffer.concat(chunks)));
       audioStream.on('error', (error) => reject(error));
     });
-
     await gss.sendMessage(m.chat, { document: audioBuffer, mimetype: 'audio/mp3', fileName: `${currentResult.title}.mp3` }, { quoted: m });
   } catch (error) {
     console.error(`Error during audio download:`, error);
@@ -3303,11 +3298,8 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
         if (isBanChat) return m.reply(mess.bangc);
 
       currentPollIndex++;
-
-
       if (videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
         const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
-
 
         const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
 
