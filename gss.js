@@ -61,7 +61,6 @@ const genAI = new GoogleGenerativeAI(apiKey);
 const tempMailAddresses = {};
 const defaultLang = 'en'
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
-let vcapiKey = 'JNIEhCxbV8apFC4RvHvl8ntahzGv1Vf0XzLp3q5upQcxyu6dn0KYNsJno8ZM';
 
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
@@ -254,8 +253,7 @@ async function mainSys() {
   let OS = osu.os.platform();
   let ipx = osu.os.ip();
 
-   // const chats = Object.entries(client.chats).filter(([id, data]) => id && data.isChats) 
-   //  const groupsIn = chats.filter(([id]) => id.endsWith('@g.us')) //groups.filter(v => !v.read_only) 
+
      const used = process.memoryUsage() 
      const _cpus = cpus().map(cpu => { 
          cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0) 
@@ -823,7 +821,7 @@ during ${clockString(new Date - user.afkTime)}`)
         const cmdAi = ["Ai", "Voiceai", "Bug", "Report", "Gpt", "Dalle", "Remini"];
 const cmdTool = ["Calculator", "Tempmail", "Checkmail", "Info", "Trt", "Tts"];
 const cmdGrup = ["LinkGroup", "Setppgc", "Setname", "Setdesc", "Group", "Gcsetting", "Welcome", "Left", "SetWelcome", "SetLeft", "Editinfo", "Add", "Kick", "HideTag", "Tagall", "Totag", "Tagadmin", "AntiLink", "AntiToxic", "Mute", "Promote", "Demote", "Revoke", "Poll", "Getbio"];
-const cmdDown = ["Apk", "Facebook", "Mediafire", "Pinterestdl", "XnxxSearch", "Xnxxdl", "Gitclone", "Gdrive", "Insta", "Instadoc", "Ytmp3", "Ytmp4", "Play", "Song", "Video", "Ytmp3doc", "Ytmp4doc", "Tiktok", "Tiktokdoc"];
+const cmdDown = ["Apk", "Facebook", "Mediafire", "Pinterestdl", "XnxxSearch", "Xnxxdl", "Gitclone", "Gdrive", "Insta", "Ytmp3", "Ytmp4", "Play", "Song", "Video", "Ytmp3doc", "Ytmp4doc", "Tiktok"];
 const cmdSearch = ["Play", "Yts", "Imdb", "Google", "Gimage", "Pinterest", "Wallpaper", "Wikimedia", "Ytsearch", "Ringtone", "Lyrics"];
 const cmdFun = ["Delttt", "Tictactoe"];
 const cmdConv = ["Removebg", "Sticker", "Emojimix", "Tovideo", "Togif", "Tourl", "Tovn", "Tomp3", "Toaudio", "Ebinary", "dbinary", "Styletext", "Fontchange", "Fancy", "Upscale", "hd", "attp", "attp2", "attp3", "ttp", "ttp2", "ttp3", "ttp4", "ttp5", "qc"];
@@ -3186,7 +3184,7 @@ case 'play': {
     );
   } catch (error) {
     console.error('Error during play:', error);
-    m.reply('Unexpected error occurred.');
+    m.reply('Unexpected error occurred. please vote on next and try again');
   }
   break;
 }
@@ -3223,7 +3221,7 @@ case '𝗡𝗘𝗫𝗧': {
         await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mp4', fileName: `${currentResult.title}.mp3` }, { quoted: m });
       } catch (error) {
         console.error(`Error during audio download:`, error);
-        m.reply('Unexpected error occurred.');
+        m.reply('Unexpected error occurred.please vote on next and try again');
       }
       break;
     }
@@ -3244,7 +3242,7 @@ case '𝗡𝗘𝗫𝗧': {
         await gss.sendMessage(m.chat, { document: audioBuffer, mimetype: 'audio/mp3', fileName: `${currentResult.title}.mp3` }, { quoted: m });
       } catch (error) {
         console.error(`Error during audio download:`, error);
-        m.reply('Unexpected error occurred.');
+        m.reply('Unexpected error occurred.please vote on next and try again');
       }
       break;
     }
@@ -3265,7 +3263,7 @@ case '𝗡𝗘𝗫𝗧': {
         await gss.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4', caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
       } catch (error) {
         console.error(`Error during video download:`, error);
-        m.reply('Unexpected error occurred.');
+        m.reply('Unexpected error occurred.please vote on next and try again');
       }
       break;
     }
@@ -3286,7 +3284,7 @@ case '𝗡𝗘𝗫𝗧': {
         await gss.sendMessage(m.chat, { document: videoBuffer, mimetype: 'video/mp4', fileName: `${currentResult.title}.mp4`, caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
       } catch (error) {
         console.error(`Error during video download:`, error);
-        m.reply('Unexpected error occurred.');
+        m.reply('Unexpected error occurred.please vote on next and try again');
       }
       break;
     }
@@ -3423,15 +3421,6 @@ case 'instagram':
     break;
 
 
-case 'igdldoc':
-case 'instadoc':
-case 'igdoc':
-case 'instagramdoc':
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    await downloadAndSendMedia(m, text, true);
-    break;
-
 
 case 'toanime':
   if (isBan) return m.reply(mess.banned);
@@ -3474,114 +3463,6 @@ case 'toanime':
   } catch (downloadError) {
     console.error('Error downloading image:', downloadError);
     throw `*[❗] Error downloading image: ${downloadError.message || downloadError}.*`;
-  }
-  break;
-
-
-
-case "voicecloner":
-case "cloner":
-case "audiocloner":
-case "vc":
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    if (!text) {
-        await doReact("❌");
-        return m.reply(`*Provide valid input text.*`);
-    }
-
-    const urls = text.split("|");
-    if (urls.length !== 2) {
-        await doReact("❌");
-        return m.reply(`*Invalid input format. Provide two audio URLs separated by "|".*`);
-    }
-
-    const initAudioUrl = urls[0].trim();
-    const targetAudioUrl = urls[1].trim();
-
-    try {
-        const apiUrl = `https://matrixcoder.vercel.app/api/VoiceCloner?init_audio=${encodeURIComponent(initAudioUrl)}&target_audio=${encodeURIComponent(targetAudioUrl)}&key=${vcapiKey}`;
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-            await doReact("❌");
-            return m.reply(`Invalid response from the API. Status code: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        console.log('API Response:', result);
-
-        if (result.status === "success" && result.output && result.output.length > 0) {
-            const audioUrl = result.output[0];
-
-            await gss.sendMessage(m.chat, {
-                audio: {
-                    url: audioUrl,
-                },
-                mimetype: 'audio/mp4',
-                ptt: true,
-                fileName: `${text}.mp3`,
-            }, {
-                quoted: m,
-            });
-
-            await doReact("✅");
-        } else {
-            await doReact("❌");
-            return m.reply(`Invalid or unexpected API response. ${JSON.stringify(result)}`);
-        }
-    } catch (error) {
-        console.error(error);
-        await doReact("❌");
-        return m.reply(`An error occurred while processing the request. ${error.message}`);
-    }
-    break;
-
-
-case "vckey":
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    if (!text) {
-        await doReact("❌");
-        return m.reply(`*Provide the new API key.*`);
-    }
-
-    vcapiKey = text.trim();
-    await doReact("✅");
-    return m.reply(`API key updated successfully.`);
-    break;
-
-
-
-
-case 'anime':
-case 'girl':
-case 'animegirl':
-case 'sexy':
-case 'sexygirl':
-case 'sexyanime':
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-  const maxImageCount = 10;
-  const requestedCount = Math.min(parseInt(args[0]) || 1, maxImageCount);
-  const imageUrl = requestedCount === 1 ?
-    'https://supreme-catfish-goutammallick516.koyeb.app/randomgirl' :
-    `https://supreme-catfish-goutammallick516.koyeb.app/randomgirl${text}`;
-  const requestTimeout = 10000;
-
-  try {
-    gss.sendMessage(m.chat, {
-      image: {
-        url: imageUrl,
-      },
-      caption: text,
-    }, {
-      quoted: m,
-    });
-  } catch (error) {
-    console.error("Error sending random girl image:", error);
-    m.reply('Failed to fetch or send the image. Please try again later.');
   }
   break;
 
@@ -4565,46 +4446,6 @@ case 'tiktoknowm':
     m.reply('An error occurred while processing your request.');
   }
   break;
-
-//tik tok video in document
-case 'tiktokdoc':
-case 'ttdoc':
-case 'tiktoknowmdoc':
-  try {
-    if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    if (!text) m.reply('Enter Query Link!');
-
-    m.reply(mess.wait);
-
-    let anu = await fetchJson(`https://api.lolhuman.xyz/api/tiktok2?apikey=GataDios&url=${encodeURIComponent(text)}`);
-
-    console.log('TikTok API Response:', anu);
-
-    if (anu.status === 200 && anu.message === 'success' && anu.result) {
-      const videoUrl = anu.result;
-
-      const response = await axios.get(videoUrl, { responseType: 'arraybuffer' });
-      const videoBuffer = Buffer.from(response.data);
-
-      // Save the video to a temporary file
-      const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
-      fs.writeFileSync(`./${randomName}`, videoBuffer);
-
-      // Send the video as a document using gss.sendMessage with the saved video
-      await gss.sendMessage(m.chat, { document: fs.readFileSync(`./${randomName}`), mimetype: 'video/mp4', fileName: 'tiktok_video.mp4', caption: 'Downloaded by gss botwa' }, { quoted: m });
-
-      // Delete the temporary file
-      fs.unlinkSync(`./${randomName}`);
-    } else {
-      console.log ('Error: Unable to fetch TikTok video. Check the console logs for more details.');
-    }
-  } catch (error) {
-    console.error(error);
-    m.reply('An error occurred while processing your request.');
-  }
-  break;
-
 
 
  case 'ttp':
