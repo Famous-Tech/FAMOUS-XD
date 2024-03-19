@@ -4425,7 +4425,7 @@ if (isBan) throw mess.banned;
         const selectedMode = args[0].toLowerCase();
 
         if (selectedMode === 'onlygroup') {
-            gss.sendPoll(m.chat, "Choose Mode Status:", ['.onlygroup true', ' onlygroup false']);
+            gss.sendPoll(m.chat, "Choose Mode Status:", ['.onlygroup true', '.onlygroup false']);
         } else if (selectedMode === 'onlypc') {
             gss.sendPoll(m.chat, "Choose Mode Status:", ['.onlypc true', '.onlypc false']).then((msg) => {
                 const handler = (votes) => {
