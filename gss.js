@@ -3299,7 +3299,7 @@ case '𝗡𝗘𝗫𝗧': {
       if (videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
         const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
-        const pollOptions = [AUDIO'𝗔𝗨𝗗𝗜𝗢.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
+        const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
 
         await gss.sendPoll(
           m.chat,
