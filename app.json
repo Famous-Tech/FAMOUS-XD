@@ -26,9 +26,9 @@
       "value": ""
     },
     "TYPEMENU": {
-  "description": "choose menu type from 1 to 5",
+  "description": "choose menu type from v1 to v5",
   "required": false,
-  "value": ""
+  "value": "v1"
 },
 "ONLYGROUP": {
   "description": "true for bot work in only group otherwise false",
@@ -41,7 +41,7 @@
   "value": "false"
 },
 "AUTO_BLOCK_ENABLED": {
-  "description": "Enable auto block feature",
+  "description": "Enable auto block feature for +212",
   "required": false,
   "value": "true"
 }
