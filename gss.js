@@ -1879,6 +1879,7 @@ case 'autosview':
     case 'autostatusview':{
       if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
+        if (!isCreator) throw mess.owner;
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
                   antiswview = true
