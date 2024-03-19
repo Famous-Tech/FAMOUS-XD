@@ -3158,7 +3158,7 @@ const captionText = `
 
 case 'play': {
   if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+  if (isBanChat) return m.reply(mess.bangc);
   if (!text) return m.reply('Enter Search Query!');
 
   try {
@@ -3181,7 +3181,7 @@ case 'play': {
 
     gss.sendPoll(
       m.chat,
-      `Choose an option:\n\n"${resultsArray[currentPollIndex].title}":\nDuration: ${resultsArray[currentPollIndex].duration}\n Views: ${resultsArray[currentPollIndex].views}\n Author: ${resultsArray[currentPollIndex].author}\n Upload Date: ${resultsArray[currentPollIndex].timestamp}`,
+      `Choose an option:\n\n"${resultsArray[currentPollIndex].title}":\nDuration: ${resultsArray[currentPollIndex].duration}\nViews: ${resultsArray[currentPollIndex].views}\nAuthor: ${resultsArray[currentPollIndex].author}\nUpload Date: ${resultsArray[currentPollIndex].timestamp}`,
       pollOptions
     );
   } catch (error) {
@@ -3197,9 +3197,7 @@ case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧':
 case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧':
 case '𝗡𝗘𝗫𝗧': {
   if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-        if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+  if (isBanChat) return m.reply(mess.bangc);
   const pollOption = command.toLowerCase();
 
   if (!videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
@@ -3209,103 +3207,103 @@ case '𝗡𝗘𝗫𝗧': {
   const currentResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
   switch (pollOption) {
-    
     case '𝗔𝗨𝗗𝗜𝗢': {
-      if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-  try {
-
-    const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
-    const audioBuffer = await new Promise((resolve, reject) => {
-      const chunks = [];
-      audioStream.on('data', (chunk) => chunks.push(chunk));
-      audioStream.on('end', () => resolve(Buffer.concat(chunks)));
-      audioStream.on('error', (error) => reject(error));
-    });
-
-    await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mp4', fileName: `${currentResult.title}.mp3` }, { quoted: m });
-  } catch (error) {
-    console.error(`Error during audio download:`, error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-}
-
-case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
-  try {
-    if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    // Audio download with audio only
-    const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
-    const audioBuffer = await new Promise((resolve, reject) => {
-      const chunks = [];
-      audioStream.on('data', (chunk) => chunks.push(chunk));
-      audioStream.on('end', () => resolve(Buffer.concat(chunks)));
-      audioStream.on('error', (error) => reject(error));
-    });
-    await gss.sendMessage(m.chat, { document: audioBuffer, mimetype: 'audio/mp3', fileName: `${currentResult.title}.mp3` }, { quoted: m });
-  } catch (error) {
-    console.error(`Error during audio download:`, error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-}
-
-case '𝗩𝗜𝗗𝗘𝗢': {
-  try {
-    if (isBan) return m.reply(mess.banned);
+      try {
+        if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
 
-    const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
-    const videoBuffer = await new Promise((resolve, reject) => {
-      const chunks = [];
-      videoStream.on('data', (chunk) => chunks.push(chunk));
-      videoStream.on('end', () => resolve(Buffer.concat(chunks)));
-      videoStream.on('error', (error) => reject(error));
-    });
+        const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
+        const audioBuffer = await new Promise((resolve, reject) => {
+          const chunks = [];
+          audioStream.on('data', (chunk) => chunks.push(chunk));
+          audioStream.on('end', () => resolve(Buffer.concat(chunks)));
+          audioStream.on('error', (error) => reject(error));
+        });
 
-    await gss.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4', caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
-  } catch (error) {
-    console.error(`Error during video download:`, error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-}
+        await gss.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mp4', fileName: `${currentResult.title}.mp3` }, { quoted: m });
+      } catch (error) {
+        console.error(`Error during audio download:`, error);
+        m.reply('Unexpected error occurred.');
+      }
+      break;
+    }
 
-case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
-  try {
-    if (isBan) return m.reply(mess.banned);
+    case '𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
+      try {
+        if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-    // Video download with audio and video
-    const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
-    const videoBuffer = await new Promise((resolve, reject) => {
-      const chunks = [];
-      videoStream.on('data', (chunk) => chunks.push(chunk));
-      videoStream.on('end', () => resolve(Buffer.concat(chunks)));
-      videoStream.on('error', (error) => reject(error));
-    });
 
-    await gss.sendMessage(m.chat, { document: videoBuffer, mimetype: 'video/mp4', fileName: `${currentResult.title}.mp4`, caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
-  } catch (error) {
-    console.error(`Error during video download:`, error);
-    m.reply('Unexpected error occurred.');
-  }
-  break;
-}
+        const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
+        const audioBuffer = await new Promise((resolve, reject) => {
+          const chunks = [];
+          audioStream.on('data', (chunk) => chunks.push(chunk));
+          audioStream.on('end', () => resolve(Buffer.concat(chunks)));
+          audioStream.on('error', (error) => reject(error));
+        });
+
+        await gss.sendMessage(m.chat, { document: audioBuffer, mimetype: 'audio/mp3', fileName: `${currentResult.title}.mp3` }, { quoted: m });
+      } catch (error) {
+        console.error(`Error during audio download:`, error);
+        m.reply('Unexpected error occurred.');
+      }
+      break;
+    }
+
+    case '𝗩𝗜𝗗𝗘𝗢': {
+      try {
+        if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+
+        const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
+        const videoBuffer = await new Promise((resolve, reject) => {
+          const chunks = [];
+          videoStream.on('data', (chunk) => chunks.push(chunk));
+          videoStream.on('end', () => resolve(Buffer.concat(chunks)));
+          videoStream.on('error', (error) => reject(error));
+        });
+
+        await gss.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4', caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
+      } catch (error) {
+        console.error(`Error during video download:`, error);
+        m.reply('Unexpected error occurred.');
+      }
+      break;
+    }
+
+    case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
+      try {
+        if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+
+        const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
+        const videoBuffer = await new Promise((resolve, reject) => {
+          const chunks = [];
+          videoStream.on('data', (chunk) => chunks.push(chunk));
+          videoStream.on('end', () => resolve(Buffer.concat(chunks)));
+          videoStream.on('error', (error) => reject(error));
+        });
+
+        await gss.sendMessage(m.chat, { document: videoBuffer, mimetype: 'video/mp4', fileName: `${currentResult.title}.mp4`, caption: `Downloading video: ${currentResult.title}` }, { quoted: m });
+      } catch (error) {
+        console.error(`Error during video download:`, error);
+        m.reply('Unexpected error occurred.');
+      }
+      break;
+    }
 
     case '𝗡𝗘𝗫𝗧': {
       if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+      if (isBanChat) return m.reply(mess.bangc);
 
       currentPollIndex++;
       if (videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
         const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
-        const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
+        const pollOptions = ['.AUDIO', '.AUDIO_DOCUMENT', '.VIDEO', '.VIDEO_DOCUMENT', '.NEXT'];
 
         await gss.sendPoll(
           m.chat,
-          `Choose an option:\n\n"${nextResult.title}":\nDuration: ${nextResult.duration}\n Views: ${nextResult.views}\n Author: ${nextResult.author}\n Upload Date: ${nextResult.timestamp}`,
+          `Choose an option:\n\n"${nextResult.title}":\nDuration: ${nextResult.duration}\nViews: ${nextResult.views}\nAuthor: ${nextResult.author}\nUpload Date: ${nextResult.timestamp}`,
           pollOptions
         );
       } else {
