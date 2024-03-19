@@ -4413,25 +4413,22 @@ if (isBan) throw mess.banned;
 	    
 		      case 'mode': {
     if (!isCreator) throw mess.owner;
-if (isBan) throw mess.banned;
-        if (isBanChat) throw mess.bangc;
-    const validModes = ['public', 'self', 'onlygroup', 'onlypc'];
+    if (isBan) throw mess.banned;
+    if (isBanChat) throw mess.bangc;
+    const validModes = ['onlygroup', 'onlypc'];
 
-    if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
-        gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode}`));
+    if (args.length < 2 || !validModes.includes(args[0].toLowerCase()) || !['on', 'off'].includes(args[1].toLowerCase())) {
+        gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode} on/off`));
     } else {
         const selectedMode = args[0].toLowerCase();
+        const modeStatus = args[1].toLowerCase() === 'on' ? true : false;
 
-        if (selectedMode === 'public' || selectedMode === 'self') {
-            gss[selectedMode] = true;
-            m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`);
-        } else if (selectedMode === 'onlygroup' || selectedMode === 'onlypc') {
-            global[selectedMode] = true;
-            m.reply(`Bot mode changed to ${selectedMode}. ${mess.success}`);
-        }
+        global[selectedMode] = modeStatus;
+        m.reply(`Bot mode ${selectedMode} ${modeStatus ? 'turned on' : 'turned off'}. ${mess.success}`);
     }
 }
 break;
+
 
 
 
