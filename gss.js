@@ -123,7 +123,7 @@ const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
         const isMedia = /image|video|sticker|audio/.test(mime)
 const isViewOnce = ["viewOnceMessageV2","viewOnceMessage"].includes(m.type)
 	const botname = "𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫";
-	const devlopernumber = "919142294671";
+	const devlopernumber = "917050906659";
         // Group
         const groupMetadata = m.isGroup ? await gss.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
@@ -3178,10 +3178,8 @@ case 'play': {
       return { index, title, duration, views, author, timestamp };
     });
 
-    // Reset the current poll index
     currentPollIndex = 0;
 
-    // Add 'audio', 'video', and 'next' options to the poll
     const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
 
     gss.sendPoll(
@@ -3220,7 +3218,7 @@ case '𝗡𝗘𝗫𝗧': {
       if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   try {
-    // Audio download with audio only
+
     const audioStream = ytdl(currentResult.url, { quality: 'highestaudio', filter: 'audioonly' });
     const audioBuffer = await new Promise((resolve, reject) => {
       const chunks = [];
@@ -3262,7 +3260,7 @@ case '𝗩𝗜𝗗𝗘𝗢': {
   try {
     if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-    // Video download with audio and video
+
     const videoStream = ytdl(currentResult.url, { quality: 'highest', filter: 'audioandvideo' });
     const videoBuffer = await new Promise((resolve, reject) => {
       const chunks = [];
@@ -3303,14 +3301,14 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
     case '𝗡𝗘𝗫𝗧': {
       if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-      // Increment the current poll index for the next search result
+
       currentPollIndex++;
 
-      // Check if there are more search results
+
       if (videoSearchResults.has(`${m.chat}_${currentPollIndex}`)) {
         const nextResult = videoSearchResults.get(`${m.chat}_${currentPollIndex}`);
 
-        // Add 'audio', 'video', and 'next' options to the poll
+
         const pollOptions = ['.𝗔𝗨𝗗𝗜𝗢', '.𝗔𝗨𝗗𝗜𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗩𝗜𝗗𝗘𝗢', '.𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧', '.𝗡𝗘𝗫𝗧'];
 
         await gss.sendPoll(
@@ -3332,6 +3330,8 @@ case '𝗩𝗜𝗗𝗘𝗢𝗗𝗢𝗖𝗨𝗠𝗘𝗡𝗧': {
 
   break;
 }
+
+
 
   case 'restart':
     if (isBan) return m.reply(mess.banned);
