@@ -4425,13 +4425,23 @@ if (isBan) throw mess.banned;
         const selectedMode = args[0].toLowerCase();
 
         if (selectedMode === 'onlygroup') {
-            gss.sendPoll(m.chat, "Choose Mode Status:", ['onlygroup on', 'onlygroup off']);
+            gss.sendPoll(m.chat, "Choose Mode Status:", ['.onlygroup on', ' onlygroup off']);
         } else if (selectedMode === 'onlypc') {
-            gss.sendPoll(m.chat, "Choose Mode Status:", ['onlypc on', 'onlypc off']);
+            gss.sendPoll(m.chat, "Choose Mode Status:", ['.onlypc on', '.onlypc off']).then((msg) => {
+                const handler = (votes) => {
+                    const modeStatus = votes[0] > votes[1]; // 'on' is selected if votes[0] > votes[1]
+                    global[selectedMode] = modeStatus;
+                    m.reply(`Bot mode ${selectedMode} ${modeStatus ? 'turned on' : 'turned off'}. ${mess.success}`);
+                    msg?.clearReactions();
+                    gss.off('poll_update', handler);
+                };
+                gss.on('poll_update', handler);
+            });
         }
     }
 }
 break;
+
 
 
 
