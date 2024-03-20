@@ -4052,7 +4052,7 @@ break;
         if (!isCreator) throw mess.owner
                 if (args.length < 1) return m.reply(`Example ${prefix + command} on/off`)
                 if (q == 'on') {
-                    db.data.settings[botNumber].autobio = true
+                    db.data.settings[botNumber]. io = true
                     m.reply(`Successfully Changed AutoBio To ${q}`)
                 } else if (q == 'off') {
                     db.data.settings[botNumber].autobio = false
@@ -4287,7 +4287,7 @@ if (isBan) throw mess.banned;
     if (isBan) throw mess.banned;
     if (isBanChat) throw mess.bangc;
 
-    const validModes = ['onlygroup', 'onlypc'];
+    const validModes = ['onlygroup', 'onlypc', 'public', 'self'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
         gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode}`));
@@ -4313,8 +4313,22 @@ if (isBan) throw mess.banned;
 break;
 
 
-
-            
+            case 'self': {
+        if (!isCreator) throw mess.owner;
+    if (isBan) throw mess.banned;
+    if (isBanChat) throw mess.bangc;
+                gss.public = false
+                m.reply('*Successful in Changing To Self Usage*')
+            }
+            break
+            case 'public': {
+                if (!isCreator) throw mess.owner;
+    if (isBan) throw mess.banned;
+    if (isBanChat) throw mess.bangc;
+                gss.public = true
+                m.reply('*Successful in Changing To Public Usage*')
+            }
+            break
 
 case 'ping': {
   if (isBan) return m.reply(mess.banned);
