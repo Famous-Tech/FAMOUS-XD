@@ -4281,24 +4281,37 @@ if (isBan) throw mess.banned;
 	    }
 	    break
 	    
-	    case 'addowner': case 'setsudo': {
-  if (!isCreator) throw mess.owner; 
+	    case 'addowner': {
+  if (!isCreator) throw mess.owner; // Only allow creator to add owner(s)
 
-  const numbersToAdd = args.map(num => num.trim()); 
+  const numbersToAdd = args.map(num => num.trim()); // Assuming args is an array containing phone numbers to add
 
   if (numbersToAdd.length === 0) {
     return m.reply('Please provide at least one phone number.');
   }
 
-  global.owner.push(...numbersToAdd); 
-  m.reply(`Added ${numbersToAdd.length} new owner(s) successfully.`);
+  const addedOwners = [];
+
+  numbersToAdd.forEach(num => {
+    if (!global.owner.includes(num)) {
+      global.owner.push(num);
+      addedOwners.push(num);
+    }
+  });
+
+  if (addedOwners.length > 0) {
+    m.reply(`Added ${addedOwners.length > 1 ? 'owners' : 'owner'} successfully. ${addedOwners.join(', ')} added as owner${addedOwners.length > 1 ? 's' : ''}.`);
+  } else {
+    m.reply('None of the provided phone numbers were added as owner.');
+  }
+
   break;
 }
 
-case 'deleteowner': case 'delsudo': {
-  if (!isCreator) throw mess.owner; 
+case 'deleteowner': {
+  if (!isCreator) throw mess.owner; // Only allow creator to delete owner(s)
 
-  const numbersToDelete = args.map(num => num.trim()); 
+  const numbersToDelete = args.map(num => num.trim()); // Assuming args is an array containing phone numbers to delete
 
   if (numbersToDelete.length === 0) {
     return m.reply('Please provide at least one phone number to delete.');
@@ -4315,13 +4328,14 @@ case 'deleteowner': case 'delsudo': {
   });
 
   if (deletedOwners.length > 0) {
-    m.reply(`Deleted ${deletedOwners.length} owner(s) successfully.`);
+    m.reply(`Deleted ${deletedOwners.length > 1 ? 'owners' : 'owner'} successfully. ${deletedOwners.join(', ')} removed as owner${deletedOwners.length > 1 ? 's' : ''}.`);
   } else {
     m.reply('None of the provided phone numbers were found in the owner list.');
   }
 
   break;
 }
+
 
 	    
 	    
