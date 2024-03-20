@@ -4282,7 +4282,7 @@ if (isBan) throw mess.banned;
 	    break
 	    
 	    
-		      case 'mode': {
+		     case 'mode': {
     if (!isCreator) throw mess.owner;
     if (isBan) throw mess.banned;
     if (isBanChat) throw mess.bangc;
@@ -4307,6 +4307,9 @@ if (isBan) throw mess.banned;
                 };
                 gss.on('poll_update', handler);
             });
+        } else if (selectedMode === 'self' || selectedMode === 'public') {
+            gss[selectedMode] = selectedMode === 'public';
+            m.reply(`Successful in Changing To ${selectedMode === 'public' ? 'Public' : 'Self'} Usage.`);
         }
     }
 }
@@ -4350,15 +4353,12 @@ case 'ping': {
   } 
 break;
 
-
-
             
             case 'owner': case 'creator': {
              
                 gss.sendContact(m.chat, global.owner, m)
             }
             break
-
 
             
 case 'getbio':  
