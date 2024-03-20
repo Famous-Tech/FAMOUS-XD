@@ -4011,7 +4011,6 @@ case 'fb': case 'fbdl': case 'facebook': {
             { quoted: m }
         );
 
-        // Delete the temporary file
         fs.unlinkSync(`./${randomName}`);
     } catch (error) {
         console.log(error);
