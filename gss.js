@@ -4281,6 +4281,49 @@ if (isBan) throw mess.banned;
 	    }
 	    break
 	    
+	    case 'addowner': case 'setsudo': {
+  if (!isCreator) throw mess.owner; 
+
+  const numbersToAdd = args.map(num => num.trim()); 
+
+  if (numbersToAdd.length === 0) {
+    return m.reply('Please provide at least one phone number.');
+  }
+
+  global.owner.push(...numbersToAdd); 
+  m.reply(`Added ${numbersToAdd.length} new owner(s) successfully.`);
+  break;
+}
+
+case 'deleteowner': case 'delsudo': {
+  if (!isCreator) throw mess.owner; 
+
+  const numbersToDelete = args.map(num => num.trim()); 
+
+  if (numbersToDelete.length === 0) {
+    return m.reply('Please provide at least one phone number to delete.');
+  }
+
+  const deletedOwners = [];
+
+  numbersToDelete.forEach(num => {
+    const index = global.owner.indexOf(num);
+    if (index !== -1) {
+      global.owner.splice(index, 1);
+      deletedOwners.push(num);
+    }
+  });
+
+  if (deletedOwners.length > 0) {
+    m.reply(`Deleted ${deletedOwners.length} owner(s) successfully.`);
+  } else {
+    m.reply('None of the provided phone numbers were found in the owner list.');
+  }
+
+  break;
+}
+
+	    
 	    
 		     case 'mode': {
     if (!isCreator) throw mess.owner;
