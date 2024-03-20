@@ -196,7 +196,7 @@ gss.ev.on('messages.update', async chatUpdate => {
 	for (let i of kon) {
 	    list.push({
 	    	displayName: await gss.getName(i + '@s.whatsapp.net'),
-	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await gss.getName(i + '@s.whatsapp.net')}\nFN:${await gss.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Ponsel\nitem2.EMAIL;type=INTERNET:bsid4961@gmail.com\nitem2.X-ABLabel:Email\nEND:VCARD`
+	    	vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await gss.getName(i + '@s.whatsapp.net')}\nFN:${await gss.getName(i + '@s.whatsapp.net')}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Phone\nEND:VCARD`
 	    })
 	}
 	gss.sendMessage(jid, { contacts: { displayName: `${list.length} Kontak`, contacts: list }, ...opts }, { quoted })
