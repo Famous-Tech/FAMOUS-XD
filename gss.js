@@ -473,7 +473,7 @@ if (!('autobio' in setting)) setting.autobio = false
 	    } else global.db.data.settings[botNumber] = {
 	    anticall: false,
 		status: 0,
-		autobio: true
+		autobio: false
 	    }
 	    
         } catch (err) {
