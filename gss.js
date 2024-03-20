@@ -4307,8 +4307,8 @@ if (isBan) throw mess.banned;
                 };
                 gss.on('poll_update', handler);
             });
-        } else if (selectedMode === 'self' || selectedMode === 'public') {
-            gss[selectedMode] = selectedMode === 'public';
+        } else {
+            gss.public = selectedMode === 'public';
             m.reply(`Successful in Changing To ${selectedMode === 'public' ? 'Public' : 'Self'} Usage.`);
         }
     }
