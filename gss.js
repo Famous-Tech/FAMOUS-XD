@@ -3421,13 +3421,13 @@ case 'instagram':
     break;
 
 
-
 case 'toanime':
   if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+  if (isBanChat) return m.reply(mess.bangc);
   if (!quoted) return m.reply(`Where is the picture?`);
   if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
 
+  m.reply(mess.wait);
   try {
     // Download the image
     const dataaa = await quoted.download();
@@ -3441,7 +3441,7 @@ case 'toanime':
       const image = await uploadImage(dataaa);
       console.log('Image uploaded successfully:', image);
 
-      // Generate anime version using Lolhuman API
+      // Generate anime version using Lolhuman API or Caliph API as a fallback
       try {
         const anime = `https://api.lolhuman.xyz/api/imagetoanime?apikey=GataDios&img=${image}`;
         await gss.sendMedia(m.chat, anime, 'error.jpg', null, m);
@@ -3465,6 +3465,8 @@ case 'toanime':
     throw `*[❗] Error downloading image: ${downloadError.message || downloadError}.*`;
   }
   break;
+
+
 
 
 case 'cry': case 'kill': case 'hug': case 'pat': case 'lick': 
