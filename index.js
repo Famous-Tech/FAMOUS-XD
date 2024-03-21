@@ -86,41 +86,58 @@ async function startgss() {
     
 
 
-    function sendMessageToOwnerOnDelete(deletedMessage) {
-    const { key, message } = deletedMessage;
-    const deletedMessageText = message ? message : 'Status deleted'; // Agar message nahi hai toh default text use karo
+   gss.ev.on('messages.upsert', async chatUpdate => {
+        //console.log(JSON.stringify(chatUpdate, undefined, 2))
+        try {
+        mek = chatUpdate.messages[0]
+        if (!mek.message) return
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+        if (mek.key && mek.key.remoteJid === 'status@broadcast') return
+        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
+        if (mek.key.id.startsWith('FatihArridho_')) return
+        m = smsg(gss, mek, store)
+        require("./gss")(gss, m, chatUpdate, store)
+        } catch (err) {
+            console.log(err)
+        }
+    })
 
-    // Ab global.owner ko inform karte hain
-    const messageToSend = `Attention: A message or status has been deleted.\n\nDeleted Message:\n${deletedMessageText}`;
-    // Yahaan aap apne preferred messaging method ka use karke message bhej sakte hain
-    console.log(messageToSend); // Example: console.log se message ko console par print kar raha hoon
-}
 
-gss.ev.on('messages.upsert', async chatUpdate => {
+
+
+
+//antidelete 
+
+async function handleDeletedMessage(message) {
     try {
-        mek = chatUpdate.messages[0];
-        if (!mek.message) return;
-
-        // Check if the message has been deleted
-        if (chatUpdate.type === 'delete') {
-            sendMessageToOwnerOnDelete(mek); // Function ko call karke deleted message pass karo
+        const { fromMe, id, participant } = message;
+        if (fromMe) {
             return;
         }
 
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
-        if (mek.key && mek.key.remoteJid === 'status@broadcast') return;
-        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
-        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return;
-        if (mek.key.id.startsWith('FatihArridho_')) return;
+        let msg = this.serializeM(this.loadMessage(id));
+        if (!msg) {
+            return;
+        }
 
-        m = smsg(gss, mek, store);
-        require("./gss")(gss, m, chatUpdate, store);
-    } catch (err) {
-        console.log(err);
+        let chat = global.db.data.chats[msg.chat] || {};
+
+        // Send a reply or perform any other action
+        await this.reply(gss.user.id, `
+        ≡ deleted a message 
+        ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
+        ▢ *Number :* @${participant.split`@`[0]} 
+        └─────────────
+        `.trim(), msg, {
+            mentions: [participant]
+        });
+
+        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg));
+    } catch (e) {
+        console.error(e);
     }
-});
-
-
+}
 
 
     //autostatus view
