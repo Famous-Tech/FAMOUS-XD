@@ -98,13 +98,15 @@ const userWarnings = {};
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
         var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
-        var budy = (typeof m.text == 'string' ? m.text : '')
-        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
-        global.prefix = prefix
-        const isCmd = body.startsWith(prefix)
-        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
-        var args = body.trim().split(/ +/).slice(1)
-        args = args.concat(['','','','','',''])
+        var body = typeof m.text == 'string' ? m.text : '';
+var prefa = global.prefa ?? ''; // Set default value for prefa if not defined in global object
+var prefix = /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : prefa;
+global.prefa = prefix; // Update global.prefa with the new prefix value
+const isCmd = body.startsWith(prefix);
+const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
+var args = body.trim().split(/ +/).slice(1);
+args = args.concat(['', '', '', '', '', '']);
+
 
 //prefix v2
 const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
