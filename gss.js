@@ -98,25 +98,20 @@ const userWarnings = {};
 module.exports = gss = async (gss, m, chatUpdate, store) => {
     try {
         var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
-        var budy = typeof m.text == 'string' ? m.text : '';
-var prefa = global.prefa ?? ['!', '.']; // Set default value for prefa if not defined in global object
-var prefix = prefa.find(symbol => budy.startsWith(symbol)) || prefa[0]; // Find the first prefix from prefa that matches budy or use the first element if none matches
-global.prefa = [prefix]; // Update global.prefa with the new prefix value
-const isCmd = budy.startsWith(prefix);
-const command = budy.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
-var args = budy.trim().split(/ +/).slice(1);
-args = args.concat(['', '', '', '', '', '']);
+        var budy = (typeof m.text == 'string' ? m.text : '')
+        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
+        global.prefix = prefix
+        const isCmd = body.startsWith(prefix)
+        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+        var args = body.trim().split(/ +/).slice(1)
+        args = args.concat(['','','','','',''])
 
 
 
 //prefix v2
-const prefix = Array.isArray(global.prefa) && global.prefa.length > 0 ? global.prefa[0] : '.';
-
-// Check if body starts with the prefix
-const isAsu = body.startsWith(prefix);
-
-// Extract command if body starts with prefix
-const isCommand = isAsu ? body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase() : "";
+const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
+        const isAsu = body.startsWith(global.prefa)
+        const isCommand = isAsu ? body.replace(pric, '').trim().split(/ +/).shift().toLowerCase() : ""
 
         const pushname = m.pushName || "No Name"
         const botNumber = await gss.decodeJid(gss.user.id)
