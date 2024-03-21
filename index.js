@@ -108,6 +108,52 @@ async function startgss() {
 
 
 //antidelete 
+async function handleDeletedMessage(message) {
+    try {
+        const { fromMe, id, participant } = message;
+        if (fromMe) {
+            return;
+        }
+
+        let msg = this.serializeM(this.loadMessage(id));
+        if (!msg) {
+            return;
+        }
+
+        let chat = global.db.data.chats[msg.chat] || {};
+
+        // Check if the message contains media
+        let mediaUrl = '';
+        let caption = 'Status Deleted'; // Default caption for deleted status
+
+        // Check if it's an image
+        if (msg.imageMessage) {
+            mediaUrl = await gss.downloadAndSaveMediaMessage(msg.imageMessage);
+            caption = msg.imageMessage.caption || caption; // Use image caption if available
+        }
+
+        // Check if it's a video
+        if (msg.videoMessage) {
+            mediaUrl = await gss.downloadAndSaveMediaMessage(msg.videoMessage);
+            caption = msg.videoMessage.caption || caption; // Use video caption if available
+        }
+
+        const deletedMessageNotification = `
+        ≡ Deleted Status 
+        ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀𝘿 𝙎𝙏𝘼𝙏𝙐𝙎 
+        ▢ *Number :* @${participant.split`@`[0]} 
+        └─────────────
+        `.trim();
+
+        await gss.sendMessage(conn.user.id, {
+            text: deletedMessageNotification,
+            media: { url: mediaUrl, caption: caption }
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 
 async function handleDeletedMessage(message) {
     try {
@@ -123,17 +169,19 @@ async function handleDeletedMessage(message) {
 
         let chat = global.db.data.chats[msg.chat] || {};
 
-        // Send a reply or perform any other action
-        await this.reply(gss.user.id, `
-        ≡ deleted a message 
-        ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
+        // Construct the deleted message notification
+        const deletedMessageNotification = `
+        ≡ Deleted Message 
+        ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀𝘿 𝙈𝙀𝙎𝙎𝘼𝙂𝙀 
         ▢ *Number :* @${participant.split`@`[0]} 
         └─────────────
-        `.trim(), msg, {
-            mentions: [participant]
+        `.trim();
+
+        // Send the deleted message notification
+        await gss.sendMessage(gss.user.id, {
+            text: deletedMessageNotification
         });
 
-        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg));
     } catch (e) {
         console.error(e);
     }
