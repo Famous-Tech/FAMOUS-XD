@@ -43,13 +43,13 @@ global.mess = {
     wait: '*Processing Your request*',
     endLimit: '`Your daily limit has expired, the limit will be reset every 12 hours`',
 };
-global.link = 'https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w'
+global.link = 'https://whatsapp.com/channel/0029VaWJMi3GehEE9e1YsI1S'
 global.linkGroup = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp'
 global.autoswview = process.env.AUTO_STATUS_SEEN || "true",
 global.typemenu = 'v1' // 'v1' => 'v5'
 global.onlygroup = false // onlygroup
 global.onlypc = false
-global.AUTO_ABOUT = true
+global.AUTO_ABOUT = false
 global.limitawal = {
     premium: 'Infinity',
     free: 10
