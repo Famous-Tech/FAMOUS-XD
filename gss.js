@@ -110,9 +110,14 @@ args = args.concat(['', '', '', '', '', '']);
 
 
 //prefix v2
-const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
-        const isAsu = body.startsWith(pric)
-        const isCommand = isAsu ? body.replace(pric, '').trim().split(/ +/).shift().toLowerCase() : ""
+const prefix = Array.isArray(global.prefa) && global.prefa.length > 0 ? global.prefa[0] : '.';
+
+// Check if body starts with the prefix
+const isAsu = body.startsWith(prefix);
+
+// Extract command if body starts with prefix
+const isCommand = isAsu ? body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase() : "";
+
         const pushname = m.pushName || "No Name"
         const botNumber = await gss.decodeJid(gss.user.id)
         const isCreator = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
@@ -921,7 +926,7 @@ if (m.text) {
 
 
 	    
-        switch(command) {
+        switch(isCommand) {
 	    case 'afk': {
 	      if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
