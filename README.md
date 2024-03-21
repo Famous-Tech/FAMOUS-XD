@@ -1,5 +1,14 @@
+<h1 align="center">GSS BOTWA-MD</h1>
 
- <h1 align="center">GSS BOTWA MD</h1> 
+<p align="center">  
+  <a href="https://youtu.be/WcA7GZuaN0A">
+   <img alt="botgsswa" height="300" src="https://github.com/gssbotwa.png">
+    
+<p align="center">
+<a href="https://github.com/gssbotwa"><img title="Author" src="https://img.shields.io/badge/GSS-BOTWA-black?style=for-the-badge&logo=WhatsApp"></a>
+
+
+ 
 <p align="center"> Introducing GSS BOTWA MD, It is designed to bring a whole new level of excitement to your boring WhatsApp use. </p>
 
 
@@ -133,14 +142,15 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
   </p>
     
  ***Tap On Logo To Contat Me***
+
+
  <p align="left">
-  <a href="mailto:bsid4961@gmail.com ">
-    <img src="https://i.ibb.co/Kx8NXxT/mail-gmail-22737.png" align="centre" width="90" />
-   <a href="https://wa.me/919142294671?text=Hi%20sid%20Sir...%20I%20need%20some%20help%20in%20Gss_Botwa">
-    <img src="https://i.ibb.co/2MLVZwm/whatsapp-logo-icon-181644.png" align="centre" width="90" />
+<a href="mailto:bsid4961@gmail.com"><img title="Author" src="https://img.shields.io/badge/GMAIL-ME-black?style=for-the-badge&logo=Gmail"></a>
+ <p align="left"> 
+  <a href="https://wa.me/919142294671?text=Hi+sid+Sir...+I+need+some+help+in+Gss_Botwa"><img title="Author" src="https://img.shields.io/badge/WHATSAPP-ME-red?style=for-the-badge&logo=WhatsApp"></a>
+  
+   
 
-
-<p align="left">
  
 
 
