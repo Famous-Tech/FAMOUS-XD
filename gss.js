@@ -109,9 +109,10 @@ module.exports = gss = async (gss, m, chatUpdate, store) => {
 
 
 //prefix v2
-const pric = /^#.¦|\\^/.test(body) ? body.match(/^#.¦|\\^/gi) : '.'
-        const isAsu = body.startsWith(global.prefa)
-        const isCommand = isAsu ? body.replace(pric, '').trim().split(/ +/).shift().toLowerCase() : ""
+const pric = /^#|\^/.test(body) ? body.match(/^#|\^/gi) : '.';
+const isAsu = body.startsWith(global.prefa[0]) || body.startsWith(global.prefa[1]);
+const isCommand = isAsu ? body.replace(pric, '').trim().split(/ +/).shift().toLowerCase() : '';
+
 
         const pushname = m.pushName || "No Name"
         const botNumber = await gss.decodeJid(gss.user.id)
