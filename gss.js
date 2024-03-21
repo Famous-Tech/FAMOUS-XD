@@ -921,7 +921,7 @@ if (m.text) {
 
 
 	    
-        switch(isCmd) {
+        switch(command) {
 	    case 'afk': {
 	      if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
