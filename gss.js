@@ -1586,7 +1586,7 @@ case "score":
   const matchId = encodeURIComponent(text);
 
   try {
-    const apiUrl = `https://cricket-olive.vercel.app/score?id=${matchId}`;
+    const apiUrl = `https://iol.apinepdev.workers.dev/${matchId}`;
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
@@ -1601,9 +1601,9 @@ case "score":
     formattedResult += `│⿻   *LIVE MATCH INFO* ✨\n`;
     formattedResult += `│⿻\n`;
 
-    if (result.update && result.update.toLowerCase() !== "data not found") {
-      formattedResult += `│⿻   *${result.title}*\n`;
-      formattedResult += `│⿻   *${result.update}*\n`;
+    if (result.code === 200) {
+      formattedResult += `│⿻   *${result.data.title}*\n`;
+      formattedResult += `│⿻   *${result.data.update}*\n`;
       formattedResult += `│⿻ \n`;
     } else {
       await m.reply(`*Update:* Data not found for the specified match ID.`);
@@ -1611,21 +1611,21 @@ case "score":
       return;
     }
 
-    if (result.livescore && result.livescore.toLowerCase() !== "data not found") {
-      formattedResult += `│⿻   *Live Score:* ${result.livescore}\n`;
-      formattedResult += `│⿻   *Run Rate:* ${result.runrate}\n`;
+    if (result.data.liveScore && result.data.liveScore.toLowerCase() !== "data not found") {
+      formattedResult += `│⿻   *Live Score:* ${result.data.liveScore}\n`;
+      formattedResult += `│⿻   *Run Rate:* ${result.data.runRate}\n`;
       formattedResult += `│⿻\n`;
-      formattedResult += `│⿻   *Batter 1:* ${result.batterone}\n`;
-      formattedResult += `│⿻   *${result.batsmanonerun} (${result.batsmanoneball})* SR: ${result.batsmanonesr} ${result.batsmanone === result.batterone ? "" : ""}\n`;
+      formattedResult += `│⿻   *Batter 1:* ${result.data.batsmanOne}\n`;
+      formattedResult += `│⿻   *${result.data.batsmanOneRun} (${result.data.batsmanOneBall})* SR: ${result.data.batsmanOneSR}\n`;
       formattedResult += `│⿻\n`;
-      formattedResult += `│⿻   *Batter 2:* ${result.battertwo}\n`;
-      formattedResult += `│⿻   *${result.batsmantworun} (${result.batsmantwoball})* SR: ${result.batsmantwosr} ${result.battertwo === result.battertwo ? "" : ""}\n`;
+      formattedResult += `│⿻   *Batter 2:* ${result.data.batsmanTwo}\n`;
+      formattedResult += `│⿻   *${result.data.batsmanTwoRun} (${result.data.batsmanTwoBall})* SR: ${result.data.batsmanTwoSR}\n`;
       formattedResult += `│⿻\n`;
-      formattedResult += `│⿻   *Bowler 1:* ${result.bowlerone}\n`;
-      formattedResult += `│⿻   *${result.bowleroneover} overs, ${result.bowleronerun}/${result.bowleronewickers}, Econ:* ${result.bowleroneeconomy} ${result.bowlerone === result.bowlerone ? "" : ""}\n`;
+      formattedResult += `│⿻   *Bowler 1:* ${result.data.bowlerOne}\n`;
+      formattedResult += `│⿻   *${result.data.bowlerOneOver} overs, ${result.data.bowlerOneRun}/${result.data.bowlerOneWickets}, Econ:* ${result.data.bowlerOneEconomy}\n`;
       formattedResult += `│⿻\n`;
-      formattedResult += `│⿻    *Bowler 2:* ${result.bowlertwo}\n`;
-      formattedResult += `│⿻   *${result.bowlertwoover} overs, ${result.bowlertworun}/${result.bowlertwowickers}, Econ:* ${result.bowlertwoeconomy} ${result.bowlertwo === result.bowlertwo ? "" : ""}\n`;
+      formattedResult += `│⿻   *Bowler 2:* ${result.data.bowlerTwo}\n`;
+      formattedResult += `│⿻   *${result.data.bowlerTwoOver} overs, ${result.data.bowlerTwoRun}/${result.data.bowlerTwoWicket}, Econ:* ${result.data.bowlerTwoEconomy}\n`;
     }
 
     formattedResult += `╰══•∞•═══════════════╯ `;
@@ -1638,6 +1638,7 @@ case "score":
     return m.reply(`An error occurred while processing the cricket score request. ${error.message}`);
   }
   break;
+
 
 
 
