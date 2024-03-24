@@ -56,7 +56,7 @@ const acr = new acrcloud({
     access_key: 'c33c767d683f78bd17d4bd4991955d81',
     access_secret: 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
 });
-const apiKey = "AIzaSyANBCTOmcHkrA15S5e2lyNMbZzmiJRn1iA";
+const apiKey = "AIzaSyCA15iwOZZS-FCVIx3JmGklYFUOoS42zeE";
 const genAI = new GoogleGenerativeAI(apiKey);
 const tempMailAddresses = {};
 const defaultLang = 'en'
