@@ -1162,7 +1162,23 @@ case 'demote': {
 break;
 
 
-
+ case 'welcome':
+            case 'left': {
+              if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+        if (!m.isGroup) throw mess.group;
+  if (!isBotAdmins) throw mess.botAdmin;
+  if (!isAdmins) throw mess.admin;
+               if (args.length < 1) return m.reply('on/off?')
+               if (args[0] === 'on') {
+                  welcome = true
+                  m.reply(`${command} is enabled`)
+               } else if (args[0] === 'off') {
+                  welcome = false
+                  m.reply(`${command} is disabled`)
+               }
+            }
+            break
 
 case 'block': {
   if (isBan) return m.reply(mess.banned);
