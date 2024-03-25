@@ -934,10 +934,10 @@ if (m.text) {
 
         if (quotedText.includes(menuMessage.toLowerCase())) {
             const selectedNumber = lowerText;
-            const menuText = menuText[selectedNumber];
+            const subMenu = menuText[selectedNumber];
 
-            if (menuText !== undefined) {
-                await gss.sendMessage(m.chat, menuText, { quoted: m });
+            if (subMenu !== undefined) {
+                await gss.sendMessage(m.chat, subMenu, { quoted: m });
             } else {
                 await gss.sendMessage(m.chat, {text: 'Invalid menu number. Please select a number from the menu.'}, { quoted: m });
             }
