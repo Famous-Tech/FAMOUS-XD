@@ -934,7 +934,7 @@ if (m.text) {
 
         if (quotedText.includes(menuMessage.toLowerCase())) {
             const selectedNumber = lowerText;
-            const subMenu = menuText[selectedNumber];
+            const subMenu = menuMessage[selectedNumber];
 
             if (subMenu !== undefined) {
                 await gss.sendMessage(m.chat, {
