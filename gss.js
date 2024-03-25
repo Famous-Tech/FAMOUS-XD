@@ -894,38 +894,41 @@ const introTextFun = generateMenu(cmdFun, '𝗙𝗨𝗡 𝗠𝗘𝗡𝗨');
 const introTextTool = generateMenu(cmdTool, '𝗧𝗢𝗢𝗟 𝗠𝗘𝗡𝗨');
 const introTextAi = generateMenu(cmdAi, '𝗔𝗜 𝗠𝗘𝗡𝗨');
 
+const menuText = `
+*ᴍᴇɴᴜ ʟɪsᴛ*
+1. ᴄᴏɴᴠᴇʀᴛᴍᴇɴᴜ
+2. ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ
+3. ɢʀᴏᴜᴘᴍᴇɴᴜ
+4. sᴛᴀʟᴋᴍᴇɴᴜ
+5. sᴇᴀʀᴄʜᴍᴇɴᴜ
+6. ᴛᴏᴏʟᴍᴇɴᴜ
+7. ғᴜɴᴍᴇɴᴜ
+8. ᴀɪᴍᴇɴᴜ
+9. ᴍᴀɪɴᴍᴇɴᴜ`;
+
 const menuMessage = `
-╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ*❯═───❖
+╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ* ❯═───❖
 │╭─────────────···▸
-││▸ ➊ ᴄᴏɴᴠᴇʀᴛᴍᴇɴᴜ
-││▸ ➋ ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ
-││▸ ➌ ɢʀᴏᴜᴘᴍᴇɴᴜ
-││▸ ➍ sᴛᴀʟᴋᴍᴇɴᴜ
-││▸ ➎ sᴇᴀʀᴄʜᴍᴇɴᴜ
-││▸ ➏ ᴛᴏᴏʟᴍᴇɴᴜ
-││▸ ➐ ғᴜɴᴍᴇɴᴜ
-││▸ ➑ ᴀɪᴍᴇɴᴜ
-││▸ ➒ ᴍᴀɪɴᴍᴇɴᴜ
+${menuText.split('\n').map(item => `││▸ ${item}`).join('\n')}
 │╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
-
-const subMenus = {
-    '1': introTextConvert,
-    '2': introTextDownload,
-    '3': introTextAdmin,
-    '4': introTextStalk,
-    '5': introTextSearch,
-    '6': introTextTool,
-    '7': introTextFun,
-    '8': introTextAi,
-    '9': introTextMain,
-};
 
 if (m.text) {
     const lowerText = m.text.toLowerCase();
 
-    if (lowerText.includes('.meenu')) {
-        m.reply(menuMessage);
+    if (lowerText.includes('.menu2')) {
+        await gss.sendMessage(m.chat, {
+            image: { url: 'https://telegra.ph/file/2ffe90aa02a050e3ef285.jpg' },
+            caption: menuMessage,
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: false,
+                    title: botname,
+                    sourceUrl: global.link,
+                    body: `Bot Created By ${global.owner}`
+                }
+            }
+        }, { quoted: m });
     } else if (/^\d+$/.test(lowerText) && m.quoted) {
         const quotedText = m.quoted.text.toLowerCase();
 
@@ -934,9 +937,9 @@ if (m.text) {
             const subMenu = subMenus[selectedNumber];
 
             if (subMenu !== undefined) {
-                m.reply(subMenu);
+                await gss.sendMessage(m.chat, subMenu, { quoted: m });
             } else {
-                m.reply('Invalid menu number. Please select a number from the menu.');
+                await gss.sendMessage(m.chat, {text: 'Invalid menu number. Please select a number from the menu.'}, { quoted: m });
             }
         }
     }
