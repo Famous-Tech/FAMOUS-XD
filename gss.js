@@ -503,8 +503,8 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
 /*GROUP UPDATES*/
-let messagesEnabled = process.env.MESSAGE_ENABLED === 'true';
-
+let messagesMode = process.env.MESSAGE_ENABLED;
+if (messagesMode == 'true') {
 gss.ev.on('group-participants.update', async (anu) => {
     if (messagesEnabled) {
         console.log(anu)
@@ -572,7 +572,9 @@ Left at: ${leaveTime} on ${leaveDate}`
             console.log(err)
         }
     }
-})
+})} else {
+  console.log('messagesMode false he isiliye me kam nahi kar raha')
+}
 
 
 /*AUTOBIO*/
