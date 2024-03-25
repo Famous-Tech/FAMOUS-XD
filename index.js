@@ -218,8 +218,8 @@ gss.sendMessage(anu.id,
 👋 *${metadata.subject}*
 
 => @${userName.split("@")[0]}
-=> ${xmembers}th
-=> ${xtime} ${xdate}
+=> ${gssmembers}th
+=> ${gsstime} ${gssdate}
 `
 gss.sendMessage(anu.id,
  { text: gssbody,
