@@ -170,7 +170,7 @@ gss.ev.on('group-participants.update', async (anu) => {
 
                 // Welcome message
                 if (anu.action == 'add') {
-                    const userName = num.split('@')[0];
+                    const userName = num
                     const joinTime = moment.tz('Asia/Kolkata').format('HH:mm:ss');
                     const joinDate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY');
                     const membersCount = metadata.participants.length;
@@ -181,8 +181,6 @@ gss.ev.on('group-participants.update', async (anu) => {
                         text: welcomeMessage,
                         contextInfo: {
                             externalAdReply: {
-                              forwardingScore: 9999999,
-                              isForwarded: true, 
                                 showAdAttribution: false,
                                 title: metadata.subject,
                                 sourceUrl: global.link,
@@ -193,7 +191,7 @@ gss.ev.on('group-participants.update', async (anu) => {
                 }
                 // Left message
                 else if (anu.action == 'remove') {
-                    const userName = num.split('@')[0];
+                    const userName = num
                     const leaveTime = moment.tz('Asia/Kolkata').format('HH:mm:ss');
                     const leaveDate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY');
                     const membersCount = metadata.participants.length;
@@ -204,8 +202,6 @@ gss.ev.on('group-participants.update', async (anu) => {
                         text: leftMessage,
                         contextInfo: {
                             externalAdReply: {
-                              forwardingScore: 9999999,
-                              isForwarded: true, 
                                 showAdAttribution: false,
                                 title: metadata.subject,
                                 sourceUrl: global.link,
