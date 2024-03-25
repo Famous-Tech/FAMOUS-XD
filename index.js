@@ -94,7 +94,7 @@ async function startgss() {
 
         // Check if the message starts with 'BAE5' and is not from the bot itself
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16 && !mek.key.fromMe) {
-            await gss.sendMessage(mek.key.remoteJid, 'Bot detected');
+            await gss.sendMessage(mek.key.remoteJid, {text: 'Bot detected'});
             return;
         }
 
