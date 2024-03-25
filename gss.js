@@ -516,6 +516,22 @@ if (!('autobio' in setting)) setting.autobio = false
     }
 
 
+async function antiDelete(message) {
+    try {
+        const { fromMe, id, participant } = message;
+        if (!fromMe) {
+            let msg = this.serializeM(this.loadMessage(id));
+            if (msg) {
+                await this.forwardMessages(m.chat, msg.key);
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
 /*AUTOBIO*/
 async function setBio() {
     setInterval(async () => {
