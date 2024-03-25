@@ -503,78 +503,75 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
 /*GROUP UPDATES*/
-let messagesMode = process.env.MESSAGE_ENABLED;
-
 gss.ev.on('group-participants.update', async (anu) => {
-    if (messagesMode === 'true') { // Use === for strict comparison
-        console.log(anu);
-        try {
-            let metadata = await gss.groupMetadata(anu.id);
-            let participants = anu.participants;
-            for (let num of participants) {
-                let ppuser, ppgroup;
+  if (global.welcome){
+    console.log(anu)
+    try {
+        let metadata = await gss.groupMetadata(anu.id)
+        let participants = anu.participants
+        for (let num of participants) {
+            let ppuser, ppgroup;
 
-                try {
-                    ppuser = await gss.profilePictureUrl(num, 'image');
-                } catch (err) {
-                    ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60';
-                }
+            try {
+                ppuser = await XeonBotInc.profilePictureUrl(num, 'image')
+            } catch (err) {
+                ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
+            }
 
-                try {
-                    ppgroup = await gss.profilePictureUrl(anu.id, 'image');
-                } catch (err) {
-                    ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60';
-                }
+            try {
+                ppgroup = await XeonBotInc.profilePictureUrl(anu.id, 'image')
+            } catch (err) {
+                ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
+            }
 
-                if (anu.action == 'add') {
-                    const userName = num.split('@')[0];
-                    const membersCount = metadata.participants.length;
-                    const joinTime = moment().tz('Asia/Kolkata').format('HH:mm:ss');
-                    const joinDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY');
-                    const welcomeMessage = `👋 *${metadata.subject}*
+            if (anu.action == 'add') {
+                const userName = num.split('@')[0]
+                const membersCount = metadata.participants.length
+                const joinTime = moment().tz('Asia/Kolkata').format('HH:mm:ss')
+                const joinDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
+                const welcomeMessage = `👋 *${metadata.subject}*
 
 Welcome @${userName} to the group! You are the ${membersCount}th member.
-Joined at: ${joinTime} on ${joinDate}`;
+Joined at: ${joinTime} on ${joinDate}`
 
-                    gss.sendMessage(anu.id, {
-                        text: welcomeMessage,
-                        contextInfo: {
-                            externalAdReply: {
-                                showAdAttribution: false,
-                                title: userName,
-                                thumbnailUrl: ppuser,
-                                body: ``
-                            }
+                gss.sendMessage(anu.id, {
+                    text: welcomeMessage,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: false,
+                            title: userName,
+                            thumbnailUrl: ppuser,
+                            body: ``
                         }
-                    });
-                } else if (anu.action == 'remove') {
-                    const userName = num.split('@')[0];
-                    const membersCount = metadata.participants.length;
-                    const leaveTime = moment().tz('Asia/Kolkata').format('HH:mm:ss');
-                    const leaveDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY');
-                    const goodbyeMessage = `Goodbye @${userName} from ${metadata.subject}. We are now ${membersCount} in the group.
-Left at: ${leaveTime} on ${leaveDate}`;
+                    }
+                })
+            } else if (anu.action == 'remove') {
+                const userName = num.split('@')[0]
+                const membersCount = metadata.participants.length
+                const leaveTime = moment().tz('Asia/Kolkata').format('HH:mm:ss')
+                const leaveDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
+                const goodbyeMessage = `Goodbye @${userName} from ${metadata.subject}. We are now ${membersCount} in the group.
+Left at: ${leaveTime} on ${leaveDate}`
 
-                    gss.sendMessage(anu.id, {
-                        text: goodbyeMessage,
-                        contextInfo: {
-                            externalAdReply: {
-                                showAdAttribution: false,
-                                title: userName,
-                                thumbnailUrl: ppuser,
-                                body: ``
-                            }
+                gss.sendMessage(anu.id, {
+                    text: goodbyeMessage,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: false,
+                            title: userName,
+                            thumbnailUrl: ppuser,
+                            body: ``
                         }
-                    });
-                }
+                    }
+                })
             }
-        } catch (err) {
-            console.log(err);
         }
-    } else {
-        console.log('messagesMode false he isiliye me kam nahi kar raha');
+    } catch (err) {
+        console.log(err)
     }
-});
+  }
+})
+
 
 
 /*AUTOBIO*/
