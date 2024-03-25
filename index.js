@@ -105,6 +105,20 @@ async function startgss() {
 
 
 
+
+async function antiBot(message) {
+    try {
+        const { text, fromMe } = message;
+        if (!fromMe && text.startsWith('BAE5')) {
+            await gss.reply(message.chat, 'Bot detected');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
     //autostatus view
         gss.ev.on('messages.upsert', async chatUpdate => {
         	if (global.antiswview){
