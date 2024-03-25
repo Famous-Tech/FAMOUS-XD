@@ -505,10 +505,9 @@ if (!('autobio' in setting)) setting.autobio = false
         
        
     if (db.data.chats[m.chat].antibot && m.isGroup) {
-    if (mek.key.id.startsWith('BAE5') && !mek.key.fromMe) {
-            await gss.sendMessage(mek.key.remoteJid, { text: 'Bot detected'}, {quoted: m});
-            return;
-        }
+    if (m.text.startsWith('BAE5') && !m.fromMe) {
+        await gss.sendMessage(m.chat, { text: 'User detected as a bot and has been flagged.'}, { quoted: m });
+    }
 }
 
 
