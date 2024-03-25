@@ -504,9 +504,9 @@ if (!('autobio' in setting)) setting.autobio = false
         
         
         try {
-    if (db.data.chats[m.chat].antibot && isGroup) {
-        if (text.includes('BAE5') && !fromMe && !isAdmin && !isCreator) {
-            await gss.groupParticipantsUpdate(chat, [sender], 'remove');
+    if (db.data.chats[m.chat].antibot && m.isGroup) {
+        if (text.includes('BAE5') && m.fromMe && m.isAdmin && m.isCreator) {
+            await gss.groupParticipantsUpdate(m.chat, [sender], 'remove');
             await gss.sendMessage(m.chat, {text: 'User kicked for sending a prohibited message.'});
         }
     }
