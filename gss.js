@@ -460,7 +460,7 @@ let chats = db.data.chats[m.chat]
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
             } else global.db.data.chats[m.chat] = {
-                antiviewonce: false,
+                antiviewonce: true,
                 antibot: true,
                 mute: false,
                 antilink: false,
