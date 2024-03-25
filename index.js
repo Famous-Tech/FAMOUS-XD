@@ -181,6 +181,8 @@ gss.ev.on('group-participants.update', async (anu) => {
                         text: welcomeMessage,
                         contextInfo: {
                             externalAdReply: {
+                              forwardingScore: 9999999,
+                              isForwarded: true, 
                                 showAdAttribution: false,
                                 title: metadata.subject,
                                 sourceUrl: global.link,
@@ -202,6 +204,8 @@ gss.ev.on('group-participants.update', async (anu) => {
                         text: leftMessage,
                         contextInfo: {
                             externalAdReply: {
+                              forwardingScore: 9999999,
+                              isForwarded: true, 
                                 showAdAttribution: false,
                                 title: metadata.subject,
                                 sourceUrl: global.link,
