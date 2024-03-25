@@ -1517,10 +1517,10 @@ case 'antiviewonce':{
 		        
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
-                  db.data.chats[from].antiviewonce = true
+                  db.data.chats[m.chat].antiviewonce = true
                   m.reply(`${command} is enabled`)
                } else if (args[0] === 'off') {
-                  db.data.chats[from].antiviewonce = false
+                  db.data.chats[m.chat].antiviewonce = false
                   m.reply(`${command} is disabled`)
                }
                }
