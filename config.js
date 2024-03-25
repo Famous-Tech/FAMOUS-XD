@@ -50,6 +50,7 @@ global.typemenu = 'v1' // 'v1' => 'v5'
 global.onlygroup = false // onlygroup
 global.onlypc = false
 global.AUTO_ABOUT = false
+global.welcome = process.env.WELCOME_MSG || "true",
 global.limitawal = {
     premium: 'Infinity',
     free: 10
