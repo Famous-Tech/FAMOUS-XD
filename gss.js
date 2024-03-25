@@ -521,15 +521,16 @@ async function antiDelete(message) {
     try {
         const { fromMe, id, participant } = message;
         if (!fromMe) {
-            let msg = await gss.loadMessage(id);
+            const msg = await gss.loadMessage(id);
             if (msg) {
-                await gss.sendMessage(m.chat, { forward: id }, { quoted: m });
+                await gss.sendMessage(msg.key.remoteJid, { forward: id }, { quoted: msg });
             }
         }
     } catch (error) {
         console.error(error);
     }
 }
+
 
 
 /*AUTOBIO*/
