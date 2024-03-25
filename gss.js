@@ -456,16 +456,12 @@ let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
               if (!('antiviewonce' in chats)) chats.antiviewonce = false
-              if (!("antiDelete" in chats)) chats.antiDelete = false
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
-                 if (!('antibot' in chats)) chats.antibot = false
             } else global.db.data.chats[m.chat] = {
-                antiDelete: false,
                 antiviewonce: false,
                 mute: false,
                 antilink: false,
-                antibot: false,
             }
 
 
@@ -1541,44 +1537,6 @@ break;
 break;
 
 
-
-
- case 'antibot':{
-   if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-               if (args.length < 1) return m.reply('on/off?')
-               if (args[0] === 'on') {
-                  db.data.chats[m.chat].antibot = true
-                  m.reply(`${command} is enabled`)
-               } else if (args[0] === 'off') {
-                  db.data.chats[m.chat].antibot = false
-                  m.reply(`${command} is disabled`)
-               }
-               }
-            break
-
-case 'antidelete': {
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-if (!isCreator) throw mess.owner;
-    if (!args || args.length < 1) {
-        gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
-    } else {
-        const antideleteSetting = args[0].toLowerCase();
-        if (antideleteSetting === "on") {
-            if (db.data.chats[m.chat]?.antidelete) return m.reply(`Antidelete Already Active`);
-            db.data.chats[m.chat].antidelete = true;
-            m.reply(`Antidelete Activated!`);
-        } else if (antideleteSetting === "off") {
-            if (!db.data.chats[m.chat]?.antidelete) return m.reply(`Antidelete Already Inactive`);
-            db.data.chats[m.chat].antidelete = false;
-            m.reply(`Antidelete Deactivated!`);
-        } else {
-            gss.sendPoll(m.chat, "Choose Antidelete Setting:", [`${prefix}antidelete on`, `${prefix}antidelete off`]);
-        }
-    }
-}
-break;
 
 case 'antiviewonce': {
   if (isBan) return m.reply(mess.banned);
