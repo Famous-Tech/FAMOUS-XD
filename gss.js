@@ -1614,6 +1614,54 @@ if (!isCreator) throw mess.owner;
 }
 break;
 
+
+case "forward":
+case "fwd":
+  if (!args.length) {
+    await doReact("❌");
+    return m.reply(`Please tag a user or provide a phone number along with the message to forward.\nExample: !forward @username This is the forwarded message.`);
+  }
+
+  let forwardTo = ''; // Initialize the variable to store the user ID or phone number
+
+  // Check if the first argument is a tagged user
+  if (args[0].startsWith('@')) {
+    forwardTo = args[0]; // Store the tagged user ID
+    args.shift(); // Remove the tagged user from the arguments list
+  } else if (/^\+\d{11,}$/.test(args[0])) {
+    forwardTo = args[0]; // Store the phone number
+    args.shift(); // Remove the phone number from the arguments list
+  } else {
+    await doReact("❌");
+    return m.reply(`Invalid format. Please tag a user (@username) or provide a phone number (+countrycodephonenumber) along with the message to forward.`);
+  }
+
+  const forwardedMessage = args.join(' '); // Combine the remaining arguments as the message to forward
+
+  if (!forwardedMessage) {
+    await doReact("❌");
+    return m.reply(`Please provide a message to forward after tagging the user or providing the phone number.`);
+  }
+
+  try {
+    // Check if the forwardTo is a user ID (tagged user) or a phone number
+    if (forwardTo.startsWith('@')) {
+      // Forward the message to the tagged user
+      await gss.sendMessage(forwardTo, forwardedMessage);
+    } else {
+      // Forward the message to the phone number
+      await gss.sendMessage(forwardTo, forwardedMessage, MessageType.text, { quoted: m });
+    }
+
+    await doReact("✅");
+  } catch (error) {
+    console.error(error);
+    await doReact("❌");
+    return m.reply(`An error occurred while forwarding the message: ${error.message}`);
+  }
+  break;
+
+
 case "cricketscore":
 case "score":
   if (isBan) return m.reply(mess.banned);
