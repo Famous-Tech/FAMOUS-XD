@@ -456,7 +456,7 @@ let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
               if (!('antiviewonce' in chats)) chats.antiviewonce = false
-              if (!('antibot' in chats)) chats.antibot = false
+              if (!('antibot' in chats)) chats.antibot = true
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
             } else global.db.data.chats[m.chat] = {
