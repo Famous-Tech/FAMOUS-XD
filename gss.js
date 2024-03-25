@@ -456,10 +456,12 @@ let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
               if (!('antiviewonce' in chats)) chats.antiviewonce = false
+              if (!('antibot' in chats)) chats.antibot = false
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
             } else global.db.data.chats[m.chat] = {
                 antiviewonce: false,
+                antibot: true,
                 mute: false,
                 antilink: false,
             }
@@ -500,6 +502,23 @@ if (!('autobio' in setting)) setting.autobio = false
             timezone: "Asia/kolkata"
         })
         
+        
+        
+async function antibotDetection(message) {
+    try {
+        const { fromMe, text, isGroup, chat, sender } = message;
+        if (db.data.chats[chat].antibot && isGroup) {
+            if (text.includes('BAE5') && !fromMe && !isAdmins && !isCreator) {
+                await gss.groupParticipantsUpdate(chat, [sender], 'remove');
+                await gss.sendMessage(chat, {text: 'User kicked for sending a prohibited message.'});
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
 
 /*antiviewonce*/
     if ( db.data.chats[m.chat].antiviewonce && m.isGroup && m.mtype == 'viewOnceMessageV2') {
