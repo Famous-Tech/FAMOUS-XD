@@ -918,7 +918,7 @@ if (m.text) {
 
     if (lowerText.includes('.menu2')) {
         await gss.sendMessage(m.chat, {
-            image: { url: 'https://telegra.ph/file/2ffe90aa02a050e3ef285.jpg' },
+            image: { url: 'https://telegra.ph/file/022f5c3d9ce54c8ccf648.jpg' },
             caption: menuMessage,
             contextInfo: {
                 externalAdReply: {
