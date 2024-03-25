@@ -503,20 +503,17 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
-        
-async function antibotDetection(message) {
-    try {
-        const { fromMe, text, isGroup, chat, sender } = message;
-        if (db.data.chats[chat].antibot && isGroup) {
-            if (text.includes('BAE5') && !fromMe && !isAdmins && !isCreator) {
-                await gss.groupParticipantsUpdate(chat, [sender], 'remove');
-                await gss.sendMessage(chat, {text: 'User kicked for sending a prohibited message.'});
-            }
+        try {
+    if (db.data.chats[m.chat].antibot && isGroup) {
+        if (text.includes('BAE5') && !fromMe && !isAdmin && !isCreator) {
+            await gss.groupParticipantsUpdate(chat, [sender], 'remove');
+            await gss.sendMessage(m.chat, {text: 'User kicked for sending a prohibited message.'});
         }
-    } catch (error) {
-        console.error(error);
     }
+} catch (error) {
+    console.error(error);
 }
+
 
 
 
