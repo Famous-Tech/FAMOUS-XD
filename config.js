@@ -49,6 +49,7 @@ global.autoswview = process.env.AUTO_STATUS_SEEN || "true",
 global.typemenu = 'v1' // 'v1' => 'v5'
 global.onlygroup = false // onlygroup
 global.onlypc = false
+global.welcome = process.env.WELCOME_MSG || "true",
 global.AUTO_ABOUT = false
 global.limitawal = {
     premium: 'Infinity',
