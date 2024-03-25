@@ -182,9 +182,9 @@ gss.ev.on('group-participants.update', async (anu) => {
                         contextInfo: {
                             externalAdReply: {
                                 showAdAttribution: false,
-                                title: metadata.subject,
-                                sourceUrl: global.link,
-                                body: ``
+                                title: userName,
+                                sourceUrl: ppuser,
+                                body: `${metadata.subject}`
                             }
                         }
                     });
@@ -203,9 +203,9 @@ gss.ev.on('group-participants.update', async (anu) => {
                         contextInfo: {
                             externalAdReply: {
                                 showAdAttribution: false,
-                                title: metadata.subject,
-                                sourceUrl: global.link,
-                                body: ``
+                                title: userName,
+                                sourceUrl: ppuser,
+                                body: `${metadata.subject}`
                             }
                         }
                     });
