@@ -455,12 +455,14 @@ let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
 let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
+              if (!('antiviewonce' in chats)) chats.antiviewonce = false
               if (!("antiDelete" in chats)) chats.antiDelete = false
                 if (!('mute' in chats)) chats.mute = false
                 if (!('antilink' in chats)) chats.antilink = false
                  if (!('antibot' in chats)) chats.antibot = false
             } else global.db.data.chats[m.chat] = {
                 antiDelete: false,
+                antiviewonce: false,
                 mute: false,
                 antilink: false,
                 antibot: false,
@@ -502,6 +504,16 @@ if (!('autobio' in setting)) setting.autobio = false
             timezone: "Asia/kolkata"
         })
         
+
+/*antiviewonce*/
+    if ( db.data.chats[m.chat].antiviewonce && m.isGroup && m.mtype == 'viewOnceMessageV2') {
+    	if (m.isBaileys && m.fromMe) return
+        let val = { ...m }
+        let msg = val.message?.viewOnceMessage?.message || val.message?.viewOnceMessageV2?.message
+        delete msg[Object.keys(msg)[0]].viewOnce
+        val.message = msg
+        await gss.sendMessage(m.chat, { forward: val }, { quoted: m })
+    }
 
 /*AUTOBIO*/
 async function setBio() {
@@ -1501,7 +1513,19 @@ case 'editinfo': {
 break;
 
 
-
+case 'antiviewonce':{
+		        
+               if (args.length < 1) return m.reply('on/off?')
+               if (args[0] === 'on') {
+                  db.data.chats[from].antiviewonce = true
+                  m.reply(`${command} is enabled`)
+               } else if (args[0] === 'off') {
+                  db.data.chats[from].antiviewonce = false
+                  m.reply(`${command} is disabled`)
+               }
+               }
+            break
+            
             case 'antilink': {
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
