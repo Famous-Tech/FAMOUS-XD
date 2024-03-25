@@ -503,15 +503,11 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
-        try {
+       
     if (db.data.chats[m.chat].antibot && m.isGroup) {
-        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16 && !mek.key.fromMe) {
-            await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
-            await gss.sendMessage(m.chat, {text: 'User kicked for sending a prohibited message.'});
-        }
+    if (mek.key.id.startsWith('BAE5') && !mek.key.fromMe) {
+        await gss.sendMessage(m.chat, { text: 'User detected as a bot and has been flagged.'}, { quoted: m });
     }
-} catch (error) {
-    console.error(error);
 }
 
 
