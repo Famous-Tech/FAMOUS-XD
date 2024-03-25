@@ -926,9 +926,9 @@ const botinfoText = ` ╭──═❮ *GssBotwa* ❯═─┈•
 ╰────────────────❃ `;
 
 const menuMessage = `
+${botinfoText}\n
 ╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ* ❯═───❖
 │╭─────────────···▸
-${botinfoText}\n
 ${menuText.split('\n').map(item => `││▸ ${item}`).join('\n')}
 │╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
