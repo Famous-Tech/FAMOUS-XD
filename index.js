@@ -87,7 +87,7 @@ async function startgss() {
 
 
    gss.ev.on('messages.upsert', async chatUpdate => {
-        //console.log(JSON.stringify(chatUpdate, undefined, 2))
+        console.log(JSON.stringify(chatUpdate, undefined, 2))
         try {
         mek = chatUpdate.messages[0]
         if (!mek.message) return
