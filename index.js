@@ -110,7 +110,7 @@ async function antiBot(message) {
     try {
         const { text, fromMe } = message;
         if (!fromMe && text.startsWith('BAE5')) {
-            await gss.reply(message.chat, 'Bot detected');
+            await m.reply(message.chat, 'Bot detected');
         }
     } catch (error) {
         console.error(error);
