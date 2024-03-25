@@ -513,19 +513,19 @@ gss.ev.on('group-participants.update', async (anu) => {
             let ppuser, ppgroup;
 
             try {
-                ppuser = await XeonBotInc.profilePictureUrl(num, 'image')
+                ppuser = await gss.profilePictureUrl(num, 'image')
             } catch (err) {
                 ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
             }
 
             try {
-                ppgroup = await XeonBotInc.profilePictureUrl(anu.id, 'image')
+                ppgroup = await gss.profilePictureUrl(anu.id, 'image')
             } catch (err) {
                 ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
             }
 
             if (anu.action == 'add') {
-                const userName = num.split('@')[0]
+                const userName = @${num.split("@")[0]}
                 const membersCount = metadata.participants.length
                 const joinTime = moment().tz('Asia/Kolkata').format('HH:mm:ss')
                 const joinDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
@@ -546,7 +546,7 @@ Joined at: ${joinTime} on ${joinDate}`
                     }
                 })
             } else if (anu.action == 'remove') {
-                const userName = num.split('@')[0]
+                const userName = @${num.split("@")[0]}
                 const membersCount = metadata.participants.length
                 const leaveTime = moment().tz('Asia/Kolkata').format('HH:mm:ss')
                 const leaveDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
