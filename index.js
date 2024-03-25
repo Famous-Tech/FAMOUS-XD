@@ -182,7 +182,7 @@ gss.ev.on('group-participants.update', async (anu) => {
                         contextInfo: {
                             externalAdReply: {
                                 showAdAttribution: false,
-                                title: botname,
+                                title: metadata.subject,
                                 sourceUrl: global.link,
                                 body: ``
                             }
@@ -203,7 +203,7 @@ gss.ev.on('group-participants.update', async (anu) => {
                         contextInfo: {
                             externalAdReply: {
                                 showAdAttribution: false,
-                                title: botname,
+                                title: metadata.subject,
                                 sourceUrl: global.link,
                                 body: ``
                             }
