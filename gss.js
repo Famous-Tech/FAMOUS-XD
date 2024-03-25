@@ -1601,11 +1601,11 @@ if (!isCreator) throw mess.owner;
         const antiviewonceSetting = args[0].toLowerCase();
         if (antiviewonceSetting === "on") {
             if (db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Active`);
-            db.data.chats[m.chat].antiviewonce = true;
+            db.data.chats[m.chat].antiviewonce = true
             m.reply(`Antiviewonce Activated!`);
         } else if (antiviewonceSetting === "off") {
             if (!db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Inactive`);
-            db.data.chats[m.chat].antiviewonce = false;
+            db.data.chats[m.chat].antiviewonce = false
             m.reply(`Antiviewonce Deactivated!`);
         } else {
             gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
