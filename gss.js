@@ -516,21 +516,6 @@ if (!('autobio' in setting)) setting.autobio = false
     }
 
 
- 
-async function antiDelete(message) {
-    try {
-        const { fromMe, id, participant } = message;
-        if (!fromMe) {
-            const msg = await gss.loadMessage(id);
-            if (msg) {
-                await gss.sendMessage(msg.key.remoteJid, { forward: id }, { quoted: msg });
-            }
-        }
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 
 
 /*AUTOBIO*/
