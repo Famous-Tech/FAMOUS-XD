@@ -525,7 +525,7 @@ gss.ev.on('group-participants.update', async (anu) => {
             }
 
             if (anu.action == 'add') {
-                const userName = @${num.split("@")[0]}
+                const userName = num.split('@')[0];
                 const membersCount = metadata.participants.length
                 const joinTime = moment().tz('Asia/Kolkata').format('HH:mm:ss')
                 const joinDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
@@ -546,7 +546,7 @@ Joined at: ${joinTime} on ${joinDate}`
                     }
                 })
             } else if (anu.action == 'remove') {
-                const userName = @${num.split("@")[0]}
+                const userName = num.split('@')[0];
                 const membersCount = metadata.participants.length
                 const leaveTime = moment().tz('Asia/Kolkata').format('HH:mm:ss')
                 const leaveDate = moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
