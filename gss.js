@@ -516,20 +516,20 @@ if (!('autobio' in setting)) setting.autobio = false
     }
 
 
+ 
 async function antiDelete(message) {
     try {
         const { fromMe, id, participant } = message;
         if (!fromMe) {
-            let msg = this.serializeM(this.loadMessage(id));
+            let msg = await gss.loadMessage(id);
             if (msg) {
-                await this.forwardMessages(m.chat, msg.key);
+                await gss.sendMessage(m.chat, { forward: id }, { quoted: m });
             }
         }
     } catch (error) {
         console.error(error);
     }
 }
-
 
 
 /*AUTOBIO*/
