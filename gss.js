@@ -937,7 +937,18 @@ if (m.text) {
             const subMenu = menuText[selectedNumber];
 
             if (subMenu !== undefined) {
-                await gss.sendMessage(m.chat, subMenu, { quoted: m });
+                await gss.sendMessage(m.chat, {
+            image: { url: 'https://telegra.ph/file/022f5c3d9ce54c8ccf648.jpg' },
+            caption: subMenu,
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: false,
+                    title: botname,
+                    sourceUrl: global.link,
+                    body: `Bot Created By ${global.owner}`
+                }
+            }
+        }, { quoted: m });
             } else {
                 await gss.sendMessage(m.chat, {text: 'Invalid menu number. Please select a number from the menu.'}, { quoted: m });
             }
