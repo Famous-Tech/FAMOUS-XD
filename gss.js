@@ -913,6 +913,19 @@ ${menuText.split('\n').map(item => `││▸ ${item}`).join('\n')}
 │╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
+const subMenus = {
+    '1': introTextConvert,
+    '2': introTextDownload,
+    '3': introTextAdmin,
+    '4': introTextStalk,
+    '5': introTextSearch,
+    '6': introTextTool,
+    '7': introTextFun,
+    '8': introTextAi,
+    '9': introTextMain,
+};
+
+
 if (m.text) {
     const lowerText = m.text.toLowerCase();
 
@@ -934,7 +947,7 @@ if (m.text) {
 
         if (quotedText.includes(menuMessage.toLowerCase())) {
             const selectedNumber = lowerText;
-            const subMenu = menuMessage[selectedNumber];
+            const subMenu = subMenus[selectedNumber];
 
             if (subMenu !== undefined) {
                 await gss.sendMessage(m.chat, {
