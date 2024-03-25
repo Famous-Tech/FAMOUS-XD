@@ -504,9 +504,9 @@ if (!('autobio' in setting)) setting.autobio = false
         
 /*GROUP UPDATES*/
 let messagesMode = process.env.MESSAGE_ENABLED;
-if (messagesMode == 'true') {
+
 gss.ev.on('group-participants.update', async (anu) => {
-    if (messagesEnabled) {
+    if (messagesMode == 'true') {
         console.log(anu)
         try {
             let metadata = await gss.groupMetadata(anu.id)
@@ -571,11 +571,10 @@ Left at: ${leaveTime} on ${leaveDate}`
         } catch (err) {
             console.log(err)
         }
-    }
-})} else {
-  console.log('messagesMode false he isiliye me kam nahi kar raha')
-}
-
+    } else {
+      console.log('messagesMode false he isiliye me kam nahi kar raha')
+  }
+})
 
 /*AUTOBIO*/
 async function setBio() {
