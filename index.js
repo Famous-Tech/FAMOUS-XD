@@ -8,7 +8,8 @@ const yargs = require('yargs/yargs')
 const chalk = require('chalk')
 const FileType = require('file-type')
 const path = require('path')
-const _ = require('lodash')
+const  = require('lodash')
+const moment = require('moment-timezone')
 const axios = require('axios')
 const PhoneNumber = require('awesome-phonenumber')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif')
@@ -202,26 +203,26 @@ gss.sendMessage(anu.id,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
 "thumbnail": gssWlcm,
-"sourceUrl": `${wagc}`}}})
+"sourceUrl": `${global.link}`}}})
                 } else if (anu.action == 'remove') {
-                	const xeonbuffer = await getBuffer(ppuser)
-                    const xeontime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
-	                const xeondate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
-                	let xeonName = num
-                    const xeonmembers = metadata.participants.length
-                    xeonbody = `╔════════════════╗
+                	const gssbuffer = await getBuffer(ppuser)
+                    const gsstime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
+	                const gssdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
+                	let userName = num
+                    const gssmembers = metadata.participants.length
+                    gssbody = `╔════════════════╗
 ║          *.ᴡ ᴇ ʟ ᴄ ᴏ ᴍ ᴇ.*                   ║
 ╚════════════════╝
 
 
 👋 *${metadata.subject}*
 
-=> @${xeonName.split("@")[0]}
+=> @${userName.split("@")[0]}
 => ${xmembers}th
 => ${xtime} ${xdate}
 `
 gss.sendMessage(anu.id,
- { text: xeonbody,
+ { text: gssbody,
  contextInfo:{
  mentionedJid:[num],
  "externalAdReply": {"showAdAttribution": true,
