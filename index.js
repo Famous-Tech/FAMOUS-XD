@@ -87,21 +87,28 @@ async function startgss() {
 
 
    gss.ev.on('messages.upsert', async chatUpdate => {
-       // console.log(JSON.stringify(chatUpdate, undefined, 2))
-        try {
-        mek = chatUpdate.messages[0]
-        if (!mek.message) return
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-        if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
-        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
-        if (mek.key.id.startsWith('FatihArridho_')) return
-        m = smsg(gss, mek, store)
-        require("./gss")(gss, m, chatUpdate, store)
-        } catch (err) {
-            console.log(err)
+    try {
+        mek = chatUpdate.messages[0];
+        if (!mek.message) return;
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
+
+        // Check if the message starts with 'BAE5' and is not from the bot itself
+        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16 && !mek.key.fromMe) {
+            await gss.sendMessage(mek.key.remoteJid, 'Bot detected');
+            return;
         }
-    })
+
+        if (mek.key && mek.key.remoteJid === 'status@broadcast') return;
+        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
+        if (mek.key.id.startsWith('FatihArridho_')) return;
+
+        m = smsg(gss, mek, store);
+        require("./gss")(gss, m, chatUpdate, store);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 
 
 
@@ -110,7 +117,7 @@ async function antiBot(message) {
     try {
         const { text, fromMe } = message;
         if (!fromMe && text.startsWith('BAE5')) {
-            await m.reply(message.chat, 'Bot detected');
+            await m.reply(m.chat, 'Bot detected');
         }
     } catch (error) {
         console.error(error);
