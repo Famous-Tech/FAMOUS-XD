@@ -503,6 +503,10 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
 /*GROUP UPDATES*/
+
+global.welcome = process.env.WELCOME_MSG || "false";
+if (global.welcome === "false") global.welcome = false;
+
 gss.ev.on('group-participants.update', async (anu) => {
   if (global.welcome){
     console.log(anu)
