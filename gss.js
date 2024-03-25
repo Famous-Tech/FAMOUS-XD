@@ -906,27 +906,7 @@ const menuText = `
 8. ᴀɪᴍᴇɴᴜ
 9. ᴍᴀɪɴᴍᴇɴᴜ`;
 
-const botinfoText = ` ╭──═❮ *GssBotwa* ❯═─┈•
-│ Hi *${pushname}* 👋  
-╰–❖ *${greetingTime}* 😄 
-
-╭──═❮ *Bot Info* ❯═─┈•
-│ *Bot Name* : *${botname}*
-│ *Owner Name* : *${ownername}*
-│ *Prefix* :  *[ . ]*
-│ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
-│ *Mode* : *Public*
-│ *TotalUser* : *${Object.keys(global.db.data.users).length} Users* 
-│ *TotalChat* : *${Object.keys(global.db.data.chats).length} Group/Chat*
-╰────────────────❃ 
-╭──═❮ *Users Info* ❯═─┈•
-│ *Name* : *${pushname}*
-│ *Number* : *${m.sender.split('@')[0]}*
-│ *Premium* : *${isPremium ? '✅' : '❌'}* ${readmore}
-╰────────────────❃ `;
-
 const menuMessage = `
-${botinfoText}\n
 ╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ* ❯═───❖
 │╭─────────────···▸
 ${menuText.split('\n').map(item => `││▸ ${item}`).join('\n')}
