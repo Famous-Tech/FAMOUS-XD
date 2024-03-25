@@ -152,6 +152,93 @@ gss.ev.on('messages.update', async chatUpdate => {
 });
 
 
+/*WELCOME LEFT*/
+gss.ev.on('group-participants.update', async (anu) => {
+    	if (global.welcome){
+console.log(anu)
+try {
+let metadata = await gss.groupMetadata(anu.id)
+let participants = anu.participants
+for (let num of participants) {
+try {
+ppuser = await gss.profilePictureUrl(num, 'image')
+} catch (err) {
+ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
+}
+try {
+ppgroup = await gss.profilePictureUrl(anu.id, 'image')
+} catch (err) {
+ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
+}
+//welcome\\
+memb = metadata.participants.length
+gssWlcm = await getBuffer(ppuser)
+gssLft = await getBuffer(ppuser)
+                if (anu.action == 'add') {
+                const xeonbuffer = await getBuffer(ppuser)
+                let userName = num
+                const xtime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
+	            const xdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
+	            const xmembers = metadata.participants.length
+                gssbody = `╔════════════════╗
+║          *.ᴡ ᴇ ʟ ᴄ ᴏ ᴍ ᴇ.*                   ║
+╚════════════════╝
+
+
+👋 *${metadata.subject}*
+
+=> @${userName.split("@")[0]}
+=> ${xmembers}th
+=> ${xtime} ${xdate}
+`
+gss.sendMessage(anu.id,
+ { text: gssbody,
+ contextInfo:{
+ mentionedJid:[num],
+ "externalAdReply": {"showAdAttribution": true,
+ "containsAutoReply": true,
+ "title": ` ${global.botname}`,
+"body": `${ownername}`,
+ "previewType": "PHOTO",
+"thumbnailUrl": ``,
+"thumbnail": gssWlcm,
+"sourceUrl": `${wagc}`}}})
+                } else if (anu.action == 'remove') {
+                	const xeonbuffer = await getBuffer(ppuser)
+                    const xeontime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
+	                const xeondate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
+                	let xeonName = num
+                    const xeonmembers = metadata.participants.length
+                    xeonbody = `╔════════════════╗
+║          *.ᴡ ᴇ ʟ ᴄ ᴏ ᴍ ᴇ.*                   ║
+╚════════════════╝
+
+
+👋 *${metadata.subject}*
+
+=> @${xeonName.split("@")[0]}
+=> ${xmembers}th
+=> ${xtime} ${xdate}
+`
+gss.sendMessage(anu.id,
+ { text: xeonbody,
+ contextInfo:{
+ mentionedJid:[num],
+ "externalAdReply": {"showAdAttribution": true,
+ "containsAutoReply": true,
+ "title": ` ${global.botname}`,
+"body": `${ownername}`,
+ "previewType": "PHOTO",
+"thumbnailUrl": ``,
+"thumbnail": gssLft,
+"sourceUrl": `${global.link}`}}})
+}
+}
+} catch (err) {
+console.log(err)
+}
+}
+})
 
 	
 	
