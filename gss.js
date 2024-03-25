@@ -6088,7 +6088,7 @@ break;
                         m.copyNForward(other, true, m.quoted && m.quoted.fromMe ? {
                             contextInfo: {
                                 ...m.msg.contextInfo,
-                                forwardingScore: 0,
+                                forwardingScore: 9999999,
                                 isForwarded: true,
                                 participant: other
                             }
