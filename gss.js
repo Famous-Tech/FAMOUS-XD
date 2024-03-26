@@ -964,7 +964,6 @@ if (m.text) {
 }
 
 
-
 async function getYoutubeInfo(url) {
     try {
         const info = await ytdl.getInfo(url);
@@ -981,6 +980,7 @@ function generateMenu() {
 ╭───═❮ YouTube Downloader ❯═───❖
 │1. Download as Audio
 │2. Download as Video
+│
 ╰━━━━━━━━━━━━━━━━━━┈⊷`;
 }
 
@@ -996,10 +996,10 @@ if (m.text) {
             const info = await getYoutubeInfo(videoUrl);
             
             if (info) {
-                const menuMessagee = generateMenu();
+                const menuMesagee = generateMenu();
                 await gss.sendMessage(m.chat, {
                     image: { url: info.videoDetails.thumbnail.thumbnails[0].url },
-                    caption:menuMessagees,
+                    caption: menuMessagee,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
@@ -1009,6 +1009,19 @@ if (m.text) {
                         }
                     }
                 }, { quoted: m });
+
+                // Set up listener for user's choice
+                gss.onMessage((message) => {
+                    if (message.body === '1') {
+                        // Download as audio
+                        const audioStream = ytdl(videoUrl, { filter: 'audioonly' });
+                        gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
+                    } else if (message.body === '2') {
+                        // Download as video
+                        const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
+                        gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
+                    }
+                });
             } else {
                 await gss.sendMessage(m.chat, { text: 'Error fetching video information. Please try again.' }, { quoted: m });
             }
@@ -2730,159 +2743,7 @@ case 'ytmp3':
   }
   break;
 
-case 'yta2':
-case 'song2':
-case 'ytmp3':
-  try {
-    if (isBan) return m.reply(mess.banned);
-    if (isBanChat) return m.reply(mess.bangc);
-    if (!text) {
-      m.reply('Enter YouTube Link or Search Query!');
-      doReact("❌");
-      return;
-    }
 
-    m.reply(mess.wait);
-    await doReact("🕘");
-
-    // Check if the input is a valid YouTube URL
-    const isUrl = ytdl.validateURL(text);
-
-    if (isUrl) {
-      // If it's a URL, directly use ytdl-core
-      const audioStream = ytdl(text, { filter: 'audioonly', quality: 'highestaudio' });
-      const audioBuffer = [];
-
-      audioStream.on('data', (chunk) => {
-        audioBuffer.push(chunk);
-      });
-
-      audioStream.on('end', async () => {
-        try {
-          const finalAudioBuffer = Buffer.concat(audioBuffer);
-
-          const videoInfo = await yts({ videoId: ytdl.getURLVideoID(text) });
-          const thumbnailMessage = {
-            image: {
-              url: videoInfo.thumbnail,
-            },
-            caption: `
-╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
-│  *Youtube Player* ✨
-│⿻ *Title:* ${videoInfo.title}
-│⿻ *Duration:* ${videoInfo.timestamp}
-│⿻ *Uploader:* ${videoInfo.author.name}
-│⿻ *Size:* ${formatBytes(finalAudioBuffer.length)}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
-╰══•∞•═════════╯
-`, 
-          };
-
-          const menuMessage = `
-╭───═❮ Download Format ❯═───❖
-│1. Download as Audio
-│2. Download as Video
-│
-╰━━━━━━━━━━━━━━━━━━┈⊷`;
-
-          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, menuMessage, { quoted: m });
-
-          // Set up listener for user's choice
-          gss.onMessage((message) => {
-            if (message.body === '1') {
-              // User selected audio
-              gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
-              await doReact("✅");
-            } else if (message.body === '2') {
-              // User selected video
-              // Add your code to handle video download here
-            }
-          });
-
-          await doReact("✅");
-        } catch (err) {
-          console.error('Error sending audio:', err);
-          m.reply('Error sending audio.');
-          await doReact("❌");
-        }
-      });
-    } else {
-      // If it's a search query, use yt-search
-      const searchResult = await yts(text);
-      const firstVideo = searchResult.videos[0];
-
-      if (!firstVideo) {
-        m.reply('Audio not found.');
-        await doReact("❌");
-        return;
-      }
-
-      const audioStream = ytdl(firstVideo.url, { filter: 'audioonly', quality: 'highestaudio' });
-      const audioBuffer = [];
-
-      audioStream.on('data', (chunk) => {
-        audioBuffer.push(chunk);
-      });
-
-      audioStream.on('end', async () => {
-        try {
-          const finalAudioBuffer = Buffer.concat(audioBuffer);
-
-          const thumbnailMessage = {
-            image: {
-              url: firstVideo.thumbnail,
-            },
-            caption: `
-╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
-│  *Youtube Mp3 Player* ✨
-│⿻ *Title:* ${firstVideo.title}
-│⿻ *Duration:* ${firstVideo.timestamp}
-│⿻ *Uploader:* ${firstVideo.author.name}
-│⿻ *Size:* ${formatBytes(finalAudioBuffer.length)}
-│⿻ *Upload Date:* ${formatUploadDate(firstVideo.uploadDate)}
-╰══•∞•═════════╯
-`,
-          };
-
-          const menuMessage = `
-╭───═❮ Download Format ❯═───❖
-│1. Download as Audio
-│2. Download as Video
-│
-╰━━━━━━━━━━━━━━━━━━┈⊷`;
-
-          await gss.sendMessage(m.chat, thumbnailMessage, { quoted: m });
-          await gss.sendMessage(m.chat, menuMessage, { quoted: m });
-
-          // Set up listener for user's choice
-          gss.onMessage((message) => {
-            if (message.body === '1') {
-              // User selected audio
-              await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
-              await doReact("✅");
-            } else if (message.body === '2') {
-              // User selected video
-              // Add your code to handle video download here
-            }
-          });
-
-          await doReact("✅");
-        } catch (err) {
-          console.error('Error sending audio:', err);
-          m.reply('Error sending audio.');
-          await doReact("❌");
-        }
-      });
-    }
-  } catch (error) {
-    console.error('Error during:', error);
-    m.reply('Unexpected error occurred.');
-    await doReact("❌");
-  }
-  break;
 
 
 
