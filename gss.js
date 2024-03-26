@@ -579,10 +579,6 @@ async function setBio() {
 
 setBio();
 
-if (mek.key && mek.key.remoteJid === 'status@s.whatsapp.net') {
-     gss.readMessages([mek.key]);
-}
-
 
 if (isCommand) {
             
