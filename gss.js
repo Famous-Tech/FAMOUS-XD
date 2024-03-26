@@ -514,7 +514,7 @@ if (!('autobio' in setting)) setting.autobio = false
 
 
 /*antiviewonce*/
-    if ( db.data.chats[m.chat].antiviewonce && m.isGroup && m.mtype == 'viewOnceMessageV2') {
+    if ( db.data.chats[m.chat].antiviewonce && m.mtype == 'viewOnceMessageV2') {
     	if (m.isBaileys && m.fromMe) return
         let val = { ...m }
         let msg = val.message?.viewOnceMessage?.message || val.message?.viewOnceMessageV2?.message
