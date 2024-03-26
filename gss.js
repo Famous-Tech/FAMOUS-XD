@@ -1007,7 +1007,7 @@ if (m.text) {
 │
 │ *URL:* ${videoUrl}
 │ *Title:* ${videoDetails.title}
-│ *Likes:* ${videoDetails.likes)}
+│ *Likes:* ${videoDetails.likes}
 │ *Views:* ${videoDetails.viewCount}
 │ *Duration:* ${formatDuration(videoDetails.lengthSeconds)}
 │ *Size:* ${formatBytes(videoDetails.lengthBytes)}
