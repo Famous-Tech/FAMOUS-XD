@@ -999,7 +999,7 @@ if (m.text) {
                 const menuMesagee = generateMenu();
                 await gss.sendMessage(m.chat, {
                     image: { url: info.videoDetails.thumbnail.thumbnails[0].url },
-                    caption: menuMessagee,
+                    caption: menuMesagee,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
