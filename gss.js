@@ -965,6 +965,60 @@ if (m.text) {
 
 
 
+async function getYoutubeInfo(url) {
+    try {
+        const info = await ytdl.getInfo(url);
+        return info;
+    } catch (error) {
+        console.error('Error fetching video info:', error);
+        return null;
+    }
+}
+
+// Function to generate the menu
+function generateMenu() {
+    return `
+╭───═❮ YouTube Downloader ❯═───❖
+│1. Download as Audio
+│2. Download as Video
+╰━━━━━━━━━━━━━━━━━━┈⊷`;
+}
+
+// Example usage within your message handling logic
+if (m.text) {
+    const lowerText = m.text.toLowerCase();
+    const urlRegex = /(https?:\/\/[^\s]+)/g; // Regex to match URLs
+
+    if (lowerText.includes('.test') && m.quoted && m.quoted.text) {
+        const urls = m.quoted.text.match(urlRegex);
+        if (urls && urls.length > 0) {
+            const videoUrl = urls[0]; // Assuming only one URL is provided
+            const info = await getYoutubeInfo(videoUrl);
+            
+            if (info) {
+                const menuMessage = generateMenu();
+                await gss.sendMessage(m.chat, {
+                    image: { url: info.videoDetails.thumbnail.thumbnails[0].url },
+                    caption: menuMessage,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: false,
+                            title: botname,
+                            sourceUrl: global.link,
+                            body: `Bot Created By ${global.owner}`
+                        }
+                    }
+                }, { quoted: m });
+            } else {
+                await gss.sendMessage(m.chat, { text: 'Error fetching video information. Please try again.' }, { quoted: m });
+            }
+        } else {
+            await gss.sendMessage(m.chat, { text: 'No valid URL found in the quoted message.' }, { quoted: m });
+        }
+    }
+}
+
+
 	    
         switch(isCommand) {
 	    case 'afk': {
