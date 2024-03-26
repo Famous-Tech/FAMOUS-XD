@@ -965,6 +965,7 @@ if (m.text) {
 
 
 
+// Function to get YouTube video information
 async function getYoutubeInfo(url) {
     try {
         const info = await ytdl.getInfo(url);
@@ -983,7 +984,6 @@ function formatDuration(duration) {
 
     return `${hours ? hours + 'h ' : ''}${minutes ? minutes + 'm ' : ''}${seconds}s`;
 }
-
 
 // Example usage within your message handling logic
 if (m.text) {
@@ -1007,7 +1007,6 @@ if (m.text) {
 │
 │ *URL:* ${videoUrl}
 │ *Title:* ${videoDetails.title}
-│ *Likes:* ${videoDetails.likes}
 │ *Views:* ${videoDetails.viewCount}
 │ *Duration:* ${formatDuration(videoDetails.lengthSeconds)}
 │ *Size:* ${formatBytes(videoDetails.lengthBytes)}
@@ -1038,6 +1037,7 @@ if (m.text) {
         const isVideoMenu = quotedText.includes('download as video');
 
         if (isAudioMenu && lowerText === '1') {
+            // Handle download as audio
             const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
             if (urls && urls.length > 0) {
                 const audioUrl = urls[0]; // Assuming only one URL is provided
@@ -1047,6 +1047,7 @@ if (m.text) {
                 await gss.sendMessage(m.chat, { text: 'No valid audio URL found in the quoted message.' }, { quoted: m });
             }
         } else if (isVideoMenu && lowerText === '2') {
+            // Handle download as video
             const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
             if (urls && urls.length > 0) {
                 const videoUrl = urls[0]; // Assuming only one URL is provided
@@ -1055,6 +1056,9 @@ if (m.text) {
             } else {
                 await gss.sendMessage(m.chat, { text: 'No valid video URL found in the quoted message.' }, { quoted: m });
             }
+        } else {
+            // Handle invalid selection
+            await gss.sendMessage(m.chat, { text: 'Invalid selection. Please select option 1 or 2 from the menu.' }, { quoted: m });
         }
     }
 }
