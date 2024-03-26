@@ -964,6 +964,9 @@ if (m.text) {
 }
 
 
+const ytdl = require('ytdl-core');
+
+// Function to handle fetching video details using ytdl-core
 async function getYoutubeInfo(url) {
     try {
         const info = await ytdl.getInfo(url);
@@ -987,19 +990,22 @@ function generateMenu() {
 // Example usage within your message handling logic
 if (m.text) {
     const lowerText = m.text.toLowerCase();
-    const urlRegex = /(https?:\/\/[^\s]+)/g; // Regex to match URLs
 
-    if (lowerText.includes('.test') && m.quoted && m.quoted.text) {
-        const urls = m.quoted.text.match(urlRegex);
+    if (lowerText.includes('.ytdl')) {
+        const menuMessagee = generateMenu();
+
+        // Fetching video information
+        const urls = m.text.match(/(https?:\/\/[^\s]+)/g);
         if (urls && urls.length > 0) {
             const videoUrl = urls[0]; // Assuming only one URL is provided
             const info = await getYoutubeInfo(videoUrl);
             
             if (info) {
-                const menuMesagee = generateMenu();
+                const thumbnailUrl = info.videoDetails.thumbnail.thumbnails[0].url;
+
                 await gss.sendMessage(m.chat, {
-                    image: { url: info.videoDetails.thumbnail.thumbnails[0].url },
-                    caption: menuMesagee,
+                    image: { url: thumbnailUrl },
+                    caption: menuMessagee,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
@@ -1009,27 +1015,41 @@ if (m.text) {
                         }
                     }
                 }, { quoted: m });
-
-                // Set up listener for user's choice
-                gss.onMessage((message) => {
-                    if (message.body === '1') {
-                        // Download as audio
-                        const audioStream = ytdl(videoUrl, { filter: 'audioonly' });
-                        gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
-                    } else if (message.body === '2') {
-                        // Download as video
-                        const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
-                        gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
-                    }
-                });
             } else {
                 await gss.sendMessage(m.chat, { text: 'Error fetching video information. Please try again.' }, { quoted: m });
             }
         } else {
-            await gss.sendMessage(m.chat, { text: 'No valid URL found in the quoted message.' }, { quoted: m });
+            await gss.sendMessage(m.chat, { text: 'No valid URL found in the message.' }, { quoted: m });
+        }
+    } else if (lowerText.includes('1') && m.quoted) {
+        const quotedText = m.quoted.text.toLowerCase();
+        const isAudioMenu = quotedText.includes('download as audio');
+        if (isAudioMenu) {
+            const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
+            if (urls && urls.length > 0) {
+                const audioUrl = urls[0]; // Assuming only one URL is provided
+                const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
+                await gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
+            } else {
+                await gss.sendMessage(m.chat, { text: 'No valid audio URL found.' }, { quoted: m });
+            }
+        }
+    } else if (lowerText.includes('2') && m.quoted) {
+        const quotedText = m.quoted.text.toLowerCase();
+        const isVideoMenu = quotedText.includes('download as video');
+        if (isVideoMenu) {
+            const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
+            if (urls && urls.length > 0) {
+                const videoUrl = urls[0]; // Assuming only one URL is provided
+                const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
+                await gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
+            } else {
+                await gss.sendMessage(m.chat, { text: 'No valid video URL found.' }, { quoted: m });
+            }
         }
     }
 }
+
 
 
 	    
