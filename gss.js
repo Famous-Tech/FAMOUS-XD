@@ -1007,8 +1007,8 @@ if (m.text) {
 │
 │ *URL:* ${videoUrl}
 │ *Title:* ${videoDetails.title}
-│ *Likes:* ${videoDetails.likes.toLocaleString()}
-│ *Views:* ${videoDetails.viewCount.toLocaleString()}
+│ *Likes:* ${videoDetails.likes)}
+│ *Views:* ${videoDetails.viewCount}
 │ *Duration:* ${formatDuration(videoDetails.lengthSeconds)}
 │ *Size:* ${formatBytes(videoDetails.lengthBytes)}
 │1. Download as Audio
