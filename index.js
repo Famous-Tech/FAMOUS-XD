@@ -154,6 +154,36 @@ gss.ev.on('messages.update', async chatUpdate => {
 });
 
 
+ async function deleteUpdate(gss, m) {
+    try {
+
+        const {
+            fromMe,
+            id,
+            participant
+        } = m
+        if (fromMe)
+            return
+        let msg = gss.store(this.loadMessage(id))
+        if (!msg)
+            return
+        let chats = global.db.data.chats[m.chat] || {}
+       
+            await this.reply(gss.user.id, `
+            ≡ deleted a message 
+            ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
+            ▢ *Number :* @${participant.split`@`[0]} 
+            └─────────────
+            `.trim(), msg, {
+                        mentions: [participant]
+                    })
+        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+
 /*WELCOME LEFT*/
 gss.ev.on('group-participants.update', async (anu) => {
     if (global.welcome) {
