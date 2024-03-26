@@ -107,29 +107,29 @@ async function startgss() {
 
 async function deleteUpdate(gss, m, store) {
     try {
+        const { fromMe, id, participant, remoteJid } = m;
+        if (fromMe) return;
 
-        const {
-            fromMe,
-            id,
-            participant
-        } = m
-        if (fromMe)
-            return
-        let msg = await store.loadMessage(key.remoteJid, key.id)
-        if (!msg)
-            return await m.reply(gss.user.id, `
+        let msg = await store.loadMessage(remoteJid, id);
+        if (!msg) {
+            return await m.reply(gss.user.jid, `
             ≡ deleted a message 
             ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
             ▢ *Number :* @${participant.split`@`[0]} 
             └─────────────
-            `.trim(), msg, {
-                        mentions: [participant]
-                    })
-        gss.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
+            `.trim(), msg, { mentions: [participant] });
+        }
+
+        gss.copyNForward(gss.user.jid, msg, false).catch(e => console.log(e, msg));
+
+        // Send reply after message deletion
+        await m.reply(gss.user.jid, "Message successfully deleted.");
     } catch (e) {
-        console.error(e)
+        console.error(e);
     }
 }
+
+
 
     //autostatus view
         gss.ev.on('messages.upsert', async chatUpdate => {
