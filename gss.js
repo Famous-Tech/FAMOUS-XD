@@ -1038,7 +1038,7 @@ if (m.text) {
 
         if (isAudioMenu && lowerText === '1') {
             // Handle download as audio
-            const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
+            const urls = ${videoUrl};
             if (urls && urls.length > 0) {
                 const audioUrl = urls[0]; // Assuming only one URL is provided
                 const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
@@ -1048,7 +1048,7 @@ if (m.text) {
             }
         } else if (isVideoMenu && lowerText === '2') {
             // Handle download as video
-            const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
+            const urls = ${videoUrl};
             if (urls && urls.length > 0) {
                 const videoUrl = urls[0]; // Assuming only one URL is provided
                 const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
