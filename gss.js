@@ -964,9 +964,7 @@ if (m.text) {
 }
 
 
-const ytdl = require('ytdl-core');
 
-// Function to handle fetching video details using ytdl-core
 async function getYoutubeInfo(url) {
     try {
         const info = await ytdl.getInfo(url);
@@ -991,8 +989,8 @@ function generateMenu() {
 if (m.text) {
     const lowerText = m.text.toLowerCase();
 
-    if (lowerText.includes('.ytdl')) {
-        const menuMessagee = generateMenu();
+    if (lowerText.includes('ytdl')) {
+        const menuMessage = generateMenu();
 
         // Fetching video information
         const urls = m.text.match(/(https?:\/\/[^\s]+)/g);
@@ -1005,7 +1003,7 @@ if (m.text) {
 
                 await gss.sendMessage(m.chat, {
                     image: { url: thumbnailUrl },
-                    caption: menuMessagee,
+                    caption: menuMessage,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
@@ -1015,36 +1013,32 @@ if (m.text) {
                         }
                     }
                 }, { quoted: m });
-            } else {
-                await gss.sendMessage(m.chat, { text: 'Error fetching video information. Please try again.' }, { quoted: m });
             }
         } else {
             await gss.sendMessage(m.chat, { text: 'No valid URL found in the message.' }, { quoted: m });
         }
-    } else if (lowerText.includes('1') && m.quoted) {
+    } else if (m.quoted && (lowerText === '1' || lowerText === '2')) {
         const quotedText = m.quoted.text.toLowerCase();
         const isAudioMenu = quotedText.includes('download as audio');
-        if (isAudioMenu) {
+        const isVideoMenu = quotedText.includes('download as video');
+
+        if (isAudioMenu && lowerText === '1') {
             const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
             if (urls && urls.length > 0) {
                 const audioUrl = urls[0]; // Assuming only one URL is provided
                 const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
                 await gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
             } else {
-                await gss.sendMessage(m.chat, { text: 'No valid audio URL found.' }, { quoted: m });
+                await gss.sendMessage(m.chat, { text: 'No valid audio URL found in the quoted message.' }, { quoted: m });
             }
-        }
-    } else if (lowerText.includes('2') && m.quoted) {
-        const quotedText = m.quoted.text.toLowerCase();
-        const isVideoMenu = quotedText.includes('download as video');
-        if (isVideoMenu) {
+        } else if (isVideoMenu && lowerText === '2') {
             const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
             if (urls && urls.length > 0) {
                 const videoUrl = urls[0]; // Assuming only one URL is provided
                 const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
                 await gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
             } else {
-                await gss.sendMessage(m.chat, { text: 'No valid video URL found.' }, { quoted: m });
+                await gss.sendMessage(m.chat, { text: 'No valid video URL found in the quoted message.' }, { quoted: m });
             }
         }
     }
