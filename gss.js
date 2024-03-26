@@ -503,6 +503,38 @@ if (!('autobio' in setting)) setting.autobio = false
         })
         
         
+        
+        
+        
+         async function deleteUpdate(message) {
+    try {
+
+        const {
+            fromMe,
+            id,
+            participant
+        } = message
+        if (fromMe)
+            return
+        let msg = this.serializeM(this.loadMessage(id))
+        if (!msg)
+            return
+       
+            await this.reply(gss.user.id, `
+            ≡ deleted a message 
+            ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
+            ▢ *Number :* @${participant.split`@`[0]} 
+            └─────────────
+            `.trim(), msg, {
+                        mentions: [participant]
+                    })
+        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+        
        
     if (db.data.chats[m.chat].antibot && m.isGroup) {
     if (m.text.startsWith('BAE5') && !m.fromMe) {
