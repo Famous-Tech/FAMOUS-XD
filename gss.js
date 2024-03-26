@@ -975,22 +975,21 @@ async function getYoutubeInfo(url) {
     }
 }
 
-// Function to generate the menu
-function generateMenu() {
-    return `
-╭───═❮ YouTube Downloader ❯═───❖
-│1. Download as Audio
-│2. Download as Video
-│
-╰━━━━━━━━━━━━━━━━━━┈⊷`;
+// Function to format video duration
+function formatDuration(duration) {
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    const seconds = duration % 60;
+
+    return `${hours ? hours + 'h ' : ''}${minutes ? minutes + 'm ' : ''}${seconds}s`;
 }
+
 
 // Example usage within your message handling logic
 if (m.text) {
     const lowerText = m.text.toLowerCase();
 
-    if (lowerText.includes('ytdl')) {
-        const menuMessage = generateMenu();
+    if (lowerText.includes('.ytdl')) {
 
         // Fetching video information
         const urls = m.text.match(/(https?:\/\/[^\s]+)/g);
@@ -1000,10 +999,26 @@ if (m.text) {
             
             if (info) {
                 const thumbnailUrl = info.videoDetails.thumbnail.thumbnails[0].url;
+                const videoDetails = info.videoDetails;
+
+                const captionMessage = `
+╭═══════════════════╮
+│ *Video Details*
+│
+│ *URL:* ${videoUrl}
+│ *Title:* ${videoDetails.title}
+│ *Likes:* ${videoDetails.likes.toLocaleString()}
+│ *Views:* ${videoDetails.viewCount.toLocaleString()}
+│ *Duration:* ${formatDuration(videoDetails.lengthSeconds)}
+│ *Size:* ${formatBytes(videoDetails.lengthBytes)}
+│1. Download as Audio
+│2. Download as Video
+╰═══════════════════╯
+`;
 
                 await gss.sendMessage(m.chat, {
                     image: { url: thumbnailUrl },
-                    caption: menuMessage,
+                    caption: captionMessage,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
