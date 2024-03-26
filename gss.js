@@ -905,10 +905,9 @@ const menuText = `
 const menuMessage = `
 ╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ* ❯═───❖
 │╭─────────────···▸
-${menuText.split('').map(item => `││▸ ${item}`).join('\n')}
+${menuText.split('\n').map(item => `││▸ ${item.trim()}`).join('\n')}
 │╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
-
 const subMenus = {
     '1': introTextConvert,
     '2': introTextDownload,
