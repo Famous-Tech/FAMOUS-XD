@@ -2793,7 +2793,7 @@ case 'ytmp3':
           gss.onMessage((message) => {
             if (message.body === '1') {
               // User selected audio
-              await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
+              gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
               await doReact("✅");
             } else if (message.body === '2') {
               // User selected video
