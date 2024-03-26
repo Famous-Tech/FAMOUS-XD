@@ -996,10 +996,10 @@ if (m.text) {
             const info = await getYoutubeInfo(videoUrl);
             
             if (info) {
-                const menuMessage = generateMenu();
+                const menuMessagee = generateMenu();
                 await gss.sendMessage(m.chat, {
                     image: { url: info.videoDetails.thumbnail.thumbnails[0].url },
-                    caption: menuMessage,
+                    caption:menuMessagees,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
