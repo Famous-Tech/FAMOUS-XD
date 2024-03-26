@@ -516,7 +516,7 @@ if (!('autobio' in setting)) setting.autobio = false
         } = m
         if (fromMe)
             return
-        let msg = gss.serializeM(store.loadMessage(id))
+        let msg = await store.loadMessage(key.remoteJid, key.id)
         if (!msg)
             return
         let chats = global.db.data.chats[msg.chat] || {}
@@ -529,7 +529,7 @@ if (!('autobio' in setting)) setting.autobio = false
             `.trim(), msg, {
                         mentions: [participant]
                     })
-        store.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
+        gss.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
     } catch (e) {
         console.error(e)
     }
