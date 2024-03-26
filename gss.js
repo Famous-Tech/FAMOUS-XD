@@ -506,19 +506,20 @@ if (!('autobio' in setting)) setting.autobio = false
         
         
         
-         async function deleteUpdate(message) {
+        async function deleteUpdate(gss, m, store) {
     try {
 
         const {
             fromMe,
             id,
             participant
-        } = message
+        } = m
         if (fromMe)
             return
-        let msg = this.serializeM(this.loadMessage(id))
+        let msg = gss.serializeM(store.loadMessage(id))
         if (!msg)
             return
+        let chats = global.db.data.chats[msg.chat] || {}
        
             await this.reply(gss.user.id, `
             ≡ deleted a message 
@@ -528,7 +529,7 @@ if (!('autobio' in setting)) setting.autobio = false
             `.trim(), msg, {
                         mentions: [participant]
                     })
-        this.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
+        store.copyNForward(gss.user.id, msg, false).catch(e => console.log(e, msg))
     } catch (e) {
         console.error(e)
     }
