@@ -905,7 +905,7 @@ const menuText = `
 const menuMessage = `
 ╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ* ❯═───❖
 │╭─────────────···▸
-${menuText.split('\n').map(item => `││▸ ${item}`).join('\n')}
+${menuText.split('').map(item => `││▸ ${item}`).join('\n')}
 │╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
 
