@@ -3572,7 +3572,7 @@ case 'truecaller':
       break;
     }
 
-    const installationId = 'a1i0g--k3toNiVP-9swCenahQhhokTiqfXRFw2LossLOsZLDh3P-fLD0b75S8iF7';
+    const installationId = 'a1i05--log7Ae-hk9y85780NEfKnif3z77XFt4zZn7Bi10zGXS0qVduxj7CRHxQw';
     const apiUrl = `https://sid-bhai.vercel.app/api/truecaller?phone=${encodeURIComponent(text)}&id=${installationId}`;
 
     let response = await axios.get(apiUrl);
