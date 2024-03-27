@@ -1042,7 +1042,18 @@ if (m.text) {
             if (urls && urls.length > 0) {
                 const audioUrl = urls[0]; // Assuming only one URL is provided
                 const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
-                await gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
+                await gss.sendMessage(m.chat, {
+                    image: { url: audioStream },
+                    caption: ,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: false,
+                            title: ,
+                            sourceUrl: ,
+                            body: ``
+                        }
+                    }
+                }, { quoted: m });
             } else {
                 await gss.sendMessage(m.chat, { text: 'No valid audio URL found in the quoted message.' }, { quoted: m });
             }
@@ -1052,7 +1063,18 @@ if (m.text) {
             if (urls && urls.length > 0) {
                 const videoUrl = urls[0]; // Assuming only one URL is provided
                 const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
-                await gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
+                await gss.sendMessage(m.chat, {
+                    image: { url: videoStream },
+                    caption: ,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: false,
+                            title: ,
+                            sourceUrl: ,
+                            body: ``
+                        }
+                    }
+                }, { quoted: m });
             } else {
                 await gss.sendMessage(m.chat, { text: 'No valid video URL found in the quoted message.' }, { quoted: m });
             }
