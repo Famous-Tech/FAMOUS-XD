@@ -1044,13 +1044,13 @@ if (m.text) {
                 const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
                 await gss.sendMessage(m.chat, {
                     image: { url: audioStream },
-                    caption:
+                    caption: captionMessage,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: 
-                            sourceUrl: 
-                            body: ``
+                            title: botname,
+                            sourceUrl: global.link,
+                            body: `Bot Created By ${global.owner}`
                         }
                     }
                 }, { quoted: m });
@@ -1062,16 +1062,17 @@ if (m.text) {
             const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
             if (urls && urls.length > 0) {
                 const videoUrl = urls[0]; // Assuming only one URL is provided
-                const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
+                const videoStream = ytdl(videoUrl, { filter: 'audioandvideo', quality: 'highest' });
+
                 await gss.sendMessage(m.chat, {
                     image: { url: videoStream },
-                    caption: 
+                    caption: captionMessage,
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: 
-                            sourceUrl: 
-                            body: ``
+                            title: botname,
+                            sourceUrl: global.link,
+                            body: `Bot Created By ${global.owner}`
                         }
                     }
                 }, { quoted: m });
