@@ -965,6 +965,9 @@ if (m.text) {
 
 
 
+// Declare videoUrl outside the block
+let videoUrl;
+
 async function getYoutubeInfo(url) {
     try {
         const info = await ytdl.getInfo(url);
@@ -984,16 +987,14 @@ function formatDuration(duration) {
     return `${hours ? hours + 'h ' : ''}${minutes ? minutes + 'm ' : ''}${seconds}s`;
 }
 
-// Example usage within your message handling logic
 if (m.text) {
     const lowerText = m.text.toLowerCase();
 
     if (lowerText.includes('.ytdl')) {
-
         // Fetching video information
         const urls = m.text.match(/(https?:\/\/[^\s]+)/g);
         if (urls && urls.length > 0) {
-            const videoUrl = urls[0]; // Assuming only one URL is provided
+            videoUrl = urls[0]; // Assign value to videoUrl
             const info = await getYoutubeInfo(videoUrl);
 
             if (info) {
@@ -1020,9 +1021,9 @@ if (m.text) {
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: botname, // Assuming botname is a string
-                            sourceUrl: global.link, // Assuming global.link is a string
-                            body: `` // Assuming global.owner is a string
+                            title: botname, 
+                            sourceUrl: global.link, // 
+                            body: `` 
                         }
                     }
                 }, { quoted: m });
@@ -1047,9 +1048,9 @@ if (m.text) {
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: botname, // Assuming botname is a string
-                            sourceUrl: global.link, // Assuming global.link is a string
-                            body: `` // Assuming global.owner is a string
+                            title: botname,
+                            sourceUrl: global.link,
+                            body: `Bot Created By ${global.owner}`
                         }
                     }
                 }, { quoted: m });
@@ -1069,9 +1070,9 @@ if (m.text) {
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: botname, // Assuming botname is a string
-                            sourceUrl: global.link, // Assuming global.link is a string
-                            body: ``// Assuming global.owner is a string
+                            title: botname,
+                            sourceUrl: global.link,
+                            body: `Bot Created By ${global.owner}`
                         }
                     }
                 }, { quoted: m });
