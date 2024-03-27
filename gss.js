@@ -1044,12 +1044,12 @@ if (m.text) {
                 const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
                 await gss.sendMessage(m.chat, {
                     image: { url: audioStream },
-                    caption: ,
+                    caption:
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: ,
-                            sourceUrl: ,
+                            title: 
+                            sourceUrl: 
                             body: ``
                         }
                     }
