@@ -965,7 +965,6 @@ if (m.text) {
 
 
 
-// Function to get YouTube video information
 async function getYoutubeInfo(url) {
     try {
         const info = await ytdl.getInfo(url);
@@ -996,7 +995,7 @@ if (m.text) {
         if (urls && urls.length > 0) {
             const videoUrl = urls[0]; // Assuming only one URL is provided
             const info = await getYoutubeInfo(videoUrl);
-            
+
             if (info) {
                 const thumbnailUrl = info.videoDetails.thumbnail.thumbnails[0].url;
                 const videoDetails = info.videoDetails;
@@ -1021,9 +1020,9 @@ if (m.text) {
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: botname,
-                            sourceUrl: global.link,
-                            body: `Bot Created By ${global.owner}`
+                            title: botname, // Assuming botname is a string
+                            sourceUrl: global.link, // Assuming global.link is a string
+                            body: `` // Assuming global.owner is a string
                         }
                     }
                 }, { quoted: m });
@@ -1038,7 +1037,7 @@ if (m.text) {
 
         if (isAudioMenu && lowerText === '1') {
             // Handle download as audio
-            const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
+            const urls = [videoUrl];
             if (urls && urls.length > 0) {
                 const audioUrl = urls[0]; // Assuming only one URL is provided
                 const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
@@ -1048,9 +1047,9 @@ if (m.text) {
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: botname,
-                            sourceUrl: global.link,
-                            body: `Bot Created By ${global.owner}`
+                            title: botname, // Assuming botname is a string
+                            sourceUrl: global.link, // Assuming global.link is a string
+                            body: `` // Assuming global.owner is a string
                         }
                     }
                 }, { quoted: m });
@@ -1059,7 +1058,7 @@ if (m.text) {
             }
         } else if (isVideoMenu && lowerText === '2') {
             // Handle download as video
-            const urls = quotedText.match(/(https?:\/\/[^\s]+)/g);
+            const urls = [videoUrl];
             if (urls && urls.length > 0) {
                 const videoUrl = urls[0]; // Assuming only one URL is provided
                 const videoStream = ytdl(videoUrl, { filter: 'audioandvideo', quality: 'highest' });
@@ -1070,9 +1069,9 @@ if (m.text) {
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: botname,
-                            sourceUrl: global.link,
-                            body: `Bot Created By ${global.owner}`
+                            title: botname, // Assuming botname is a string
+                            sourceUrl: global.link, // Assuming global.link is a string
+                            body: ``// Assuming global.owner is a string
                         }
                     }
                 }, { quoted: m });
@@ -1085,6 +1084,7 @@ if (m.text) {
         }
     }
 }
+
 
 
 
