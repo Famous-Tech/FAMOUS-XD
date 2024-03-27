@@ -1065,12 +1065,12 @@ if (m.text) {
                 const videoStream = ytdl(videoUrl, { filter: 'videoonly' });
                 await gss.sendMessage(m.chat, {
                     image: { url: videoStream },
-                    caption: ,
+                    caption: 
                     contextInfo: {
                         externalAdReply: {
                             showAdAttribution: false,
-                            title: ,
-                            sourceUrl: ,
+                            title: 
+                            sourceUrl: 
                             body: ``
                         }
                     }
