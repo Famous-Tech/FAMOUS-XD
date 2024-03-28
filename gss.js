@@ -5046,8 +5046,6 @@ case 'test':
     gss.sendPoll(m.chat, 'Select your preferences:', optionss);
     break;
 
-
-
 case 'setting':
 if (!isCreator) throw mess.owner
   m.reply(`Current Settings:
