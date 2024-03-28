@@ -5038,10 +5038,13 @@ case 'test':
     if (!isAdmins) return m.reply('This feature is only for group admins ⚠️');
 
     const optionss = [
-        { name: 'Leave', value: '.leave' },
-        { name: 'Edit Info', value: '.editinfo' },
-        // Add more options as needed
+        { name: 'Leave Group', value: 'leave', id: '.leave' },
+        { name: 'Edit Group Info', value: 'editinfo', id: '.editinfo' },
+        { name: 'Tag All Members', value: 'tagall', id: '.tagall' },
+        { name: 'Enable Anti-Link Protection', value: 'antilink', id: '.antilink' },
+        { name: 'Get Group Link', value: 'linkgc', id: '.linkgc' },
     ];
+
 
     gss.sendPoll(m.chat, 'Select your preferences:', optionss);
     break;
