@@ -5033,6 +5033,20 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
     gss.sendPoll(m.chat, 'Select your preferences:', options);
     break;
 
+case 'test':
+    if (!m.isGroup) return m.reply('You can use this command only in groups ❌');
+    if (!isAdmins) return m.reply('This feature is only for group admins ⚠️');
+
+    const options = [
+        { name: 'Leave', value: '.leave' },
+        { name: 'Edit Info', value: '.editinfo' },
+        // Add more options as needed
+    ];
+
+    gss.sendPoll(m.chat, 'Select your preferences:', options);
+    break;
+
+
 
 case 'setting':
 if (!isCreator) throw mess.owner
