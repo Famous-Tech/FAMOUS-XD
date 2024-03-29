@@ -5033,21 +5033,6 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
     gss.sendPoll(m.chat, 'Select your preferences:', options);
     break;
 
-case 'test':
-    if (!m.isGroup) return m.reply('You can use this command only in groups ❌');
-    if (!isAdmins) return m.reply('This feature is only for group admins ⚠️');
-
-    const optionss = [
-        { name: 'Leave Group', value: 'leave', id: '.leave' },
-        { name: 'Edit Group Info', value: 'editinfo', id: '.editinfo' },
-        { name: 'Tag All Members', value: 'tagall', id: '.tagall' },
-        { name: 'Enable Anti-Link Protection', value: 'antilink', id: '.antilink' },
-        { name: 'Get Group Link', value: 'linkgc', id: '.linkgc' },
-    ];
-
-
-    gss.sendPoll(m.chat, 'Select your preferences:', optionss);
-    break;
 
 case 'setting':
 if (!isCreator) throw mess.owner
