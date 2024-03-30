@@ -221,12 +221,6 @@ function formatUploadDate(uploadDate) {
   return formattedDate.toLocaleDateString(undefined, options);
 }
 
-
-async function generateProfilePicture(media) {
-    return {
-        img: 'placeholder_image_data'
-    };
-}
 	
 	
 async function getIPInfo() {
@@ -2055,6 +2049,22 @@ case 'autosview':
                   m.reply(`${command} is enabled`)
                } else if (args[0] === 'off') {
                   antiswview = false
+                  m.reply(`${command} is disabled`)
+               }
+            }
+            break
+            
+            case 'autoreact':
+    case 'react':{
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+        if (!isCreator) throw mess.owner;
+               if (args.length < 1) return m.reply('on/off?')
+               if (args[0] === 'on') {
+                  autoreact = true
+                  m.reply(`${command} is enabled`)
+               } else if (args[0] === 'off') {
+                  autoreact = false
                   m.reply(`${command} is disabled`)
                }
             }
