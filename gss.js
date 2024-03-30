@@ -989,8 +989,6 @@ function formatDuration(duration) {
 }
 
 
-
-let storedUrl = '';
 let videoUrl = '';
 
 if (m.text) {
