@@ -118,7 +118,7 @@ async function startgss() {
     }
   } catch (err) {
     console.error('Error during auto reaction:', err);
-  });
+  }
 
 async function doReact(emoji, mek) {
   try {
