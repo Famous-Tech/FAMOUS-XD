@@ -942,7 +942,6 @@ if (command === 'menu2') {
                 body: `Bot Created By ${global.owner}`
             }
         }
-      }
     }, { quoted: m });
 } else if (/^\d+$/.test(lowerText) && m.quoted) {
         const quotedText = m.quoted.text.toLowerCase();
@@ -969,6 +968,7 @@ if (command === 'menu2') {
             }
         }
     }
+}
 
 
 async function getYoutubeInfo(url) {
