@@ -969,43 +969,19 @@ if (isCommand === 'menu2') {
     }
 
 
-async function getYoutubeInfo(url) {
-    try {
-        const info = await ytdl.getInfo(url);
-        return info;
-    } catch (error) {
-        console.error('Error fetching video info:', error);
-        return null;
-    }
-}
 
-// Function to format video duration
-function formatDuration(duration) {
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration % 3600) / 60);
-    const seconds = duration % 60;
+        if (lowerText.includes('.ytdl')) {
+            // Fetching video information
+            const urls = m.text.match(/(https?:\/\/[^\s]+)/g);
+            if (urls && urls.length > 0) {
+                videoUrl = urls[0]; // Assuming only one URL is provided
+                const info = await getYoutubeInfo(videoUrl);
 
-    return `${hours ? hours + 'h ' : ''}${minutes ? minutes + 'm ' : ''}${seconds}s`;
-}
+                if (info) {
+                    const thumbnailUrl = info.videoDetails.thumbnail.thumbnails[0].url;
+                    const videoDetails = info.videoDetails;
 
-
-let videoUrl = '';
-
-if (m.text) {
-    const lowerText = m.text.toLowerCase();
-
-    if (lowerText.includes('.ytdl')) {
-        // Fetching video information
-        const urls = m.text.match(/(https?:\/\/[^\s]+)/g);
-        if (urls && urls.length > 0) {
-            const videoUrl = urls[0]; // Assuming only one URL is provided
-            const info = await getYoutubeInfo(videoUrl);
-
-            if (info) {
-                const thumbnailUrl = info.videoDetails.thumbnail.thumbnails[0].url;
-                const videoDetails = info.videoDetails;
-
-                const captionMessage = `
+                    const captionMessage = `
 ╭═══════════════════╮
 │ *Video Details*
 │
@@ -1019,54 +995,63 @@ if (m.text) {
 ╰═══════════════════╯
 `;
 
-                await gss.sendMessage(m.chat, {
-                    image: { url: thumbnailUrl },
-                    caption: captionMessage,
-                    contextInfo: {
-                        externalAdReply: {
-                            showAdAttribution: false,
-                            title: botname, // Assuming botname is a string
-                            sourceUrl: global.link, // Assuming global.link is a string
-                            body: '' // Assuming global.owner is a string
+                    await gss.sendMessage(m.chat, {
+                        image: { url: thumbnailUrl },
+                        caption: captionMessage,
+                        contextInfo: {
+                            externalAdReply: {
+                                showAdAttribution: false,
+                                title: botname, // Assuming botname is a string
+                                sourceUrl: global.link, // Assuming global.link is a string
+                                body: '' // Assuming global.owner is a string
+                            }
                         }
-                    }
-                }, { quoted: m });
+                    }, { quoted: m });
+                }
+            } else {
+                await gss.sendMessage(m.chat, { text: 'No valid URL found in the message.' }, { quoted: m });
             }
-        } else {
-            await gss.sendMessage(m.chat, { text: 'No valid URL found in the message.' }, { quoted: m });
-        }
-    } else if (m.quoted && (lowerText === '1' || lowerText === '2')) {
-        const quotedText = m.quoted.text.toLowerCase();
-        const isAudioMenu = quotedText.includes('download as audio');
-        const isVideoMenu = quotedText.includes('download as video');
+        } else if (m.quoted && (lowerText === '1' || lowerText === '2')) {
+            const quotedText = m.quoted.text.toLowerCase();
+            const isAudioMenu = quotedText.includes('download as audio');
+            const isVideoMenu = quotedText.includes('download as video');
 
-        if (isAudioMenu && lowerText === '1') {
-            // Handle download as audio
-            const audioUrl = videoUrl; // Use stored URL
-            if (audioUrl) {
-                const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
-                await gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
+            if (isAudioMenu && lowerText === '1') {
+                // Handle download as audio
+                if (videoUrl) {
+                    const audioStream = ytdl(videoUrl, { filter: 'audioonly' });
+                    await gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
+                } else {
+                    await gss.sendMessage(m.chat, { text: 'No valid audio URL found in the quoted message.' }, { quoted: m });
+                }
+            } else if (isVideoMenu && lowerText === '2') {
+                // Handle download as video
+                if (videoUrl) {
+                    const videoStream = ytdl(videoUrl, { filter: 'audioandvideo', quality: 'highest' });
+                    await gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
+                } else {
+                    await gss.sendMessage(m.chat, { text: 'No valid video URL found in the quoted message.' }, { quoted: m });
+                }
             } else {
-                await gss.sendMessage(m.chat, { text: 'No valid audio URL found in the quoted message.' }, { quoted: m });
+                // Handle invalid selection
+                await gss.sendMessage(m.chat, { text: 'Invalid selection. Please select option 1 or 2 from the menu.' }, { quoted: m });
             }
-        } else if (isVideoMenu && lowerText === '2') {
-            // Handle download as video
-            const videoUrl = videoUrl; // Use stored URL
-            if (videoUrl) {
-                const videoStream = ytdl(videoUrl, { filter: 'audioandvideo', quality: 'highest' });
-                await gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
-            } else {
-                await gss.sendMessage(m.chat, { text: 'No valid video URL found in the quoted message.' }, { quoted: m });
-            }
-        } else {
-            // Handle invalid selection
-            await gss.sendMessage(m.chat, { text: 'Invalid selection. Please select option 1 or 2 from the menu.' }, { quoted: m });
         }
+    } catch (error) {
+        console.error('Error:', error);
+        await gss.sendMessage(m.chat, { text: 'An error occurred. Please try again later.' }, { quoted: m });
+    }
+});
+
+async function getYoutubeInfo(url) {
+    try {
+        const info = await ytdl.getInfo(url);
+        return info;
+    } catch (error) {
+        console.error('Error fetching video info:', error);
+        return null;
     }
 }
-
-
-
 	    
         switch(isCommand) {
 	    case 'afk': {
