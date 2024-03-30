@@ -981,6 +981,14 @@ async function getYoutubeInfo(url) {
     }
 }
 
+function formatDuration(duration) {
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    const seconds = duration % 60;
+
+    return `${hours ? hours + 'h ' : ''}${minutes ? minutes + 'm ' : ''}${seconds}s`;
+}
+
 try {
     if (lowerText.includes('.ytdl')) {
         // Fetching video information
