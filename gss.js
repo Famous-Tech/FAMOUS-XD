@@ -929,8 +929,7 @@ const subMenus = {
 
 const lowerText = m.text.toLowerCase();
 
-if (isCmd) {
-if (command === 'menu2') {
+if (isCommand === 'menu2') {
     await gss.sendMessage(m.chat, {
         image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
         caption: menuMessage,
@@ -968,7 +967,6 @@ if (command === 'menu2') {
             }
         }
     }
-}
 
 
 async function getYoutubeInfo(url) {
