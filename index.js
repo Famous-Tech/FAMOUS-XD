@@ -24,6 +24,7 @@ try {
 
 const { Low, JSONFile } = low
 const mongoDB = require('./lib/mongoDB')
+const { emojis, doReact } = require('./lib/autoreact.js');
 
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '')
 
@@ -103,6 +104,21 @@ async function startgss() {
         }
     })
 
+
+gss.ev.on('messages.upsert', async chatUpdate => {
+  try {
+    if (global.autoreact) {
+      const mek = chatUpdate.messages[0];
+      console.log(mek);
+      if (mek.message && !mek.key.fromMe) {
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        await doReact(randomEmoji, mek, gss);
+      }
+    }
+  } catch (err) {
+    console.error('Error during auto reaction:', err);
+  }
+});
 
 
 async function deleteUpdate(gss, m, store) {
