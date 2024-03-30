@@ -121,29 +121,27 @@ gss.ev.on('messages.upsert', async chatUpdate => {
 });
 
 
-async function deleteUpdate(gss, m, store) {
-    try {
-        const { fromMe, id, participant, remoteJid } = m;
-        if (fromMe) return;
-
-        let msg = await store.loadMessage(remoteJid, id);
-        if (!msg) {
-            return await m.reply(gss.user.jid, `
-            ≡ deleted a message 
-            ┌─⊷  𝘼𝙉𝙏𝙄 𝘿𝙀𝙇𝙀𝙏𝙀 
-            ▢ *Number :* @${participant.split`@`[0]} 
-            └─────────────
-            `.trim(), msg, { mentions: [participant] });
-        }
-
-        gss.copyNForward(gss.user.jid, msg, false).catch(e => console.log(e, msg));
-
-        // Send reply after message deletion
-        await m.reply(gss.user.jid, "Message successfully deleted.");
-    } catch (e) {
-        console.error(e);
+gss.ev.on('messages.upsert', async chatUpdate => {
+  try {
+    const m = chatUpdate.messages[0];
+    if (!m.message) return;
+    if (m.messageStubType === 1 && m.messageStubParameters && m.messageStubParameters.isStarred) {
+      await sendMessageDeletedReply(m);
     }
+  } catch (err) {
+    console.error('Error handling messages.upsert event:', err);
+  }
+});
+
+async function sendMessageDeletedReply(m) {
+  try {
+    const { participant } = m;
+    await m.reply(`This message was deleted by @${participant.split('@')[0]}.`);
+  } catch (e) {
+    console.error('Error sending message deleted reply:', e);
+  }
 }
+
 
 
 
