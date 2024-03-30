@@ -104,8 +104,10 @@ async function startgss() {
     })
 
 
+  gss.ev.on('messages.upsert', async chatUpdate => {
   try {
     const mek = chatUpdate.messages[0];
+    console.log(mek)
 
     // Check if the message exists and is not from the bot itself
     if (mek.message && !mek.key.fromMe) {
@@ -114,13 +116,14 @@ async function startgss() {
       const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
       // Call the doReact function to send the auto react
-      await doReact(randomEmoji, mek);
+      await doReact(randomEmoji);
     }
   } catch (err) {
     console.error('Error during auto reaction:', err);
   }
+});
 
-async function doReact(emoji, mek) {
+async function doReact(emoji) {
   try {
     const react = {
       react: {
