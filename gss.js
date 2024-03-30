@@ -927,23 +927,20 @@ const subMenus = {
 };
 
 
-if (command) {
-    const lowerText = m.text.toLowerCase();
-
-    if (lowerText.includes('menu2')) {
-        await gss.sendMessage(m.chat, {
-            image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
-            caption: menuMessage,
-            contextInfo: {
-                externalAdReply: {
-                    showAdAttribution: false,
-                    title: botname,
-                    sourceUrl: global.link,
-                    body: `Bot Created By ${global.owner}`
-                }
+if (command === 'menu2') {
+    await gss.sendMessage(m.chat, {
+        image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
+        caption: menuMessage,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
             }
-        }, { quoted: m });
-    } else if (/^\d+$/.test(lowerText) && m.quoted) {
+        }
+    }, { quoted: m });
+} else if (/^\d+$/.test(lowerText) && m.quoted) {
         const quotedText = m.quoted.text.toLowerCase();
 
         if (quotedText.includes(menuMessage.toLowerCase())) {
