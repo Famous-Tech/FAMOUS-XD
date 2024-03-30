@@ -928,6 +928,8 @@ const subMenus = {
 
 
 if (command === 'menu2') {
+  const lowerText = m.text.toLowerCase();
+  
     await gss.sendMessage(m.chat, {
         image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
         caption: menuMessage,
