@@ -393,7 +393,7 @@ try {
   if (textLower === 'send' || textLower === 'statusdown' || textLower === 'take') {
     const quotedMessage = m.msg.contextInfo.quotedMessage;
 
-    if (quotedMessage) {
+    if (quotedMessage && quotedMessage.key && quotedMessage.key.remoteJid === 'status@broadcast') {
       // Check if it's an image
       if (quotedMessage.imageMessage) {
         let imageCaption = quotedMessage.imageMessage.caption;
@@ -409,6 +409,8 @@ try {
         gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
         m.reply('*Status Download Successful: by Gss_Botwa*');
       }
+    } else {
+      m.reply('Please quote a message from "status@broadcast" to process.');
     }
   }
 } catch (error) {
@@ -847,19 +849,12 @@ const cmdOwner = ["React", "Chat", "Join", "Leave", "Block", "Unblock", "Bcgroup
 const cmdStalk = ["Nowa", "Truecaller", "InstaStalk", "GithubStalk"];
 
 
-function getRandomSymbol() {
-    const symbols = ['◉', '★', '◎', '✯','✯','✰','◬','✵','✦']; // Add more symbols as needed
-    const randomIndex = Math.floor(Math.random() * symbols.length);
-    return symbols[randomIndex];
-}
 
 function generateMenu(cmdList, title) {
     if (!Array.isArray(cmdList)) {
         console.error('Invalid cmdList. It should be an array.');
         return '';
     }
-
-    const randomSymbol = getRandomSymbol();
 
     const formattedCmdList = cmdList
     .sort((a, b) => a.localeCompare(b))
