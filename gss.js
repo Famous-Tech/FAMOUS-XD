@@ -1040,7 +1040,7 @@ try {
             // Handle download as audio
             if (videoUrl) {
                 const audioStream = ytdl(videoUrl, { filter: 'audioonly' });
-                await gss.sendMessage(m.chat, { video: audioStream, mimetype: 'audio/mpeg', caption: captionMessage });
+                await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mpeg' }, { quoted: m });
 
             } else {
                 await gss.sendMessage(m.chat, { text: 'No valid audio URL found in the quoted message.' }, { quoted: m });
