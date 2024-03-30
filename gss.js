@@ -1044,7 +1044,7 @@ if (m.text) {
 
         if (isAudioMenu && lowerText === '1') {
             // Handle download as audio
-            const audioUrl = storedUrl; // Use stored URL
+            const audioUrl = videoUrl; // Use stored URL
             if (audioUrl) {
                 const audioStream = ytdl(audioUrl, { filter: 'audioonly' });
                 await gss.sendMessage(m.chat, { audio: audioStream }, { quoted: m });
@@ -1053,7 +1053,7 @@ if (m.text) {
             }
         } else if (isVideoMenu && lowerText === '2') {
             // Handle download as video
-            const videoUrl = storedUrl; // Use stored URL
+            const videoUrl = videoUrl; // Use stored URL
             if (videoUrl) {
                 const videoStream = ytdl(videoUrl, { filter: 'audioandvideo', quality: 'highest' });
                 await gss.sendMessage(m.chat, { video: videoStream }, { quoted: m });
