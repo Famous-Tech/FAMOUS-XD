@@ -965,7 +965,6 @@ if (command === 'menu2') {
             }
         }
     }
-}
 
 
 async function getYoutubeInfo(url) {
