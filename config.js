@@ -18,11 +18,11 @@ global.autoswview = process.env.AUTO_STATUS_SEEN || "true";
 global.autoread = process.env.AUTO_READ || "true";
 global.available = process.env.ALWAYS_ONLINE || "true";
 global.autoTyping = process.env.AUTO_TYPING || "true";
-global.autoRecord = process.env.AUTO_RECORDING || "false";
+global.autoRecord = process.env.AUTO_RECORDING || "true";
 
-global.typemenu = process.env.MENU_TYPE || "v2";
-global.onlygroup = process.env.ONLY_GROUP || "false";
-global.onlypc = process.env.ONLY_PC || "false";
+global.typemenu = process.env.MENU_TYPE || "v1";
+global.onlygroup = process.env.ONLY_GROUP || "true";
+global.onlypc = process.env.ONLY_PC || "true";
 global.welcome = process.env.WELCOME_MSG || "true";
 global.autoBlock = process.env.AUTO_BLOCK || "true";
 
