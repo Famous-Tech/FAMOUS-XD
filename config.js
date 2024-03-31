@@ -46,6 +46,7 @@ global.mess = {
 global.link = 'https://whatsapp.com/channel/0029VaWJMi3GehEE9e1YsI1S'
 global.linkGroup = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp'
 global.autoswview = process.env.AUTO_STATUS_SEEN || "true",
+global.autoTyping = true
 global.typemenu = 'v1' // 'v1' => 'v5'
 global.onlygroup = false // onlygroup
 global.onlypc = false
