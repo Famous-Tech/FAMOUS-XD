@@ -559,12 +559,18 @@ if (!isCreator && global.onlypc && m.isGroup) {
         gss.sendPresenceUpdate("composing", m.chat);
       }
     }
+    
+    if (global.autoRecord) {
+      if (m.chat) {
+        gss.sendPresenceUpdate("recording", m.chat);
+      }
+    }
 
-if (ALWAYS_ONLINE) {
-  gss.sendPresenceUpdate('available', m.chat);
-} else {
-  gss.sendPresenceUpdate('unavailable', m.chat);
-}
+if (global.available) {
+      if (m.chat) {
+       gss.sendPresenceUpdate("available", m.chat);
+      }
+    }
 
 if (global.autoBlockEnabled && m.sender.startsWith('212')) {
   
@@ -572,8 +578,7 @@ if (global.autoBlockEnabled && m.sender.startsWith('212')) {
 }
 
 
-if (AUTO_READ_ENABLED && command) {
-  // Execute code when AUTO_READ is enabled
+if (global.autoread) {
   gss.readMessages([m.key]);
 }
 }
