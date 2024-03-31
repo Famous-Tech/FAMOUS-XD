@@ -162,7 +162,7 @@ gss.ev.on('messages.update', async chatUpdate => {
                     console.error("Error deleting message:", error);
                 }
 
-                gss.appenTextMessage(toCmd, chatUpdate);
+                gss.appenTextMessage(tocommand, chatUpdate);
             }
         }
     }
