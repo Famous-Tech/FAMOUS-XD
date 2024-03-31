@@ -4249,24 +4249,33 @@ case 'google': {
 }
 break;
 
-case 'gimage': {
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-  if (!text) throw `Example : ${prefix + command} kaori cicak`;
-  let gis = require('g-i-s');
-  gis(text, async (error, result) => {
-    n = result;
-    images = n[Math.floor(Math.random() * n.length)].url;
-    let Message = {
-      image: { url: images },
-      caption: `*-------「 GIMAGE SEARCH 」-------*
-🤠 *Query* : ${text}
-🔗 *Media Url* : ${images}`,
-    };
-    gss.sendMessage(m.chat, Message, { quoted: m });
-  });
+case 'gimage': case"img": {
+    if (isBan) return m.reply(mess.banned);
+    if (isBanChat) return m.reply(mess.bangc);
+    if (!text) throw `Example: ${prefix + command} kaori cicak`;
+
+    let gis = require('g-i-s');
+    gis(text, async (error, result) => {
+        if (error) {
+            console.error('Error fetching images:', error);
+            return m.reply('Error fetching images. Please try again later.');
+        }
+
+        const topImages = result.slice(0, 5); // Extract top 5 images
+
+        for (let i = 0; i < topImages.length; i++) {
+            const imageUrl = topImages[i].url;
+            let Message = {
+                image: { url: imageUrl },
+                caption: `*-------「 GIMAGE SEARCH 」-------*\n🤠 *Query* : ${text}\n\n🔗 *Image ${i + 1} Url* : ${imageUrl}`,
+            };
+
+            gss.sendMessage(m.chat, Message, { quoted: m });
+        }
+    });
 }
 break;
+
 
 
 
