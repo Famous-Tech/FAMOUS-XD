@@ -151,8 +151,9 @@ gss.ev.on('messages.update', async chatUpdate => {
                     message: pollCreation,
                     pollUpdates: update.pollUpdates,
                 });
-                const toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
-                if (!toCmd) return;
+                var toCmd = pollUpdate.filter(v => v.voters.length !== 0)[0]?.name;
+                if (toCmd == undefined) return;
+                var prefCmd = '/' + toCmd;
 
                 try {
                     setTimeout(async () => {
@@ -162,15 +163,11 @@ gss.ev.on('messages.update', async chatUpdate => {
                     console.error("Error deleting message:", error);
                 }
 
-                const prefCmd = prefix + toCmd.toLowerCase();
-                gss.appenTextMessage(prefCmd, { ...key, remoteJid: key.remoteJid });
+                gss.appenTextMessage(prefCmd, chatUpdate);
             }
         }
     }
 });
-
-
-
  
 
 /*WELCOME LEFT*/
