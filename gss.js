@@ -4619,8 +4619,7 @@ case 'setmenu': {
         if (isBanChat) return m.reply(mess.bangc);
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('setmenu has 5 views');
-
-    process.env.TYPEMENU = text; // Set the environment variable
+    typemenu = text;
     m.reply(mess.success);
 }
 break;
@@ -4631,7 +4630,7 @@ case 'onlygroup': {
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('onlygroup true/false');
 
-    global.onlygroup = text === 'true'; // Update the global variable
+    gonlygroup = text === 'true'; 
     m.reply(mess.success);
 }
 break;
@@ -4642,7 +4641,7 @@ case 'onlypc': {
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('onlypc true/false');
 
-    global.onlypc = text === 'true'; // Update the global variable
+    onlypc = text === 'true';
     m.reply(mess.success);
 }
 break;
@@ -4739,32 +4738,6 @@ case 'attp3':
   }, {
     quoted: m
   });
-  break;
-
-case 'update':
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-  if (!isCreator) return m.reply('This command is only for my owner');
-  
-  try {
-    let commits = await DB.syncgit();
-
-    if (commits.total === 0) {
-      m.reply(`Hey ${m.pushName}. You have the latest version installed.`);
-    } else {
-      let update = await DB.sync();
-      let buttonMessaged = {
-        text: update,
-        footer: 'UPDATER',
-        headerType: 4
-      };
-      await gss.sendMessage(m.chat, buttonMessaged);
-    }
-  } catch (error) {
-    // Handle errors if necessary
-    console.error(error);
-    m.reply('An error occurred while processing the command.');
-  }
   break;
 
 
@@ -4989,12 +4962,10 @@ if (!isCreator) throw mess.owner
 case 'alwaysonline':
 if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
-    ALWAYS_ONLINE = true;
-    process.env.ALWAYS_ONLINE = 'true';
+   available = true;
     m.reply('*Always Online turned on.*');
   } else if (args[0] === 'off') {
     ALWAYS_ONLINE = false;
-    process.env.ALWAYS_ONLINE = 'false';
     m.reply('Always Online turned off.');
   } else {
     gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
@@ -5005,20 +4976,16 @@ if (!isCreator) throw mess.owner
 case 'autotyping':
 if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
-    TYPING_ENABLED = true;
-    process.env.AUTO_TYPING = 'true';
+    autoTyping = true;
     m.reply('*AUTO TYPING turned on.*');
   } else if (args[0] === 'off') {
-    TYPING_ENABLED = false;
-    process.env.AUTO_TYPING = 'false';
+    autoTyping = false;
     m.reply('*AUTO TYPING turned off.*');
   } else {
     gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
   
-
-
 
 
   
@@ -5036,7 +5003,7 @@ if (!isCreator) throw mess.owner
   m.reply(`Current Settings:
     Auto Read: ${AUTO_READ ? 'On' : 'Off'}
     Always Online: ${ALWAYS_ONLINE ? 'On' : 'Off'}
-    Auto Typing: ${TYPING_ENABLED ? 'On' : 'Off'}`);
+    Auto Typing: ${AUTO_TYPING ? 'On' : 'Off'}`);
 
   // Delay for 2 seconds
   setTimeout(() => {
