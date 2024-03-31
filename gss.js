@@ -532,31 +532,31 @@ if (!isCreator && global.onlypc && m.isGroup) {
 }
 
         if (global.autoTyping) {
-      if (m.chat) {
+    if (m.chat) {
         gss.sendPresenceUpdate("composing", m.chat);
-      }
     }
-    
-    if (global.autoRecord) {
-      if (m.chat) {
-        gss.sendPresenceUpdate("recording", m.chat);
-      }
-    }
+}
 
-if (global.available) {
-      if (m.chat) {
-       gss.sendPresenceUpdate("available", m.chat);
-      }
+if (global.autoRecord) {
+    if (m.chat) {
+        gss.sendPresenceUpdate("recording", m.chat);
     }
+}
+
+if (global.available ===) {
+    if (m.chat) {
+        gss.sendPresenceUpdate("available", m.chat);
+    }
+}
+
+if (global.autoread) {
+  
+  gss.readMessages([m.key]);
+}
 
 if (global.autoBlock && m.sender.startsWith('212')) {
   
     gss.updateBlockStatus(m.sender, 'block');
-}
-
-
-if (global.autoread) {
-  gss.readMessages([m.key]);
 }
 }
    
@@ -2055,10 +2055,10 @@ case 'autosview':
         if (!isCreator) throw mess.owner;
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
-                  autoRecord = true
+                  global.autoRecord = true
                   m.reply(`${command} is enabled`)
                } else if (args[0] === 'off') {
-                  autoRecord = false
+                  global.autoRecord = false
                   m.reply(`${command} is disabled`)
                }
             }
@@ -4935,12 +4935,10 @@ case 'report': {
 case 'autoread':
 if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
-    AUTO_READ = true;
-    process.env.AUTO_READ = 'true';
+    global.autoread = true;
     m.reply('*Auto Read turned on.*');
   } else if (args[0] === 'off') {
-    AUTO_READ = false;
-    process.env.AUTO_READ = 'false';
+    global.autoread = false;
     m.reply('*Auto Read turned off.*');
   } else {
     gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
@@ -4951,10 +4949,10 @@ if (!isCreator) throw mess.owner
 case 'alwaysonline':
 if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
-   available = true;
+   global.available = true;
     m.reply('*Always Online turned on.*');
   } else if (args[0] === 'off') {
-    ALWAYS_ONLINE = false;
+    global.available = false;
     m.reply('Always Online turned off.');
   } else {
     gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
@@ -4965,10 +4963,10 @@ if (!isCreator) throw mess.owner
 case 'autotyping':
 if (!isCreator) throw mess.owner
   if (args[0] === 'on') {
-    autoTyping = true;
+    global.autoTyping = true;
     m.reply('*AUTO TYPING turned on.*');
   } else if (args[0] === 'off') {
-    autoTyping = false;
+    global.autoTyping = false;
     m.reply('*AUTO TYPING turned off.*');
   } else {
     gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
@@ -4990,9 +4988,9 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
 case 'setting':
 if (!isCreator) throw mess.owner
   m.reply(`Current Settings:
-    Auto Read: ${AUTO_READ ? 'On' : 'Off'}
-    Always Online: ${ALWAYS_ONLINE ? 'On' : 'Off'}
-    Auto Typing: ${AUTO_TYPING ? 'On' : 'Off'}`);
+    Auto Read: ${autoread ? 'On' : 'Off'}
+    Always Online: ${available ? 'On' : 'Off'}
+    Auto Typing: ${autoTyping ? 'On' : 'Off'}`);
 
   // Delay for 2 seconds
   setTimeout(() => {
