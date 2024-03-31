@@ -55,7 +55,6 @@ global.typemenu = process.env.MENU_TYPE || "v2";
 global.onlygroup = process.env.ONLY_GROUP || "false";
 global.onlypc = process.env.ONLY_PC || "false";
 global.welcome = process.env.WELCOME_MSG || "true";
-global.autoabout = process.env.AUTO_BIO || "false";
 global.autoBlock = process.env.AUTO_BLOCK || "true";
 global.limitawal = {
     premium: 'Infinity',
