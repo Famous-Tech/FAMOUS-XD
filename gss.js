@@ -554,8 +554,10 @@ if (!isCreator && global.onlypc && m.isGroup) {
     return m.reply("Hello, if you want to use this bot, please chat privately with the bot.")
 }
 
-    if (global.autoTyping) {
-        gss.sendPresenceUpdate("composing");
+        if (global.autoTyping) {
+      if (m.chat) {
+        gss.sendPresenceUpdate("composing", m.chat);
+      }
     }
 
 if (ALWAYS_ONLINE) {
