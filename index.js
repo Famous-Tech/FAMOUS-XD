@@ -121,28 +121,6 @@ gss.ev.on('messages.upsert', async chatUpdate => {
 });
 
 
-gss.ev.on('messages.upsert', async chatUpdate => {
-  try {
-    const m = chatUpdate.messages[0];
-    if (!m.message) return; // Ignore non-message updates
-
-    // Check if the event is about message deletion
-    if (m.messageStubType === 1 && m.messageStubParameters && m.messageStubParameters.isStarred) {
-      const participant = m.participant.split('@')[0];
-      
-      // Assuming you have access to the deleted message content
-      const deletedMessageContent = m.message.conversation;
-      
-      await m.reply(`The following message was deleted by @${participant}:\n\n${deletedMessageContent}`);
-    }
-  } catch (err) {
-    console.error('Error handling messages.upsert event:', err);
-  }
-});
-
-
-
-
 
     //autostatus view
         gss.ev.on('messages.upsert', async chatUpdate => {
