@@ -67,10 +67,10 @@ let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
 
 // Initialize default values
-let AUTO_READ = false;
-let ALWAYS_ONLINE = false;
-let AUTO_TYPING = false;
-let AUTO_RECORDING = false;
+let autoread = false;
+let available = false;
+let autoTyping = false;
+let autoRecord = false;
 
 const mongoDBUrl = process.env.MONGO_DB || 'mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority';
 
@@ -485,16 +485,6 @@ if (!('autobio' in setting)) setting.autobio = false
             scheduled: true,
             timezone: "Asia/kolkata"
         })
-        
-
-        
-       
-   
-    if (!m.isBaileys && !m.fromMe) {
-        await gss.sendMessage(m.chat, { text: 'User detected as a bot and has been flagged.'}, { quoted: m });
-    }
-
-
 
 
 /*antiviewonce*/
@@ -506,7 +496,6 @@ if (!('autobio' in setting)) setting.autobio = false
         val.message = msg
         await gss.sendMessage(m.chat, { forward: val }, { quoted: m })
     }
-
 
 
 
