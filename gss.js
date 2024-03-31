@@ -4270,13 +4270,13 @@ case 'gimage': case"img": {
                 caption: `*-------「 GIMAGE SEARCH 」-------*\n🤠 *Query* : ${text}\n\n🔗 *Image ${i + 1} Url* : ${imageUrl}`,
             };
 
-            gss.sendMessage(m.chat, Message, { quoted: m });
+            setTimeout(() => {
+                gss.sendMessage(m.chat, Message, { quoted: m });
+            }, 3000 * (i + 1)); // Send each image after 3 seconds delay
         }
     });
 }
 break;
-
-
 
 
 
