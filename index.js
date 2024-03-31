@@ -346,7 +346,7 @@ gss.ev.on('group-participants.update', async (anu) => {
     } else if (connection === "open") {
         // Add your custom message when the connection is open
         console.log('Connected...', update);
-        gss.sendMessage('917050906659@s.whatsapp.net', {
+        gss.sendMessage(gss.user.id, {
             text: `*hi bro! 🫡*\n_gss botwa v2 bot has successfully connected to the server_`
         });
     }
