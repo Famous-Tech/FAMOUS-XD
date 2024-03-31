@@ -69,9 +69,8 @@ let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
 // Initialize default values
 let AUTO_READ = false;
 let ALWAYS_ONLINE = false;
-let TYPING_ENABLED = false;
-let PUBLIC_MODE = false; // added
-let ANTICALL_MODE = false; // added
+let AUTO_TYPING = false;
+let AUTO_RECORDING = false;
 
 const mongoDBUrl = process.env.MONGO_DB || 'mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority';
 
