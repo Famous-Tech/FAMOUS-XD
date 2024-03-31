@@ -47,12 +47,16 @@ global.link = 'https://whatsapp.com/channel/0029VaWJMi3GehEE9e1YsI1S'
 global.linkGroup = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp'
 global.autoswview = process.env.AUTO_STATUS_SEEN || "true";
 global.autoread = process.env.AUTO_READ || "true";
+global.available = process.env.ALWAYS_ONLINE || "true";
 global.autoTyping = process.env.AUTO_TYPING || "true";
+global.autoRecord = process.env.AUTO_RECORDING || "false";
+
 global.typemenu = process.env.MENU_TYPE || "v2";
 global.onlygroup = process.env.ONLY_GROUP || "false";
 global.onlypc = process.env.ONLY_PC || "false";
 global.welcome = process.env.WELCOME_MSG || "true";
 global.autoabout = process.env.AUTO_BIO || "false";
+global.autoBlock = process.env.AUTO_BLOCK || "true";
 global.limitawal = {
     premium: 'Infinity',
     free: 10
