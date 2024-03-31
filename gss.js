@@ -2058,6 +2058,22 @@ case 'autosview':
                }
             }
             break
+            
+      
+    case 'autorecording':{
+      if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+        if (!isCreator) throw mess.owner;
+               if (args.length < 1) return m.reply('on/off?')
+               if (args[0] === 'on') {
+                  autoRecord = true
+                  m.reply(`${command} is enabled`)
+               } else if (args[0] === 'off') {
+                  autoRecord = false
+                  m.reply(`${command} is disabled`)
+               }
+            }
+            break
 
 case 'q': case 'quoted': {
   if (isBan) return m.reply(mess.banned);
