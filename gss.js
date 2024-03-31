@@ -420,17 +420,6 @@ try {
 
 
 
-const autoBlockEnabledValue = process.env.AUTO_BLOCK_ENABLED || 'false';
-global.autoBlockEnabled = autoBlockEnabledValue === 'true';
-
-const typemenu = process.env.TYPEMENU || global.typemenu;
-const onlygroup = process.env.ONLYGROUP || global.onlygroup;
-const onlypc = process.env.ONLYPC || global.onlypc;
-
-let TYPING_ENABLED = process.env.AUTO_TYPING === 'true';
-let AUTO_READ_ENABLED = process.env.AUTO_READ === 'true';
-let ALWAYS_ONLINE = process.env.ALWAYS_ONLINE === 'true';
-
 	try {
             let isNumber = x => typeof x === 'number' && !isNaN(x)
             let limitUser = isPremium ? global.limitawal.premium : global.limitawal.free
@@ -502,7 +491,7 @@ if (!('autobio' in setting)) setting.autobio = false
         
        
    
-    if (mek.key.id.startsWith('BAE5') && !m.fromMe) {
+    if (!m.isBaileys && !m.fromMe) {
         await gss.sendMessage(m.chat, { text: 'User detected as a bot and has been flagged.'}, { quoted: m });
     }
 
@@ -572,7 +561,7 @@ if (global.available) {
       }
     }
 
-if (global.autoBlockEnabled && m.sender.startsWith('212')) {
+if (global.autoBlock && m.sender.startsWith('212')) {
   
     gss.updateBlockStatus(m.sender, 'block');
 }
@@ -2291,27 +2280,6 @@ case 'take':
   break;
 
   
-
-case 'updatenow':
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-  if (global.herokuConfig && global.herokuConfig.heroku) {
-    const DB = require('./lib');
-    try {
-      let commits = await DB.syncgit();
-      if (commits.total === 0) {
-        m.reply(`Hey ${m.pushName}. You have the latest version installed.`);
-      } else {
-        m.reply('Build Started...');
-        let update = await DB.updatedb();
-        m.reply(update);
-      }
-    } catch (error) {
-      console.error('Error updating database:', error);
-      m.reply('An error occurred while updating the database.');
-    }
-  }
-  break;
 
 
 case 'ebinary': {
