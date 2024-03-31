@@ -543,7 +543,7 @@ if (global.autoRecord) {
     }
 }
 
-if (global.available ===) {
+if (global.available) {
     if (m.chat) {
         gss.sendPresenceUpdate("available", m.chat);
     }
