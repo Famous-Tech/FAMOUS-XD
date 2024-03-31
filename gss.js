@@ -520,7 +520,7 @@ async function setBio() {
 setBio();
 
 
-if (isCommand) {
+if (command) {
             
 if (!m.isGroup && !isCreator && global.onlygroup) {
     return m.reply("Hello, because we want to reduce spam, please use the bot in a group!\n\nIf there are joint interests, please type .owner to contact the owner.")
@@ -543,9 +543,9 @@ if (global.autoRecord) {
 }
 
 if (global.available) {
-    if (m.chat) {
-        gss.sendPresenceUpdate("available", m.chat);
-    }
+  gss.sendPresenceUpdate('available', m.chat);
+} else {
+  gss.sendPresenceUpdate('unavailable', m.chat);
 }
 
 if (global.autoread) {
@@ -900,7 +900,7 @@ const subMenus = {
 
 const lowerText = m.text.toLowerCase();
 
-if (isCommand === 'menu2') {
+if (command === 'menu2') {
     await gss.sendMessage(m.chat, {
         image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
         caption: menuMessage,
