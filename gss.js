@@ -4233,37 +4233,38 @@ break;
 
 
 case 'img': case 'gimage':
-    if (!text) {
-        throw `Please provide a search query. Example usage: ${prefix + command} gssbotwa`;
+    if (!text && !(m.quoted && m.quoted.text)) {
+      throw `Please provide some text , Example usage ${prefix + commands} gssbotwa`;
+    }
+    if (!text && m.quoted && m.quoted.text) {
+      text = m.quoted.text;
     }
 
+    const match = text.match(/(\d+)/);
+    const numberOfImages = match ? parseInt(match[1]) : 1;
+
     try {
-        const response = await got(`https://www.google.com/search?q=${encodeURIComponent(text)}&tbm=isch`);
+      m.reply('*Please wait*');
 
-        if (response.statusCode === 200) {
-            const matches = response.body.match(/<img[^>]+src="([^">]+)"[^>]*>/g);
+      const images = [];
 
-            if (matches && matches.length > 0) {
-                const imageUrls = matches.map(match => match.match(/<img[^>]+src="([^">]+)"[^>]*>/)[1]);
+      for (let i = 0; i < numberOfImages; i++) {
+        const endpoint = `https://api.guruapi.tech/api/googleimage?text=${encodeURIComponent(text)}`;
+        const response = await fetch(endpoint);
 
-                for (let i = 0; i < Math.min(5, imageUrls.length); i++) {
-                    const imageUrl = imageUrls[i].replace(/&amp;/g, '&');
-                    const imageResponse = await got(imageUrl);
-                    if (imageResponse.statusCode === 200) {
-                        const imageBuffer = await pipeline(imageResponse.body, new stream.PassThrough());
-                        await gss.sendMedia(m.chat, imageBuffer, `image_${i + 1}.jpg`, `Image ${i + 1}:`);
-                    } else {
-                        throw `Failed to fetch image ${i + 1}`;
-                    }
-                }
-            } else {
-                throw 'No images found for the given query.';
-            }
+        if (response.ok) {
+          const imageBuffer = await response.buffer();
+          images.push(imageBuffer);
         } else {
-            throw 'Failed to fetch images from Google.';
+          throw '*Image generation failed*';
         }
-    } catch (error) {
-        throw `Error: ${error.message}`;
+      }
+
+      for (let i = 0; i < images.length; i++) {
+        await gss.sendMedia(m.chat, images[i], `image_${i + 1}.png`, null, m);
+      }
+    } catch {
+      throw '*Oops! Something went wrong while generating images. Please try again later.*';
     }
     break;
 
