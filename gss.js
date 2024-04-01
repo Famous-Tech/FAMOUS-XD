@@ -4279,7 +4279,7 @@ case 'gimage': case"img": {
 break;
 
 
-case 'shorturl': {
+case 'shorturl': case 'tiny': case 'tinyurl': {
     if (!args[0]) return m.reply('Please provide a URL to shorten.');
 
     const apiUrl = `https://tinyurl.com/api-create.php?url=${args[0]}`;
