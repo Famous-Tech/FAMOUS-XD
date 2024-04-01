@@ -7,6 +7,7 @@ const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
 const { rentfromxeon, conns } = require('./RentBot')
 const languages = require('./lib/language');
+const got = require('got');
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 const availableStyles = Object.keys(fonts);
@@ -4229,41 +4230,35 @@ case 'google': {
 break;
 
 
-  case 'img': case 'gimage':
-    if (!text && !(m.quoted && m.quoted.text)) {
-      throw `Please provide some text , Example usage ${prefix + command} gssbotwa`;
+  
+  case 'img':
+    if (!text) {
+      throw `Please provide a search query, Example usage: ${usedPrefix}img cats`;
     }
-    if (!text && m.quoted && m.quoted.text) {
-      text = m.quoted.text;
-    }
-
-    const match = text.match(/(\d+)/);
-    const numberOfImages = match ? parseInt(match[1]) : 1;
 
     try {
-      m.reply('*Please wait*');
+      const response = await got(`https://www.google.com/search?q=${encodeURIComponent(text)}&tbm=isch`);
 
-      const images = [];
+      if (response.statusCode === 200) {
+        const matches = response.body.match(/<img[^>]+src="([^">]+)/g);
 
-      for (let i = 0; i < numberOfImages; i++) {
-        const endpoint = `https://api.guruapi.tech/api/googleimage?text=${encodeURIComponent(text)}`;
-        const response = await fetch(endpoint);
-
-        if (response.ok) {
-          const imageBuffer = await response.buffer();
-          images.push(imageBuffer);
+        if (matches && matches.length > 0) {
+          const imageUrls = matches.slice(0, 5).map(match => match.replace('<img src="', ''));
+          
+          for (let i = 0; i < imageUrls.length; i++) {
+            await gss.sendFile(m.chat, imageUrls[i], `image_${i + 1}.jpg`, `Image ${i + 1}:`);
+          }
         } else {
-          throw '*Image generation failed*';
+          throw 'No images found for the given query.';
         }
+      } else {
+        throw 'Failed to fetch images from Google.';
       }
-
-      for (let i = 0; i < images.length; i++) {
-        await gss.sendFile(m.chat, images[i], `image_${i + 1}.png`, null, m);
-      }
-    } catch {
-      throw '*Oops! Something went wrong while generating images. Please try again later.*';
+    } catch (error) {
+      throw `Error: ${error.message}`;
     }
     break;
+
 
 
 case 'shorturl': case 'tiny': case 'tinyurl': {
