@@ -4231,6 +4231,7 @@ break;
 
 
 
+
 case 'img': case 'gimage':
     if (!text) {
         throw `Please provide a search query. Example usage: ${prefix + command} gssbotwa`;
@@ -4240,12 +4241,12 @@ case 'img': case 'gimage':
         const response = await got(`https://www.google.com/search?q=${encodeURIComponent(text)}&tbm=isch`);
 
         if (response.statusCode === 200) {
-            const matches = response.body.match(/<img[^>]+src="([^">]+)/g);
+            const matches = response.body.match(/<img[^>]+src="([^">]+)"[^>]*>/g);
 
             if (matches && matches.length > 0) {
-                const imageUrls = matches.slice(0, 5).map(match => match.replace('<img src="', ''));
+                const imageUrls = matches.map(match => match.match(/<img[^>]+src="([^">]+)"[^>]*>/)[1]);
 
-                for (let i = 0; i < imageUrls.length; i++) {
+                for (let i = 0; i < Math.min(5, imageUrls.length); i++) {
                     const imageUrl = imageUrls[i].replace(/&amp;/g, '&');
                     const imageResponse = await got(imageUrl);
                     if (imageResponse.statusCode === 200) {
