@@ -4231,9 +4231,9 @@ break;
 
 
   
-  case 'img':
+  case 'img': case 'gimage':
     if (!text) {
-      throw `Please provide a search query, Example usage: ${usedPrefix}img cats`;
+      throw `Please provide a search query, Example usage: ${prefix + command} gssbotwa`;
     }
 
     try {
@@ -4246,7 +4246,7 @@ break;
           const imageUrls = matches.slice(0, 5).map(match => match.replace('<img src="', ''));
           
           for (let i = 0; i < imageUrls.length; i++) {
-            await gss.sendFile(m.chat, imageUrls[i], `image_${i + 1}.jpg`, `Image ${i + 1}:`);
+            await gss.sendMedia(m.chat, imageUrls[i], `image_${i + 1}.jpg`, `Image ${i + 1}:`);
           }
         } else {
           throw 'No images found for the given query.';
