@@ -4279,6 +4279,24 @@ case 'gimage': case"img": {
 break;
 
 
+case 'shorturl': {
+    if (!args[0]) return m.reply('Please provide a URL to shorten.');
+
+    const apiUrl = `https://tinyurl.com/api-create.php?url=${args[0]}`;
+
+    axios.get(apiUrl)
+        .then(response => {
+            const shortenedUrl = response.data;
+            const messageToSend = `Shortened URL: ${shortenedUrl}`;
+            gss.sendMessage(m.chat, messageToSend, { quoted: m });
+        })
+        .catch(error => {
+            console.error('Error shortening URL:', error);
+            m.reply('Error shortening URL. Please try again later.');
+        });
+}
+break;
+
 
 case 'sticker': case 's': case 'stickergif': case 'sgif': {
   if (isBan) return m.reply(mess.banned);
