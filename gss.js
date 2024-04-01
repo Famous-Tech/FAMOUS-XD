@@ -4230,34 +4230,42 @@ case 'google': {
 break;
 
 
-  
-  case 'img': case 'gimage':
+
+case 'img': case 'gimage':
     if (!text) {
-      throw `Please provide a search query, Example usage: ${prefix + command} gssbotwa`;
+        throw `Please provide a search query. Example usage: ${prefix + command} gssbotwa`;
     }
 
     try {
-      const response = await got(`https://www.google.com/search?q=${encodeURIComponent(text)}&tbm=isch`);
+        const response = await got(`https://www.google.com/search?q=${encodeURIComponent(text)}&tbm=isch`);
 
-      if (response.statusCode === 200) {
-        const matches = response.body.match(/<img[^>]+src="([^">]+)/g);
+        if (response.statusCode === 200) {
+            const matches = response.body.match(/<img[^>]+src="([^">]+)/g);
 
-        if (matches && matches.length > 0) {
-          const imageUrls = matches.slice(0, 5).map(match => match.replace('<img src="', ''));
-          
-          for (let i = 0; i < imageUrls.length; i++) {
-            await gss.sendMedia(m.chat, imageUrls[i], `image_${i + 1}.jpg`, `Image ${i + 1}:`);
-          }
+            if (matches && matches.length > 0) {
+                const imageUrls = matches.slice(0, 5).map(match => match.replace('<img src="', ''));
+
+                for (let i = 0; i < imageUrls.length; i++) {
+                    const imageUrl = imageUrls[i].replace(/&amp;/g, '&');
+                    const imageResponse = await got(imageUrl);
+                    if (imageResponse.statusCode === 200) {
+                        const imageBuffer = await pipeline(imageResponse.body, new stream.PassThrough());
+                        await gss.sendMedia(m.chat, imageBuffer, `image_${i + 1}.jpg`, `Image ${i + 1}:`);
+                    } else {
+                        throw `Failed to fetch image ${i + 1}`;
+                    }
+                }
+            } else {
+                throw 'No images found for the given query.';
+            }
         } else {
-          throw 'No images found for the given query.';
+            throw 'Failed to fetch images from Google.';
         }
-      } else {
-        throw 'Failed to fetch images from Google.';
-      }
     } catch (error) {
-      throw `Error: ${error.message}`;
+        throw `Error: ${error.message}`;
     }
     break;
+
 
 
 
