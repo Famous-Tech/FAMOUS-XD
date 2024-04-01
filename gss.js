@@ -4292,7 +4292,7 @@ case 'shorturl': case 'tiny': case 'tinyurl': {
         .then(response => {
             const shortenedUrl = response.data;
             const messageToSend = `Shortened URL: ${shortenedUrl}`;
-            gss.sendMessage(m.chat, messageToSend, { quoted: m });
+            m.reply(messageToSend)
         })
         .catch(error => {
             console.error('Error shortening URL:', error);
