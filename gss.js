@@ -4228,34 +4228,42 @@ case 'google': {
 }
 break;
 
-case 'gimage': case"img": {
-    if (isBan) return m.reply(mess.banned);
-    if (isBanChat) return m.reply(mess.bangc);
-    if (!text) throw `Example: ${prefix + command} kaori cicak`;
 
-    let gis = require('g-i-s');
-    gis(text, async (error, result) => {
-        if (error) {
-            console.error('Error fetching images:', error);
-            return m.reply('Error fetching images. Please try again later.');
+  case 'img': case 'gimage':
+    if (!text && !(m.quoted && m.quoted.text)) {
+      throw `Please provide some text , Example usage ${prefix + command} gssbotwa`;
+    }
+    if (!text && m.quoted && m.quoted.text) {
+      text = m.quoted.text;
+    }
+
+    const match = text.match(/(\d+)/);
+    const numberOfImages = match ? parseInt(match[1]) : 1;
+
+    try {
+      m.reply('*Please wait*');
+
+      const images = [];
+
+      for (let i = 0; i < numberOfImages; i++) {
+        const endpoint = `https://api.guruapi.tech/api/googleimage?text=${encodeURIComponent(text)}`;
+        const response = await fetch(endpoint);
+
+        if (response.ok) {
+          const imageBuffer = await response.buffer();
+          images.push(imageBuffer);
+        } else {
+          throw '*Image generation failed*';
         }
+      }
 
-        const topImages = result.slice(0, 5); // Extract top 5 images
-
-        for (let i = 0; i < topImages.length; i++) {
-            const imageUrl = topImages[i].url;
-            let Message = {
-                image: { url: imageUrl },
-                caption: `*-------「 GIMAGE SEARCH 」-------*\n🤠 *Query* : ${text}\n\n🔗 *Image ${i + 1} Url* : ${imageUrl}`,
-            };
-
-            setTimeout(() => {
-                gss.sendMessage(m.chat, Message, { quoted: m });
-            }, 3000 * (i + 1)); // Send each image after 3 seconds delay
-        }
-    });
-}
-break;
+      for (let i = 0; i < images.length; i++) {
+        await gss.sendFile(m.chat, images[i], `image_${i + 1}.png`, null, m);
+      }
+    } catch {
+      throw '*Oops! Something went wrong while generating images. Please try again later.*';
+    }
+    break;
 
 
 case 'shorturl': case 'tiny': case 'tinyurl': {
