@@ -52,7 +52,7 @@
     "google-play-scraper": "^10.0.0",
     "google-tts-api": "^0.0.6",
     "googleapis": "^127.0.0",
-    "got": "^11.8.3",
+    "got": "^11.8.6",
     "heroku-client": "3.1.0",
     "human-readable": "^0.2.1",
     "image-size": "^1.0.2",
