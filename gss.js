@@ -936,16 +936,15 @@ if (command === 'menu') {
             } else {
                 await gss.sendMessage(m.chat, { text: 'Invalid sub-menu number.' }, { quoted: m });
             }
-        } else if (menuType === '2') { // Changed '2' to 2 for proper comparison
+        } 
+    } else if (menuType === '2') { // Changed '2' to 2 for proper comparison
             if (isBan) return m.reply(mess.banned);
             if (isBanChat) return m.reply(mess.bangc);
             await gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
         } else {
             await gss.sendMessage(m.chat, { text: 'Invalid menu type. Please check the configuration.' }, { quoted: m });
         }
-    }
 }
-
 
 	    
         switch(command) {
