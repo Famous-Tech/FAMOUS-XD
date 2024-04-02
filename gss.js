@@ -922,29 +922,30 @@ if (command === 'menu') {
 
             if (subMenu !== undefined) {
                 await gss.sendMessage(m.chat, {
-                    image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
-                    caption: subMenu,
-                    contextInfo: {
-                        externalAdReply: {
-                            showAdAttribution: false,
-                            title: botname,
-                            sourceUrl: global.link,
-                            body: `Bot Created By ${global.owner}`
-                        }
-                    }
-                }, { quoted: m });
+            image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
+            caption: subMenu,
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: true,
+                    title: null,
+                    sourceUrl: null,
+                    body: ``
+                }
+            }
+        }, { quoted: m });
             } else {
                 await gss.sendMessage(m.chat, { text: 'Invalid sub-menu number.' }, { quoted: m });
             }
-        } else if (menuType === '2') {
+        } else if (menuType === '2') { // Changed '2' to 2 for proper comparison
             if (isBan) return m.reply(mess.banned);
             if (isBanChat) return m.reply(mess.bangc);
-            gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
+            await gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
         } else {
             await gss.sendMessage(m.chat, { text: 'Invalid menu type. Please check the configuration.' }, { quoted: m });
         }
     }
 }
+
 
 	    
         switch(command) {
