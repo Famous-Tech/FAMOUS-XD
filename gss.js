@@ -922,22 +922,17 @@ if (command === 'menu') {
 
             if (subMenu !== undefined) {
                 await gss.sendMessage(m.chat, {
-                    image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
-                    caption: subMenu,
-                    contextInfo: {
-                        externalAdReply: {
-                            showAdAttribution: true,
-                            title: null,
-                            sourceUrl: null,
-                            body: ``
-                        }
-                    }
-                }, { quoted: m });
-            } else {
-                await gss.sendMessage(m.chat, { text: 'Invalid sub-menu number.' }, { quoted: m });
+            image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
+            caption: subMenu,
+            contextInfo: {
+                externalAdReply: {
+                    showAdAttribution: false,
+                    title: botname,
+                    sourceUrl: global.link,
+                    body: `Bot Created By ${global.owner}`
+                }
             }
-        } else {
-            await gss.sendMessage(m.chat, { text: 'Invalid message format. Please reply to the menu message.' }, { quoted: m });
+        }, { quoted: m });
         }
     } else if (menuType === '2') {
         if (isBan) return m.reply(mess.banned);
