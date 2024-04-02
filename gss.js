@@ -913,7 +913,7 @@ if (command === 'menu') {
                 }
             }
         }, { quoted: m });
-    } else if (/^\d+$/.test(lowerText) && m.quoted) {
+    } else (/^\d+$/.test(lowerText) && m.quoted) {
         const quotedText = m.quoted.text.toLowerCase();
 
         if (quotedText.includes(menuMessage.toLowerCase())) {
