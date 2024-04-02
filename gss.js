@@ -971,9 +971,7 @@ if (command === 'menu' && menuType === '1') {
                     }
                 }
             }, { quoted: m });
-        } else {
-            await gss.sendMessage(m.chat, { text: 'Invalid menu number. Please select a number from the menu.' }, { quoted: m });
-        }
+        } 
     }
 }
 
@@ -983,11 +981,7 @@ if (command === 'menu' && menuType === '2') {
     if (isBanChat) return m.reply(mess.bangc);
     
     await gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
-} else {
-    await gss.sendMessage(m.chat, { text: 'Invalid menu type. Please check the configuration.' }, { quoted: m });
 }
-
-
 
 	    
         switch(command) {
