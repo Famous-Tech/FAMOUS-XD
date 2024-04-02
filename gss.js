@@ -4528,7 +4528,7 @@ case 'menutype': {
         if (isBanChat) return m.reply(mess.bangc);
     if (!isCreator) return m.reply(mess.owner);
     if (!text) return m.reply('menuType 1 for reply menu\nmenuType 2 for pollmenu');
-    MenuType = text;
+    menuType = text;
     m.reply(mess.success);
 }
 break;
