@@ -922,28 +922,30 @@ if (command === 'menu') {
 
             if (subMenu !== undefined) {
                 await gss.sendMessage(m.chat, {
-            image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
-            caption: subMenu,
-            contextInfo: {
-                externalAdReply: {
-                    showAdAttribution: true,
-                    title: null,
-                    sourceUrl: null,
-                    body: ``
-                }
-            }
-        }, { quoted: m });
+                    image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
+                    caption: subMenu,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: true,
+                            title: null,
+                            sourceUrl: null,
+                            body: ``
+                        }
+                    }
+                }, { quoted: m });
             } else {
                 await gss.sendMessage(m.chat, { text: 'Invalid sub-menu number.' }, { quoted: m });
             }
-        } 
-    } else if (menuType === '2') { // Changed '2' to 2 for proper comparison
-            if (isBan) return m.reply(mess.banned);
-            if (isBanChat) return m.reply(mess.bangc);
-            await gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
         } else {
-            await gss.sendMessage(m.chat, { text: 'Invalid menu type. Please check the configuration.' }, { quoted: m });
+            await gss.sendMessage(m.chat, { text: 'Invalid message format. Please reply to the menu message.' }, { quoted: m });
         }
+    } else if (menuType === '2') {
+        if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+        await gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
+    } else {
+        await gss.sendMessage(m.chat, { text: 'Invalid menu type. Please check the configuration.' }, { quoted: m });
+    }
 }
 
 	    
