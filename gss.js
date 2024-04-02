@@ -5,7 +5,7 @@ const fonts = require('./lib/font.js');
 const menufont = require('./lib/menufont.js');
 const DB = require('./lib/scraper')
 const uploadImage = require('./lib/uploadImage.js');
-const { rentfromxeon, conns } = require('./RentBot')
+const { gssrentbot, conns } = require('./RentBot')
 const languages = require('./lib/language');
 const got = require('got');
 const more = String.fromCharCode(8206)
@@ -901,9 +901,8 @@ const subMenus = {
 
 const lowerText = m.text.toLowerCase();
 
-const menuType = global.menuType; 
 if (command === 'menu') {
-    if (menuType === 1) {
+    if (menuType === '1') {
         await gss.sendMessage(m.chat, {
             image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
             caption: menuMessage,
@@ -916,7 +915,7 @@ if (command === 'menu') {
                 }
             }
         }, { quoted: m });
-    } else if (menuType === 2) {
+    } else if (menuType === '2') {
         if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
         gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
@@ -927,99 +926,6 @@ if (command === 'menu') {
 
 
 
-
-
-async function getYoutubeInfo(url) {
-    try {
-        const info = await ytdl.getInfo(url);
-        return info;
-    } catch (error) {
-        console.error('Error fetching video info:', error);
-        return null;
-    }
-}
-
-function formatDuration(duration) {
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration % 3600) / 60);
-    const seconds = duration % 60;
-
-    return `${hours ? hours + 'h ' : ''}${minutes ? minutes + 'm ' : ''}${seconds}s`;
-}
-
-try {
-    if (lowerText.includes('.ytdl')) {
-        // Fetching video information
-        const urls = m.text.match(/(https?:\/\/[^\s]+)/g);
-        if (urls && urls.length > 0) {
-            videoUrl = urls[0]; // Assuming only one URL is provided
-            const info = await getYoutubeInfo(videoUrl);
-
-            if (info && info.videoDetails && info.videoDetails.thumbnail && info.videoDetails.thumbnail.thumbnails && info.videoDetails.thumbnail.thumbnails[0]) {
-                const thumbnailUrl = info.videoDetails.thumbnail.thumbnails[0].url;
-                const videoDetails = info.videoDetails;
-
-                const captionMessage = `
-╭═══════════════════╮
-│ *Video Details*
-│
-│ *URL:* ${videoUrl}
-│ *Title:* ${videoDetails.title}
-│ *Views:* ${videoDetails.viewCount}
-│ *Duration:* ${formatDuration(videoDetails.lengthSeconds)}
-│ *Size:* ${formatBytes(videoDetails.lengthBytes)}
-│1. Download as Audio
-│2. Download as Video
-╰═══════════════════╯
-`;
-
-                await gss.sendMessage(m.chat, {
-                    image: { url: thumbnailUrl },
-                    caption: captionMessage,
-                    contextInfo: {
-                        externalAdReply: {
-                            showAdAttribution: false,
-                            title: botname, // Assuming botname is a string
-                            sourceUrl: global.link, // Assuming global.link is a string
-                            body: '' // Assuming global.owner is a string
-                        }
-                    }
-                }, { quoted: m });
-            }
-        } else {
-            await gss.sendMessage(m.chat, { text: 'No valid URL found in the message.' }, { quoted: m });
-        }
-    } else if (m.quoted && (lowerText === '1' || lowerText === '2')) {
-        const quotedText = m.quoted.text ? m.quoted.text.toLowerCase() : '';
-        const isAudioMenu = quotedText.includes('download as audio');
-        const isVideoMenu = quotedText.includes('download as video');
-
-        if (isAudioMenu && lowerText === '1') {
-            // Handle download as audio
-            if (videoUrl) {
-                const audioStream = ytdl(videoUrl, { filter: 'audioonly' });
-                await gss.sendMessage(m.chat, { audio: audioStream, mimetype: 'audio/mpeg' }, { quoted: m });
-
-            } else {
-                await gss.sendMessage(m.chat, { text: 'No valid audio URL found in the quoted message.' }, { quoted: m });
-            }
-        } else if (isVideoMenu && lowerText === '2') {
-            // Handle download as video
-            if (videoUrl) {
-                const videoStream = ytdl(videoUrl, { filter: 'audioandvideo', quality: 'highest' });
-                await gss.sendMessage(m.chat, { video: videoStream, mimetype: 'video/mp4', caption: 'Downloaded' });
-            } else {
-                await gss.sendMessage(m.chat, { text: 'No valid video URL found in the quoted message.' }, { quoted: m });
-            }
-        } else {
-            // Handle invalid selection
-            await gss.sendMessage(m.chat, { text: 'Invalid selection. Please select option 1 or 2 from the menu.' }, { quoted: m });
-        }
-    }
-} catch (error) {
-    console.error('Error:', error);
-    await gss.sendMessage(m.chat, { text: 'An error occurred. Please try again later.' }, { quoted: m });
-}
 
 	    
         switch(command) {
@@ -1036,7 +942,7 @@ try {
             case 'rentbot': {
 if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-    rentfromxeon(gss, m, m.from, args);
+   gssrentbot(gss, m, m.from, args);
 }
 break;
             
@@ -5626,16 +5532,6 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
 
 
             
-            case 'menu':
-case 'help':
-case 'list':
-case 'listmenu':
-{
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-    gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
-}
-break;
 
 function getRandomSymbol() {
     const symbols = ['◉', '★', '◎', '✯','✯','✰','◬','✵','✦']; // Add more symbols as needed
