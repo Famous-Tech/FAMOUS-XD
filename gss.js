@@ -900,10 +900,31 @@ const subMenus = {
 const lowerText = m.text.toLowerCase();
 
 if (command === 'menu') {
-    if (menuType === 1) {
-        await gss.sendMessage(m.chat, {
+if (menuType === 1) {
+    await gss.sendMessage(m.chat, {
+        image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
+        caption: menuMessage,
+        contextInfo: {
+            externalAdReply: {
+                showAdAttribution: false,
+                title: botname,
+                sourceUrl: global.link,
+                body: `Bot Created By ${global.owner}`
+            }
+          }
+        }
+    }, { quoted: m });
+} else if (/^\d+$/.test(lowerText) && m.quoted) {
+        const quotedText = m.quoted.text.toLowerCase();
+
+        if (quotedText.includes(menuMessage.toLowerCase())) {
+            const selectedNumber = lowerText;
+            const subMenu = subMenus[selectedNumber];
+
+            if (subMenu !== undefined) {
+                await gss.sendMessage(m.chat, {
             image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
-            caption: menuMessage,
+            caption: subMenu,
             contextInfo: {
                 externalAdReply: {
                     showAdAttribution: false,
@@ -913,45 +934,14 @@ if (command === 'menu') {
                 }
             }
         }, { quoted: m });
-    } else (/^\d+$/.test(lowerText) && m.quoted) {
-        const quotedText = m.quoted.text.toLowerCase();
-
-        if (quotedText.includes(menuMessage.toLowerCase())) {
-            const selectedNumber = lowerText;
-            const subMenu = subMenus[selectedNumber];
-
-            if (subMenu !== undefined) {
-                await gss.sendMessage(m.chat, {
-                    image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
-                    caption: subMenu,
-                    contextInfo: {
-                        externalAdReply: {
-                            showAdAttribution: false,
-                            title: botname,
-                            sourceUrl: global.link,
-                            body: `Bot Created By ${global.owner}`
-                        }
-                    }
-                }, { quoted: m });
-            } else {
-                await gss.sendMessage(m.chat, { text: 'Invalid submenu number. Please select a valid submenu number.' }, { quoted: m });
-            }
-        } else {
-            await gss.sendMessage(m.chat, { text: 'Invalid quoted message. Please reply to the menu message.' }, { quoted: m });
-        }
     } else if (menuType === '2') {
         if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
         gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
     } else {
-        await gss.sendMessage(m.chat, { text: 'Invalid menu type. Please check the configuration.' }, { quoted: m });
+        await gss.sendMessage(m.chat, {text: 'Invalid menu type. Please check the configuration.'}, { quoted: m });
     }
 }
-
-
-
-
-
 	    
         switch(command) {
 	    case 'afk': {
