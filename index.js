@@ -68,19 +68,7 @@ if (global.db) setInterval(async () => {
 
 
 async function startgss() {
-  {
-
-    const pasteBinUrl = `https://paste.ec/raw/${process.env.SESSION_ID}`; 
-    const response = await fetch(pasteBinUrl);
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch file from Pastebin. Status: ${response.status}`);
-    }
-
-    const fileContent = await response.text();
-
-    const { state, saveCreds } = await useMultiFileAuthState(fileContent);
-}
+    const { state, saveCreds } = await useMultiFileAuthState(`./${sessionName}`)
 
     const gss = gssConnect({
         logger: pino({ level: 'silent' }),
