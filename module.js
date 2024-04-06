@@ -1,5 +1,5 @@
 module.exports = {
-modul: {
+modul: { 
 	axios: require('axios'),
 	boom: require('@hapi/boom'),
 	baileys: require("@whiskeysockets/baileys"),
