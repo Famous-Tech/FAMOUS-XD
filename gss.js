@@ -279,7 +279,7 @@ async function mainSys() {
          } 
      })
 
-
+ 
 
 let cpuPer 
      let p1 = cpux.usage().then(cpuPercentage => { 
