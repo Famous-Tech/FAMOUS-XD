@@ -26,7 +26,7 @@ global.onlygroup = false
 global.onlypc = false
 global.welcome = true
 global.autoBlock = true
-
+ 
 /*REPLY MESSAGE*/
 global.mess = {
     banned: '`You are *Banned* fron using commands!`',
