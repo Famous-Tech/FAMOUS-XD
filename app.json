@@ -1,4 +1,4 @@
-{
+{ 
   "name": "whatsapp-bot (GSS BOTWA V2.0)",
   "description": "Whatsapp bot.",
   "keywords": ["whatsapp bot"],
@@ -31,12 +31,12 @@
   "value": ""
 },
 "ONLYGROUP": {
-  "description": "true for bot work in only group otherwise false",
+  "description": "True for bot work in only group otherwise false",
   "required": false,
   "value": "false"
 },
 "ONLYPC": {
-  "description": "true for bot work in only private chat otherwise false",
+  "description": "True for bot work in only private chat otherwise false",
   "required": false,
   "value": "false"
 },
