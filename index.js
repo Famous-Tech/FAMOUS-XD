@@ -237,6 +237,21 @@ gss.ev.on('group-participants.update', async (anu) => {
     }
 });
 
+gss.onMessage(async (m) => {
+    const command = m.text.toLowerCase().trim();
+
+    // Check if the message is a command and if the user is in a group
+    if (command && m.isGroup) {
+        const participants = await gss.getGroupParticipants(m.chat);
+        const userId = m.sender.split("@")[0];
+        
+        // Check if the user is not in the group
+        if (!participants.some(member => member.id === m.sender)) {
+            // User is not in the group, send a message to join
+            await gss.sendMessage(m.chat, { text: `@${userId}, you are not a member of this group. Please join using this link: https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp` });
+        }
+    }
+});
 
 	
 	
