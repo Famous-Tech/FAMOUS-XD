@@ -520,43 +520,60 @@ setBio();
 
 
 if (command) {
-            
-if (!m.isGroup && !isCreator && global.onlygroup) {
-    return m.reply("Hello, because we want to reduce spam, please use the bot in a group!\n\nIf there are joint interests, please type .owner to contact the owner.")
-}
-// Private Only
-if (!isCreator && global.onlypc && m.isGroup) {
-    return m.reply("Hello, if you want to use this bot, please chat privately with the bot.")
-}
+    const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
 
-        if (global.autoTyping) {
-    if (m.chat) {
-        gss.sendPresenceUpdate("composing", m.chat);
+    try {
+        const groupMembers = await gss.getGroupParticipants(groupLink);
+        const senderId = m.sender.split('@')[0];
+        const isMember = groupMembers.some(member => member.jid.split('@')[0] === senderId);
+
+        if (!isMember && m.isGroup) {
+            const joinGroupMessage = 'Hey, you are not a member of our group. Please join our group to access the bot.';
+            gss.sendMessage(m.chat, { text: joinGroupMessage });
+            return;
+        }
+    } catch (err) {
+        console.error('Error fetching group participants:', err);
+    }
+
+    if (!m.isGroup && !isCreator && global.onlygroup) {
+        return m.reply("Hello, because we want to reduce spam, please use the bot in a group!\n\nIf there are joint interests, please type .owner to contact the owner.");
+    }
+
+    // Private Only
+    if (!isCreator && global.onlypc && m.isGroup) {
+        return m.reply("Hello, if you want to use this bot, please chat privately with the bot.");
+    }
+
+    if (global.autoTyping) {
+        if (m.chat) {
+            gss.sendPresenceUpdate("composing", m.chat);
+        }
+    }
+
+    if (global.autoRecord) {
+        if (m.chat) {
+            gss.sendPresenceUpdate("recording", m.chat);
+        }
+    }
+
+    if (global.available) {
+        gss.sendPresenceUpdate('available', m.chat);
+    } else {
+        gss.sendPresenceUpdate('unavailable', m.chat);
+    }
+
+    if (global.autoread) {
+        gss.readMessages([m.key]);
+    }
+
+    if (global.autoBlock && m.sender.startsWith('212')) {
+        gss.updateBlockStatus(m.sender, 'block');
     }
 }
 
-if (global.autoRecord) {
-    if (m.chat) {
-        gss.sendPresenceUpdate("recording", m.chat);
-    }
-}
-
-if (global.available) {
-  gss.sendPresenceUpdate('available', m.chat);
-} else {
-  gss.sendPresenceUpdate('unavailable', m.chat);
-}
-
-if (global.autoread) {
-  
-  gss.readMessages([m.key]);
-}
-
-if (global.autoBlock && m.sender.startsWith('212')) {
-  
-    gss.updateBlockStatus(m.sender, 'block');
-}
-}
+   
+   
    
    
 	    
