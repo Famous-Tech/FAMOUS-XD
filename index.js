@@ -237,25 +237,24 @@ gss.ev.on('group-participants.update', async (anu) => {
     }
 });
 
-gss.ev.on('check-isMember', async (m) => {
-    const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
-    const userId = m.sender;
-    const groupCode = groupLink.split('/').pop(); 
-    let isMember = false;
 
-    const participants = m.participants.map(participant => participant.id);
 
-    for (let memId of participants) {
-        if (memId.includes(userId)) {
-            isMember = true;
-            break;
-        }
-    }
+const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
+
+gss.getGroupParticipants(groupLink)
+  .then(groupMembers => {
+    const senderId = m.sender.split('@')[0];
+    const isMember = groupMembers.some(member => member.jid.split('@')[0] === senderId);
 
     if (!isMember) {
-        await gss.sendMessage(m.chat, { text: `@${userId}, you are not a member of this group. Please join using this link: https://chat.whatsapp.com/${groupCode}` });
+        m.reply('hey you are not a member in our group you are not able to use me join our group first');
     }
-});
+  })
+  .catch(err => {
+    console.error('Error fetching group participants:', err);
+  });
+
+
 
 
 
