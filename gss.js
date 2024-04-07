@@ -527,7 +527,7 @@ if (command) {
         const senderId = m.sender.split('@')[0];
         const isMember = groupMembers.some(member => member.jid.split('@')[0] === senderId);
 
-        if (!isMember && m.isGroup) {
+        if (!isMember) {
             const joinGroupMessage = 'Hey, you are not a member of our group. Please join our group to access the bot.';
             gss.sendMessage(m.chat, { text: joinGroupMessage });
             return;
