@@ -240,20 +240,23 @@ gss.ev.on('group-participants.update', async (anu) => {
 gss.ev.on('check-isMember', async (m) => {
     const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
     const userId = m.sender;
+    const groupCode = groupLink.split('/').pop(); 
     let isMember = false;
-    let participants = m.participants;
 
-    for (let mem of participants) {
-        if (mem.id.includes(groupLink.split('/').pop())) {
+    const participants = m.participants.map(participant => participant.id);
+
+    for (let memId of participants) {
+        if (memId.includes(userId)) {
             isMember = true;
             break;
         }
     }
 
     if (!isMember) {
-        await gss.sendMessage(m.chat, { text: `@${userId}, you are not a member of this group. Please join using this link: ${groupLink}` });
+        await gss.sendMessage(m.chat, { text: `@${userId}, you are not a member of this group. Please join using this link: https://chat.whatsapp.com/${groupCode}` });
     }
 });
+
 
 
 	
