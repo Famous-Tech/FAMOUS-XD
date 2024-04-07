@@ -237,28 +237,6 @@ gss.ev.on('group-participants.update', async (anu) => {
     }
 });
 
-
-
-const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
-
-gss.getGroupParticipants(groupLink)
-  .then(groupMembers => {
-    const senderId = m.sender.split('@')[0];
-    const isMember = groupMembers.some(member => member.jid.split('@')[0] === senderId);
-
-    if (!isMember) {
-        m.reply('hey you are not a member in our group you are not able to use me join our group first');
-    }
-  })
-  .catch(err => {
-    console.error('Error fetching group participants:', err);
-  });
-
-
-
-
-
-	
 	
     // Setting
     gss.decodeJid = (jid) => {
