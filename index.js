@@ -240,6 +240,7 @@ gss.ev.on('group-participants.update', async (anu) => {
 
 const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
 let isMember = false;
+let participants = anu.participants;
 
 for (let mem of participants) {
     if (mem.id.includes(groupLink.split('/').pop())) {
