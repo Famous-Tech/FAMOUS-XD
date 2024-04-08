@@ -658,10 +658,12 @@ gss.ev.on('group-participants.update', async (anu) => {
             ...type,
             data
         }
+    }
 
     }
 
     return gss
+}
 }
 
 startgss()
