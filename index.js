@@ -16,17 +16,6 @@ const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/
 const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./lib/myfunc')
 const fetch = require('node-fetch');
  
- 
- module.exports = gss = async (gss, m, chatUpdate, store) => {
-    try {
-        var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
-        var budy = (typeof m.text == 'string' ? m.text : '')
-    const prefix = /^[\\/!#.]/gi.test(body) ? body.match(/^[\\/!#.]/gi) : "/";
-    const isCmd = body.startsWith(prefix)
-    const notCmd = body.startsWith('')
-    const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : ''
-    const args = body.trim().split(/ +/).slice(1)
- 
 var low
 try {
   low = require('lowdb')
@@ -37,6 +26,17 @@ try {
 const { Low, JSONFile } = low
 const mongoDB = require('./lib/mongoDB')
 const { emojis, doReact } = require('./lib/autoreact.js');
+
+
+module.exports = gss = (gss, m, chatUpdate, store) => {
+    try {
+        var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
+        var budy = (typeof m.text == 'string' ? m.text : '')
+    const prefix = /^[\\/!#.]/gi.test(body) ? body.match(/^[\\/!#.]/gi) : "/";
+    const isCmd = body.startsWith(prefix)
+    const notCmd = body.startsWith('')
+    const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : ''
+    const args = body.trim().split(/ +/).slice(1)
 
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '')
 
@@ -657,22 +657,26 @@ gss.ev.on('group-participants.update', async (anu) => {
 	    size: await getSizeMedia(data),
             ...type,
             data
-        }
-    }
+        } 
 
     }
 
     return gss
 }
-}
 
 startgss()
 
 
-let file = require.resolve(__filename)
+} catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+// Watching file changes and reloading module
+let file = require.resolve(__filename);
 fs.watchFile(file, () => {
-	fs.unwatchFile(file)
-	console.log(chalk.redBright(`Update ${__filename}`))
-	delete require.cache[file]
-	require(file)
-})
+    fs.unwatchFile(file);
+    console.log(chalk.redBright(`Update ${__filename}`));
+    delete require.cache[file];
+    require(file);
+});
