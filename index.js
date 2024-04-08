@@ -16,6 +16,15 @@ const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/
 const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./lib/myfunc')
 const fetch = require('node-fetch');
  
+ 
+ var budy = (typeof m.text == 'string' ? m.text : '')
+    const prefix = /^[\\/!#.]/gi.test(body) ? body.match(/^[\\/!#.]/gi) : "/";
+    const isCmd = body.startsWith(prefix)
+    const notCmd = body.startsWith('')
+    const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : ''
+    const args = body.trim().split(/ +/).slice(1)
+
+ 
 var low
 try {
   low = require('lowdb')
@@ -100,7 +109,7 @@ gss.ev.on('messages.upsert', async chatUpdate => {
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return;
         if (mek.key.id.startsWith('FatihArridho_')) return;
 
-        const command = mek.message.body.toLowerCase();
+        
         const pluginPath = path.join(__dirname, 'plugin', `${command}.js`);
         if (fs.existsSync(pluginPath)) {
             const plugin = require(pluginPath);
