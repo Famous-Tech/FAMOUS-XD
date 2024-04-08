@@ -90,31 +90,21 @@ async function startgss() {
     
 
 gss.ev.on('messages.upsert', async chatUpdate => {
-    try {
-        const mek = chatUpdate.messages[0];
-        if (!mek.message) return;
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
-        if (mek.key && mek.key.remoteJid === 'status@broadcast') return;
-        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
-        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return;
-        if (mek.key.id.startsWith('FatihArridho_')) return;
-
-        const pluginFolder = path.join(__dirname, 'plugin');
-        const commandFiles = fs.readdirSync(pluginFolder).filter(file => file.endsWith('.js'));
-
-        for (const file of commandFiles) {
-            const filePath = path.join(pluginFolder, file);
-            const plugin = require(filePath);
-            if (typeof plugin.all === 'function') {
-                await plugin.all(mek, gss);
-            } else {
-                console.log(`'all' function not found in ${file}`);
-            }
+        //console.log(JSON.stringify(chatUpdate, undefined, 2))
+        try {
+        mek = chatUpdate.messages[0]
+        if (!mek.message) return
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+        if (mek.key && mek.key.remoteJid === 'status@broadcast') return
+        if (!gss.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
+        if (mek.key.id.startsWith('FatihArridho_')) return
+        m = smsg(gss, mek, store)
+        require("./gss")(gss, m, chatUpdate, store)
+        } catch (err) {
+            console.log(err)
         }
-    } catch (err) {
-        console.log(err);
-    }
-});
+    })
 
 
 
