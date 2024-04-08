@@ -201,16 +201,7 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
 }
 
 
-const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
-    const senderId = m.sender.split('@')[0];
 
-        const isMember = await checkGroupMembership(groupLink, senderId);
-
-        if (!isMember) {
-            const joinGroupMessage = 'Hey, you are not a member of our group. Please join our group to use this command.';
-            gss.sendMessage(m.chat, { text: joinGroupMessage });
-            return;
-        }
 
 
 function formatBytes(bytes) {
