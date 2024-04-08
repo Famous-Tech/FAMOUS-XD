@@ -27,17 +27,6 @@ const { Low, JSONFile } = low
 const mongoDB = require('./lib/mongoDB')
 const { emojis, doReact } = require('./lib/autoreact.js');
 
-
-module.exports = gss = (gss, m, chatUpdate, store) => {
-    try {
-        var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
-        var budy = (typeof m.text == 'string' ? m.text : '')
-    const prefix = /^[\\/!#.]/gi.test(body) ? body.match(/^[\\/!#.]/gi) : "/";
-    const isCmd = body.startsWith(prefix)
-    const notCmd = body.startsWith('')
-    const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : ''
-    const args = body.trim().split(/ +/).slice(1)
-
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '')
 
 const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
@@ -112,12 +101,12 @@ gss.ev.on('messages.upsert', async chatUpdate => {
         if (mek.key.id.startsWith('FatihArridho_')) return;
 
         
-        const pluginPath = path.join(__dirname, 'plugin', `${command}.js`);
+        const pluginPath = path.join(__dirname, 'plugin', `menu.js`);
         if (fs.existsSync(pluginPath)) {
             const plugin = require(pluginPath);
             await plugin(mek, gss);
         } else {
-            console.log(`Plugin not found for command: ${command}`);
+            console.log(`Plugin not found for command: menu`);
         }
     } catch (err) {
         console.log(err);
@@ -666,11 +655,6 @@ gss.ev.on('group-participants.update', async (anu) => {
 
 startgss()
 
-
-} catch (error) {
-        console.error('Error:', error);
-    }
-};
 
 // Watching file changes and reloading module
 let file = require.resolve(__filename);
