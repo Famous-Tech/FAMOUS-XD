@@ -5558,6 +5558,16 @@ case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat':
     }
     break;
 
+case 'menu':
+case 'help':
+case 'list':
+case 'listmenu':
+{
+  if (isBan) return m.reply(mess.banned);
+        if (isBanChat) return m.reply(mess.bangc);
+    gss.sendPoll(m.chat, "List Menu", ['.Allmenu', '.Groupmenu', '.Downloadmenu', '.Searchmenu', '.Funmenu', '.Toolmenu', '.Convertmenu', '.aimenu', '.Mainmenu', '.Ownermenu'], { quoted: m });
+}
+break;
 
             
 
