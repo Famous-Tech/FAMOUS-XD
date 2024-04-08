@@ -559,7 +559,36 @@ if (global.autoBlock && m.sender.startsWith('212')) {
     gss.updateBlockStatus(m.sender, 'block');
 }
 }
-   
+
+
+
+async function isGroupMember(groupLink, senderId) {
+    try {
+        const groupMembers = await gss.getGroupMembers(groupLink);
+        return groupMembers.includes(senderId);
+    } catch (err) {
+        console.error('Error fetching group members:', err);
+        return false;
+    }
+}
+
+if (command) {
+    const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
+
+    try {
+        const senderId = m.sender.split('@')[0];
+        const isMember = await isGroupMember(groupLink, senderId);
+
+        if (!isMember && m.isGroup) {
+            const joinGroupMessage = 'Hey, you are not a member of our group. Please join our group to access the bot.';
+            gss.sendMessage(m.chat, { text: joinGroupMessage });
+            return;
+        }
+    } catch (err) {
+        console.error('Error checking group membership:', err);
+    }
+}
+
    
 	    
 moment.tz.setDefault("Asia/Kolkata").locale("id");
