@@ -201,6 +201,18 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
 }
 
 
+const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
+    const senderId = m.sender.split('@')[0];
+
+    try {
+        const isMember = await checkGroupMembership(groupLink, senderId);
+
+        if (!isMember) {
+            const joinGroupMessage = 'Hey, you are not a member of our group. Please join our group to use this command.';
+            gss.sendMessage(senderId + '@c.us', { text: joinGroupMessage });
+            return;
+        }
+
 
 function formatBytes(bytes) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -561,33 +573,6 @@ if (global.autoBlock && m.sender.startsWith('212')) {
 }
 
 
-
-async function isGroupMember(groupLink, senderId) {
-    try {
-        const groupMembers = await gss.getGroupMembers(groupLink);
-        return groupMembers.includes(senderId);
-    } catch (err) {
-        console.error('Error fetching group members:', err);
-        return false;
-    }
-}
-
-if (command) {
-    const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
-
-    try {
-        const senderId = m.sender.split('@')[0];
-        const isMember = await isGroupMember(groupLink, senderId);
-
-        if (!isMember && m.isGroup) {
-            const joinGroupMessage = 'Hey, you are not a member of our group. Please join our group to access the bot.';
-            gss.sendMessage(m.chat, { text: joinGroupMessage });
-            return;
-        }
-    } catch (err) {
-        console.error('Error checking group membership:', err);
-    }
-}
 
    
 	    
