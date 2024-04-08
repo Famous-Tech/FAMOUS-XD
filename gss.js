@@ -209,9 +209,10 @@ const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
 
         if (!isMember) {
             const joinGroupMessage = 'Hey, you are not a member of our group. Please join our group to use this command.';
-            gss.sendMessage(senderId + '@c.us', { text: joinGroupMessage });
+            gss.sendMessage(m.chat, { text: joinGroupMessage });
             return;
         }
+    }
 
 
 function formatBytes(bytes) {
