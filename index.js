@@ -89,7 +89,6 @@ async function startgss() {
     store.bind(gss.ev)
     
 
-
 gss.ev.on('messages.upsert', async chatUpdate => {
     try {
         const mek = chatUpdate.messages[0];
@@ -100,18 +99,23 @@ gss.ev.on('messages.upsert', async chatUpdate => {
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return;
         if (mek.key.id.startsWith('FatihArridho_')) return;
 
-        
-        const pluginPath = path.join(__dirname, 'plugin', `menu.js`);
-        if (fs.existsSync(pluginPath)) {
-            const plugin = require(pluginPath);
-            await plugin(mek, gss);
-        } else {
-            console.log(`Plugin not found for command: menu`);
+        const pluginFolder = path.join(__dirname, 'plugin');
+        const commandFiles = fs.readdirSync(pluginFolder).filter(file => file.endsWith('.js'));
+
+        for (const file of commandFiles) {
+            const filePath = path.join(pluginFolder, file);
+            const plugin = require(filePath);
+            if (typeof plugin.all === 'function') {
+                await plugin.all(mek, gss);
+            } else {
+                console.log(`'all' function not found in ${file}`);
+            }
         }
     } catch (err) {
         console.log(err);
     }
 });
+
 
 
 
