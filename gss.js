@@ -204,7 +204,6 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
 const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
     const senderId = m.sender.split('@')[0];
 
-    try {
         const isMember = await checkGroupMembership(groupLink, senderId);
 
         if (!isMember) {
@@ -212,7 +211,6 @@ const groupLink = 'https://chat.whatsapp.com/E3PWxdvLc7ZCp1ExOCkEGp';
             gss.sendMessage(m.chat, { text: joinGroupMessage });
             return;
         }
-    }
 
 
 function formatBytes(bytes) {
