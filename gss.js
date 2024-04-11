@@ -435,7 +435,7 @@ try {
             }
     
 
-
+/*
 let chats = db.data.chats[m.chat]
             if (typeof chats !== 'object') db.data.chats[m.chat] = {}
             if (chats) {
@@ -450,6 +450,24 @@ let chats = db.data.chats[m.chat]
                 antilink: false,
             }
 
+*/
+
+
+let chats = db.data.chats[m.chat]
+if (typeof chats !== 'object') db.data.chats[m.chat] = {}
+if (chats) {
+    if (!('antiviewonce' in chats)) chats.antiviewonce = false
+    if (!('antibot' in chats)) chats.antibot = true
+    if (!('mute' in chats)) chats.mute = false
+    if (!('antilink' in chats)) chats.antilink = false
+    if (!('antidelete' in chats)) chats.antidelete = true // Add 'antidelete' if not present
+} else global.db.data.chats[m.chat] = {
+    antiviewonce: true,
+    antibot: true,
+    mute: false,
+    antilink: false,
+    antidelete: true, // Add 'antidelete' by default
+}
 
 
 	    let setting = db.data.settings[botNumber]
