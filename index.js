@@ -89,6 +89,18 @@ async function startgss() {
     store.bind(gss.ev)
     
 
+gss.ev.on('messages.delete', async (deletedMessages) => {
+    if (chats.antidelete) {
+        for (const deletedMessage of deletedMessages) {
+            if (deletedMessage.content) {
+                const deletedMessageContent = deletedMessage.content;
+
+                await gss.sendMessage(m.chat, { text: deletedMessageContent.text });
+            }
+        }
+    }
+});
+
 gss.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
         try {
