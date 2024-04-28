@@ -3392,6 +3392,7 @@ case '𝗡𝗘𝗫𝗧': {
             break
 
 
+
 async function instaDownload(url) {
     try {
         const apiUrl = `https://aiodownloader.onrender.com/download?url=${encodeURIComponent(url)}`;
@@ -3422,39 +3423,36 @@ async function downloadAndSendMedia(m, text, isDocument) {
     try {
         const { status, data } = await instaDownload(url);
 
-        if (status && data) {
-            const mediaType = data.type;
-            const mediaUrl = data.url;
+        if (status && data && data.low) {
+            const mediaUrl = data.low;
 
-            if (mediaType && mediaUrl) {
-                const response = await fetch(mediaUrl);
-                const bufferArray = await response.arrayBuffer();
-                const fileBuffer = Buffer.from(bufferArray);
+            const response = await fetch(mediaUrl);
+            const bufferArray = await response.arrayBuffer();
+            const fileBuffer = Buffer.from(bufferArray);
 
-                const fileName = `instagram_media.${mediaType === 'image' ? 'jpg' : 'mp4'}`;
+            const mediaType = mediaUrl.endsWith('.mp4') ? 'video' : 'image';
+            const fileName = `instagram_media.${mediaType === 'image' ? 'jpg' : 'mp4'}`;
 
-                if (isDocument) {
-                    await m.reply({ document: fileBuffer, mimetype: `video/mp4`, filename: fileName });
-                } else {
-                    if (mediaType === 'image') {
-                        await m.reply({ image: fileBuffer, mimetype: 'image/jpeg', filename: fileName });
-                    } else if (mediaType === 'video') {
-                        await m.reply({ video: fileBuffer, mimetype: 'video/mp4', filename: fileName });
-                    } else {
-                        throw new Error('Unsupported media type');
-                    }
-                }
+            if (isDocument) {
+                await m.reply({ document: fileBuffer, mimetype: `video/mp4`, filename: fileName });
             } else {
-                throw new Error('Media type or URL not found in API response');
+                if (mediaType === 'image') {
+                    await m.reply({ image: fileBuffer, mimetype: 'image/jpeg', filename: fileName });
+                } else if (mediaType === 'video') {
+                    await m.reply({ video: fileBuffer, mimetype: 'video/mp4', filename: fileName });
+                } else {
+                    throw new Error('Unsupported media type');
+                }
             }
         } else {
-            throw new Error('Invalid or unexpected API response');
+            throw new Error('Media URL not found in API response');
         }
     } catch (error) {
         console.error('Error while processing Instagram media:', error);
         return m.reply(`An error occurred: ${error.message}`);
     }
 }
+
 
 
 
