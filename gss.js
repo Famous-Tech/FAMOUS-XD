@@ -3392,10 +3392,9 @@ case '𝗡𝗘𝗫𝗧': {
             break
 
 
-
 async function instaDownload(url) {
     try {
-        const apiUrl = `https://instagramdownloader.apinepdev.workers.dev/?url=${encodeURIComponent(url)}`;
+        const apiUrl = `https://aiodownloader.onrender.com/download?url=${encodeURIComponent(url)}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -3411,30 +3410,6 @@ async function instaDownload(url) {
     }
 }
 
-async function downloadInstagramMedia(url) {
-    try {
-        const result = await instaDownload(url);
-
-        console.log('API Response:', result);
-
-        if (result.status && result.data && result.data.length > 0) {
-            const mediaType = result.data[0].type;
-            const mediaUrl = result.data[0].url;
-
-            if (mediaType && mediaUrl) {
-                return { type: mediaType, url: mediaUrl };
-            } else {
-                throw new Error('Media type or URL not found in API response');
-            }
-        } else {
-            throw new Error('Invalid or unexpected API response');
-        }
-    } catch (error) {
-        console.error('Error downloading Instagram media:', error.message);
-        throw error;
-    }
-}
-
 async function downloadAndSendMedia(m, text, isDocument) {
     const url = text;
 
@@ -3445,32 +3420,41 @@ async function downloadAndSendMedia(m, text, isDocument) {
     m.reply('Please wait, downloading media...');
 
     try {
-        const media = await downloadInstagramMedia(url);
+        const { status, data } = await instaDownload(url);
 
-        const response = await fetch(media.url);
-        const bufferArray = await response.arrayBuffer();
-        const fileBuffer = Buffer.from(bufferArray);
+        if (status && data) {
+            const mediaType = data.type;
+            const mediaUrl = data.url;
 
-        const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
+            if (mediaType && mediaUrl) {
+                const response = await fetch(mediaUrl);
+                const bufferArray = await response.arrayBuffer();
+                const fileBuffer = Buffer.from(bufferArray);
 
-        if (isDocument) {
-            await m.reply({ document: fileBuffer, mimetype: `video/mp4`, filename: fileName });
-        } else {
-            if (media.type === 'image') {
-                await m.reply({ image: fileBuffer, mimetype: 'image/jpeg', filename: fileName });
-            } else if (media.type === 'video') {
-                await m.reply({ video: fileBuffer, mimetype: 'video/mp4', filename: fileName });
+                const fileName = `instagram_media.${mediaType === 'image' ? 'jpg' : 'mp4'}`;
+
+                if (isDocument) {
+                    await m.reply({ document: fileBuffer, mimetype: `video/mp4`, filename: fileName });
+                } else {
+                    if (mediaType === 'image') {
+                        await m.reply({ image: fileBuffer, mimetype: 'image/jpeg', filename: fileName });
+                    } else if (mediaType === 'video') {
+                        await m.reply({ video: fileBuffer, mimetype: 'video/mp4', filename: fileName });
+                    } else {
+                        throw new Error('Unsupported media type');
+                    }
+                }
             } else {
-                throw new Error('Unsupported media type');
+                throw new Error('Media type or URL not found in API response');
             }
+        } else {
+            throw new Error('Invalid or unexpected API response');
         }
     } catch (error) {
         console.error('Error while processing Instagram media:', error);
         return m.reply(`An error occurred: ${error.message}`);
     }
 }
-
-
 
 
 
