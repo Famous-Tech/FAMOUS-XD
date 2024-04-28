@@ -3418,13 +3418,19 @@ async function downloadInstagramMedia(url) {
 
         console.log('API Response:', result);
 
-        if (result.status && result.data && result.data.high && result.data.type) {
-            const mediaType = result.data.type;
-            const highQualityUrl = result.data.high;
+        if (result.status && result.data && result.data.high) {
+            // Check if the media type is provided in the data object
+            const mediaType = result.data.type || '';
 
-            return { type: mediaType, highQualityUrl };
+            if (mediaType && ['image', 'video'].includes(mediaType.toLowerCase())) {
+                // If media type is valid, return the type and high-quality URL
+                const highQualityUrl = result.data.high;
+                return { type: mediaType.toLowerCase(), highQualityUrl };
+            } else {
+                throw new Error('Invalid media type or high-quality URL not found in API response');
+            }
         } else {
-            throw new Error('Media type or high-quality URL not found in API response');
+            throw new Error('Invalid or unexpected API response');
         }
     } catch (error) {
         console.error('Error downloading Instagram media:', error.message);
