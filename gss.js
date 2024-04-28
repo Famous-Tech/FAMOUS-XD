@@ -3395,7 +3395,8 @@ case '𝗡𝗘𝗫𝗧': {
 
 async function instaDownload(url) {
     try {
-        const apiUrl = `https://instagramdownloader.apinepdev.workers.dev/?url=${encodeURIComponent(url)}`;
+        // Replace the API URL below with your desired API URL
+        const apiUrl = `https://aiodownloader.onrender.com/download?url=${encodeURIComponent(url)}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -3417,14 +3418,14 @@ async function downloadInstagramMedia(url) {
 
         console.log('API Response:', result);
 
-        if (result.status && result.data && result.data.length > 0) {
-            const mediaType = result.data[0].type;
-            const mediaUrl = result.data[0].url;
+        if (result.status && result.data && result.data.high) {
+            const mediaType = result.data.type;
+            const highQualityUrl = result.data.high;
 
-            if (mediaType && mediaUrl) {
-                return { type: mediaType, url: mediaUrl };
+            if (mediaType && highQualityUrl) {
+                return { type: mediaType, highQualityUrl };
             } else {
-                throw new Error('Media type or URL not found in API response');
+                throw new Error('Media type or high-quality URL not found in API response');
             }
         } else {
             throw new Error('Invalid or unexpected API response');
@@ -3434,7 +3435,6 @@ async function downloadInstagramMedia(url) {
         throw error;
     }
 }
-
 
 async function downloadAndSendMedia(m, text, isDocument) {
     const url = text;
@@ -3448,13 +3448,14 @@ async function downloadAndSendMedia(m, text, isDocument) {
     try {
         const media = await downloadInstagramMedia(url);
 
-        const response = await fetch(media.url);
+        const highQualityUrl = media.highQualityUrl;
+
+        const response = await fetch(highQualityUrl);
         const bufferArray = await response.arrayBuffer();
         const fileBuffer = Buffer.from(bufferArray);
 
         const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
-        
         if (isDocument) {
             await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/mp4`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
         } else {
@@ -3471,6 +3472,7 @@ async function downloadAndSendMedia(m, text, isDocument) {
         return m.reply(`An error occurred: ${error.message}`);
     }
 }
+
 
 
 case 'igdl':
