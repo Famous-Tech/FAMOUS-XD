@@ -3434,12 +3434,12 @@ async function downloadAndSendMedia(m, text, isDocument) {
             const fileName = `instagram_media.${mediaType === 'image' ? 'jpg' : 'mp4'}`;
 
             if (isDocument) {
-                await m.reply({ document: fileBuffer, mimetype: `video/mp4`, filename: fileName });
+                await gss.sendMessage({ document: fileBuffer, mimetype: `video/mp4`, filename: fileName }, { quoted: m });
             } else {
                 if (mediaType === 'image') {
-                    await m.reply({ image: fileBuffer, mimetype: 'image/jpeg', filename: fileName });
+                    await gss.sendMessage({ image: fileBuffer, mimetype: 'image/jpeg', filename: fileName }, { quoted: m });
                 } else if (mediaType === 'video') {
-                    await m.reply({ video: fileBuffer, mimetype: 'video/mp4', filename: fileName });
+                    await gss.sendMessage({ video: fileBuffer, mimetype: 'video/mp4', filename: fileName }, { quoted: m });
                 } else {
                     throw new Error('Unsupported media type');
                 }
