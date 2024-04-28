@@ -3411,7 +3411,7 @@ async function instaDownload(url) {
     }
 }
 
-async function downloadAndSendMedia(m, text, isDocument) {
+async function downloadAndSendMedia(m, text) {
     const url = text;
 
     if (!url) {
@@ -3433,16 +3433,12 @@ async function downloadAndSendMedia(m, text, isDocument) {
             const mediaType = mediaUrl.endsWith('.mp4') ? 'video' : 'image';
             const fileName = `instagram_media.${mediaType === 'image' ? 'jpg' : 'mp4'}`;
 
-            if (isDocument) {
-                await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/mp4`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            if (mediaType === 'image') {
+                await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            } else if (mediaType === 'video') {
+                await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
             } else {
-                if (mediaType === 'image') {
-                    await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-                } else if (mediaType === 'video') {
-                    await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-                } else {
-                    throw new Error('Unsupported media type');
-                }
+                throw new Error('Unsupported media type');
             }
         }
     } catch (error) {
@@ -3450,7 +3446,6 @@ async function downloadAndSendMedia(m, text, isDocument) {
         return m.reply(`An error occurred: ${error.message}`);
     }
 }
-
 
 
 
