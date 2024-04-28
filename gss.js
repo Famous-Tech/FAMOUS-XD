@@ -3418,17 +3418,13 @@ async function downloadInstagramMedia(url) {
 
         console.log('API Response:', result);
 
-        if (result.status && result.data && result.data.high) {
+        if (result.status && result.data && result.data.high && result.data.type) {
             const mediaType = result.data.type;
             const highQualityUrl = result.data.high;
 
-            if (mediaType && highQualityUrl) {
-                return { type: mediaType, highQualityUrl };
-            } else {
-                throw new Error('Media type or high-quality URL not found in API response');
-            }
+            return { type: mediaType, highQualityUrl };
         } else {
-            throw new Error('Invalid or unexpected API response');
+            throw new Error('Media type or high-quality URL not found in API response');
         }
     } catch (error) {
         console.error('Error downloading Instagram media:', error.message);
@@ -3472,6 +3468,7 @@ async function downloadAndSendMedia(m, text, isDocument) {
         return m.reply(`An error occurred: ${error.message}`);
     }
 }
+
 
 
 
