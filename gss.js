@@ -65,13 +65,14 @@ const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCh
 
 const chatHistory = new Map();
 
-
+// Function to save chat history for a user
 const saveChatHistory = (sender, message) => {
     if (!chatHistory.has(sender)) {
         chatHistory.set(sender, []);
     }
     chatHistory.get(sender).push(message);
 };
+
 
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
@@ -4675,6 +4676,7 @@ case 'attp3':
 
 
 
+
 case "gpt":
 case "ai":
 case "openai":
@@ -4687,42 +4689,21 @@ case "chatgpt":
     }
 
     try {
-        const sender = m.sender; // Store sender's ID for chat history
+        const sender = m.sender; // Get sender's ID
+        const message = text.trim(); // Trim any extra spaces from the message
 
         // Save chat history
-        saveChatHistory(sender, text);
+        saveChatHistory(sender, message);
 
-        const apiUrl = `https://matrixcoder.tech/api/ai/mistral`;
-        const res = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                messages: [
-                    { role: "system", content: "you are a good asistant" },
-                    { role: "user", content: text },
-                ]
-            })
-        });
+        // Get the latest message from chat history for this sender
+        const latestMessage = chatHistory.get(sender)[chatHistory.get(sender).length - 1];
 
-        if (!res.ok) {
-            await doReact("❌");
-            return m.reply(`Invalid response from the API. Status code: ${res.status}`);
-        }
+        // Your logic to generate response based on the latest message goes here
+        let response = "Response to the latest message: " + latestMessage;
 
-        const data = await res.json();
-
-        if (!data || !data.result || !data.result.response) {
-            await doReact("❌");
-            return m.reply("Invalid data format in the API response");
-        }
-
-        // Save chat history using sender variable
-        console.log(`Chat history saved for sender ${sender}: ${data.result.response}`);
-
+        // Send the response
         await gss.sendMessage(m.chat, {
-            text: data.result.response,
+            text: response,
             contextInfo: {
                 externalAdReply: {
                     title: "GPT TURBO 3.5K",
@@ -4743,6 +4724,7 @@ case "chatgpt":
         return m.reply("An error occurred while processing the request.");
     }
     break;
+
   
 
 
