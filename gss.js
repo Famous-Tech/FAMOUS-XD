@@ -63,6 +63,16 @@ const tempMailAddresses = {};
 const defaultLang = 'en'
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
 
+const chatHistory = new Map();
+
+
+const saveChatHistory = (sender, message) => {
+    if (!chatHistory.has(sender)) {
+        chatHistory.set(sender, []);
+    }
+    chatHistory.get(sender).push(message);
+};
+
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
@@ -4664,18 +4674,6 @@ case 'attp3':
 
 
 
-// Assume this code is inside a function
-
-// Create a Map to store chat history
-const chatHistory = new Map();
-
-// Function to save chat history
-const saveChatHistory = (sender, message) => {
-    if (!chatHistory.has(sender)) {
-        chatHistory.set(sender, []);
-    }
-    chatHistory.get(sender).push(message);
-};
 
 case "gpt":
 case "ai":
