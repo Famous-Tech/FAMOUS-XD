@@ -4669,16 +4669,27 @@ case 'attp3':
 case "ai":
 case "openai":
 case "chatgpt":
-  if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
+    if (isBan) return m.reply(mess.banned);
+    if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
         return m.reply(`*Provide me a query,* e.g., "Who made chat GPT?"`);
     }
 
     try {
-        const apiUrl = `https://chatgpt.apinepdev.workers.dev/?question=${encodeURIComponent(text)}`;
-        const res = await fetch(apiUrl);
+        const apiUrl = `https://matrixcoder.tech/api/ai/mistral`;
+        const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                messages: [
+                    { role: "system", content: "you are a professional computer science assistant" },
+                    { role: "user", content: text },
+                ]
+            })
+        });
 
         if (!res.ok) {
             await doReact("❌");
@@ -4687,13 +4698,13 @@ case "chatgpt":
 
         const data = await res.json();
 
-        if (!data || !data.answer) {
+        if (!data || !data.result || !data.result.response) {
             await doReact("❌");
             return m.reply("Invalid data format in the API response");
         }
 
         await gss.sendMessage(m.chat, {
-            text: data.answer,
+            text: data.result.response,
             contextInfo: {
                 externalAdReply: {
                     title: "GPT TURBO 3.5K",
@@ -4714,6 +4725,7 @@ case "chatgpt":
         return m.reply("An error occurred while processing the request.");
     }
     break;
+
 
 
 
