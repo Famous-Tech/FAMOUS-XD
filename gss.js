@@ -4704,8 +4704,6 @@ case "chatgpt":
             return m.reply("Invalid data format in the API response");
         }
 
-        // Save chat history using sender variable
-        console.log(`Chat history saved for sender ${sender}: ${data.result.response}`);
 
         await gss.sendMessage(m.chat, {
             text: data.result.response,
