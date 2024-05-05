@@ -63,17 +63,6 @@ const tempMailAddresses = {};
 const defaultLang = 'en'
 const { addPremiumUser, getPremiumExpired, getPremiumPosition,  expiredPremiumCheck, checkPremiumUser, getAllPremiumUser,} = require('./lib/premiun');
 
-const chatHistory = new Map();
-
-// Function to save chat history for a user
-const saveChatHistory = (sender, message) => {
-    if (!chatHistory.has(sender)) {
-        chatHistory.set(sender, []);
-    }
-    chatHistory.get(sender).push(message);
-};
-
-
 // read database
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
 let premium = JSON.parse(fs.readFileSync('./src/data/premium.json'))
@@ -4675,8 +4664,6 @@ case 'attp3':
 
 
 
-
-
 case "gpt":
 case "ai":
 case "openai":
@@ -4689,21 +4676,39 @@ case "chatgpt":
     }
 
     try {
-        const sender = m.sender; // Get sender's ID
-        const message = text.trim(); // Trim any extra spaces from the message
+        
 
-        // Save chat history
-        saveChatHistory(sender, message);
+        const apiUrl = `https://matrixcoder.tech/api/ai/mistral`;
+        const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                messages: [
+                    { role: "system", content: "you are a good assistant" },
+                    { role: "user", content: text },
+                ]
+            })
+        });
 
-        // Get the latest message from chat history for this sender
-        const latestMessage = chatHistory.get(sender)[chatHistory.get(sender).length - 1];
+        if (!res.ok) {
+            await doReact("❌");
+            return m.reply(`Invalid response from the API. Status code: ${res.status}`);
+        }
 
-        // Your logic to generate response based on the latest message goes here
-        let response = "Response to the latest message: " + latestMessage;
+        const data = await res.json();
 
-        // Send the response
+        if (!data || !data.result || !data.result.response) {
+            await doReact("❌");
+            return m.reply("Invalid data format in the API response");
+        }
+
+        // Save chat history using sender variable
+        console.log(`Chat history saved for sender ${sender}: ${data.result.response}`);
+
         await gss.sendMessage(m.chat, {
-            text: response,
+            text: data.result.response,
             contextInfo: {
                 externalAdReply: {
                     title: "GPT TURBO 3.5K",
@@ -4731,55 +4736,66 @@ case "chatgpt":
 
 
     
-    case 'gf': {
-      if (isBan) return m.reply(mess.banned);
-        if (isBanChat) return m.reply(mess.bangc);
-        if (!text) {
+    
+case "gf":
+    if (isBan) return m.reply(mess.banned);
+    if (isBanChat) return m.reply(mess.bangc);
+    if (!text) {
+        await doReact("❌");
+        return m.reply(`*Provide me a query,* e.g., "Who made chat GPT?"`);
+    }
+
+    try {
+     
+        const apiUrl = `https://matrixcoder.tech/api/ai/mistral`;
+        const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                messages: [
+                    { role: "system", content: "tum ek ladki ki tarah act karogi aur tumhara name anjali hai jisse chat kar Rahi ho uska nahi tum 20 saal ki ho gyi ho tum aur ek romantic ladke ki talas me ho tum bhi hamesa romantic girl ki tarah hi chat karogi emoji ke sath o bhi sexy emoji 💋" },
+                    { role: "user", content: text },
+                ]
+            })
+        });
+
+        if (!res.ok) {
             await doReact("❌");
-            return m.reply(`*Provide me a query,* e.g., "Who made chat gpt?"`);
+            return m.reply(`Invalid response from the API. Status code: ${res.status}`);
         }
 
-        try {
-            const apiEndpoint = 'https://chatgpt.apinepdev.workers.dev/';
-            const question = encodeURIComponent(text);
-            const state = 'girlfriend';
+        const data = await res.json();
 
-            const apiUrl = `${apiEndpoint}?question=${question}&state=${state}`;
-            const res = await fetch(apiUrl);
+        if (!data || !data.result || !data.result.response) {
+            await doReact("❌");
+            return m.reply("Invalid data format in the API response");
+        }
 
-            if (!res.ok) {
-                await doReact("❌");
-                return m.reply(`Invalid response from the API. Status code: ${res.status}`);
-            }
+        // Save chat history using sender variable
+        console.log(`Chat history saved for sender ${sender}: ${data.result.response}`);
 
-            const data = await res.json();
-
-            if (!data || !data.answer) {
-                await doReact("❌");
-                return m.reply("Invalid data format in the API response");
-            }
-
-            await gss.sendMessage(m.chat, {
-                text: data.answer,
-                contextInfo: {
-                    externalAdReply: {
-                        title: "GPT TURBO 3.5K",
-                        body: "",
-                        mediaType: 1,
-                        thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
-                        renderLargerThumbnail: false,
-                        mediaUrl: "",
-                        sourceUrl: "",
-                    },
+        await gss.sendMessage(m.chat, {
+            text: data.result.response,
+            contextInfo: {
+                externalAdReply: {
+                    title: "GPT TURBO 3.5K",
+                    body: "",
+                    mediaType: 1,
+                    thumbnailUrl: "https://i.ibb.co/9bfjPyH/1-t-Y7-MK1-O-S4eq-YJ0-Ub4irg.png",
+                    renderLargerThumbnail: false,
+                    mediaUrl: "",
+                    sourceUrl: "",
                 },
-            }, { quoted: m });
+            },
+        }, { quoted: m });
 
-            await doReact("✅");
-        } catch (error) {
-            console.error(error);
-            await doReact("❌");
-            return m.reply("An error occurred while processing the request.");
-        }
+        await doReact("✅");
+    } catch (error) {
+        console.error(error);
+        await doReact("❌");
+        return m.reply("An error occurred while processing the request.");
     }
     break;
 
