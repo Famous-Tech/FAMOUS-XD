@@ -4664,8 +4664,7 @@ case 'attp3':
 
 
 
-
-  case "gpt":
+case "gpt":
 case "ai":
 case "openai":
 case "chatgpt":
@@ -4677,6 +4676,8 @@ case "chatgpt":
     }
 
     try {
+        const sender = m.sender; // Store sender's ID for chat history
+
         const apiUrl = `https://matrixcoder.tech/api/ai/mistral`;
         const res = await fetch(apiUrl, {
             method: 'POST',
@@ -4703,6 +4704,9 @@ case "chatgpt":
             return m.reply("Invalid data format in the API response");
         }
 
+        // Save chat history using sender variable
+        console.log(`Chat history saved for sender ${sender}: ${data.result.response}`);
+
         await gss.sendMessage(m.chat, {
             text: data.result.response,
             contextInfo: {
@@ -4725,6 +4729,8 @@ case "chatgpt":
         return m.reply("An error occurred while processing the request.");
     }
     break;
+
+  
 
 
 
