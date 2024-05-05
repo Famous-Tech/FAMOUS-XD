@@ -4664,6 +4664,19 @@ case 'attp3':
 
 
 
+// Assume this code is inside a function
+
+// Create a Map to store chat history
+const chatHistory = new Map();
+
+// Function to save chat history
+const saveChatHistory = (sender, message) => {
+    if (!chatHistory.has(sender)) {
+        chatHistory.set(sender, []);
+    }
+    chatHistory.get(sender).push(message);
+};
+
 case "gpt":
 case "ai":
 case "openai":
@@ -4678,6 +4691,9 @@ case "chatgpt":
     try {
         const sender = m.sender; // Store sender's ID for chat history
 
+        // Save chat history
+        saveChatHistory(sender, text);
+
         const apiUrl = `https://matrixcoder.tech/api/ai/mistral`;
         const res = await fetch(apiUrl, {
             method: 'POST',
@@ -4686,7 +4702,7 @@ case "chatgpt":
             },
             body: JSON.stringify({
                 messages: [
-                    { role: "system", content: "you are a professional computer science assistant" },
+                    { role: "system", content: "you are a good asistant" },
                     { role: "user", content: text },
                 ]
             })
@@ -4729,7 +4745,6 @@ case "chatgpt":
         return m.reply("An error occurred while processing the request.");
     }
     break;
-
   
 
 
