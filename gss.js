@@ -3395,7 +3395,7 @@ case '𝗡𝗘𝗫𝗧': {
 
 async function instaDownload(url) {
     try {
-        const apiUrl = `https://aiodownloader.onrender.com/download?url=${encodeURIComponent(url)}`;
+        const apiUrl = `https://instagramdownloader.apinepdev.workers.dev/?url=${encodeURIComponent(url)}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -3411,31 +3411,56 @@ async function instaDownload(url) {
     }
 }
 
-async function downloadAndSendMedia(m, text) {
+async function downloadInstagramMedia(url) {
+    try {
+        const result = await instaDownload(url);
+
+        console.log('API Response:', result);
+
+        if (result.status && result.data && result.data.length > 0) {
+            const mediaType = result.data[0].type;
+            const mediaUrl = result.data[0].url;
+
+            if (mediaType && mediaUrl) {
+                return { type: mediaType, url: mediaUrl };
+            } else {
+                throw new Error('Media type or URL not found in API response');
+            }
+        } else {
+            throw new Error('Invalid or unexpected API response');
+        }
+    } catch (error) {
+        console.error('Error downloading Instagram media:', error.message);
+        throw error;
+    }
+}
+
+
+async function downloadAndSendMedia(m, text, isDocument) {
     const url = text;
 
     if (!url) {
         return m.reply(`Where is the link?\n\nExample: ${prefix + command} https://www.instagram.com/p/CK0tLXyAzEI`);
     }
 
-    m.reply('Please wait, downloading media...');
+    m.reply(mess.wait);
 
     try {
-        const { status, data } = await instaDownload(url);
+        const media = await downloadInstagramMedia(url);
 
-        if (status && data && data.low) {
-            const mediaUrl = data.low;
+        const response = await fetch(media.url);
+        const bufferArray = await response.arrayBuffer();
+        const fileBuffer = Buffer.from(bufferArray);
 
-            const response = await fetch(mediaUrl);
-            const bufferArray = await response.arrayBuffer();
-            const fileBuffer = Buffer.from(bufferArray);
+        const fileName = `instagram_media.${media.type === 'image' ? 'jpg' : 'mp4'}`;
 
-            const mediaType = mediaUrl.endsWith('.mp4') ? 'video' : 'image';
-            const fileName = `instagram_media.${mediaType === 'image' ? 'jpg' : 'mp4'}`;
-
-            if (mediaType === 'image') {
+        
+        if (isDocument) {
+            await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/mp4`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+        } else {
+            if (media.type === 'image') {
                 await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
-            } else if (mediaType === 'video') {
+            } else if (media.type === 'video') {
                 await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
             } else {
                 throw new Error('Unsupported media type');
@@ -3446,8 +3471,6 @@ async function downloadAndSendMedia(m, text) {
         return m.reply(`An error occurred: ${error.message}`);
     }
 }
-
-
 
 
 case 'igdl':
