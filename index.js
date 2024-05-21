@@ -17,6 +17,11 @@ const PhoneNumber = require('awesome-phonenumber')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif')
 const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./lib/myfunc')
 const fetch = require('node-fetch');
+
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
  
 var low
 try {
@@ -709,13 +714,10 @@ gss.ev.on('group-participants.update', async (anu) => {
 }
 
 startgss()
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 
-
-// Watching file changes and reloading module
-let file = require.resolve(__filename);
-fs.watchFile(file, () => {
-    fs.unwatchFile(file);
-    console.log(chalk.redBright(`Update ${__filename}`));
-    delete require.cache[file];
-    require(file);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
