@@ -144,7 +144,7 @@ async function startgss() {
     if (typeof text === 'string') {
       fs.writeFileSync('./session/creds.json', text);
       console.log('session file created')
-      await start()
+      await startgss()
     }
   }
     store.bind(gss.ev)
