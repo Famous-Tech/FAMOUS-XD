@@ -2,6 +2,7 @@ require('./config')
 const config = require('./config.js');
 const { default: gssConnect, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, makeCacheableSignalKeyStore, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto, getAggregateVotesInPollMessage } = require("@whiskeysockets/baileys")
 const pino = require('pino')
+const express = require('express')
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
 const os = require('os')
