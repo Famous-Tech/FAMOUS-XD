@@ -2,10 +2,10 @@
  
 <p align="center">  
   <a href="https://youtu.be/WcA7GZuaN0A">
-   <img alt="botgsswa" height="300" src="https://github.com/gssbotwa.png">
+   <img alt="botgsswa" height="300" src="https://github.com/Ethix-Xsid.png">
     
 <p align="center">
-<a href="https://github.com/gssbotwa"><img title="Author" src="https://img.shields.io/badge/GSS-BOTWA-black?style=for-the-badge&logo=WhatsApp"></a>
+<a href="https://github.com/Ethix-Xsid"><img title="Author" src="https://img.shields.io/badge/GSS-BOTWA-black?style=for-the-badge&logo=WhatsApp"></a>
 
 
  
@@ -28,20 +28,20 @@
 <a href="https://whatsapp.com/channel/0029VaFNrVHBfxoBuY2TzH2w"><img src="https://img.shields.io/badge/Join WhatsApp Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"></a>
    
 <p align="center">
-<a href="https://github.com/gssbotwa/followers"><img title="Followers" src="https://img.shields.io/github/followers/gssbotwa?color=red&style=flat-square"></a>
-<a href="https://github.com/gssbotwa/Gssbotwa2/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/gssbotwa/Gssbotwa2?color=blue&style=flat-square"></a>
-<a href="https://github.com/gssbotwa/Gssbotwa2/network/members"><img title="Forks" src="https://img.shields.io/github/forks/gssbotwa/Gssbotwa2?color=red&style=flat-square"></a>
-<a href="https://github.com/gssbotwa/Gssbotwa2/watchers"><img title="Watching" src="https://img.shields.io/github/watchers/gssbotwa/Gssbotwa2?label=Watchers&color=blue&style=flat-square"></a>
-<a href="https://github.com/gssbotwa/Gssbotwa2"><img title="Open Source" src="https://img.shields.io/badge/Author-ETHIX SID X %20HASEEB-red?v=103"></a>
-<a href="https://github.com/gssbotwa/Gssbotwa2/"><img title="Size" src="https://img.shields.io/github/repo-size/gssbotwa/Gssbotwa2?style=flat-square&color=green"></a>
-<a href="https://github.com/gssbotwa/Gssbotwa2/graphs/commit-activity"><img height="20" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg"></a>&nbsp;&nbsp;
+<a href="https://github.com/Ethix-Xsid/followers"><img title="Followers" src="https://img.shields.io/github/followers/Ethix-Xsid?color=red&style=flat-square"></a>
+<a href="https://github.com/Ethix-Xsid/Ethix-Xsid2/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/Ethix-Xsid/Ethix-Xsid2?color=blue&style=flat-square"></a>
+<a href="https://github.com/Ethix-Xsid/Ethix-Xsid2/network/members"><img title="Forks" src="https://img.shields.io/github/forks/Ethix-Xsid/Ethix-Xsid2?color=red&style=flat-square"></a>
+<a href="https://github.com/Ethix-Xsid/Ethix-Xsid2/watchers"><img title="Watching" src="https://img.shields.io/github/watchers/Ethix-Xsid/Ethix-Xsid2?label=Watchers&color=blue&style=flat-square"></a>
+<a href="https://github.com/Ethix-Xsid/Ethix-Xsid2"><img title="Open Source" src="https://img.shields.io/badge/Author-ETHIX SID X %20HASEEB-red?v=103"></a>
+<a href="https://github.com/Ethix-Xsid/Ethix-Xsid2/"><img title="Size" src="https://img.shields.io/github/repo-size/Ethix-Xsid/Ethix-Xsid2?style=flat-square&color=green"></a>
+<a href="https://github.com/Ethix-Xsid/Ethix-Xsid2/graphs/commit-activity"><img height="20" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg"></a>&nbsp;&nbsp;
 </p>
 <p align='center'>
 </p>
 
 ---
 ### 1. FORK THIS REPO
-<a href='https://github.com/gssbotwa/Gssbotwa2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
+<a href='https://github.com/Ethix-Xsid/Ethix-Xsid2/fork' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Fork This Repo-black?style=for-the-badge&logo=git&logoColor=white'/></a>
 
 
 ### 2. GET SESSION VIA PAIR CODE
@@ -110,19 +110,19 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 
 2. Now Deploy
     <br>
-<a href='https://replit.com/github/gssbotwa/Gssbotwa2' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Deploy-black?style=for-the-badge&logo=replit&logoColor=white'/></a>
+<a href='https://replit.com/github/Ethix-Xsid/Ethix-Xsid2' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Deploy-black?style=for-the-badge&logo=replit&logoColor=white'/></a>
 
 ---
 
 ## `DEVELOPERS`
 <div align="left">
-  <a href="[https://github.com/gssbotwa]"><img src="https://github.com/gssbotwa.png" width="150" height="200" alt="Ash"/></a>
+  <a href="[https://github.com/Ethix-Xsid]"><img src="https://github.com/Ethix-Xsid.png" width="150" height="200" alt="Ash"/></a>
 <a href="[https://github.com/chhaseeb47]"><img src="https://github.com/chhaseeb47.png" width="200" height="200" alt="Ash"/></a>
  </div>
 <br>
 <h4 align="left">
 
-| [SIDHARTH ](https://github.com/gssbotwa) |
+| [SIDHARTH ](https://github.com/Ethix-Xsid) |
 | Owner, Developer, Bug Fixer, Maintainer, updates|
 
 | [ CH HASEEB ](https://github.com/chhaseeb47) |
