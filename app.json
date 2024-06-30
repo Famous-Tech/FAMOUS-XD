@@ -1,8 +1,8 @@
 { 
-  "name": "whatsapp-bot (GSS BOTWA V2.0)",
+  "name": "whatsapp-bot (FAMOUS XD)",
   "description": "Whatsapp bot.",
   "keywords": ["whatsapp bot"],
-  "repository": "https://github.com/gssbotwa/Gssbotwa2",
+  "repository": "https://github.com/Azorwolldens/FAMOUS-XD-BOT.git",
   "stack": "container",
   "env": {
     "AUTO_READ": {
