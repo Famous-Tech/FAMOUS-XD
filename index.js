@@ -209,7 +209,7 @@ async function getMessage(key) {
         return msg?.message;
     }
     return {
-        conversation: "Hai im gss botwa",
+        conversation: "hi im FAMOUS XD",
     };
 }
 
@@ -392,7 +392,7 @@ gss.ev.on('group-participants.update', async (anu) => {
         // Add your custom message when the connection is open
         console.log('Connected...', update);
         gss.sendMessage(gss.user.id, {
-            text: `*hi bro! 🫡*\n_gss botwa v2 bot has successfully connected to the server_`
+            text: `*hi bro! 🫡*\n_FAMOUS XD BOT is connected_ 🔰✅ thanks for using my bot`
         });
     }
 });
