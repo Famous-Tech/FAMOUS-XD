@@ -29,17 +29,17 @@ global.autoBlock = false
  
 /*REPLY MESSAGE*/
 global.mess = {
-    banned: '`You are *Banned* fron using commands!`',
-    bangc: '`This Group is *Banned* from using Commands!`',
-    success: '`✓ Success`',
+    banned: '`ou pa gen dwa itilize bot lan ankò ❌; vous n'avez plus le droit de vous servir du bot`',
+    bangc: '`okenn moun nan group sa pa gen dwa sèvi ak bot la!!`',
+    success: '`✓ Success🤟`',
     admin: '`This feature is only for group admins`',
-    botAdmin: '`yow bot lan la admin`',
-    owner: '`epa ou ki mèt mwen`',
-    group: '`You can use this command only in groups ❌`',
-    private: '`Feature is used only for private chats!`',
+    botAdmin: '`yow bot lan pa admin`',
+    owner: '`epa ou ki mèt mwen ❌`',
+    group: '`kòmand sa la sèl pou group ❌`',
+    private: '`kòmand sa pou itilise sèlman an prive!❌`',
     bot: '`Bot number user special features`',
-    wait: '*Processing Your request*',
-    endLimit: '`Your daily limit has expired, the limit will be reset every 12 hours`',
+    wait: '*Fon w ti tann🙏*',
+    endLimit: '`limit itilazyon bot ou an fini svp tann 12h d tan🛑`',
 };
 
 global.limitawal = {
