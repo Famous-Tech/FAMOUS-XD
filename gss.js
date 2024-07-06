@@ -523,7 +523,7 @@ async function setBio() {
         if (db.data.settings[botNumber].autobio) {
             const date = new Date();
             const options = {
-                timeZone: 'Asia/Kolkata',
+                timeZone: 'America/Port-au-Prince',
                 hour12: true,
                 hour: '2-digit',
                 minute: '2-digit',
