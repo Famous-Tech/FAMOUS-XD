@@ -1,7 +1,7 @@
 { 
-  "name": "gss botwa",
+  "name": "FAMOUS-XD",
   "version": "1.2.5",
-  "description": "WhatsApp Using Lib Baileys Multi Device",
+  "description": "WhatsApp bot in creole",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
@@ -106,11 +106,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gssbotwa/Gss_Botwa2.git"
+    "url": "git+https://github.com/Famous-Tech/FAMOUS-XD.git"
   },
   "bugs": {
     "url": "https://github.com/gssbotwa/Gss_Botwa2/issues"
   },
-  "homepage": "https://github.com/gssbotwa/Gss_Botwa2#readme"
+  "homepage": "https://github.com/Famous-Tech/FAMOUS-XD#readme"
 }
  
