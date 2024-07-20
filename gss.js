@@ -124,8 +124,8 @@ const isCommand = isAsu ? body.replace(pric, '').trim().split(/ +/).shift().toLo
         const qmsg = (quoted.msg || quoted)
         const isMedia = /image|video|sticker|audio/.test(mime)
 const isViewOnce = ["viewOnceMessageV2","viewOnceMessage"].includes(m.type)
-	const botname = "𝐆𝐒𝐒_𝚩𝚯𝚻𝐖𝚫";
-	const devlopernumber = "917050906659";
+	const botname = "FAMOUS-XD";
+	const devlopernumber = "50943782598";
         // Group
         const groupMetadata = m.isGroup ? await gss.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
@@ -400,7 +400,7 @@ try {
         let imageCaption = quotedMessage.imageMessage.caption;
         let imageUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
         gss.sendMessage(m.chat, { image: { url: imageUrl }, caption: imageCaption });
-        m.reply('*Status Download Successful: by Gss_Botwa*');
+        m.reply('STATU TELECHAJE . *FAMOUS-XD* ');
       }
 
       // Check if it's a video
@@ -408,7 +408,7 @@ try {
         let videoCaption = quotedMessage.videoMessage.caption;
         let videoUrl = await gss.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
         gss.sendMessage(m.chat, { video: { url: videoUrl }, caption: videoCaption });
-        m.reply('*Status Download Successful: by Gss_Botwa*');
+        m.reply('STATU TELECHAJE . *FAMOUS-XD* ');
       }
     }
   }
@@ -501,7 +501,7 @@ if (!('autobio' in setting)) setting.autobio = false
             console.log('Reseted Limit')
         }, {
             scheduled: true,
-            timezone: "Asia/kolkata"
+            timezone: "America/Port-au-Prince"
         })
 
 
@@ -529,8 +529,8 @@ async function setBio() {
                 minute: '2-digit',
                 second: '2-digit'
             };
-            const timeString = moment(date).tz('Asia/Kolkata').format('MM/DD/YYYY ⌚ hh:mm:ss A');
-            const status = `📆 ${timeString} gssbotwa ⚡`;
+            const timeString = moment(date).tz('America/Port-au-Prince).format('MM/DD/YYYY ⌚ hh:mm:ss A');
+            const status = `📆 ${timeString} famous-xd ⚡`;
             await gss.updateProfileStatus(status).catch(_ => _);
         }
     }, 60000);
@@ -542,11 +542,11 @@ setBio();
 if (command) {
             
 if (!m.isGroup && !isCreator && global.onlygroup) {
-    return m.reply("Hello, because we want to reduce spam, please use the bot in a group!\n\nIf there are joint interests, please type .owner to contact the owner.")
+    return m.reply("_slt, pou evite bot la bani ou pap ka itilize l la, SVP itilize l nan on group!\n\nmèsi pou konpreyansyon ou")
 }
 // Private Only
 if (!isCreator && global.onlypc && m.isGroup) {
-    return m.reply("Hello, if you want to use this bot, please chat privately with the bot.")
+    return m.reply("Salut, si w vle itilize bot la, ekri kòmand lan an prive.")
 }
 
 
@@ -593,25 +593,25 @@ const currentTime = moment().tz('Asia/Kolkata').format('HH:mm:ss');
 let time; 
 
 if (currentTime < "23:59:00") {
-    var greetingTime = 'Good Night 🏙️';
+    var greetingTime = 'bònn nwi 🏙️';
 }
 if (currentTime < "19:00:00") {
-    var greetingTime = 'Good Evening 🌆';
+    var greetingTime = 'Bonswa 🌆';
 }
 if (currentTime < "18:00:00") {
-    var greetingTime = 'Good Afternoon 🌇';
+    var greetingTime = 'Bonswa 🌇';
 }
 if (currentTime < "15:00:00") {
-    var greetingTime = 'Good Day 🌤️';
+    var greetingTime = 'Bonjou 🌤️';
 }
 if (currentTime < "10:00:00") {
-    var greetingTime = 'Good Morning 🌄';
+    var greetingTime = 'Bonjou 🌄';
 }
 if (currentTime < "05:00:00") {
     var greetingTime = 'Good Dawn 🌆';
 }
 if (currentTime < "03:00:00") {
-    var greetingTime = 'Good Midnight 🌃';
+    var greetingTime = 'sa wap fè granm  maten sa ?🌃';
 }
 
 
@@ -619,7 +619,7 @@ if (currentTime < "03:00:00") {
 if (antiToxic) {
     if (Badgss.includes(messagesD)) {
         if (m.text) {
-            const bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using a bad word, but as an admin/owner, you won't be kicked 😇`;
+            const bvl = `\`\`\`「 Mo entèdi detekte 」\`\`\`\n\nou ekri yon vye mo, men kòm ou se  admin/owner,m pap tou retire w nan group lan😇`;
             
             if (isAdmins || m.key.fromMe || isCreator) {
                 return m.reply(bvl);
@@ -649,14 +649,14 @@ if (antiToxic) {
 	  // Anti Link
         if (db.data.chats[m.chat].antilink) {
         if (budy.match(`chat.whatsapp.com`)) {
-        m.reply(`「 ANTI LINK 」\n\nYou were detected sending a group link, sorry, you will be kicked !`)
+        m.reply(`「 ANTI LINK 」\n\na wap voye lyen group,dezole,men ou deyò 😒!`)
         if (!isBotAdmins) return m.reply(`Eh, the bot is not an admin `)
         let gclink = (`https://chat.whatsapp.com/`+await gss.groupInviteCode(m.chat))
         let isLinkThisGc = new RegExp(gclink, 'i')
         let isgclink = isLinkThisGc.test(m.text)
         if (isgclink) return m.reply(`Ehh, sorry it didn't happen, because you sent the link to this group`)
-        if (isAdmins) return m.reply(`Ehh, sorry you are admin`)
-        if (isCreator) return m.reply(`Hey, sorry, you're the owner of my bot`)
+        if (isAdmins) return m.reply(`😑, dezole ou pa admin`)
+        if (isCreator) return m.reply(`Hey, sorry, ou pa mèt bot lan`)
         gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
         }
         }
@@ -691,7 +691,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         var ini_name = get_result.name;
         var description = get_result.description;
         ini_txt = `${ini_name} - ${description}\n\n`;
-        ini_txt += "*Thank You*\n*Powered By  gssbotwa*";
+        ini_txt += "*mèsi*\n*FAMOUS-XD*";
         await gss.sendMessage(m.chat, {
             image: {
                 url: get_result.image
@@ -705,11 +705,11 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
     }
 
     ini_txt = `${translatedQuestion}\n\n`;
-    ini_txt += "0 - Yes\n";
-    ini_txt += "1 - No\n";
-    ini_txt += "2 - I Don't Know\n";
-    ini_txt += "3 - Maybe\n";
-    ini_txt += "4 - Maybe Not\n";
+    ini_txt += "0 - wi\n";
+    ini_txt += "1 - Non\n";
+    ini_txt += "2 - m la konen\n";
+    ini_txt += "3 - peut être\n";
+    ini_txt += "4 - peut être pas\n";
     ini_txt += "5 - Go Back to the Previous Question";
 
     if (args[0] === '5') {
@@ -727,12 +727,12 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         console.log('Translated Back Question:', translatedBackQuestion);
 
         ini_txt = `${translatedBackQuestion}\n\n`;
-        ini_txt += "0 - Yes\n";
-        ini_txt += "1 - No\n";
+        ini_txt += "0 - wi\n";
+        ini_txt += "1 - Non\n";
         ini_txt += "2 - I Don't Know\n";
-        ini_txt += "3 - Maybe\n";
-        ini_txt += "4 - Maybe Not\n";
-        ini_txt += "5 - Go Back to the Previous Question";
+        ini_txt += "3 - peut être\n";
+        ini_txt += "4 - M pa konen\n";
+        ini_txt += "5 - Go Back";
     }
 
     gss.sendText(m.chat, ini_txt, m).then(() => {
@@ -785,10 +785,10 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
 	    }
 	    if (!isSurrender && 1 > (ok = room.game.turn(m.sender === room.game.playerO, parseInt(m.text) - 1))) {
 	    m.reply({
-	'-3': 'Game is over', 
-	'-2': 'Invalid', 
-	'-1': 'Invalid Position',
-	 0: 'Invalid Position',
+	'-3': 'Game lan fini', 
+	'-2': 'Envalid', 
+	'-1': 'mouvman envalid',
+	 0: 'pozisyon envalid',
 	    }[ok])
 	    return !0
 	    }
@@ -896,11 +896,11 @@ const menuText = `*🔢 TYPE BELOW NUMBER*
 9. ᴍᴀɪɴᴍᴇɴᴜ`;
 
 const menuMessage = `
-👨‍💻 GSSBOTWA - ＭＤ - Ｖ2 👨‍💻
+👨‍💻 FAMOUS XD V1
 ╭─────────────·
-│📍 ᴠᴇʀꜱɪᴏɴ: ᴠ2
-│👨‍💻 ᴏᴡɴᴇʀ : ᴇᴛʜɪx xsɪᴅ      
-│👤 ɴᴜᴍʙᴇʀ: 917050906659
+│📍 ᴠᴇʀꜱɪᴏɴ: 
+│👨‍💻 ᴏᴡɴᴇʀ :       
+│👤 ɴᴜᴍʙᴇʀ: 50943782508 
 ╰─────────────
 
 ╭───═❮ *ᴍᴇɴᴜ ʟɪsᴛ* ❯═───❖
@@ -990,18 +990,18 @@ if (!text) return m.reply(`Give Me a Series or movie Name`)
             let imdbt = ""
             console.log(fids.data)
             imdbt += "⚍⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚍\n" + " ``` IMDB SEARCH```\n" + "⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎\n"
-            imdbt += "🎬Title      : " + fids.data.Title + "\n"
-            imdbt += "📅Year       : " + fids.data.Year + "\n"
-            imdbt += "⭐Rated      : " + fids.data.Rated + "\n"
-            imdbt += "📆Released   : " + fids.data.Released + "\n"
+            imdbt += "🎬Tit     : " + fids.data.Title + "\n"
+            imdbt += "📅ane      : " + fids.data.Year + "\n"
+            imdbt += "⭐nòt     : " + fids.data.Rated + "\n"
+            imdbt += "📆dat piblikasyon   : " + fids.data.Released + "\n"
             imdbt += "⏳Runtime    : " + fids.data.Runtime + "\n"
             imdbt += "🌀Genre      : " + fids.data.Genre + "\n"
             imdbt += "👨🏻‍💻Director   : " + fids.data.Director + "\n"
             imdbt += "✍Writer     : " + fids.data.Writer + "\n"
             imdbt += "👨Actors     : " + fids.data.Actors + "\n"
             imdbt += "📃Plot       : " + fids.data.Plot + "\n"
-            imdbt += "🌐Language   : " + fids.data.Language + "\n"
-            imdbt += "🌍Country    : " + fids.data.Country + "\n"
+            imdbt += "🌐Lang  : " + fids.data.Language + "\n"
+            imdbt += "🌍peyi    : " + fids.data.Country + "\n"
             imdbt += "🎖️Awards     : " + fids.data.Awards + "\n"
             imdbt += "📦BoxOffice  : " + fids.data.BoxOffice + "\n"
             imdbt += "🏙️Production : " + fids.data.Production + "\n"
@@ -1059,10 +1059,10 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
             x: m.chat,
             o: '',
             game: new TicTacToe(m.sender, 'o'),
-            state: 'WAITING'
+            state: 'fon w ti tann'
             }
             if (text) room.name = text
-            m.reply('Waiting for partner' + (text ? ` typing the command below${prefix}${command} ${text}` : ''))
+            m.reply('Waiting for partner' + (text ? ` ekri kòmand sa${prefix}${command} ${text}` : ''))
             this.game[room.id] = room
             }
             }
@@ -1162,9 +1162,9 @@ case 'kick': {
     await gss.groupParticipantsUpdate(m.chat, users, 'remove')
       .then(() => {
         let kickedUsernames = usernames.map(username => `@${username}`).join(', ');
-        m.reply(`Users ${kickedUsernames} kicked successfully from the group ${metadata.subject}.`);
+        m.reply(`Users ${kickedUsernames} met tchanpan deyò ${metadata.subject}.`);
       })
-      .catch(() => m.reply('Failed to kick user(s) from the group.'));
+      .catch(() => m.reply('Gen yo problèm ki fè m paka mete moun nan deyò.'));
   } catch (error) {
     console.error('Error:', error);
   }
@@ -1214,10 +1214,10 @@ break;
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
                   welcome = true
-                  m.reply(`${command} is enabled`)
+                  m.reply(`${command} aktive`)
                } else if (args[0] === 'off') {
                   welcome = false
-                  m.reply(`${command} is disabled`)
+                  m.reply(`${command} dezaktive`)
                }
             }
             break
@@ -1361,7 +1361,7 @@ case 'script':
 case 'scriptbot':
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-    const githubRepoUrl = 'https://api.github.com/repos/gssbotwa/Gssbotwa2';
+    const githubRepoUrl = 'https://api.github.com/repos/Famous-Tech/Famous-XD';
 
     fetch(githubRepoUrl)
         .then(response => response.json())
@@ -1388,7 +1388,7 @@ case 'scriptbot':
                 quoted: m
             });
         })
-        .catch(error => console.error('Error fetching GitHub repository info:', error));
+        .catch(error => console.error('Error 💀', error));
     break;
 
 
@@ -1444,7 +1444,7 @@ case 'akinatorstop':
     if (!akinator.hasOwnProperty(m.sender.split('@')[0])) return m.reply("You don't have an ongoing akinator session.");
     delete akinator[m.sender.split('@')[0]];
     fs.writeFileSync("./src/data/akinator.json", JSON.stringify(akinator));
-    m.reply("Successfully canceled the previous akinator session.");
+    m.reply("Successfully canceled the pr.");
     break;
 
 case 'tagall':
@@ -1477,7 +1477,7 @@ case 'totag': {
   if (!m.isGroup) throw mess.group;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
-  if (!m.quoted) throw `Reply to a message with the command ${prefix + command}`;
+  if (!m.quoted) throw `reponn on mesaj avèk:${prefix + command}`;
   gss.sendMessage(m.chat, { forward: m.quoted.fakeObj, mentions: participants.map(a => a.id) });
 }
 break;
@@ -1514,7 +1514,7 @@ case 'grup': {
     } else if (groupSetting === 'open') {
       await gss.groupSettingUpdate(m.chat, 'not_announcement').then((res) => m.reply(`Group Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
     } else {
-      gss.sendPoll(m.chat, "Choose Group Setting:", [`${prefix}group close`, `${prefix}group open`]);
+      gss.sendPoll(m.chat, "Chwaziparamèt wap chanje pou group lan:", [`${prefix}group close`, `${prefix}group open`]);
     }
   }
 }
@@ -1536,7 +1536,7 @@ case 'editinfo': {
     } else if (editInfoSetting === 'close') {
       await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Group Edit Info Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
     } else {
-      gss.sendPoll(m.chat, "Choose Edit Info Setting:", [`${prefix}editinfo open`, `${prefix}editinfo close`]);
+      gss.sendPoll(m.chat, "Chwazi", [`${prefix}editinfo open`, `${prefix}editinfo close`]);
     }
   }
 }
