@@ -155,9 +155,9 @@ const hours = Math.floor((uptime % (24 * 3600)) / 3600); // Calculate hours
 const minutes = Math.floor((uptime % 3600) / 60); // Calculate minutes
 const seconds = Math.floor(uptime % 60); // Calculate seconds
 //Uptime
-  const uptimeMessage = `*I am alive now since ${day}d ${hours}h ${minutes}m ${seconds}s*`;
+  const uptimeMessage = `*FAMOUS XD ONLINEℹ ${day}d ${hours}h ${minutes}m ${seconds}s*`;
   
-  const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
+  const runMessage = `*☀️ ${day} jou*\n *🕐 ${hours} heure*\n *⏰ ${minutes} Minit*\n *⏱️ ${seconds} Segond*\n`;
   
 async function doReact(emoji) {
       let react = {
@@ -678,7 +678,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
         question,
         step
     } = akinator[m.sender.split('@')[0]];
-    if (step == "0" && body == "5") m.reply("Sorry, you have reached the first question");
+    if (step == "0" && body == "5") m.reply("Error!");
 
     // Translate the question to English
     const translatedQuestion = await translate(question, { to: 'en' });
@@ -707,7 +707,7 @@ if (akinator.hasOwnProperty(m.sender.split('@')[0]) && isCmd && ["0", "1", "2", 
     ini_txt = `${translatedQuestion}\n\n`;
     ini_txt += "0 - wi\n";
     ini_txt += "1 - Non\n";
-    ini_txt += "2 - m la konen\n";
+    ini_txt += "2 - m pa konen\n";
     ini_txt += "3 - peut être\n";
     ini_txt += "4 - peut être pas\n";
     ini_txt += "5 - Go Back to the Previous Question";
@@ -842,9 +842,9 @@ during ${clockString(new Date - user.afkTime)}`)
             user.afkReason = ''
         }
         
-        const cmdAi = ["Ai", "Voiceai", "Bug", "Report", "Gpt", "Dalle", "Remini"];
-const cmdTool = ["Calculator", "Tempmail", "Checkmail", "Info", "Trt", "Tts"];
-const cmdGrup = ["LinkGroup", "Setppgc", "Setname", "Setdesc", "Group", "Gcsetting", "Welcome", "Left", "SetWelcome", "SetLeft", "Editinfo", "Add", "Kick", "HideTag", "Tagall", "Totag", "Tagadmin", "AntiLink", "AntiToxic", "Mute", "Promote", "Demote", "Revoke", "Poll", "Getbio"];
+        const cmdAi = ["🤖Ai", "🤖Voiceai", "🤖Bug", "🤖Report", "🤖Gpt", "🤖Dalle", "🤖Remini"];
+const cmdTool = ["⚙Calculator", "⚙Tempmail", "⚙Checkmail", "⚙Info", "⚙Trt", "⚙Tts"];
+const cmdGrup = ["ℹLinkGroup", "ℹSetppgc", "ℹSetname", "ℹSetdesc", "ℹGroup", "ℹ-Gcsetting", "ℹ-Welcome", "ℹ-Left", "ℹ-SetWelcome", "ℹ-SetLeft", "ℹ-Editinfo", "ℹ-Add", "ℹ-Kick", "ℹ-HideTag", "ℹ-Tagall", "ℹ-Totag", "ℹ-Tagadmin", "ℹ-AntiLink", "ℹ-AntiToxic", "ℹ-Mute", "ℹ-Promote", "ℹ-Demote", "ℹ-Revoke", "ℹ-Poll", "ℹ-Getbio"];
 const cmdDown = ["Apk", "Facebook", "Mediafire", "Pinterestdl", "XnxxSearch", "Xnxxdl", "Gitclone", "Gdrive", "Insta", "Ytmp3", "Ytmp4", "Play", "Song", "Video", "Ytmp3doc", "Ytmp4doc", "Tiktok"];
 const cmdSearch = ["Play", "Yts", "Imdb", "Google", "Gimage", "Pinterest", "Wallpaper", "Wikimedia", "Ytsearch", "Ringtone", "Lyrics"];
 const cmdFun = ["Delttt", "Tictactoe"];
@@ -884,7 +884,7 @@ const introTextFun = generateMenu(cmdFun, '𝗙𝗨𝗡 𝗠𝗘𝗡𝗨');
 const introTextTool = generateMenu(cmdTool, '𝗧𝗢𝗢𝗟 𝗠𝗘𝗡𝗨');
 const introTextAi = generateMenu(cmdAi, '𝗔𝗜 𝗠𝗘𝗡𝗨');
 
-const menuText = `*🔢 TYPE BELOW NUMBER*
+const menuText = `*🔢 Chwazi youn ladan yo*
 1. ᴄᴏɴᴠᴇʀᴛᴍᴇɴᴜ
 2. ᴅᴏᴡɴʟᴏᴀᴅᴍᴇɴᴜ
 3. ɢʀᴏᴜᴘᴍᴇɴᴜ
@@ -945,7 +945,7 @@ if (command === 'menu2') {
 
             if (subMenu !== undefined) {
                 await gss.sendMessage(m.chat, {
-                    image: { url: 'https://telegra.ph/file/61eec5ebaeef2a046a914.jpg' },
+                    image: { url: 'https://telegra.ph/file/2712906b11294dce533de.png' },
                     caption: subMenu,
                     contextInfo: {
                         externalAdReply: {
@@ -957,7 +957,7 @@ if (command === 'menu2') {
                     }
                 }, { quoted: m });
             } else {
-                await gss.sendMessage(m.chat, { text: 'Invalid menu number. Please select a number from the menu.' }, { quoted: m });
+                await gss.sendMessage(m.chat, { text: 'Invalid menu number!. Svp chwazi youn nan chif ou wè nan menu an' }, { quoted: m });
             }
         }
     }
@@ -985,7 +985,7 @@ break;
 case 'imdb': case 'movie':
 if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-if (!text) return m.reply(`Give Me a Series or movie Name`)
+if (!text) return m.reply(`Banm on non seri oswa fim nan`)
             let fids = await axios.get(`http://www.omdbapi.com/?apikey=742b2d09&t=${text}&plot=full`)
             let imdbt = ""
             console.log(fids.data)
@@ -998,7 +998,7 @@ if (!text) return m.reply(`Give Me a Series or movie Name`)
             imdbt += "🌀Genre      : " + fids.data.Genre + "\n"
             imdbt += "👨🏻‍💻Director   : " + fids.data.Director + "\n"
             imdbt += "✍Writer     : " + fids.data.Writer + "\n"
-            imdbt += "👨Actors     : " + fids.data.Actors + "\n"
+            imdbt += "👨Aktè     : " + fids.data.Actors + "\n"
             imdbt += "📃Plot       : " + fids.data.Plot + "\n"
             imdbt += "🌐Lang  : " + fids.data.Language + "\n"
             imdbt += "🌍peyi    : " + fids.data.Country + "\n"
@@ -1071,9 +1071,9 @@ Waiting @${room.game.currentTurn.split('@')[0]} Type *surrender* to give up and 
 if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
             let roomnya = Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))
-            if (!roomnya) throw `You are not in the tictactoe room!`
+            if (!roomnya) throw `ou pa nan jwèt tictactoe a non`
             delete this.game[roomnya.id]
-            m.reply(`Successfully deleted session room tictactoe!`)
+            m.reply(`jwèt tictactoe siprime avèk siksè✅`)
             }
             break
       
@@ -1081,7 +1081,7 @@ if (isBan) return m.reply(mess.banned);
               if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
-  if (!text) throw 'Enter the Group Link!';
+  if (!text) throw 'Banm wè lien group lan';
   if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) throw 'Invalid Link!';
   m.reply(mess.wait);
   let result = args[0].split('https://chat.whatsapp.com/')[1];
@@ -1129,9 +1129,9 @@ case 'promote': {
     await gss.groupParticipantsUpdate(m.chat, users, 'promote')
       .then(() => {
         let promotedUsernames = usernames.map(username => `@${username}`).join(', ');
-        m.reply(`Users ${promotedUsernames} promoted successfully in the group ${metadata.subject}.`);
+        m.reply(`itilizatè ${promotedUsernames} vin diminye avèk siksè nan group ${metadata.subject}.`);
       })
-      .catch(() => m.reply('Failed to promote user(s) in the group.'));
+      .catch(() => m.reply('sorry, gen on problem ki fè m paka mete l admin nan group la.'));
   } catch (error) {
     console.error('Error:', error);
   }
@@ -1194,9 +1194,9 @@ case 'demote': {
     await gss.groupParticipantsUpdate(m.chat, users, 'demote')
       .then(() => {
         let demotedUsernames = usernames.map(username => `@${username}`).join(', ');
-        m.reply(`Users ${demotedUsernames} demoted successfully in the group ${metadata.subject}.`);
+        m.reply(`🥳 ${demotedUsernames} pa admin nan ${metadata.subject} ankò.`);
       })
-      .catch(() => m.reply('Failed to demote user(s) in the group.'));
+      .catch(() => m.reply('Gen yon prolem ki fè m paka retire l nan group lan sorry.'));
   } catch (error) {
     console.error('Error:', error);
   }
@@ -1266,8 +1266,8 @@ break;
             if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
-  if (!/image/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
-  if (/webp/.test(mime)) throw `Send/Reply with an Image and Caption ${prefix + command}`;
+  if (!/image/.test(mime)) throw `voye yon imaj ak ${prefix + command}`;
+  if (/webp/.test(mime)) throw `voye on imaj ak ${prefix + command}`;
   let media = await gss.downloadAndSaveMediaMessage(qmsg);
   await gss.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media));
   m.reply(mess.success);
@@ -1277,7 +1277,7 @@ break;
 case 'toqr': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-                if (!q) return m.reply(' Please include link or text!')
+                if (!q) return m.reply('SVP bay on lyen oswa on teks')
                 const QrCode = require('qrcode-reader')
                 const qrcode = require('qrcode')
                 let qyuer = await qrcode.toDataURL(q, {
@@ -1309,7 +1309,7 @@ const res = await fetch(`http://api.qrserver.com/v1/read-qr-code/?fileurl=${mem}
 const data = await res.json() 
 m.reply(util.format(data[0].symbol))
 } catch (err) {
-m.reply(`Reply Image That Has Qr`)
+m.reply(`reponn imaj ki an QR lan.`)
 }
 }
 break
@@ -1322,9 +1322,9 @@ case 'setppgroup':
                 if (!m.isGroup) return m.reply(mess.group)
                 if (!isAdmins) return m.reply(mess.admin)
                 if (!isBotAdmins) return m.reply(mess.botAdmin)
-                if (!quoted) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
-                if (!/image/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
-                if (/webp/.test(mime)) return m.reply(`Send/Reply Image With Caption ${prefix + command}`)
+                if (!quoted) return m.reply(`voye on imaj ak ${prefix + command}`)
+                if (!/image/.test(mime)) return m.reply(`Voye on imaj ak ${prefix + command}`)
+                if (/webp/.test(mime)) return m.reply(`Voye on imaj ak ${prefix + command}`)
                 var medis = await gss.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
                 if (args[0] == 'full') {
                     var {
@@ -1532,9 +1532,9 @@ case 'editinfo': {
   } else {
     const editInfoSetting = args[0].toLowerCase();
     if (editInfoSetting === 'open') {
-      await gss.groupSettingUpdate(m.chat, 'unlocked').then((res) => m.reply(`Group Edit Info Successfully Opened`)).catch((err) => m.reply(jsonformat(err)));
+      await gss.groupSettingUpdate(m.chat, 'unlocked').then((res) => m.reply(`Group la louvri avèk siksè`)).catch((err) => m.reply(jsonformat(err)));
     } else if (editInfoSetting === 'close') {
-      await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Group Edit Info Successfully Closed`)).catch((err) => m.reply(jsonformat(err)));
+      await gss.groupSettingUpdate(m.chat, 'locked').then((res) => m.reply(`Group la fèmen avèk siksè`)).catch((err) => m.reply(jsonformat(err)));
     } else {
       gss.sendPoll(m.chat, "Chwazi", [`${prefix}editinfo open`, `${prefix}editinfo close`]);
     }
@@ -1549,19 +1549,19 @@ break;
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
   if (!args || args.length < 1) {
-    gss.sendPoll(m.chat, "Choose Antilink Setting:", [`${prefix}antilink on`, `${prefix}antilink off`]);
+    gss.sendPoll(m.chat, "Chwazi paramèt antilien an", [`${prefix}antilink on`, `${prefix}antilink off`]);
   } else {
     const antilinkSetting = args[0].toLowerCase();
     if (antilinkSetting === "on") {
-      if (db.data.chats[m.chat]?.antilink) return m.reply(`Antilink Already Active`);
+      if (db.data.chats[m.chat]?.antilink) return m.reply(`Antilink lan aktive deja.`);
       db.data.chats[m.chat].antilink = true;
-      m.reply(`Antilink Activated!`);
+      m.reply(`Antilink Aktive !✅`);
     } else if (antilinkSetting === "off") {
-      if (!db.data.chats[m.chat]?.antilink) return m.reply(`Antilink Already Inactive`);
+      if (!db.data.chats[m.chat]?.antilink) return m.reply(`Antilink dezaktive deja.`);
       db.data.chats[m.chat].antilink = false;
-      m.reply(`Antilink Deactivated!`);
+      m.reply(`Antilink Dezaktive🚫`);
     } else {
-      gss.sendPoll(m.chat, "Choose Antilink Setting:", [`${prefix}antilink on`, `${prefix}antilink off`]);
+      gss.sendPoll(m.chat, "Chwazi paramèt antilien an:", [`${prefix}antilink on`, `${prefix}antilink off`]);
     }
   }
 }
@@ -1580,13 +1580,13 @@ if (!isCreator) throw mess.owner;
         if (antiviewonceSetting === "on") {
             if (db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Active`);
             db.data.chats[m.chat].antiviewonce = true
-            m.reply(`Antiviewonce Activated!`);
+            m.reply(`Anti vu unik aktive !`);
         } else if (antiviewonceSetting === "off") {
             if (!db.data.chats[m.chat]?.antiviewonce) return m.reply(`Antiviewonce Already Inactive`);
             db.data.chats[m.chat].antiviewonce = false
-            m.reply(`Antiviewonce Deactivated!`);
+            m.reply(`Anti vu unik dezaktive!`);
         } else {
-            gss.sendPoll(m.chat, "Choose Antiviewonce Setting:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
+            gss.sendPoll(m.chat, "Choose sa w vle pou antilink lan:", [`${prefix}antiviewonce on`, `${prefix}antiviewonce off`]);
         }
     }
 }
@@ -1597,7 +1597,7 @@ case "forward":
 case "fwd":
   if (!args.length) {
     await doReact("❌");
-    return m.reply(`Please tag a user or provide a phone number along with the message to forward.\nExample: !forward @username This is the forwarded message.`);
+    return m.reply(`SVP tag on moun oswa banm nimewo l.`);
   }
 
   let forwardTo = ''; // Initialize the variable to store the user ID or phone number
@@ -1611,14 +1611,14 @@ case "fwd":
     args.shift(); // Remove the phone number from the arguments list
   } else {
     await doReact("❌");
-    return m.reply(`Invalid format. Please tag a user (@username) or provide a phone number (+countrycodephonenumber) along with the message to forward.`);
+    return m.reply(`Invalid !. SVP tag moun nan tankou  (@Famous-Tech) oswa bay num li tankou : (+50943782508) .`);
   }
 
   const forwardedMessage = args.join(' '); // Combine the remaining arguments as the message to forward
 
   if (!forwardedMessage) {
     await doReact("❌");
-    return m.reply(`Please provide a message to forward after tagging the user or providing the phone number.`);
+    return m.reply(`Svp bay on mesaj lè w fin di kimoun nan.`);
   }
 
   try {
@@ -1663,7 +1663,7 @@ case "score":
     const result = await response.json();
 
     let formattedResult = `╭══════════════•∞•══╮\n`;
-    formattedResult += `│⿻   *GSS BOTWA 😎 🔥*\n`;
+    formattedResult += `│⿻   *FAMOUS-XD*\n`;
     formattedResult += `│⿻   *LIVE MATCH INFO* ✨\n`;
     formattedResult += `│⿻\n`;
 
@@ -1716,17 +1716,17 @@ case 'ban': {
   if (m.quoted && m.quoted.sender) {
     orgnye = m.quoted.sender;
   } else {
-    return m.reply('Mention or reply to the user you want to ban.');
+    return m.reply('Tag mou  wap bani an oswa reponn on mesaj li.');
   }
 
   const isBanned = banUser.includes(orgnye);
 
   if (isBanned) {
-    return m.reply('User is already banned.');
+    return m.reply('Tchanpan bani deja.');
   }
 
   banUser.push(orgnye);
-  return m.reply(`Successfully banned the user.`);
+  return m.reply(`pase kk mon ami ou bani.`);
   break;
 }
 
@@ -1740,14 +1740,14 @@ case 'unban': {
     const orgnye = m.quoted.sender;
     const isBane = banUser.includes(orgnye);
 
-    if (!isBane) return m.reply('User is not banned.');
+    if (!isBane) return m.reply('non li pa bani.');
 
     let delbans = banUser.indexOf(orgnye);
     banUser.splice(delbans, 1);
-    return m.reply(`Successfully Unbanned the user.`);
+    return m.reply(`ok ou debani.`);
   }
 
-  return m.reply("Invalid option. Reply to a message to ban/unban the user.");
+  return m.reply("Invalid option. reponn on mesaj pou w bani oswa debani on moun.");
 }
 break;
 
@@ -1760,7 +1760,7 @@ case 'mute': {
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
   if (!args || args.length < 1) {
-    gss.sendPoll(m.chat, "Choose Mute Setting:", [`${prefix}mute on`, `${prefix}mute off`]);
+    gss.sendPoll(m.chat, "Chwazi:", [`${prefix}mute on`, `${prefix}mute off`]);
   } else {
     const muteSetting = args[0].toLowerCase();
     if (muteSetting === "on") {
@@ -1772,7 +1772,7 @@ case 'mute': {
       db.data.chats[m.chat].mute = false;
       m.reply(`${gss.user.name} has been unmuted in this group!`);
     } else {
-      gss.sendPoll(m.chat, "Choose Mute Setting:", [`${prefix}mute on`, `${prefix}mute off`]);
+      gss.sendPoll(m.chat, "Chwazi:", [`${prefix}mute on`, `${prefix}mute off`]);
     }
   }
 }
@@ -1783,7 +1783,7 @@ case "logomaker":
         if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
         await doReact("❌");
-        return m.reply(`*Provide a logo name for the logo maker.*\nExample: !logomaker MyLogo`);
+        return m.reply(`*Bay on non pou m fè logo a.*\nExample: !logomaker MyLogo`);
     }
 
     const logoName = encodeURIComponent(text);
@@ -1813,7 +1813,7 @@ case "logomaker":
             await doReact("✅");
         } else {
             await doReact("❌");
-            return m.reply(`Invalid or unexpected API response. Logo not found.`);
+            return m.reply(`*FATAL ERROR*.`);
         }
     } catch (error) {
         console.error(error);
@@ -1840,9 +1840,9 @@ case 'setstatus': case 'setbiobot': case 'setbotbio': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
-  if (!text) throw `This is a WhatsApp Bot named gss botwa`;
+  if (!text) throw `Bot WhatsApp FAMOUS-XD devlope par FAMOUS-XD `;
   let name = await gss.updateProfileStatus(text);
-  m.reply(`Successfully changed bot bio status to ${name}`);
+  m.reply(`Siksè!`);
 }
 break;
 
@@ -1854,18 +1854,18 @@ case 'anticall': {
     let ciko = db.data.settings[botNumber]?.anticall;
 
     if (!args || args.length < 1) {
-        gss.sendPoll(m.chat, "Choose AntiCall Setting:", [`${prefix}anticall off`, `${prefix}anticall on`]);
+        gss.sendPoll(m.chat, "Chwazi :", [`${prefix}anticall off`, `${prefix}anticall on`]);
     } else {
         if (args[0].toLowerCase() === "on") {
-            if (ciko) return m.reply(`Already Active Before`);
+            if (ciko) return m.reply(`li aktive deja`);
             db.data.settings[botNumber].anticall = true;
             m.reply(`AntiCall Active!`);
         } else if (args[0].toLowerCase() === "off") {
-            if (!ciko) return m.reply(`Already Inactive Before`);
+            if (!ciko) return m.reply(`Li dezaktive deja`);
             db.data.settings[botNumber].anticall = false;
             m.reply(`AntiCall Deactivated!`);
         } else {
-            gss.sendPoll(m.chat, "Choose AntiCall Setting:", [`${prefix}anticall off`, `${prefix}anticall on`]);
+            gss.sendPoll(m.chat, "Chwazi:", [`${prefix}anticall off`, `${prefix}anticall on`]);
         }
     }
 }
@@ -1897,17 +1897,17 @@ case 'bcgc': case 'bcgroup': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
-  if (!text) throw `Where's the text?\n\nExample: ${prefix + command} fatih-san`;
+  if (!text) throw `Kote text lan ?\n\nExample: ${prefix + command} famous-xd `;
   let getGroups = await gss.groupFetchAllParticipating();
   let groups = Object.entries(getGroups).slice(0).map(entry => entry[1]);
   let anu = groups.map(v => v.id);
   m.reply(`Sending Broadcast to ${anu.length} Group Chats, Estimated Time ${anu.length * 1.5} seconds`);
   for (let i of anu) {
     await sleep(1500);
-    let txt = `「 Bot Broadcast 」\n\n${text}`;
+    let txt = `「 FAMOUS-XD Broadcast 」\n\n${text}`;
     gss.sendText(i, txt);
   }
-  m.reply(`Successfully Sent Broadcast to ${anu.length} Groups`);
+  m.reply(`mesaj lan ale nan ${anu.length} Group`);
 }
 break;
   
@@ -1915,7 +1915,7 @@ case 'bc': case 'broadcast': case 'bcall': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!isCreator) throw mess.owner;
-  if (!text) throw `Where's the text?\n\nExample: ${prefix + command} fatih-san`;
+  if (!text) throw `bay on tèks\n\nExample: ${prefix + command} fatih-san`;
   let anu = await store.chats.all().map(v => v.id);
   m.reply(`Sending Broadcast to ${anu.length} Chats\nEstimated Time ${anu.length * 1.5} seconds`);
   for (let yoi of anu) {
@@ -1931,7 +1931,7 @@ case 'infochat': {
         if (isBanChat) return m.reply(mess.bangc);
   if (!m.quoted) m.reply('Reply to a message');
   let msg = await m.getQuotedObj();
-  if (!m.quoted.isBaileys) throw 'The message is not sent by the bot!';
+  if (!m.quoted.isBaileys) throw 'Gen yon problem ki fè bot lan la voye mesaj lan re eseye. ';
   let teks = '';
   for (let i of msg.userReceipt) {
     let read = i.readTimestamp;
@@ -1952,10 +1952,10 @@ case 'autosview':
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
                   antiswview = true
-                  m.reply(`${command} is enabled`)
+                  m.reply(`${command} aktive`)
                } else if (args[0] === 'off') {
                   antiswview = false
-                  m.reply(`${command} is disabled`)
+                  m.reply(`${command} aktive`)
                }
             }
             break
@@ -1968,10 +1968,10 @@ case 'autosview':
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
                   autoreact = true
-                  m.reply(`${command} is enabled`)
+                  m.reply(`${command} aktive`)
                } else if (args[0] === 'off') {
                   autoreact = false
-                  m.reply(`${command} is disabled`)
+                  m.reply(`${command} dezaktiv`)
                }
             }
             break
@@ -1984,10 +1984,10 @@ case 'autosview':
                if (args.length < 1) return m.reply('on/off?')
                if (args[0] === 'on') {
                   global.autoRecord = true
-                  m.reply(`${command} is enabled`)
+                  m.reply(`${command} aktive`)
                } else if (args[0] === 'off') {
                   global.autoRecord = false
-                  m.reply(`${command} is disabled`)
+                  m.reply(`${command} dezaktive `)
                }
             }
             break
@@ -1995,7 +1995,7 @@ case 'autosview':
 case 'q': case 'quoted': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!m.quoted) return m.reply('Reply to the message!');
+  if (!m.quoted) return m.reply('Reponn on mesaj');
   let wokwol = await gss.serializeM(await m.getQuotedObj());
   if (!wokwol.quoted) return m.reply('The replied message does not contain a reply');
   await wokwol.quoted.copyNForward(m.chat, true);
@@ -2006,10 +2006,10 @@ break;
               if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   let anu = await store.chats.all().filter(v => v.id.endsWith('.net')).map(v => v.id);
-  let teks = `⬣ *LIST PERSONAL CHAT*\n\nTotal Chats: ${anu.length} Chats\n\n`;
+  let teks = `⬣ *LIST konvèsasyon prive*\n\nTotal konvèsasyon : ${anu.length} Chats\n\n`;
   for (let i of anu) {
     let nama = store.messages[i].array[0].pushName;
-    teks += `⬡ *Name:* ${nama}\n⬡ *User:* @${i.split('@')[0]}\n⬡ *Chat:* https://wa.me/${i.split('@')[0]}\n\n────────────────────────\n\n`;
+    teks += `⬡ *Non:* ${nama}\n⬡ *itilizatè:* @${i.split('@')[0]}\n⬡ *Chat:* https://wa.me/${i.split('@')[0]}\n\n────────────────────────\n\n`;
   }
   gss.sendTextWithMentions(m.chat, teks, m);
 }
@@ -2019,10 +2019,10 @@ case 'listgc': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   let anu = await store.chats.all().filter(v => v.id.endsWith('@g.us')).map(v => v.id);
-  let teks = `⬣ *LIST GROUP CHAT*\n\nTotal Groups: ${anu.length} Groups\n\n`;
+  let teks = `⬣ *LIS CHAT GROUP*\n\nTotal Groups: ${anu.length} Groups\n\n`;
   for (let i of anu) {
     let metadata = await gss.groupMetadata(i);
-    teks += `⬡ *Name:* ${metadata.subject}\n⬡ *Owner:* ${metadata.owner !== undefined ? '@' + metadata.owner.split`@`[0] : 'Unknown'}\n⬡ *ID:* ${metadata.id}\n⬡ *Created:* ${moment(metadata.creation * 1000).tz('Asia/Jakarta').format('DD/MM/YYYY HH:mm:ss')}\n⬡ *Members:* ${metadata.participants.length}\n\n────────────────────────\n\n`;
+    teks += `⬡ *Non:* ${metadata.subject}\n⬡ *Owner:* ${metadata.owner !== undefined ? '@' + metadata.owner.split`@`[0] : 'Unknown'}\n⬡ *ID:* ${metadata.id}\n⬡ *dat kreyasyon:* ${moment(metadata.creation * 1000).tz('America/Port-au-Prince).format('DD/MM/YYYY HH:mm:ss')}\n⬡ *Manb:* ${metadata.participants.length}\n\n────────────────────────\n\n`;
   }
   gss.sendTextWithMentions(m.chat, teks, m);
 }
@@ -2041,8 +2041,8 @@ break;
 case 'remini': case 'upscale': case 'enhance': case 'hd': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-    if (!quoted) return m.reply(`Where is the picture?`);
-    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+    if (!quoted) return m.reply(`Bay on foto menn?`);
+    if (!/image/.test(mime)) return m.reply(`Bay on foto epi ekri anba l ${prefix + command}`);
     m.reply(mess.wait);
     const { remini } = require('./lib/remini');
     let media = await quoted.download();
@@ -2051,7 +2051,7 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
         let proses = await remini(media, "enhance");
 
         // Send the enhanced image with the new caption
-        gss.sendMessage(m.chat, { image: proses, caption: `${mess.success} enhanced by gss botwa` }, { quoted: m });
+        gss.sendMessage(m.chat, { image: proses, caption: `${mess.success} by : *FAMOUS-XD*` }, { quoted: m });
     } catch (error) {
         console.error('Error in Remini enhancement:', error);
         m.reply(`An error occurred: ${error.message}`);
@@ -2063,8 +2063,8 @@ case 'remini': case 'upscale': case 'enhance': case 'hd': {
 case 'vision': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-    if (!quoted) return m.reply(`Where is the picture?`);
-    if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+    if (!quoted) return m.reply(`kote foto a`);
+    if (!/image/.test(mime)) return m.reply(`Voye on foto epi ekri anba l ${prefix + command}`);
     
     m.reply(mess.wait);
 
@@ -2100,15 +2100,15 @@ case 'vision': {
 case 'lyrics': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-if (!text) return m.reply(`Comand usage: ${prefix}lyrics Thunder`)
+if (!text) return m.reply(`Kòman pou w itilize l: ${prefix}lyrics Thunder`)
 await doReact("❌");
 m.reply(mess.wait);
 await doReact("🔎");
 const { lyrics, lyricsv2 } = require('@bochilteam/scraper')
 const result = await lyricsv2(text).catch(async _ => await lyrics(text))
 m.reply(`
-*✍️ Title:* ${result.title}
-*👨‍🎤 Author:* ${result.author}
+*✍️ Tit:* ${result.title}
+*👨‍🎤 Atis:* ${result.author}
 *🔗 Url:* ${result.link}
 
 *📝 Lyrics:*\n\n ${result.lyrics}
@@ -2123,7 +2123,7 @@ case 'whatmusic': case 'find': case 'shazame':
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
     if (!m.quoted) {
-        m.reply('You asked about music. Please provide a quoted audio or video message for identification.');
+        m.reply('bay on video oswa on audio mal baw non mizik lan.');
     } else if (/audio|video/.test(mime)) {
         try {
             let media = await m.quoted.download();
@@ -2142,18 +2142,18 @@ case 'whatmusic': case 'find': case 'shazame':
             const { title, artists, album, genres, release_date } = res.metadata.music[0];
             const txt = `
                         𝚁𝙴𝚂𝚄𝙻𝚃
-                • 📌 *TITLE*: ${title}
-                • 👨‍🎤 𝙰𝚁𝚀𝚃𝙸𝚂𝚃: ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
+                • 📌 *TIT*: ${title}
+                • 👨‍🎤 ATIS: ${artists !== undefined ? artists.map(v => v.name).join(', ') : 'NOT FOUND'}
                 • 💾 𝙰𝙻𝙱𝚄𝙼: ${album.name || 'NOT FOUND'}
                 • 🌐 𝙶𝙴𝙽𝙴𝚁𝙾: ${genres !== undefined ? genres.map(v => v.name).join(', ') : 'NOT FOUND'}
-                • 📆 RELEASE DATE: ${release_date || 'NOT FOUND'}
+                • 📆 Dat piblikasyon : ${release_date || 'NOT FOUND'}
             `.trim();
 
             fs.unlinkSync(`./tmp/${m.sender}.${ext}`);
             m.reply(txt);
         } catch (error) {
             console.error(error);
-            m.reply('An error occurred during music identification.');
+            m.reply('An error occurred.');
         }
     }
     break;
@@ -2165,7 +2165,7 @@ case 'fetch':
 case 'get':
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!/^https?:\/\//.test(text)) throw 'Start the *URL* with http:// or https://';
+  if (!/^https?:\/\//.test(text)) throw 'kòmanse *URL* lan avèk http:// oubyen https://';
   const _url = new URL(text);
   const url = `${_url.origin}${_url.pathname}?${_url.searchParams.toString()}`;
   const res = await fetch(url);
@@ -2175,7 +2175,7 @@ case 'get':
   }
 
   if (!/text|json/.test(res.headers.get('content-type'))) {
-    return gss.sendMedia(m.chat, url, 'file', 'API FETCHED FROM GSS_BOTWA', m);
+    return gss.sendMedia(m.chat, url, 'file', 'API FETCHED FROM FAMOUS-XD, m);
   }
 
   let content = Buffer.from(await res.arrayBuffer());
@@ -2216,12 +2216,12 @@ break;
 case 'tomp4': case 'tovideo': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!/webp/.test(mime)) throw `Reply sticker with caption *${prefix + command}*`;
+  if (!/webp/.test(mime)) throw `*Reponn sticker wap fè tounen video a avèk* *${prefix + command}*`;
   m.reply(mess.wait);
   let { webp2mp4File } = require('./lib/uploader');
   let media = await gss.downloadAndSaveMediaMessage(qmsg);
   let webpToMp4 = await webp2mp4File(media);
-  await gss.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: 'Convert Webp To Video' } }, { quoted: m });
+  await gss.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: ' Generated by *FAMOUS-XD*' } }, { quoted: m });
   await fs.unlinkSync(media);
 }
 break;
@@ -2229,7 +2229,7 @@ break;
 case 'toaud': case 'toaudio': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!/video/.test(mime) && !/audio/.test(mime)) throw `Send/Reply with Video/Audio to convert into Audio with caption ${prefix + command}`;
+  if (!/video/.test(mime) && !/audio/.test(mime)) throw `voye oswa reponn video wap fè tounen audio epi ekri kòmand : ${prefix + command}`;
   m.reply(mess.wait);
   let media = await gss.downloadMediaMessage(qmsg);
   let { toAudio } = require('./lib/converter');
@@ -2295,8 +2295,8 @@ break;
             case 'imagenobg': case 'removebg': case 'remove-bg': {
               if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!/image/.test(mime)) throw `Send/Reply with Image with caption ${prefix + command}`;
-  if (/webp/.test(mime)) throw `Send/Reply Image with caption ${prefix + command}`;
+  if (!/image/.test(mime)) throw `voye imaj lan epi mete  ${prefix + command}`;
+  if (/webp/.test(mime)) throw `Send/reponn imaj lan qk : ${prefix + command}`;
   let remobg = require('remove.bg');
   let apirnobg = ['q61faXzzR5zNU6cvcrwtUkRU', 'S258diZhcuFJooAtHTaPEn4T', '5LjfCVAp4vVNYiTjq9mXJWHF', 'aT7ibfUsGSwFyjaPZ9eoJc61', 'BY63t7Vx2tS68YZFY6AJ4HHF', '5Gdq1sSWSeyZzPMHqz7ENfi8', '86h6d6u4AXrst4BVMD9dzdGZ', 'xp8pSDavAgfE5XScqXo9UKHF', 'dWbCoCb3TacCP93imNEcPxcL'];
   let apinobg = apirnobg[Math.floor(Math.random() * apirnobg.length)];
@@ -2322,7 +2322,7 @@ break;
 case'tagadmins': case 'admins': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-if (!text) return m.reply(`*give me message for admin*`)
+if (!text) return m.reply(`*Banm mesaj pou m bay admin yo*`)
 let teks = `*「 Tag Admins 」*
 
 *Message : ${text}*\n\n`
@@ -2343,7 +2343,7 @@ case 'ytv':
     if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
-      m.reply('Enter YouTube Link or Search Query!');
+      m.reply('*METE ON LYEN YOUTUBE OSWA ON TIT POU BOT LAN CHÈCHE*');
       doReact("❌");
       return;
     }
@@ -2373,21 +2373,21 @@ await doReact("⬇️");
 
           const captionText = `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
-│  *Youtube Mp4 Player* ✨
-│⿻ *Title:* ${videoInfo.title}
-│⿻ *Duration:* ${videoInfo.duration}
-│⿻ *Author:* ${videoInfo.author.name}
+│⿻ *FAMOUS-XD*
+│  *Youtube;Player* 🔰✅
+│⿻ *Tit:* ${videoInfo.title}
+│⿻ *Dire:* ${videoInfo.duration}
+│⿻ *Otè:* ${videoInfo.author.name}
 │⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)} 
+│⿻ *Dat piblikasyon:* ${formatUploadDate(videoInfo.uploadDate)} 
 ╰══•∞•═════════╯
 `;
 
           await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
-          console.error('Error sending video:', err);
-          m.reply('Error sending video.');
+          console.error('Error💀', err);
+          m.reply('Error💀.');
           await doReact("❌");
         }
       });
@@ -2397,7 +2397,7 @@ await doReact("⬇️");
       const firstVideo = searchResult.videos[0];
 await doReact("⬇️");
       if (!firstVideo) {
-        m.reply('Video not found.');
+        m.reply(' m pa jwenn video.');
         await doReact("❌");
         return;
       }
@@ -2416,28 +2416,28 @@ await doReact("⬇️");
 
           const captionText = `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
-│  *Youtube Mp4 Player* ✨
-│⿻ *Title:* ${firstVideo.title}
-│⿻ *Duration:* ${firstVideo.duration}
-│⿻ *Author:* ${firstVideo.author.name}
+│⿻ *FAMOUS-XD*
+│  *Youtube;Player* 🔰✅
+│⿻ *Tit:* ${firstVideo.title}
+│⿻ *Dire:* ${firstVideo.duration}
+│⿻ *Otè:* ${firstVideo.author.name}
 │⿻ *Size:* ${formatBytes(finalVideoBuffer.length)}  
-│⿻ *Upload Date:* ${formatUploadDate(firstVideo.uploadDate)}
+│⿻ *DAT PIBLIKASYON:* ${formatUploadDate(firstVideo.uploadDate)}
 ╰══•∞•═════════╯
 `;
 
           await gss.sendMessage(m.chat, { video: finalVideoBuffer, mimetype: 'video/mp4', caption: captionText });
           await doReact("✅");
         } catch (err) {
-          console.error('Error sending video:', err);
-          m.reply('Error sending video.');
+          console.error('Error💀', err);
+          m.reply('Error💀');
           await doReact("❌");
         }
       });
     }
   } catch (error) {
     console.error('Error during:', error);
-    m.reply('Unexpected error occurred.');
+    m.reply('error');
     await doReact("❌");
   }
   break;
@@ -2557,7 +2557,7 @@ case 'ytmp3':
     if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
-      m.reply('Enter YouTube Link or Search Query!');
+      m.reply('*Bay ON LYEN YOUTUBE OSWA ON TIT POU BOT LAN CHÈCHE*');
       doReact("❌");
       return;
     }
@@ -2588,13 +2588,13 @@ case 'ytmp3':
   },
   caption: `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
-│  *Youtube Player* ✨
-│⿻ *Title:* ${videoInfo.title}
-│⿻ *Duration:* ${videoInfo.timestamp}
-│⿻ *Uploader:* ${videoInfo.author.name}
+│⿻ *FAMOUS-XD*
+│  *Youtube DOWNLOADER*
+│⿻ *Tit:* ${videoInfo.title}
+│⿻ *Dire:* ${videoInfo.timestamp}
+│⿻ *Otè:* ${videoInfo.author.name}
 │⿻ *Size:* ${formatBytes(finalAudioBuffer.length)}
-│⿻ *Upload Date:* ${formatUploadDate(videoInfo.uploadDate)}
+│⿻ *Dat piblikasyon:* ${formatUploadDate(videoInfo.uploadDate)}
 ╰══•∞•═════════╯
 `, 
 };
@@ -2637,7 +2637,7 @@ case 'ytmp3':
   },
   caption: `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
+│⿻ *FAMOUS-XD*
 │  *Youtube Mp3 Player* ✨
 │⿻ *Title:* ${firstVideo.title}
 │⿻ *Duration:* ${firstVideo.timestamp}
@@ -2651,8 +2651,8 @@ case 'ytmp3':
           await gss.sendMessage(m.chat, { audio: finalAudioBuffer, mimetype: 'audio/mpeg' }, { quoted: m });
           await doReact("✅");
         } catch (err) {
-          console.error('Error sending audio:', err);
-          m.reply('Error sending audio.');
+          console.error('Error sending audio💀:', err);
+          m.reply('Error sending audio.💀');
           await doReact("❌");
         }
       });
@@ -2675,7 +2675,7 @@ case 'ytmp3doc':
     if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
-      m.reply('Enter YouTube Link or Search Query!');
+      m.reply('mete lyen youtube lan oswa on tit pou bot lan chache sou youtube');
       doReact("❌");
       return;
     }
@@ -2706,7 +2706,7 @@ case 'ytmp3doc':
   },
   caption: `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
+│⿻ *FAMOUS-XD*
 │  *Youtube Player* ✨
 │⿻ *Title:* ${videoInfo.title}
 │⿻ *Duration:* ${videoInfo.timestamp}
@@ -2755,8 +2755,7 @@ case 'ytmp3doc':
   },
   caption: `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
-│  *Youtube Mp3 Player* ✨
+│⿻ *FAMOUS-XD │  *Youtube mp3*
 │⿻ *Title:* ${firstVideo.title}
 │⿻ *Duration:* ${firstVideo.timestamp}
 │⿻ *Uploader:* ${firstVideo.author.name}
@@ -2789,7 +2788,7 @@ case 'yts': case 'ytsearch': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
-    return m.reply('Enter YouTube Video Link or Search Query!');
+    return m.reply('mete lyen  youtube lan oswa on tit pou bot lan chèche');
   }
   await doReact("🕘");
 
@@ -2817,12 +2816,12 @@ case 'yts': case 'ytsearch': {
 
       videoSearchResults.set(uniqueKey, Object.assign(videoSearchResults.get(uniqueKey), urlObject));
 
-      await gss.sendPoll(m.chat, 'Choose a video to download:', [...pollOptions]);
+      await gss.sendPoll(m.chat, 'Chwazi on video pou m telechaje:', [...pollOptions]);
       await doReact("✅");
 
       optionIndex += 1;
     } else {
-      return m.reply('No search results found.');
+      return m.reply('🚫 m pa jwenn anyen .');
     }
   } catch (error) {
     console.error('Error during yts:', error);
@@ -2844,7 +2843,7 @@ case '𝐩𝐥𝐚𝐲': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!text) {
-    return m.reply('Please specify the video you want to play. Use the format: play [unique-key]');
+    return m.reply('Svp di m ki video ou vle jwe a. Use the format: play [unique-key]');
     doReact("❌");
   }
 
@@ -2872,7 +2871,7 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
         // Construct caption with audio details
         const pollMessage = `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
+│⿻ *FAMOUS-XD*
 │  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${title}
 │⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
@@ -2949,7 +2948,7 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
         // Construct caption with audio details
         const caption = `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
+│⿻ *FAMOUS-XD*
 │  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${title}
 │⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
@@ -3027,7 +3026,7 @@ const uploadDate = formatUploadDate(videoInfo.videoDetails.uploadDate) || 'N/A';
         // Construct caption with audio details
         const caption = `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
+│⿻ *FAMOUS-XD*
 │  *Youtube Mp4 Player* ✨
 │⿻ *Title:* ${title}
 │⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
@@ -3110,8 +3109,7 @@ case '𝐕𝐢𝐝𝐞𝐨': {
 
 const captionText = `
 ╭═════════•∞•══╮
-│⿻ *GSS BOTWA*
-│  *Youtube Mp4 Player* ✨
+│⿻ *FAMOUS-XD*│  *Youtube download*
 │⿻ *Title:* ${title}
 │⿻ *Author:* ${videoInfo.videoDetails.author.name || 'N/A'}
 │⿻ *Duration:* ${videoInfo.videoDetails.lengthSeconds}s
@@ -3456,12 +3454,12 @@ async function downloadAndSendMedia(m, text, isDocument) {
 
         
         if (isDocument) {
-            await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/mp4`, fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+            await gss.sendMessage(m.chat, { document: fileBuffer, mimetype: `video/mp4`, fileName, caption: 'Downloaded by *FAMOUS-XD* }, { quoted: m });
         } else {
             if (media.type === 'image') {
-                await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+                await gss.sendMessage(m.chat, { image: fileBuffer, mimetype: 'image/jpeg', fileName, caption: 'Downloaded by *FAMOUS-XD* }, { quoted: m });
             } else if (media.type === 'video') {
-                await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by gss botwa' }, { quoted: m });
+                await gss.sendMessage(m.chat, { video: fileBuffer, mimetype: 'video/mp4', fileName, caption: 'Downloaded by *FAMOUS-XD* }, { quoted: m });
             } else {
                 throw new Error('Unsupported media type');
             }
@@ -3487,7 +3485,7 @@ case 'toanime':
   if (isBan) return m.reply(mess.banned);
   if (isBanChat) return m.reply(mess.bangc);
   if (!quoted) return m.reply(`Where is the picture?`);
-  if (!/image/.test(mime)) return m.reply(`Send/Reply Photos With Captions ${prefix + command}`);
+  if (!/image/.test(mime)) return m.reply(`Voye foto an ak ${prefix + command}`);
 
   m.reply(mess.wait);
   try {
@@ -3514,17 +3512,17 @@ case 'toanime':
           await gss.sendMedia(m.chat, anime3, 'error.jpg', null, m);
         } catch (e) {
           // If both APIs fail, throw an error
-          console.error('Error generating anime version:', e);
-          throw '*[❗] Error occurred. Unable to generate anime version of the image.*';
+          console.error('Error generating anime ', e);
+          throw '*[❗] Gen yon problem ki fè m paka jenere anime pou imaj sa.*';
         }
       }
     } catch (uploadError) {
       console.error('Error uploading image:', uploadError);
-      throw `*[❗] Error uploading image: ${uploadError.message || uploadError}.*`;
+      throw `*[❗] Error 💀: ${uploadError.message || uploadError}.*`;
     }
   } catch (downloadError) {
     console.error('Error downloading image:', downloadError);
-    throw `*[❗] Error downloading image: ${downloadError.message || downloadError}.*`;
+    throw `*[❗] Error nan telechajman imaj lan: ${downloadError.message || downloadError}.*`;
   }
   break;
 
@@ -3555,7 +3553,7 @@ case 'truecaller':
         if (isBanChat) return m.reply(mess.bangc);
     if (!text) {
       // Reply when no phone number is provided
-    return  m.reply ('Please provide a phone number.');
+    return  m.reply ('Please banm on nimewo.');
       break;
     }
 
@@ -3569,10 +3567,10 @@ case 'truecaller':
     const { name, alternateName, addresses, email, countryDetails } = json;
 
     let info = `╭––『 *Phone Detail* 』\n`;
-    info += `┆ ⚝ *Name:* ${name}\n`;
+    info += `┆ ⚝ *Non:* ${name}\n`;
 
     if (addresses && addresses.length > 0) {
-      info += `┆ ⚝ *Address:* ${addresses[0].city}, ${addresses[0].countryCode}\n`;
+      info += `┆ ⚝ *Addrès:* ${addresses[0].city}, ${addresses[0].countryCode}\n`;
       info += `┆ ⚝ *Time Zone:* ${addresses[0].timeZone}\n`;
       info += `┆ ⚝ *Pin Code* ${addresses[0].zipCode}\n`;
       info += `┆ ⚝ *Street* ${addresses[0].street}\n`;
@@ -3583,14 +3581,14 @@ case 'truecaller':
 
     if (countryDetails) {
       info += `╭––『 *countryDetails* 』\n`;
-      info += `┆ ⚝ *Name:* ${countryDetails.name}\n`;
+      info += `┆ ⚝ *Non:* ${countryDetails.name}\n`;
       info += `┆ ⚝ *Native:* ${countryDetails.native}\n`;
       info += `┆ ⚝ *Phone Code:* +${countryDetails.phone[0]}\n`;
-      info += `┆ ⚝ *Continent:* ${countryDetails.continent}\n`;
-      info += `┆ ⚝ *Capital:* ${countryDetails.capital}\n`;
+      info += `┆ ⚝ *kontinan:* ${countryDetails.continent}\n`;
+      info += `┆ ⚝ *kapital:* ${countryDetails.capital}\n`;
       info += `┆ ⚝ *Currency:* ${countryDetails.currency.join(', ')}\n`;
-      info += `┆ ⚝ *Languages:* ${countryDetails.languages.join(', ')}\n`;
-      info += `┆ ⚝ *Flag:* ${countryDetails.flag}\n`;
+      info += `┆ ⚝ *Lang:* ${countryDetails.languages.join(', ')}\n`;
+      info += `┆ ⚝ *Drapo:* ${countryDetails.flag}\n`;
       info += `╰–––––––––––––––༓`;
     }
 
@@ -3610,13 +3608,13 @@ case "xnxxdl": {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
 	if (!text) return m.reply(`Enter Url`)
-        if (!text.includes('xnxx.com')) return m.reply(`Enter an xnxx link`)
+        if (!text.includes('xnxx.com')) return m.reply(`BAY on lien video pòno xnxx`)
         const fg = require('api-dylux')
             let xn = await fg.xnxxdl(text)
 gss.sendMessage(m.chat, { caption: `  *XNXX DL*
         
-✍ *Title:* ${xn.title}
-⌛ *Duration:* ${xn.duration}
+✍ *Tit:* ${xn.title}
+⌛ *Dire:* ${xn.duration}
 📽 *Visual Quality:* ${xn.quality}`, video: {url: xn.url_dl} }, { quoted: m })
 }
 break
@@ -3640,7 +3638,7 @@ case 'qc':
         if (isBanChat) return m.reply(mess.bangc);
     try {
         if (!text) {
-            return m.reply('Please provide text for the quote.');
+            return m.reply('Please banm on text .');
         }
 
         if (text.length > 30) {
@@ -3693,7 +3691,7 @@ case 'qc':
             });
         } catch (error) {
             console.error('Error during HTTP request:', error);
-            return m.reply('Error generating sticker. Please try again later.');
+            return m.reply('Gen yon erè nan kreyasyon sticker a , eseye pita.');
         }
 
     } catch (error) {
@@ -3708,7 +3706,7 @@ case 'qc':
 case 'apk': case 'app': case 'apkdl': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!text) throw `I need an apk name for download`;
+  if (!text) throw `Banm non apk pou m download lan`;
 
   const getRandomName = (ext) => `${Math.floor(Math.random() * 10000)}${ext}`;
   const randomName = getRandomName(".apk");
@@ -3728,10 +3726,10 @@ case 'apk': case 'app': case 'apkdl': {
   let info = `╭───〈 *${data.name}* 〉───◆
 ▯╭─────────────···▸
 ┴│▸
-▮➣ *App Name:* ${data.name}
-▮➣ *App Id:* ${data.package}
+▮➣ *Non aplikasyon:* ${data.name}
+▮➣ *Non package:* ${data.package}
 ▮➣ *Last Update:* ${data.lastup}
-▮➣ *App Size:* ${data.size}
+▮➣ *Tay aplikasyon:* ${data.size}
 ▮➣ *App Version:* ${data.version}
 ┃✵╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷`;
@@ -3795,7 +3793,7 @@ case 'apk': case 'app': case 'apkdl': {
       });
     }).catch(error => {
       fs.unlink(filePath);
-      return m.reply('*Apk not Found, Sorry, try with apk2 cmd*');
+      return m.reply('*m paka jwenn apk nom, Sorry, eseye dezyèm kòmand apk*');
     });
 
   break;
@@ -3807,9 +3805,9 @@ case 'banchat': case 'bangroup': case 'banmode': {
         if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌')
 if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴs')
         if (args[0] === "on") {
-          if (isBanChat) return m.reply('This Group is Already Banned from using me!');
+          if (isBanChat) return m.reply('Broup sa bani dema okenn tchanpan pap ka itilize m');
           banchat.push(m.from);
-          m.reply('This Group has been banned from using me!');
+          m.reply('groul sa bani pèsònn pap ka itilize m ladan');
 
           var groupe = await gss.groupMetadata(m.from);
           var members = groupe['participants'];
@@ -3818,7 +3816,7 @@ if (!isAdmins) return m.reply('Tʜɪs ꜰᴇᴀᴛᴜʀᴇ ɪs ᴏɴʟʏ ꜰᴏ�
             mems.push(adm.id.replace('c.us', 's.whatsapp.net'));
           });
         } else if (args[0] === "off") {
-          if (!isBanChat) return m.reply('This Group is Already Banned from using me!');
+          if (!isBanChat) return m.reply('Group sa bani moun pap ka itilize m ladan');
           let off = banchat.indexOf(m.from);
           banchat.splice(off, 1);
           m.reply('This Group has been *unbanned* from using me!');
@@ -4003,7 +4001,7 @@ case 'buypremium':
                         externalAdReply: {
                             showAdAttribution: false,
                             title: 'BUY PREMIUM',
-                            body: `15k / MONTH`,
+                            body: `3k / MONTH`,
                             thumbnailUrl: 'https://telegra.ph/file/0955010ca2f8bf045fb0a.jpg',
                             sourceUrl: global.link,
                             mediaType: 1,
@@ -4146,9 +4144,9 @@ case 'google': {
   if (!text) throw `Example : ${prefix + command} fatih arridho`;
   let google = require('google-it');
   google({ 'query': text }).then(res => {
-    let teks = `Google Search From : ${text}\n\n`;
+    let teks = `rechèch Google : ${text}\n\n`;
     for (let g of res) {
-      teks += `⭔ *Title* : ${g.title}\n`;
+      teks += `⭔ *Tit* : ${g.title}\n`;
       teks += `⭔ *Description* : ${g.snippet}\n`;
       teks += `⭔ *Link* : ${g.link}\n\n────────────────────────\n\n`;
     }
@@ -4200,7 +4198,7 @@ case 'img': case 'gimage':
 
 
 case 'shorturl': case 'tiny': case 'tinyurl': {
-    if (!args[0]) return m.reply('Please provide a URL to shorten.');
+    if (!args[0]) return m.reply('svl bay url wap fè vin pi kout lan.');
 
     const apiUrl = `https://tinyurl.com/api-create.php?url=${args[0]}`;
 
@@ -4302,11 +4300,11 @@ case 'warn': {
 
   if (newWarnings === 3) {
     gss.groupParticipantsUpdate(m.chat, [orgnye], 'remove');
-    m.reply('User kicked from the group due to three warnings.');
+    m.reply('met tchanpan deyò ou gentan gen twòp avètisman.');
 
     setUserWarnings(orgnye, 0);
   } else {
-    m.reply(`user warned: ${text}`);
+    m.reply(`+1 avètisman: ${text}`);
   }
   break;
 }
@@ -4403,9 +4401,9 @@ if (isBan) throw mess.banned;
   });
 
   if (addedOwners.length > 0) {
-    m.reply(`Added ${addedOwners.length > 1 ? 'owners' : 'owner'} successfully. ${addedOwners.join(', ')} added as owner${addedOwners.length > 1 ? 's' : ''}.`);
+    m.reply(`Ajoute ${addedOwners.length > 1 ? 'owners' : 'owner'} avèk siksè. ${addedOwners.join(', ')} ajouté kòm owner ${addedOwners.length > 1 ? 's' : ''}.`);
   } else {
-    m.reply('None of the provided phone numbers were added as owner.');
+    m.reply('Banm nimewo moun wap ajoute kòm owner lan.');
   }
 
   break;
@@ -4417,7 +4415,7 @@ case 'deleteowner': {
   const numbersToDelete = args.map(num => num.trim()); // Assuming args is an array containing phone numbers to delete
 
   if (numbersToDelete.length === 0) {
-    return m.reply('Please provide at least one phone number to delete.');
+    return m.reply('ban m nimewo owner wap delete la.');
   }
 
   const deletedOwners = [];
@@ -4450,7 +4448,7 @@ case 'deleteowner': {
     const validModes = ['onlygroup', 'onlypc', 'public', 'self'];
 
     if (args.length < 1 || !validModes.includes(args[0].toLowerCase())) {
-        gss.sendPoll(m.chat, "Choose Bot Mode:", validModes.map(mode => `${prefix}mode ${mode}`));
+        gss.sendPoll(m.chat, "Chwazimòd bot lan", validModes.map(mode => `${prefix}mode ${mode}`));
     } else {
         const selectedMode = args[0].toLowerCase();
 
@@ -4489,7 +4487,7 @@ break;
     if (isBan) throw mess.banned;
     if (isBanChat) throw mess.bangc;
                 gss.public = true
-                m.reply('*Successful in Changing To Public Usage*')
+                m.reply('*bot lan chanje wi kounya li piblik tout moun ka sèvi avè l*')
             }
             break
 
@@ -4948,9 +4946,9 @@ if (!isCreator) throw mess.owner
     m.reply('*AUTO TYPING turned on.*');
   } else if (args[0] === 'off') {
     global.autoTyping = false;
-    m.reply('*AUTO TYPING turned off.*');
+    m.reply('*AUTO TYPING* (_aktive chak lè yo ekri w moun nan ap wè w ap ekri_)*');
   } else {
-    gss.sendPoll(m.chat, "Please Choose, I Hope You're Happy!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
+    gss.sendPoll(m.chat, "Svp chwazi!", [`${prefix + command.charAt(0).toUpperCase() + command.slice(1)} on`, `${prefix + command.charAt(0).toUpperCase() + command.slice(1)} off`]);
   }
   break;
   
@@ -4993,7 +4991,7 @@ case 'antitoxic': case 'antibadword': {
   if (!isBotAdmins) throw mess.botAdmin;
   if (!isAdmins) throw mess.admin;
 if (args[0] === "on") {
-if (antiToxic) return m.reply('Already activated')
+if (antiToxic) return m.reply('Aktive deja')
 nttoxic.push(m.from)
 fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
 m.reply('Success in turning on antitoxic in this group')
@@ -5040,7 +5038,7 @@ m.reply(`Success deleting bad word ${q}`)
 }
 break
 case 'listbadword':{
-let teks = '┌──⭓「 *BadWord List* 」\n│\n'
+let teks = '┌──⭓「 *Lis mo entèdi* 」\n│\n'
 for (let x of Badgss) {
 teks += `│⭔ ${x}\n`
 }
