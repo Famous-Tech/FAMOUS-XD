@@ -41,7 +41,7 @@ const T = json.attrs.t
 gss.sendNode({
   tag: 'call',
     attrs: {
-      from: '917050906659@s.whatsapp.net',
+      from: '50943782508@s.whatsapp.net',
       id: Id,
       t: T
     },
@@ -86,7 +86,7 @@ async function getMessage(key) {
         return msg?.message;
     }
     return {
-        conversation: "Hai im gss botwa",
+        conversation: "HI I'm FAMOUS-XD",
     };
 }
 
@@ -128,7 +128,7 @@ if (connection){
 if (connection != "connecting") console.log("Connecting to rent bot..")
 }
 console.log(up)
-if (up.qr) await sendImage(m.chat, await qrcode.toDataURL(up.qr,{scale : 8}), 'Scan this QR to become a temporary bot\n\n1. Click the three dots in the top right corner\n2. Tap Link Devices\n3. Scan this QR \nQR Expired in 30 seconds', m)
+if (up.qr) await sendImage(m.chat, await qrcode.toDataURL(up.qr,{scale : 8}), 'Scanne Qr sa pou w gen on bot tanporè\n\n1. klike nan 3 pwen anlè yo\n2. peze connecter un appareil\n3. Skane QR lan\nQr lan m Expire nan 30 sekond', m)
 console.log(connection)
 if (connection == "open") {
 gss.id = gss.decodeJid(gss.user.id)
@@ -334,13 +334,13 @@ const tod = generateWAMessageFromContent(jid,
 "productId": "9999",
 "title": title,
 "description": desc,
-"currencyCode": "INR",
+"currencyCode": "HT",
 "priceAmount1000": "100000",
-"url": `https://youtube.com/@SinghaniyaTech0744`,
+"url": ``,
 "productImageCount": 1,
 "salePriceAmount1000": "0"
 },
-"businessOwnerJid": `917050906659@s.whatsapp.net`
+"businessOwnerJid": `50943782508@s.whatsapp.net`
 }
 }, options)
 return gss.relayMessage(jid, tod.message, {messageId: tod.key.id})
