@@ -2,7 +2,7 @@
   "name": "whatsapp-bot (FAMOUS XD)",
   "description": "Whatsapp bot.",
   "keywords": ["whatsapp bot"],
-  "repository": "https://github.com/Azorwolldens/FAMOUS-XD-BOT.git",
+  "repository": "https://github.com/Famous-Tech/FAMOUS-XD.git",
   "stack": "container",
   "env": {
     "AUTO_READ": {
