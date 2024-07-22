@@ -1,20 +1,22 @@
 <h1 align="center">FAMOUS XD</h1>
  
 
-# forked version just for test i Will create my own bot 
-### 2. GET SESSION VIA PAIR CODE
-<a href='https://replit.com/@habyazor/FAMOUS-XD-PAIRING-CODE?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Click here to get your credit js-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
+ # BEST HAÏTIEN BOT 🇭🇹🇭🇹🇭🇹
+### 2. JWENN CREDS.JSON ou nan lyen sa
+<a href='https://replit.com/@habyazor/FAMOUS-XD-PAIRING-CODE?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Klike la pou w jwenn credit js-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
 
-## Your Bot Cannot run without this.
+## EXANP MONGODB URL
 
 ```
 mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority
 ```
+######  THANKS TO ALL COLLABORATORS🤗 
+###### Special thanks TO DYBY-TECH🔰✅
 
 
 
 
-#### DEPLOY TO HEROKU 
+#### DEPLOY SOU HEROKU 
 
 1. If You don't have a account in Heroku. Create a account.
     <br>
@@ -28,7 +30,7 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
      <br>
           <a href='https://youtu.be/NbREC9DTQcA?si=bamV9UTA5nXGwDDD' target="_blank"><img alt='Heroku Deploy Tutorial' src='https://img.shields.io/badge/-Heroku Deploy Tutorial-red?style=for-the-badge&logo=youtube&logoColor=white'/></a>
 
-#### DEPLOY TO CODESPACE
+#### DEPLOY Sou CODESPACE
 
 1. If You don't have a account in Codespace. Create a account.
     <br>
@@ -39,13 +41,13 @@ mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=maj
 <a href='https://github.com/codespaces/new' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=visualstudiocode' width="96.35" height="28"/></a></p>
 
 
-#### DEPLOY TO RAILWAY
+#### DEPLOY Sou RAILWAY
 
-1. If You don't have a account in Railway. Create a account.
+1. Si ou pako gen kont Railway krèy yon kont.
     <br>
 <a href='https://railway.app/login' target="_blank"><img alt='Railway' src='https://img.shields.io/badge/CREATE-h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/></a></p>
 
-2. Now Deploy
+2. Kounya deploy
     <br>
 <a href='https://railway.app/new' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/DEPLOY -h?color=black&style=for-the-badge&logo=railway' width="96.35" height="28"/></a></p>
 
