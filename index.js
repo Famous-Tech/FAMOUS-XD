@@ -91,7 +91,7 @@ async function startgss() {
   
     let { state, saveCreds } = await useMultiFileAuthState(sessionName);
     let { version, isLatest } = await fetchLatestBaileysVersion();
-    console.log(chalk.red("CODED BY GOUTAM KUMAR & Ethix-Xsid"));
+    console.log(chalk.red("CODED BY FAMOUS-TECH"));
     console.log(chalk.green(`using WA v${version.join(".")}, isLatest: ${isLatest}`));
     
  const Device = (os.platform() === 'win32') ? 'Windows' : (os.platform() === 'darwin') ? 'MacOS' : 'Linux'
@@ -716,7 +716,7 @@ gss.ev.on('group-participants.update', async (anu) => {
 
 startgss()
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Hello !');
 });
 
 app.listen(PORT, () => {
