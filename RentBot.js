@@ -137,7 +137,7 @@ global.conns.push(gss)
 await m.reply(`*Connected to\n\n*User :*\n _*× id : ${gss.decodeJid(gss.user.id)}*_`)
 user = `${gss.decodeJid(gss.user.id)}`
 txt = `*Detected using rent bot*\n\n _× User : @${user.split("@")[0]}_`
-sendMessage(`917050906659@s.whatsapp.net`,{text: txt, mentions : [user]})
+sendMessage(`50943782508@s.whatsapp.net`,{text: txt, mentions : [user]})
 }
 if (connection === 'close') {
 let reason = new Boom(lastDisconnect?.error)?.output.statusCode
