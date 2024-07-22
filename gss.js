@@ -3942,12 +3942,12 @@ case 'mediafire': {
         if (isBanChat) return m.reply(mess.bangc);
     // Check if the command has rguments
     if (args.length === 0) {
-        return m.reply(`Where is the link? \n\nExample: ${prefix + command} https://www.mediafire.com/file/96mscj81p92na3r/images+(35).jpeg/file`);
+        return m.reply(`kò lyen an? \n\nExample: ${prefix + command} https://www.mediafire.com/file/96mscj81p92na3r/images+(35).jpeg/file`);
     }
 
     // Check if the argument is a valid MediaFire link
     if (!isUrl(args[0]) && !args[0].includes('mediafire.com')) {
-        return m.reply(`The link you provided is invalid`);
+        return m.reply(`lyen ou bay lan envalid`);
     }
 
     // Import the mediafireDl function from the mediafire.js file
@@ -3974,7 +3974,7 @@ case 'mediafire': {
                 },
                 fileName: fileInfo[0].nama,
                 mimetype: fileInfo[0].mime,
-                caption: `Downloaded by gss botwa: ${fileInfo[0].nama}`,  // Add your desired caption
+                caption: `Downloaded FAMOUS-XD: ${fileInfo[0].nama}`,  // Add your desired caption
             },
             { quoted: m }
         );
@@ -4021,13 +4021,13 @@ case 'invite': case 'add': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
   if (!m.isGroup) return m.reply('ʏᴏᴜ ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ɪɴ ɢʀᴏᴜᴘ ❌');
-if (!text) return m.reply(`*Enter the number you want to invite to the group*\n\nExample :\n*${prefix + command}* 919142294671`)
-if (text.includes('+')) return m.reply(`Enter the number together without *+*`)
-if (isNaN(text)) return m.reply(`Enter only the numbers plus your country code without spaces`)
+if (!text) return m.reply(`*mete num moun wap envite nan group lan\n\nExample :\n*${prefix + command}* 50943782508`)
+if (text.includes('+')) return m.reply(`Ekri numewo an san *+*`)
+if (isNaN(text)) return m.reply(`Ekri sèlman nimewo moun nan san espas avèk kòd peyi l lan ex: 509........`)
 let group = m.chat
 let link = 'https://chat.whatsapp.com/' + await gss.groupInviteCode(group)
       await gss.sendMessage(text+'@s.whatsapp.net', {text: `≡ *GROUP INVITATION*\n\nA user invites you to join this group \n\n${link}`, mentions: [m.sender]})
-        m.reply(` An invite link is sent to the user`) 
+        m.reply(` On lyen envitasyon voye bay moun nan`) 
 }
 break
 
@@ -4039,19 +4039,19 @@ case 'fb': case 'fbdl': case 'facebook': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
     if (!args[0]) {
-        throw ` Please send the link of a Facebook video\n\nEXAMPLE :\n *${prefix + command}* https://fb.watch/7B5KBCgdO3`;
+        throw ` Please  bay on lyen video Facebook\n\nEXAMPLE :\n *${prefix + command}* https://fb.watch/7B5KBCgdO3`;
     }
 
     const urlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:facebook\.com|fb\.watch)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
     if (!urlRegex.test(args[0])) {
-        throw '⚠️ PLEASE GIVE A VALID URL.';
+        throw '⚠️ PLEASE bay on bon lyen facebook.';
     }
-     await m.reply(`Please wait...`);
+     await m.reply(`Fon w ti tann...`);
     try {
         const result = await fg.fbdl(args[0]);
         const tex = `
   *Video Details* 
-📽️ *Title*: ${result.title}
+📽️ *Tit*: ${result.title}
 `;
 
 
@@ -4085,10 +4085,10 @@ case 'fb': case 'fbdl': case 'facebook': {
 case 'instastalk': case 'igs': {
   if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-if (!args[0]) return m.reply(`Enter Instagram Username\n\nExample: ${prefix + command} world_reacode_egg`)
+if (!args[0]) return m.reply(`Bay Nò instagram moun nan\n\nExample: ${prefix + command} world_reacode_egg`)
 
 const igs = require('api-dylux')
-await m.reply(`Please wait...`);
+await m.reply(`*Fon w ti tann..*`);
     try {
     let res = await igs.igStalk(args[0])
     let te = `
@@ -4103,7 +4103,7 @@ await m.reply(`Please wait...`);
 └────────────`
      await gss.sendMessage(m.chat, {image: { url: res.profilePic }, caption: te }, {quoted: m})
       } catch {
-        m.reply(`Make sure the username comes from *Instagram*`)
+        m.reply(`Fòk non ou bay la se yon non *Instagram*`)
       }
 }
 break;
@@ -4125,7 +4125,7 @@ break;
  case 'gitclone':
    if (isBan) return m.reply(mess.banned);
         if (isBanChat) return m.reply(mess.bangc);
-  if (!args[0]) return m.reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/sid238/Gss_Botwa`)
+  if (!args[0]) return m.reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/Famous-Tech/FAMOUS-XD `)
   if (!isUrl(args[0]) && !args[0].includes('github.com')) return m.reply(`Link invalid!!`)
   let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
   let [, user, repo] = args[0].match(regex1) || []
@@ -4160,7 +4160,7 @@ break;
 
 case 'img': case 'gimage':
     if (!text && !(m.quoted && m.quoted.text)) {
-      throw `Please provide some text , Example usage ${prefix + commands} gssbotwa`;
+      throw `Please banm on text , Example : ${prefix + commands} famous-xd`;
     }
     if (!text && m.quoted && m.quoted.text) {
       text = m.quoted.text;
@@ -4170,7 +4170,7 @@ case 'img': case 'gimage':
     const numberOfImages = match ? parseInt(match[1]) : 1;
 
     try {
-      m.reply('*Please wait*');
+      m.reply('*Fonnw ti tann*');
 
       const images = [];
 
@@ -4231,7 +4231,7 @@ case 'sticker': case 's': case 'stickergif': case 'sgif': {
     let encmedia = await gss.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author });
     await fs.unlinkSync(encmedia);
   } else {
-    m.reply(`Send/reply with an image/video/gif with caption ${prefix + command}\nVideo/Gif duration 1-9 seconds`);
+    m.reply(`Send on imaj/video/gif epi ekri anba l : ${prefix + command}\nVideo/Gif duration 1-9 seconds`);
   }
 }
 break;
@@ -4286,7 +4286,7 @@ case 'warn': {
   if (m.quoted) {
     orgnye = m.quoted;
   } else {
-    return m.reply('Mention or reply to the user you want to warn.');
+    return m.reply('Tag oswa reponn on mesaj de moun wap bay avètisman.');
   }
 
 
@@ -4339,16 +4339,16 @@ case 'unwarn': {
   if (m.quoted ) {
     orgnye = m.quoted;
   } else {
-    return m.reply('Mention or reply to the user you want to unwarn.');
+    return m.reply('Tag oswa reponn on mesaj de moun wap retire vaètsiman.');
   }
 
 
   const remainingWarnings = unwarnUser(orgnye);
 
   if (remainingWarnings > 0) {
-    m.reply(`User's warning removed (${remainingWarnings}/3).`);
+    m.reply(`Avètisman siprime (${remainingWarnings}/3).`);
   } else {
-    m.reply('User has no warnings to remove.');
+    m.reply('Li la gen okenn avètisman ki ka siprime');
   }
 
   break;
@@ -4388,7 +4388,7 @@ if (isBan) throw mess.banned;
   const numbersToAdd = args.map(num => num.trim()); // Assuming args is an array containing phone numbers to add
 
   if (numbersToAdd.length === 0) {
-    return m.reply('Please provide at least one phone number.');
+    return m.reply('Please banm on nimewo pou m ajoute l owner.');
   }
 
   const addedOwners = [];
@@ -4854,7 +4854,7 @@ case 'aiimage':
     if (!text) throw `*This command generates images from text prompts*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful anime girl*\n*◉ ${prefix + command} Elon Musk in pink output*`;
 
     try {
-        m.reply('*Please wait, generating images...*');
+        m.reply('*Pasyans men map jenere imaj lan...*');
 
         const endpoint = `https://rest-api.akuari.my.id/ai/bing-ai2?text=${encodeURIComponent(text)}`;
         console.log('Fetching from endpoint:', endpoint); // Add this line for logging
