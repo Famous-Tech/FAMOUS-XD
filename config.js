@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 // Other
 global.link = 'https://whatsapp.com/channel/0029VabMnWT7dmejN43jZ533'
-global.linkGroup = ''
+global.linkGroup = 'https://chat.whatsapp.com/JnG9253HRmsLN0DlPFkzjK'
 
 global.apikey = 'bf2d2cf29b3edc604b447983';
 global.ownername = "FAMOUS-TECH";
@@ -29,7 +29,7 @@ global.autoBlock = false
  
 /*REPLY MESSAGE*/
 global.mess = {
-    banned: '`ou pa gen dwa itilize bot lan ankò ❌; vous n'avez plus le droit de vous servir du bot`',
+    banned: '`ou pa gen dwa itilize bot lan ankò ❌.`',
     bangc: '`okenn moun nan group sa pa gen dwa sèvi ak bot la!!`',
     success: '`✓ Success🤟`',
     admin: '`This feature is only for group admins`',
