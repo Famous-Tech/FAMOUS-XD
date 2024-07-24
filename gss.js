@@ -176,7 +176,7 @@ async function sendTypingEffect(gss, m, message, typingSpeed) {
     return;
   }
 
-  const gptthink = await gss.sendMessage(m.chat, { text: 'Thinking...' });
+  const gptthink = await gss.sendMessage(m.chat, { text: 'Fon w ti tann...' });
 
   const words = message.split(' ');
 
@@ -529,7 +529,7 @@ async function setBio() {
                 minute: '2-digit',
                 second: '2-digit'
             };
-            const timeString = moment(date).tz('America/Port-au-Prince).format('MM/DD/YYYY ⌚ hh:mm:ss A');
+            const timeString = moment(date).tz('America/Port-au-Prince').format('MM/DD/YYYY ⌚ hh:mm:ss A');
             const status = `📆 ${timeString} famous-xd ⚡`;
             await gss.updateProfileStatus(status).catch(_ => _);
         }
@@ -584,11 +584,11 @@ if (global.autoBlock && m.sender.startsWith('212')) {
 
    
 	    
-moment.tz.setDefault("Asia/Kolkata").locale("id");
+moment.tz.setDefault("America/Port-au-Prince").locale("id");
 
-const today = moment.tz('Asia/Kolkata').format('dddd, DD MMMM YYYY');
-const wibTime = moment.tz('Asia/Kolkata').format('HH:mm:ss');
-const currentTime = moment().tz('Asia/Kolkata').format('HH:mm:ss');
+const today = moment.tz('America/Port-au-Prince).format('dddd, DD MMMM YYYY');
+const wibTime = moment.tz('America/Port-au-Prince).format('HH:mm:ss');
+const currentTime = moment().tz('America/Port-au-Prince).format('HH:mm:ss');
 
 let time; 
 
