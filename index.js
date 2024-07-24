@@ -284,7 +284,7 @@ gss.ev.on('group-participants.update', async (anu) => {
                     const leaveDate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY');
                     const membersCount = metadata.participants.length;
 
-                    const leftMessage = `> Goodbye @${userName} from ${metadata.subject}.\n> We are now ${membersCount} in the group.\n> Left at: ${leaveTime} on ${leaveDate}`;
+                    const leftMessage = `> babay  @${userName} sòti nan group ${metadata.subject}.\n> kounya rete ${membersCount} nan group lan.\n> li kite a: ${leaveTime} nan dat ${leaveDate}`;
 
                     gss.sendMessage(anu.id, {
                         text: leftMessage,
@@ -374,7 +374,7 @@ gss.ev.on('group-participants.update', async (anu) => {
             console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First");
             gss.logout();
         } else if (reason === DisconnectReason.loggedOut) {
-            console.log(`Device Logged Out, Please Scan Again And Run.`);
+            console.log(`Aparèy lan dekonekte, Please Scan Again And Run.`);
             gss.logout();
         } else if (reason === DisconnectReason.restartRequired) {
             console.log("Restart Required, Restarting...");
@@ -392,7 +392,7 @@ gss.ev.on('group-participants.update', async (anu) => {
         // Add your custom message when the connection is open
         console.log('Connected...', update);
         gss.sendMessage(gss.user.id, {
-            text: `*hi bro! 🫡*\n_FAMOUS XD BOT is connected_ 🔰✅ thanks for using my bot`
+            text: `*HELLO*, *FAMOUS-XD AKTIVE AVÈK SIKSÈ MÈSI DÈSKE W ITILIZE L*`
         });
     }
 });
