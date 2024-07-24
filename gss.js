@@ -898,8 +898,8 @@ const menuText = `*🔢 Chwazi youn ladan yo*
 const menuMessage = `
 👨‍💻 FAMOUS XD V1
 ╭─────────────·
-│📍 ᴠᴇʀꜱɪᴏɴ: 
-│👨‍💻 ᴏᴡɴᴇʀ :       
+│📍 ᴠᴇʀꜱɪᴏɴ: 1.0.0
+│👨‍💻 ᴏᴡɴᴇʀ : FAMOUS-TECH      
 │👤 ɴᴜᴍʙᴇʀ: 50943782508 
 ╰─────────────
 
