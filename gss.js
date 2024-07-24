@@ -636,7 +636,7 @@ if (antiToxic) {
                 await gss.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
                 
                 await gss.sendMessage(m.from, {
-                    text: `\`\`\`「 Bad Word Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`,
+                    text: `\`\`\`「 Vye mo detekte 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`,
                     contextInfo: { mentionedJid: [m.sender] }
                 }, { quoted: m });
             }
