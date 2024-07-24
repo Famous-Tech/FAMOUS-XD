@@ -542,7 +542,7 @@ setBio();
 if (command) {
             
 if (!m.isGroup && !isCreator && global.onlygroup) {
-    return m.reply("_slt, pou evite bot la bani ou pap ka itilize l la, SVP itilize l nan on group!\n\nmèsi pou konpreyansyon ou")
+    return m.reply("_slt, pou evite bot la bani ou pap ka itilize l la, SVP itilize l nan on group_!\n\nmèsi pou konpreyansyon ou")
 }
 // Private Only
 if (!isCreator && global.onlypc && m.isGroup) {
@@ -586,9 +586,9 @@ if (global.autoBlock && m.sender.startsWith('212')) {
 	    
 moment.tz.setDefault("America/Port-au-Prince").locale("id");
 
-const today = moment.tz('America/Port-au-Prince).format('dddd, DD MMMM YYYY');
-const wibTime = moment.tz('America/Port-au-Prince).format('HH:mm:ss');
-const currentTime = moment().tz('America/Port-au-Prince).format('HH:mm:ss');
+const today = moment.tz('America/Port-au-Prince').format('dddd, DD MMMM YYYY');
+const wibTime = moment.tz('America/Port-au-Prince').format('HH:mm:ss');
+const currentTime = moment().tz('America/Port-au-Prince').format('HH:mm:ss');
 
 let time; 
 
@@ -611,7 +611,7 @@ if (currentTime < "05:00:00") {
     var greetingTime = 'Good Dawn 🌆';
 }
 if (currentTime < "03:00:00") {
-    var greetingTime = 'sa wap fè granm  maten sa ?🌃';
+    var greetingTime = 'al dòmi 🌃';
 }
 
 
