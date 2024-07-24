@@ -24,7 +24,7 @@ global.autoRecord = false
 global.autoreact = false
 global.onlygroup = false
 global.onlypc = false
-global.welcome = true
+global.welcome = false
 global.autoBlock = false
  
 /*REPLY MESSAGE*/
@@ -32,7 +32,7 @@ global.mess = {
     banned: '`ou pa gen dwa itilize bot lan ankò ❌.`',
     bangc: '`okenn moun nan group sa pa gen dwa sèvi ak bot la!!`',
     success: '`✓ Success🤟`',
-    admin: '`This feature is only for group admins`',
+    admin: '`Kòmand sa se pou admin group lan`',
     botAdmin: '`yow bot lan pa admin`',
     owner: '`epa ou ki mèt mwen ❌`',
     group: '`kòmand sa la sèl pou group ❌`',
