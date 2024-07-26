@@ -1,6 +1,6 @@
 { 
   "name": "FAMOUS-XD",
-  "version": "1.2.5",
+  "version": "1.0.0",
   "description": "WhatsApp bot in creole",
   "main": "index.js",
   "type": "commonjs",
@@ -18,7 +18,7 @@
     "bot-md",
     "multi-device"
   ],
-  "author": "sid bhai.",
+  "author": "Famous-Tech",
   "license": "MIT",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
