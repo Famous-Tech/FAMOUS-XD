@@ -3,9 +3,9 @@
 
  # BEST HAÏTIEN BOT 🇭🇹🇭🇹🇭🇹
 ### 2. JWENN CREDS.JSON ou nan lyen sa
-<a href='https://replit.com/@habyazor/FAMOUS-XD-PAIRING-CODE?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Klike la pou w jwenn credit js-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
+<a href='https://replit.com/@habyazor/FAMOUS-XD-PAIRING-CODE?v=1' target="_blank"><img alt='Fork repo' src='https://img.shields.io/badge/Klike la pou w jwenn credit.json-black?style=for-the-badge&logo=opencv&logoColor=white'/></a>
 
-## EXANP MONGODB URL
+## MONGODB URL SA BOT LA PAP KA FONKSYONE SAN LI
 
 ```
 mongodb+srv://mohsin:mohsin@cluster0.iauaztt.mongodb.net/?retryWrites=true&w=majority
