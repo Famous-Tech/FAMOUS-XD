@@ -1,9 +1,9 @@
-name: Deploy Bot
+name: Deploy FAMOUS-XD 
 
 on:
   push:
     branches:
-      - main  # ou la branche que vous utilisez pour les déploiements
+      - main  
 
 jobs:
   deploy:
@@ -15,11 +15,11 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  # ou la version de Node.js que vous utilisez
+        node-version: '18'
 
     - name: Install dependencies
       run: npm install
 
     - name: Start bot
       run: |
-        node index.js
+        npm start
