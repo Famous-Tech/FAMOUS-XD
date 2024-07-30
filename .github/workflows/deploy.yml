@@ -22,4 +22,4 @@ jobs:
 
     - name: Start bot
       run: |
-        npm start
+        node index.js , node gss.js
